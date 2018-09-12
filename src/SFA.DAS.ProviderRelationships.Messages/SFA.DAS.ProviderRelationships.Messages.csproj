@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>DAS</Authors>
+    <Description>SFA.DAS.ProviderRelationships message library</Description>
+    <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-provider-relationships</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>
