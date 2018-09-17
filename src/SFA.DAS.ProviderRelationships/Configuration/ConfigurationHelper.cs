@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure;
 using SFA.DAS.Configuration;
@@ -8,35 +9,32 @@ namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class ConfigurationHelper
     {
+        //todo: unit tests
         public static Environment CurrentEnvironment
         {
             get
             {
-                switch (CurrentEnvironmentName)
-                {
-                    case "LOCAL": return Environment.Local;
-                    case "AT": return Environment.At;
-                    case "TEST": return Environment.Test;
-                    case "PROD": return Environment.Prod;
-                    case "MO": return Environment.Mo;
-                    case "DEMO": return Environment.Demo;
-                    default: return Environment.Unknown;
-                }
+                if (!Enum.TryParse(CurrentEnvironmentName, true, out Environment environment))
+                    throw new Exception($"Unknown current environment '{CurrentEnvironmentName}'");
+                return environment;
             }
         }
 
+        private static string _currentEnvironmentName;
+        
         private static string CurrentEnvironmentName
         {
             get
             {
+                if (_currentEnvironmentName != null)
+                    return _currentEnvironmentName;
+
                 var environmentName = System.Environment.GetEnvironmentVariable("DASENV");
 
                 if (string.IsNullOrEmpty(environmentName))
-                {
                     environmentName = CloudConfigurationManager.GetSetting("EnvironmentName");
-                }
 
-                return environmentName.ToUpperInvariant();
+                return _currentEnvironmentName = environmentName?.ToUpperInvariant();
             }
         }
 
