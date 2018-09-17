@@ -1,67 +1,45 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Azure;
 using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class ConfigurationHelper
+    public static class ConfigurationHelper
     {
-        //todo: unit tests
-        public static Environment CurrentEnvironment
+        public static DasEnv CurrentEnvironment
         {
             get
             {
-                if (!Enum.TryParse(CurrentEnvironmentName, true, out Environment environment))
-                    throw new Exception($"Unknown current environment '{CurrentEnvironmentName}'");
-                return environment;
+                if (_currentEnvironment == null)
+                {
+                    var environmentName = ConfigurationManager.AppSettings["EnvironmentName"];
+
+                    if (!Enum.TryParse(environmentName, out DasEnv currentEnvironment))
+                        throw new Exception($"Unknown environment name '{environmentName}'");
+
+                    _currentEnvironment = currentEnvironment;
+                }
+
+                return _currentEnvironment.Value;
             }
         }
 
-        private static string _currentEnvironmentName;
-        
-        private static string CurrentEnvironmentName
-        {
-            get
-            {
-                if (_currentEnvironmentName != null)
-                    return _currentEnvironmentName;
-
-                var environmentName = System.Environment.GetEnvironmentVariable("DASENV");
-
-                if (string.IsNullOrEmpty(environmentName))
-                    environmentName = CloudConfigurationManager.GetSetting("EnvironmentName");
-
-                return _currentEnvironmentName = environmentName?.ToUpperInvariant();
-            }
-        }
+        private static DasEnv? _currentEnvironment;
 
         public static T GetConfiguration<T>(string serviceName)
         {
-            var configurationService = CreateConfigurationService(serviceName);
+            var storageConnectionString = ConfigurationManager.AppSettings["ConfigurationStorageConnectionString"];
+            var configurationRepository = new AzureTableStorageConfigurationRepository(storageConnectionString);
+            var configurationService = new ConfigurationService(configurationRepository, new ConfigurationOptions(serviceName, CurrentEnvironment.ToString(), "1.0"));
+
             return configurationService.Get<T>();
         }
 
-        public static Task<T> GetConfigurationAsync<T>(string serviceName)
-        {
-            var configurationService = CreateConfigurationService(serviceName);
-            return configurationService.GetAsync<T>();
-        }
-
-        public static bool IsEnvironment(params Environment[] environment)
+        public static bool IsCurrentEnvironment(params DasEnv[] environment)
         {
             return environment.Contains(CurrentEnvironment);
-        }
-
-        private static ConfigurationService CreateConfigurationService(string serviceName)
-        {
-            var storageConnectionString = CloudConfigurationManager.GetSetting("ConfigurationStorageConnectionString");
-            var configurationRepository = new AzureTableStorageConfigurationRepository(storageConnectionString);
-            var configurationService = new ConfigurationService(configurationRepository, new ConfigurationOptions(serviceName, CurrentEnvironmentName, "1.0"));
-
-            return configurationService;
         }
     }
 }
