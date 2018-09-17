@@ -10,6 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }
