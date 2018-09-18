@@ -5,6 +5,9 @@
         "appServicePlanName": {
             "type": "string"
         },
+        "appServicePlanResourceGroup": {
+            "type": "string"
+        },
         "aseName": {
             "type": "string"
         },
@@ -31,35 +34,6 @@
     "resources": [
         {
             "apiVersion": "2017-05-10",
-            "name": "app-service-plan-resources-deployment",
-            "type": "Microsoft.Resources/deployments",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service-plan.json",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
-                    },
-                    "aseHostingEnvironmentName": {
-                        "value": "[parameters('aseName')]"
-                    },
-                    "aseResourceGroup": {
-                        "value": "[parameters('aseResourceGroup')]"
-                    },
-                    "aspSize": {
-                        "value": "1"
-                    },
-                    "aspInstances": {
-                        "value": 2
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "2017-05-10",
             "name": "app-service-resources-deployment",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -76,7 +50,7 @@
                         "value": "[parameters('appServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[resourceGroup().name]"
+                        "value": "[parameters('appServicePlanResourceGroup')]"
                     },
                     "deployStagingSlot": {
                         "value": true
