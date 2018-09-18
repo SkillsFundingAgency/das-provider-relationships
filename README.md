@@ -1,3 +1,5 @@
+[![Build status](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_apis/build/status/Manage%20Apprenticeships/das-provider-relationships)](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_build/latest?definitionId=1183)
+
 # SFA.DAS.ProviderRelationships
 
 #### Requirements
