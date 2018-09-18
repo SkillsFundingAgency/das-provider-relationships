@@ -81,9 +81,7 @@
                     }
                 }
             },
-            "dependsOn": [
-                "app-service-plan-resources-deployment"
-            ]
+            "dependsOn": []
         },
         {
             "apiVersion": "2017-08-01",
