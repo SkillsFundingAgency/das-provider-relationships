@@ -8,12 +8,6 @@
         "appServicePlanResourceGroup": {
             "type": "string"
         },
-        "aseName": {
-            "type": "string"
-        },
-        "aseResourceGroup": {
-            "type": "string"
-        },
         "appServiceName": {
             "type": "string"
         },
