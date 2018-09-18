@@ -98,6 +98,10 @@
                             {
                                 "name": "LoggingRedisKey",
                                 "value": "[parameters('loggingRedisKey')]"
+                            },
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference('app-insights-deployment').outputs.InstrumentationKey.value]"
                             }
                         ]
                     }
@@ -106,6 +110,27 @@
             "dependsOn": [
                 "app-service-plan-resources-deployment"
             ]
+        },
+        {
+            "apiVersion": "2017-08-01",
+            "name": "app-insights-deployment",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[parameters('appServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[parameters('appServiceName')]"
+                    }
+                }
+            },
+            "dependsOn": []
         }
     ],
     "outputs": {}
