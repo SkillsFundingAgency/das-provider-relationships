@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{04794025
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Web", "SFA.DAS.ProviderRelationships.Web\SFA.DAS.ProviderRelationships.Web.csproj", "{1A642056-5AD1-4B7D-889F-CF26364A6138}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Web.UnitTests", "SFA.DAS.ProviderRelationships.Web.UnitTests\SFA.DAS.ProviderRelationships.Web.UnitTests.csproj", "{AC00A2BD-5478-4965-9185-DECC31129187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Web.UnitTests", "SFA.DAS.ProviderRelationships.Web.UnitTests\SFA.DAS.ProviderRelationships.Web.UnitTests.csproj", "{AC00A2BD-5478-4965-9185-DECC31129187}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships", "SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj", "{C7FBD758-8531-4E65-BE21-6F013C6C6B25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships", "SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj", "{C7FBD758-8531-4E65-BE21-6F013C6C6B25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.UnitTests", "SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj", "{50BAAF07-9143-4511-86F1-5576C3D4E825}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.UnitTests", "SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj", "{50BAAF07-9143-4511-86F1-5576C3D4E825}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Messages", "SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj", "{6A265CC1-5196-4032-8645-1AE26E27D2AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Messages", "SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj", "{6A265CC1-5196-4032-8645-1AE26E27D2AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
