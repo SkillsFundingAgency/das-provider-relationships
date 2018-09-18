@@ -103,6 +103,7 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             Logger.Info("Retrieving claims from OIDC server");
 
+            //todo: helper for picking claim value (put in OwinAuthenticationService?)
             var userRef = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Id())?.Value;
             var email = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Email())?.Value;
             var displayName = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.DisplayName())?.Value;

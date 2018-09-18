@@ -2,6 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
