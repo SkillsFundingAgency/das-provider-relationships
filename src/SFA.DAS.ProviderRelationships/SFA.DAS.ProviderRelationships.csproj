@@ -20,6 +20,7 @@
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="FAKEBuildScript" Version="1.2.8" />
     <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
     <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
