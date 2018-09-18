@@ -12,11 +12,10 @@ using NLog;
 using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.OidcMiddleware;
-using SFA.DAS.ProviderRelationships.Authorization;
+using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -33,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             //todo: get config
             var config = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>();
-            var constants = new AuthorizationUrls(config.Identity);
+            var constants = new AuthenticationUrls(config.Identity);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -100,13 +99,13 @@ namespace SFA.DAS.ProviderRelationships.Web
         }
 
         //todo: need test coverage of this
-        private static void PostAuthenticationAction(ClaimsIdentity identity, AuthorizationUrls authorizationUrls)
+        private static void PostAuthenticationAction(ClaimsIdentity identity, AuthenticationUrls authenticationUrls)
         {
             Logger.Info("Retrieving claims from OIDC server");
 
-            var userRef = identity.Claims.FirstOrDefault(claim => claim.Type == authorizationUrls.Id())?.Value;
-            var email = identity.Claims.FirstOrDefault(claim => claim.Type == authorizationUrls.Email())?.Value;
-            var displayName = identity.Claims.FirstOrDefault(claim => claim.Type == authorizationUrls.DisplayName())?.Value;
+            var userRef = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Id())?.Value;
+            var email = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Email())?.Value;
+            var displayName = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.DisplayName())?.Value;
 
             // these claims should be there, but we don't need them
             //var firstName = identity.Claims.FirstOrDefault(claim => claim.Type == constants.GivenName())?.Value;

@@ -1,13 +1,13 @@
 ﻿using SFA.DAS.ProviderRelationships.Configuration;
 
-namespace SFA.DAS.ProviderRelationships.Authorization
+namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    public sealed class AuthorizationUrls
+    public sealed class AuthenticationUrls
     {
         private readonly string _baseUrl;
         private readonly IdentityServerConfiguration _configuration;
 
-        public AuthorizationUrls(IdentityServerConfiguration configuration)
+        public AuthenticationUrls(IdentityServerConfiguration configuration)
         {
             _baseUrl = configuration.ClaimIdentifierConfiguration.ClaimsBaseUrl;
             _configuration = configuration;

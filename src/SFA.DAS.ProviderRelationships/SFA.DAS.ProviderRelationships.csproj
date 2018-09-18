@@ -22,6 +22,7 @@
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
+    <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
