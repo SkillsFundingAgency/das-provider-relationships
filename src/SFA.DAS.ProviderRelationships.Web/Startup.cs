@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure;
@@ -30,9 +29,9 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             Logger.Info("Starting ProviderRelations Web Application");
 
-            //todo: get config
             var config = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>();
-            var constants = new AuthenticationUrls(config.Identity);
+            var authenticationUrls = new AuthenticationUrls(config.Identity);
+            var claimValues = new ClaimValue(config.Identity.ClaimIdentifierConfiguration);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -53,14 +52,14 @@ namespace SFA.DAS.ProviderRelationships.Web
                 ClientId = config.Identity.ClientId,
                 ClientSecret = config.Identity.ClientSecret,
                 Scopes = config.Identity.Scopes,
-                AuthorizeEndpoint = constants.AuthorizeEndpoint(),
-                TokenEndpoint = constants.TokenEndpoint(),
-                UserInfoEndpoint = constants.UserInfoEndpoint(),
+                AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
+                TokenEndpoint = authenticationUrls.TokenEndpoint,
+                UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
                 TokenSigningCertificateLoader = GetSigningCertificate(config.Identity.UseCertificate),
                 TokenValidationMethod = config.Identity.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
                 AuthenticatedCallback = identity =>
                 {
-                    PostAuthenticationAction(identity, constants);
+                    PostAuthenticationAction(identity, claimValues);
                 }
             });
 
@@ -99,18 +98,16 @@ namespace SFA.DAS.ProviderRelationships.Web
         }
 
         //todo: need test coverage of this
-        private static void PostAuthenticationAction(ClaimsIdentity identity, AuthenticationUrls authenticationUrls)
+        private static void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue)
         {
             Logger.Info("Retrieving claims from OIDC server");
 
-            //todo: helper for picking claim value (put in OwinAuthenticationService?)
-            var userRef = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Id())?.Value;
-            var email = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.Email())?.Value;
-            var displayName = identity.Claims.FirstOrDefault(claim => claim.Type == authenticationUrls.DisplayName())?.Value;
+            var userRef = identity.GetClaimValue(claimValue.Id);
+            var email = identity.GetClaimValue(claimValue.Email);
+            var displayName = identity.GetClaimValue(claimValue.DisplayName);
 
-            // these claims should be there, but we don't need them
-            //var firstName = identity.Claims.FirstOrDefault(claim => claim.Type == constants.GivenName())?.Value;
-            //var lastName = identity.Claims.FirstOrDefault(claim => claim.Type == constants.FamilyName())?.Value;
+            // these claims should be there, but we don't need them:
+            // claimValue.GivenName (firstname), claimValue.FamilyName (lastname)
 
             if (userRef == null || email == null || displayName == null) // checked with Ben (security team) that it's ok to log these details when something has gone wrong
                 throw new Exception($"Missing claim '{userRef ?? "null"}', '{email ?? "null"}', '{displayName ?? "null"}'");

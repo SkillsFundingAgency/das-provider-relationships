@@ -4,25 +4,24 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public sealed class AuthenticationUrls
     {
-        private readonly string _baseUrl;
-        private readonly IdentityServerConfiguration _configuration;
+        private readonly IdentityServerConfiguration _config;
 
-        public AuthenticationUrls(IdentityServerConfiguration configuration)
+        public AuthenticationUrls(IdentityServerConfiguration config)
         {
-            _baseUrl = configuration.ClaimIdentifierConfiguration.ClaimsBaseUrl;
-            _configuration = configuration;
+            _config = config;
         }
 
-        public string AuthorizeEndpoint() => $"{_configuration.BaseAddress}{_configuration.AuthorizeEndPoint}";
-        public string DisplayName() => $"{_baseUrl}{_configuration.ClaimIdentifierConfiguration.DisplayName}";
-        public string Email() => $"{_baseUrl}{_configuration.ClaimIdentifierConfiguration.Email}";
-        //public string FamilyName() => _baseUrl + _configuration.ClaimIdentifierConfiguration.FamilyName;
-        //public string GivenName() => _baseUrl + _configuration.ClaimIdentifierConfiguration.GivenName;
-        public string Id() => $"{_baseUrl}{_configuration.ClaimIdentifierConfiguration.Id}";
+        public string AuthorizeEndpoint => Generate(_config.AuthorizeEndPoint);
+        public string TokenEndpoint => Generate(_config.TokenEndpoint);
+        public string UserInfoEndpoint => Generate(_config.UserInfoEndpoint);
+
         //public string LogoutEndpoint() => $"{_configuration.BaseAddress}{_configuration.LogoutEndpoint}";
         //public string RegisterLink() => _configuration.BaseAddress.Replace("/identity", "") + string.Format(_configuration.RegisterLink, _configuration.ClientId);
         //public string RequiresVerification() => _baseUrl + "requires_verification";
-        public string TokenEndpoint() => $"{_configuration.BaseAddress}{_configuration.TokenEndpoint}";
-        public string UserInfoEndpoint() => $"{_configuration.BaseAddress}{_configuration.UserInfoEndpoint}";
+
+        private string Generate(string endpoint)
+        {
+            return $"{_config.BaseAddress}{endpoint}";
+        }
     }
 }

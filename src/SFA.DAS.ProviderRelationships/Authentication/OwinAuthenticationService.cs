@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         public string GetCurrentUserClaimValue(string key)
         {
             //todo: do we throw if not found and still have a Try.. method? or return null if not found?
-            return ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == key)?.Value;
+            return ((ClaimsIdentity)HttpContext.Current.User.Identity).GetClaimValue(key);
         }
 
         //public bool IsUserAuthenticated()
