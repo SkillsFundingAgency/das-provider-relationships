@@ -75,7 +75,10 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             return () =>
             {
-                var store = new X509Store(StoreLocation.CurrentUser);
+                //EAS uses..
+                //var store = new X509Store(StoreLocation.CurrentUser);
+                //EmpCom uses.. (and is where our config'ed cert id stored)
+                var store = new X509Store(StoreLocation.LocalMachine);
 
                 store.Open(OpenFlags.ReadOnly);
 
