@@ -87,7 +87,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
 
                     if (certificates.Count < 1)
-                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in CurrentUser store.");
+                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in LocalMachine store.");
 
                     return certificates[0];
                 }
