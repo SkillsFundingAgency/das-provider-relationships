@@ -21,50 +21,28 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
                 r.AccountActivationUrl.Should().Be(expectedAccountActivationUrl);
             });
         }
-
-        // same as above without using Run() (for comparison)
-
-        //[SetUp]
-        //public void SetUp()
-        //{
-        //    _fixture = new IdentityServerConfigurationFactoryTestsFixture();
-        //}
-
-        //private IdentityServerConfigurationFactoryTestsFixture _fixture;
-
-        //[TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/confirm", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity", "/account/confirm")]
-        //[TestCase("https://example.com/account/confirm", "https://example.com", "/account/confirm")]
-        //public void WhenGettingConfigurationContext_ThenShouldReturnConfigurationContextWithCorrectAccountActivationUrlX(string expectedAccountActivationUrl, string baseAddress, string accountActivationUrl)
-        //{
-        //    _fixture.Arrange(baseAddress, accountActivationUrl);
-
-        //    var result = _fixture.Act();
-
-        //    result.Should().NotBeNull();
-        //    result.AccountActivationUrl.Should().Be(expectedAccountActivationUrl);
-        //}
     }
 
     public class IdentityServerConfigurationFactoryTestsFixture : FluentTestFixture
     {
-        public IdentityServerConfigurationFactory IdentityServerConfigurationFactory;
-        public Mock<IIdentityServerConfiguration> MockIdentityServerConfiguration;
+        private readonly IdentityServerConfigurationFactory _identityServerConfigurationFactory;
+        private readonly Mock<IIdentityServerConfiguration> _mockIdentityServerConfiguration;
 
         public IdentityServerConfigurationFactoryTestsFixture()
         {
-            MockIdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
-            IdentityServerConfigurationFactory = new IdentityServerConfigurationFactory(MockIdentityServerConfiguration.Object);
+            _mockIdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
+            _identityServerConfigurationFactory = new IdentityServerConfigurationFactory(_mockIdentityServerConfiguration.Object);
         }
 
         public void Arrange(string baseAddress, string accountActivationUrl)
         {
-            MockIdentityServerConfiguration.Setup(isc => isc.BaseAddress).Returns(baseAddress);
-            MockIdentityServerConfiguration.Setup(isc => isc.AccountActivationUrl).Returns(accountActivationUrl);
+            _mockIdentityServerConfiguration.Setup(isc => isc.BaseAddress).Returns(baseAddress);
+            _mockIdentityServerConfiguration.Setup(isc => isc.AccountActivationUrl).Returns(accountActivationUrl);
         }
 
         public ConfigurationContext Act()
         {
-            return IdentityServerConfigurationFactory.Get();
+            return _identityServerConfigurationFactory.Get();
         }
     }
 }
