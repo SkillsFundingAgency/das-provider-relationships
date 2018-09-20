@@ -17,7 +17,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             return new ConfigurationContext
             {
                 //todo: how often does this get called? can we calc this in the ctor (& use interpolation) - looks like it won't change
-                AccountActivationUrl = _config.BaseAddress.Replace("/identity", "") + _config.AccountActivationUrl
+                // this doesn't seem to get called at all during signin
+                AccountActivationUrl = $"{_config.BaseAddress.Replace("/identity", "")}{_config.AccountActivationUrl}"
             };
         }
     }
