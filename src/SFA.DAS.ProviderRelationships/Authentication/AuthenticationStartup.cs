@@ -38,6 +38,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             _logger.Info("Initialising Authentication");
 
+            //todo: should we DI everything we new up? e.g. AuthenticationUrls, ClaimValue, IdentityServerConfigurationFactory?
+
             var authenticationUrls = new AuthenticationUrls(_config);
             var claimValues = new ClaimValue(_config.ClaimIdentifierConfiguration);
 
@@ -74,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 
-        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
+        internal Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
         {
             if (!useCertificate)
             {
@@ -97,7 +99,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                     var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
 
                     if (certificates.Count < 1)
-                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in LocalMachine store.");
+                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in LocalMachine store");
+
+                    _logger.Info($"Found and using certificate with thumbprint '{thumbprint}' in LocalMachine store");
 
                     return certificates[0];
                 }
@@ -109,7 +113,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         }
 
         //todo: need test coverage of this
-        private void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue)
+        internal void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue)
         {
             _logger.Info("Retrieving claims from OIDC server");
 
