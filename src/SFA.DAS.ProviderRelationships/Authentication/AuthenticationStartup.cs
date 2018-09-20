@@ -67,17 +67,20 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                 TokenValidationMethod = _config.UseCertificate
                     ? TokenValidationMethod.SigningKey
                     : TokenValidationMethod.BinarySecret,
-                AuthenticatedCallback = identity => { PostAuthenticationAction(identity, claimValues, _logger); }
+                AuthenticatedCallback = identity => { PostAuthenticationAction(identity, claimValues); }
             });
 
             ConfigurationFactory.Current = new IdentityServerConfigurationFactory(_config);
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 
-        private static Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
+        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
         {
             if (!useCertificate)
+            {
+                _logger.Info("Not using certificate");
                 return null;
+            }
 
             return () =>
             {
@@ -106,10 +109,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         }
 
         //todo: need test coverage of this
-        //todo: does this need to be static?
-        private static void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue, ILog logger)
+        private void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue)
         {
-            logger.Info("Retrieving claims from OIDC server");
+            _logger.Info("Retrieving claims from OIDC server");
 
             var userRef = identity.GetClaimValue(claimValue.Id);
             var email = identity.GetClaimValue(claimValue.Email);
@@ -123,7 +125,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
             // we don't store personally identifiable info in the logs for security purposes
             // so we'll have to consistently log the userRef elsewhere, and for support we might have to look up the user details from EAS's user db
-            logger.Info($"Claims retrieved from OIDC server for user '{userRef}'");
+            _logger.Info($"Claims retrieved from OIDC server for user '{userRef}'");
 
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userRef));
             identity.AddClaim(new Claim(ClaimTypes.Name, displayName));
