@@ -5,11 +5,11 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public class IdentityServerConfigurationFactory : ConfigurationFactory
     {
-        private readonly ProviderRelationshipsConfiguration _configuration;
+        private readonly IdentityServerConfiguration _config;
 
-        public IdentityServerConfigurationFactory(ProviderRelationshipsConfiguration configuration)
+        public IdentityServerConfigurationFactory(IdentityServerConfiguration config)
         {
-            _configuration = configuration;
+            _config = config;
         }
 
         public override ConfigurationContext Get()
@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             return new ConfigurationContext
             {
                 //todo: how often does this get called? can we calc this in the ctor (& use interpolation) - looks like it won't change
-                AccountActivationUrl = _configuration.Identity.BaseAddress.Replace("/identity", "") + _configuration.Identity.AccountActivationUrl
+                AccountActivationUrl = _config.BaseAddress.Replace("/identity", "") + _config.AccountActivationUrl
             };
         }
     }
