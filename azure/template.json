@@ -11,6 +11,12 @@
         "appServiceName": {
             "type": "string"
         },
+        "customHostName": {
+            "type": "string"
+        },
+        "keyVaultCertificateName": {
+            "type": "string"
+        },
         "configurationStorageConnectionString": {
             "type": "string"
         },
@@ -72,6 +78,12 @@
                                 "value": "[reference('app-insights-deployment').outputs.InstrumentationKey.value]"
                             }
                         ]
+                    },
+                    "customHostName": {
+                        "value": "[parameters('customHostName')]"
+                    },
+                    "certificateThumbprint": {
+                        "value": "[reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint]"
                     }
                 }
             },
