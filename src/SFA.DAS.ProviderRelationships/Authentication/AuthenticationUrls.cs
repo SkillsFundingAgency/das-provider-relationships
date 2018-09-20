@@ -4,9 +4,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public sealed class AuthenticationUrls
     {
-        private readonly IdentityServerConfiguration _config;
+        private readonly IIdentityServerConfiguration _config;
 
-        public AuthenticationUrls(IdentityServerConfiguration config)
+        public AuthenticationUrls(IIdentityServerConfiguration config)
         {
             _config = config;
         }

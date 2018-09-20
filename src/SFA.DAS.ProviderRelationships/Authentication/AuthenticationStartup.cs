@@ -21,48 +21,56 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     //todo: better name for this?
     //todo: this code is boilerplate code. do we want to package it somehow and make it easier to reuse?
-    public class AuthenticationStartup
+    public class AuthenticationStartup : IAuthenticationStartup
     {
-        private ILog _logger;
+        private readonly IAppBuilder _app;
+        private readonly IIdentityServerConfiguration _config;
+        private readonly ILog _logger;
 
-        //todo: di?
-        public void Initialise(IAppBuilder app, IdentityServerConfiguration config, ILog logger)
+        public AuthenticationStartup(IAppBuilder app, IIdentityServerConfiguration config, ILog logger)
         {
+            _app = app;
+            _config = config;
             _logger = logger;
+        }
 
-            var authenticationUrls = new AuthenticationUrls(config);
-            var claimValues = new ClaimValue(config.ClaimIdentifierConfiguration);
+        public void Initialise()
+        {
+            _logger.Info("Initialising Authentication");
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            var authenticationUrls = new AuthenticationUrls(_config);
+            var claimValues = new ClaimValue(_config.ClaimIdentifierConfiguration);
+
+            _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies",
                 ExpireTimeSpan = new TimeSpan(0, 10, 0),
                 SlidingExpiration = true
             });
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "TempState",
                 AuthenticationMode = AuthenticationMode.Passive
             });
 
-            app.UseCodeFlowAuthentication(new OidcMiddlewareOptions
+            _app.UseCodeFlowAuthentication(new OidcMiddlewareOptions
             {
-                BaseUrl = config.BaseAddress,
-                ClientId = config.ClientId,
-                ClientSecret = config.ClientSecret,
-                Scopes = config.Scopes,
+                BaseUrl = _config.BaseAddress,
+                ClientId = _config.ClientId,
+                ClientSecret = _config.ClientSecret,
+                Scopes = _config.Scopes,
                 AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
                 TokenEndpoint = authenticationUrls.TokenEndpoint,
                 UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
-                TokenSigningCertificateLoader = GetSigningCertificate(config.UseCertificate),
-                TokenValidationMethod = config.UseCertificate
+                TokenSigningCertificateLoader = GetSigningCertificate(_config.UseCertificate),
+                TokenValidationMethod = _config.UseCertificate
                     ? TokenValidationMethod.SigningKey
                     : TokenValidationMethod.BinarySecret,
                 AuthenticatedCallback = identity => { PostAuthenticationAction(identity, claimValues, _logger); }
             });
 
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(config);
+            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(_config);
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 
@@ -110,10 +118,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             // these claims should be there, but we don't need them:
             // claimValue.GivenName (firstname), claimValue.FamilyName (lastname)
 
-            if (userRef == null || email == null || displayName == null
-            ) // checked with Ben (security team) that it's ok to log these details when something has gone wrong
-                throw new Exception(
-                    $"Missing claim '{userRef ?? "null"}', '{email ?? "null"}', '{displayName ?? "null"}'");
+            if (userRef == null || email == null || displayName == null) // checked with Ben (security team) that it's ok to log these details when something has gone wrong
+                throw new Exception($"Missing claim '{userRef ?? "null"}', '{email ?? "null"}', '{displayName ?? "null"}'");
 
             // we don't store personally identifiable info in the logs for security purposes
             // so we'll have to consistently log the userRef elsewhere, and for support we might have to look up the user details from EAS's user db

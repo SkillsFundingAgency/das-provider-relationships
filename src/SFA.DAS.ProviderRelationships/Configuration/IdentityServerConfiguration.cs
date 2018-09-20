@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class IdentityServerConfiguration
+    public class IdentityServerConfiguration : IIdentityServerConfiguration
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }

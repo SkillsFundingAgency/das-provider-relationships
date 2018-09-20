@@ -5,9 +5,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public class IdentityServerConfigurationFactory : ConfigurationFactory
     {
-        private readonly IdentityServerConfiguration _config;
+        private readonly IIdentityServerConfiguration _config;
 
-        public IdentityServerConfigurationFactory(IdentityServerConfiguration config)
+        public IdentityServerConfigurationFactory(IIdentityServerConfiguration config)
         {
             _config = config;
         }
