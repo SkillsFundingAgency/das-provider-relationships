@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class ClaimIdentifierConfiguration
+    public class ClaimIdentifierConfiguration : IClaimIdentifierConfiguration
     {
         public string ClaimsBaseUrl { get; set; }
         public string Id { get; set; }

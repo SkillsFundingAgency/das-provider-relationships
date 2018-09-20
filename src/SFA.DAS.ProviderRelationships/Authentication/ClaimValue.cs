@@ -4,10 +4,10 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public sealed class ClaimValue
     {
-        private readonly ClaimIdentifierConfiguration _config;
+        private readonly IClaimIdentifierConfiguration _config;
 
         //todo: extensions on ClaimIdentifierConfiguration?
-        public ClaimValue(ClaimIdentifierConfiguration config)
+        public ClaimValue(IClaimIdentifierConfiguration config)
         {
             _config = config;
         }
