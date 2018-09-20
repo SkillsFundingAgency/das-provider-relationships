@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Microsoft.Azure;
 using SFA.DAS.ProviderRelationships.Authentication;
 
@@ -14,8 +13,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             _authenticationService = authenticationService;
         }
-
-        // GET: Service
 
         [Route("signout")]
         public ActionResult SignOut()
