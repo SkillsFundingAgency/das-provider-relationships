@@ -35,15 +35,13 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         //    return HttpContext.Current.GetOwinContext().Authentication.User.Identity.IsAuthenticated;
         //}
 
-        //GetOwinContext requires Microsoft.Owin.Host.SystemWeb package
+        public void SignOutUser()
+        {
+            var owinContext = HttpContext.Current.GetOwinContext();
+            var authenticationManager = owinContext.Authentication;
 
-        //public void SignOutUser()
-        //{
-        //    var owinContext = HttpContext.Current.GetOwinContext();
-        //    var authenticationManager = owinContext.Authentication;
-
-        //    authenticationManager.SignOut("Cookies");
-        //}
+            authenticationManager.SignOut("Cookies");
+        }
 
         //public bool TryGetCurrentUserClaimValue(string key, out string value)
         //{
