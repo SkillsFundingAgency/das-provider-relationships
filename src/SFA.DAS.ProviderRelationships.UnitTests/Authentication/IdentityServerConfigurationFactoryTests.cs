@@ -24,25 +24,25 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
         // same as above without using Run() (for comparison)
 
-        [SetUp]
-        public void SetUp()
-        {
-            _fixture = new IdentityServerConfigurationFactoryTestsFixture();
-        }
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    _fixture = new IdentityServerConfigurationFactoryTestsFixture();
+        //}
 
-        private IdentityServerConfigurationFactoryTestsFixture _fixture;
+        //private IdentityServerConfigurationFactoryTestsFixture _fixture;
 
-        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/confirm", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity", "/account/confirm")]
-        [TestCase("https://example.com/account/confirm", "https://example.com", "/account/confirm")]
-        public void WhenGettingConfigurationContext_ThenShouldReturnConfigurationContextWithCorrectAccountActivationUrlX(string expectedAccountActivationUrl, string baseAddress, string accountActivationUrl)
-        {
-            _fixture.Arrange(baseAddress, accountActivationUrl);
+        //[TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/confirm", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity", "/account/confirm")]
+        //[TestCase("https://example.com/account/confirm", "https://example.com", "/account/confirm")]
+        //public void WhenGettingConfigurationContext_ThenShouldReturnConfigurationContextWithCorrectAccountActivationUrlX(string expectedAccountActivationUrl, string baseAddress, string accountActivationUrl)
+        //{
+        //    _fixture.Arrange(baseAddress, accountActivationUrl);
 
-            var result = _fixture.Act();
+        //    var result = _fixture.Act();
 
-            result.Should().NotBeNull();
-            result.AccountActivationUrl.Should().Be(expectedAccountActivationUrl);
-        }
+        //    result.Should().NotBeNull();
+        //    result.AccountActivationUrl.Should().Be(expectedAccountActivationUrl);
+        //}
     }
 
     public class IdentityServerConfigurationFactoryTestsFixture : FluentTestFixture
