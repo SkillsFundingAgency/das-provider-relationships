@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 //using IdentityModel.Client;
 //using SFA.DAS.EmployerUsers.WebClientComponents;
@@ -51,42 +50,6 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         //    value = claim?.Value;
 
         //    return value != null;
-        //}
-
-        //public async Task UpdateClaims()
-        //{
-        //    var constants = new AuthenticationUrls(_configuration.Identity);
-        //    var userInfoEndpoint = constants.UserInfoEndpoint();
-        //    var accessToken = GetClaimValue("access_token");
-        //    var userInfoClient = new UserInfoClient(new Uri(userInfoEndpoint), accessToken);
-        //    var userInfo = await userInfoClient.GetAsync();
-        //    var identity = (ClaimsIdentity)HttpContext.Current.User.Identity;
-
-        //    foreach (var claim in userInfo.Claims.ToList())
-        //    {
-        //        if (claim.Item1.Equals(DasClaimTypes.Email))
-        //        {
-        //            var emailClaim = identity.Claims.FirstOrDefault(c => c.Type == "email");
-        //            var emailClaim2 = identity.Claims.FirstOrDefault(c => c.Type == DasClaimTypes.Email);
-
-        //            identity.RemoveClaim(emailClaim);
-        //            identity.RemoveClaim(emailClaim2);
-        //            identity.AddClaim(new Claim("email", claim.Item2));
-        //            identity.AddClaim(new Claim(DasClaimTypes.Email, claim.Item2));
-        //        }
-
-        //        if (claim.Item1.Equals(DasClaimTypes.RequiresVerification))
-        //        {
-        //            var requiresValidationClaim =
-        //                identity.Claims.FirstOrDefault(c => c.Type == DasClaimTypes.RequiresVerification);
-
-        //            if (requiresValidationClaim != null)
-        //            {
-        //                identity.RemoveClaim(requiresValidationClaim);
-        //            }
-        //            identity.AddClaim(new Claim(DasClaimTypes.RequiresVerification, claim.Item2));
-        //        }
-        //    }
         //}
     }
 }
