@@ -1,0 +1,33 @@
+﻿@using SFA.DAS.Validation.Mvc
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.SearchTrainingProvidersViewModel
+
+@{
+    ViewBag.Title = "Search for a training provider";
+}
+
+@section breadcrumb {
+    <div>
+        <ol>
+            <li><a href="@Url.Action("Index", "Home")">Back</a></li>
+        </ol>
+    </div>
+}
+
+@Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+<h1>Search for a training provider</h1>
+<p>Search for a training provider using a UKPRN.</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="@(Html.IsValid(m => m.SearchTrainingProvidersQuery.Ukprn) ? "" : "error")">
+        <label for="@Html.IdFor(m => m.SearchTrainingProvidersQuery.Ukprn)">
+            <span>Uk Provider Reference Number</span>
+            @Html.ValidationMessageFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+        </label>
+        @Html.TextBoxFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+    </div>
+    <a href="">What is a UK Provider Reference Number?</a>
+    <button type="submit">Continue</button>
+}

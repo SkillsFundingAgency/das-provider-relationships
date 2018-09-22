@@ -1,0 +1,25 @@
+﻿@model ModelStateDictionary
+
+@if (!Model.IsValid)
+{
+    <div>
+        <ul>
+            @foreach (var modelState in Model)
+            {
+                foreach (var error in modelState.Value.Errors)
+                {
+                    <li>
+                        @if (string.IsNullOrWhiteSpace(modelState.Key))
+                        {
+                            @error.ErrorMessage
+                        }
+                        else
+                        {
+                            <a href="#@Html.Id(modelState.Key)">@error.ErrorMessage</a>
+                        }
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
