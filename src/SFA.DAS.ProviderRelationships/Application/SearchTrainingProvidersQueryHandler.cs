@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application
 
             if (trainingProviderResponse == null)
             {
-                throw new ValidationException().AddError(request, r => r.Ukprn, "You must enter a valid UKPRN");
+                throw new ValidationException().AddError(request, r => r.Ukprn, ErrorMessages.InvalidUkprn);
             }
 
             var trainingProvider = _mapper.Map<TrainingProviderDto>(trainingProviderResponse);
