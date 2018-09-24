@@ -22,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("search")]
         public async Task<ActionResult> Search(SearchTrainingProvidersViewModel model)
         {

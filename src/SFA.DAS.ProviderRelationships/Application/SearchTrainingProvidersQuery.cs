@@ -5,8 +5,8 @@ namespace SFA.DAS.ProviderRelationships.Application
 {
     public class SearchTrainingProvidersQuery : IRequest<SearchTrainingProvidersQueryResponse>
     {
-        [Required(ErrorMessage = "You must enter a valid UKPRN")]
-        [RegularExpression(@"[\d+]{8}", ErrorMessage = "You must enter a valid UKPRN")]
+        [Required(ErrorMessage = ErrorMessages.InvalidUkprn)]
+        [RegularExpression(@"[\d+]{8}", ErrorMessage = ErrorMessages.InvalidUkprn)]
         public string Ukprn { get; set; }
     }
 }
