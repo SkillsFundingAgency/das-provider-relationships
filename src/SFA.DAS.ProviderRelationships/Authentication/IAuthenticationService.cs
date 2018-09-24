@@ -5,7 +5,7 @@
     {
         string GetCurrentUserClaimValue(string key);
         //bool TryGetCurrentUserClaimValue(string key, out string value);//todo: return 2 values?
-        //bool IsUserAuthenticated();
+        bool IsUserAuthenticated();
         void SignOutUser();
         //Task UpdateClaims();
     }

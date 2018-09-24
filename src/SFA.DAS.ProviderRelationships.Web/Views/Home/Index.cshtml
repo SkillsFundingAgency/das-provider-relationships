@@ -1,7 +1,10 @@
-﻿@{
+﻿@model bool
+
+@{
     ViewBag.Title = "Homepage";
 }
 
 Hello World
 
-<a href="@Url.Action("SignOut", "Service")">Sign out</a>
+<p>IsUserAuthenticated=@Model</p>
+<p><a href="@Url.Action("SignOut", "Service")">Sign out</a></p>
