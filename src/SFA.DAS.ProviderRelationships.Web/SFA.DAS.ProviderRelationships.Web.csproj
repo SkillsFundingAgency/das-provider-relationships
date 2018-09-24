@@ -110,6 +110,24 @@
     <Compile Include="ViewModels\SearchTrainingProvidersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-152x152.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-167x167.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-180x180.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-crest-2x.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-crest.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-logotype-crown.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-mask-icon.svg" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-opengraph-image.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-arrow-left.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-important.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-pointer-2x.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-pointer.png" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.css" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.js" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-ie8-2.0.0.min.css" />
+    <Content Include="Content\lib\govuk-frontend\dist\VERSION.txt" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -126,7 +144,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\css\" />
+    <Folder Include="Content\img\" />
+    <Folder Include="Content\javascript\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
@@ -135,6 +157,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\.keep" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-a2452cb66f-v1.woff2" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-f38c792ac2-v1.woff" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-fb2676462a-v1.eot" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-tabular-357fdfbcc3-v1.eot" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-tabular-784c21afb8-v1.woff" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\bold-tabular-b89238d840-v1.woff2" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-2c037cf7e1-v1.eot" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-458f8ea81c-v1.woff" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-f38ad40456-v1.woff2" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-498ea8ffe2-v1.eot" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-62cc6f0a28-v1.woff" />
+    <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-851b10ccdd-v1.woff2" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

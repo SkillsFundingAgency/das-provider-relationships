@@ -6,28 +6,55 @@
 }
 
 @section breadcrumb {
-    <div>
-        <ol>
-            <li><a href="@Url.Action("Index", "Home")">Back</a></li>
-        </ol>
-    </div>
+    <a href="@Url.Action("Index", "Home")" class="govuk-back-link">Back</a>
 }
 
 @Html.Partial("_ValidationSummary", ViewData.ModelState)
 
-<h1>Search for a training provider</h1>
-<p>Search for a training provider using a UKPRN.</p>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="@(Html.IsValid(m => m.SearchTrainingProvidersQuery.Ukprn) ? "" : "error")">
-        <label for="@Html.IdFor(m => m.SearchTrainingProvidersQuery.Ukprn)">
-            <span>Uk Provider Reference Number</span>
-            @Html.ValidationMessageFor(m => m.SearchTrainingProvidersQuery.Ukprn)
-        </label>
-        @Html.TextBoxFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Search for a training provider</h1>
+        <p class="govuk-body">Add a new training provider via a UKPRN.</p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="govuk-form-group @(Html.IsValid(m => m.SearchTrainingProvidersQuery.Ukprn) ? "" : "govuk-form-group--error")">
+                <span id="dob-error" class="govuk-error-message">
+                    @Html.ValidationMessageFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+                </span>
+                <label for="@Html.IdFor(m => m.SearchTrainingProvidersQuery.Ukprn)" class="govuk-label govuk-!-font-weight-bold" for="name">Uk Provider Reference Number</label>
+                @Html.TextBoxFor(m => m.SearchTrainingProvidersQuery.Ukprn, new { @class = "govuk-input" })
+            </div>
+
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        What is a UK Provider Reference Number?
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    Lorem ipsum
+                </div>
+            </details>
+            <button type="submit" class="govuk-button">Continue</button>
+        }
     </div>
-    <a href="">What is a UK Provider Reference Number?</a>
-    <button type="submit">Continue</button>
-}
+
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
