@@ -51,9 +51,7 @@
   <ItemGroup>
     <PackageReference Include="BrockAllen.CookieTempData.dll" Version="1.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.7.2" />
-    <PackageReference Include="Microsoft.AspNet.Mvc">
-      <Version>5.2.6</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
     <PackageReference Include="Microsoft.AspNet.TelemetryCorrelation" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNet.Web.Optimization" Version="1.1.3" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
@@ -61,6 +59,8 @@
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
+    <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="1.0.2" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="StructureMap.MVC5" Version="3.1.1.134" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
@@ -131,14 +131,6 @@
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.Validation.Mvc\SFA.DAS.Validation.Mvc.csproj">
-      <Project>{8d1639c0-723c-4bea-b226-21e4d47e7484}</Project>
-      <Name>SFA.DAS.Validation.Mvc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SFA.DAS.Validation\SFA.DAS.Validation.csproj">
-      <Project>{9ddeeb85-faf7-4328-8510-e3ca0def0f57}</Project>
-      <Name>SFA.DAS.Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
