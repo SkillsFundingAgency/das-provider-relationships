@@ -3,14 +3,22 @@
 }
 
 @section breadcrumb {
-    <div>
-        <ol>
-            <li><a href="">Home</a></li>
-            <li><a href="">Training provider permissions</a></li>
+    <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link" href="#">Home</a>
+            </li>
+            <li class="govuk-breadcrumbs__list-item" aria-current="page">Training provider permissions</li>
         </ol>
     </div>
+
+    <a href="@Url.Action("Index", "Home")" class="govuk-back-link">Back</a>
 }
 
-<h1>Training provider permissions</h1>
-<p>Give training providers permission to create cohorts on your behalf.</p>
-<a href="@Url.Action("Search", "TrainingProviders")">Choose a training provider</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">Training provider permissions</h1>
+        <p class="govuk-body">Give training providers permission to create cohorts on your behalf</p>
+        <a href="@Url.Action("Search", "TrainingProviders")" role="button" class="govuk-button govuk-button--start">Choose a training provider</a>
+    </div>
+</div>
