@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             _logger.Info("Initialising Authentication");
 
-            //todo: should we DI everything we new up? e.g. AuthenticationUrls, ClaimValue, IdentityServerConfigurationFactory?
+            //todo: should we DI everything we new up? e.g. ClaimValue, IdentityServerConfigurationFactory?
 
             var claimValues = new ClaimValue(_config.ClaimIdentifierConfiguration);
 
@@ -91,9 +91,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
             return () =>
             {
-                //todo: we need to use CurrentUser as we'll be hosted as an app service
-                // EAS uses CurrentUser, EmpCom uses LocalMachine (which is where our config'ed cert is stored)
-                var store = new X509Store(StoreLocation.LocalMachine);
+                // we need to use CurrentUser as we'll be hosted as an app service
+                // https://docs.microsoft.com/en-us/azure/app-service/app-service-web-ssl-cert-load
+                var store = new X509Store(StoreLocation.CurrentUser);
 
                 store.Open(OpenFlags.ReadOnly);
 
@@ -104,9 +104,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                     var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
 
                     if (certificates.Count < 1)
-                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in LocalMachine store");
+                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in CurrentUser store");
 
-                    _logger.Info($"Found and using certificate with thumbprint '{thumbprint}' in LocalMachine store");
+                    _logger.Info($"Found and using certificate with thumbprint '{thumbprint}' in CurrentUser store");
 
                     return certificates[0];
                 }

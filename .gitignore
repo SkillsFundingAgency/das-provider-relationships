@@ -333,3 +333,6 @@ ASALocalRun/
 
 # SFA.DAS
 src/Tools/**/*.*
+!src/DasAmlCert.pfx
+!src/DasIDPCert.pfx
+!src/localhost.pfx
