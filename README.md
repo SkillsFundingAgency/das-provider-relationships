@@ -1,23 +1,33 @@
-[![Build status](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_apis/build/status/Manage%20Apprenticeships/das-provider-relationships)](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_build/latest?definitionId=1183)
-
 # SFA.DAS.ProviderRelationships
+
+[![Build status](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_apis/build/status/Manage%20Apprenticeships/das-provider-relationships)](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_build/latest?definitionId=1183)
 
 #### Requirements
 
 1. Install [Visual Studio] with these workloads:
-    - ASP.NET and web development
-    - Azure development
-    - .NET desktop development
+    * ASP.NET and web development
+    * Azure development
+    * .NET desktop development
 2. Install [SQL Server Management Studio]
 3. Install [Azure Storage Explorer]
 
 #### Setup
 
+##### Add configuration to Azure Storage Emulator
+
+* Clone the [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config) repository
+* Clone the [das-employer-config-updater](https://github.com/SkillsFundingAgency/das-employer-config-updater) repository
+* Run Azure Storage Emulator
+* Open the `das-employer-config-updater` solution in Visual Studio 
+* Press F5 and follow the instructions to import the config from the directory that you cloned the `das-employer-config repository` to
+
+> The two repositories above are private. If the links appear to be dead make sure that you are logged into GitHub with an account that has access to these i.e. that you are part of the Skills Funding Agency Team organization.
+
 ##### Open the solution
 
-- Open the solution in Visual Studio
-- Set `SFA.DAS.ProviderRelationships.Web` as the startup project
-- Press F5
+* Open the solution in Visual Studio
+* Set `SFA.DAS.ProviderRelationships.Web` as the startup project
+* Press F5
 
 [Azure Storage Explorer]: http://storageexplorer.com/
 [Choclatey]: https://chocolatey.org
