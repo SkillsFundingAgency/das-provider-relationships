@@ -12,6 +12,8 @@
         public bool UseCertificate { get; set; }
         public string Scopes { get; set; }
         public ClaimIdentifierConfiguration ClaimIdentifierConfiguration { get; set; }
+        public string ChangePasswordLink { get; set; }
+        public string ChangeEmailLink { get; set; }
         //public string RegisterLink { get; set; }
         public string AccountActivationUrl { get; set; }
     }

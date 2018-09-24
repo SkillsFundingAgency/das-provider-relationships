@@ -39,22 +39,26 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return new RedirectResult($"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}service/signout");
         }
 
-        //[Authorize]
-        //[HttpGet]
-        //[Route("password/change")]
-        //public ActionResult HandlePasswordChanged(bool userCancelled = false)
-        //{
-        //    var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
-        //    return Redirect(url);
-        //}
+        [Authorize]
+        [HttpGet]
+        [Route("password/change")]
+        public ActionResult HandlePasswordChanged(bool userCancelled = false)
+        {
+            //todo: we'll probably want some sort of url helper at some point
+            //var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
+            var url = $"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}password/change?userCancelled={userCancelled}";
+            return Redirect(url);
+        }
 
-        //[Authorize]
-        //[HttpGet]
-        //[Route("email/change")]
-        //public ActionResult HandleEmailChanged(bool userCancelled = false)
-        //{
-        //    var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
-        //    return Redirect(url);
-        //}
+        [Authorize]
+        [HttpGet]
+        [Route("email/change")]
+        public ActionResult HandleEmailChanged(bool userCancelled = false)
+        {
+            //todo: we'll probably want some sort of url helper at some point
+            //var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
+            var url = $"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}password/change?userCancelled={userCancelled}";
+            return Redirect(url);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using SFA.DAS.ProviderRelationships.Web.ViewModels
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -6,6 +7,11 @@
         <title>@ViewBag.Title - Provider relationships</title>
     </head>
     <body>
+        
+        <p><a href="@Url.Action("SignOut", "Service")">Sign out</a></p>
+        <p><a href="@LayoutViewModel.Instance.ChangePasswordLink">Change your password</a></p>
+        <p><a href="@LayoutViewModel.Instance.ChangeEmailLink">Change your email address</a></p>
+
         @RenderBody()
     </body>
 </html>

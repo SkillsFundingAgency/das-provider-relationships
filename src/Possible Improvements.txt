@@ -1,0 +1,4 @@
+Possible Improvements
+
+switch web project to .net core
+package up layout and/or layout functionality

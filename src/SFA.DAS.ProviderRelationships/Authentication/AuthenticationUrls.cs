@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    public sealed class AuthenticationUrls
+    public sealed class AuthenticationUrls : IAuthenticationUrls
     {
         private readonly IIdentityServerConfiguration _config;
 
@@ -15,6 +15,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         public string TokenEndpoint => Generate(_config.TokenEndpoint);
         public string UserInfoEndpoint => Generate(_config.UserInfoEndpoint);
 
+        public string ChangePasswordLink => GenerateChangeUrl(_config.ChangePasswordLink);
+        public string ChangeEmailLink => GenerateChangeUrl(_config.ChangeEmailLink);
+
         //public string LogoutEndpoint() => $"{_configuration.BaseAddress}{_configuration.LogoutEndpoint}";
         //public string RegisterLink() => _configuration.BaseAddress.Replace("/identity", "") + string.Format(_configuration.RegisterLink, _configuration.ClientId);
         //public string RequiresVerification() => _baseUrl + "requires_verification";
@@ -22,6 +25,11 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         private string Generate(string endpoint)
         {
             return $"{_config.BaseAddress}{endpoint}";
+        }
+
+        private string GenerateChangeUrl(string pathFormat)
+        {
+            return $"{_config.BaseAddress.Replace("/identity", "")}{string.Format(pathFormat, _config.ClientId)}";
         }
     }
 }

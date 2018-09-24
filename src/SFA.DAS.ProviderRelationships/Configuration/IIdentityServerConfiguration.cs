@@ -13,6 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         bool UseCertificate { get; }
         string Scopes { get; }
         ClaimIdentifierConfiguration ClaimIdentifierConfiguration { get; }
+        string ChangePasswordLink { get; }
+        string ChangeEmailLink { get; }
         //string RegisterLink { get; }
         string AccountActivationUrl { get; }
     }

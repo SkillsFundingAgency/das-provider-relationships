@@ -25,12 +25,18 @@ namespace SFA.DAS.ProviderRelationships.Authentication
     {
         private readonly IAppBuilder _app;
         private readonly IIdentityServerConfiguration _config;
+        private readonly IAuthenticationUrls _authenticationUrls;
         private readonly ILog _logger;
 
-        public AuthenticationStartup(IAppBuilder app, IIdentityServerConfiguration config, ILog logger)
+        public AuthenticationStartup(
+            IAppBuilder app,
+            IIdentityServerConfiguration config,
+            IAuthenticationUrls authenticationUrls,
+            ILog logger)
         {
             _app = app;
             _config = config;
+            _authenticationUrls = authenticationUrls;
             _logger = logger;
         }
 
@@ -40,7 +46,6 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
             //todo: should we DI everything we new up? e.g. AuthenticationUrls, ClaimValue, IdentityServerConfigurationFactory?
 
-            var authenticationUrls = new AuthenticationUrls(_config);
             var claimValues = new ClaimValue(_config.ClaimIdentifierConfiguration);
 
             _app.UseCookieAuthentication(new CookieAuthenticationOptions
@@ -62,9 +67,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                 ClientId = _config.ClientId,
                 ClientSecret = _config.ClientSecret,
                 Scopes = _config.Scopes,
-                AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
-                TokenEndpoint = authenticationUrls.TokenEndpoint,
-                UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
+                AuthorizeEndpoint = _authenticationUrls.AuthorizeEndpoint,
+                TokenEndpoint = _authenticationUrls.TokenEndpoint,
+                UserInfoEndpoint = _authenticationUrls.UserInfoEndpoint,
                 TokenSigningCertificateLoader = GetSigningCertificate(_config.UseCertificate),
                 TokenValidationMethod = _config.UseCertificate
                     ? TokenValidationMethod.SigningKey
