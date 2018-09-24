@@ -130,6 +130,14 @@
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.Validation.Mvc\SFA.DAS.Validation.Mvc.csproj">
+      <Project>{8d1639c0-723c-4bea-b226-21e4d47e7484}</Project>
+      <Name>SFA.DAS.Validation.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.Validation\SFA.DAS.Validation.csproj">
+      <Project>{9ddeeb85-faf7-4328-8510-e3ca0def0f57}</Project>
+      <Name>SFA.DAS.Validation</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\.keep" />
