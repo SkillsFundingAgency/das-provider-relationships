@@ -6,7 +6,7 @@
 }
 
 @section breadcrumb {
-    <a href="@Url.Action("Index", "Home")" class="govuk-back-link">Back</a>
+<a href="@Url.Action(" Index", "Home" )" class="govuk-back-link">Back</a>
 }
 
 @Html.Partial("_ValidationSummary", ViewData.ModelState)
@@ -18,43 +18,31 @@
         <p class="govuk-body">Add a new training provider via a UKPRN.</p>
         @using (Html.BeginForm())
         {
-            @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-            <div class="govuk-form-group @(Html.IsValid(m => m.SearchTrainingProvidersQuery.Ukprn) ? "" : "govuk-form-group--error")">
-                <span id="dob-error" class="govuk-error-message">
-                    @Html.ValidationMessageFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+        <div class="govuk-form-group @(Html.IsValid(m => m.SearchTrainingProvidersQuery.Ukprn) ? " " : " govuk-form-group--error")">
+            <span id="dob-error" class="govuk-error-message">
+                @Html.ValidationMessageFor(m => m.SearchTrainingProvidersQuery.Ukprn)
+            </span>
+            <label for="@Html.IdFor(m => m.SearchTrainingProvidersQuery.Ukprn)" class="govuk-label govuk-!-font-weight-bold" for="name">Uk Provider Reference Number</label>
+            @Html.TextBoxFor(m => m.SearchTrainingProvidersQuery.Ukprn, new { @class = "govuk-input" })
+        </div>
+
+        <details class="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    What is a UK Provider Reference Number?
                 </span>
-                <label for="@Html.IdFor(m => m.SearchTrainingProvidersQuery.Ukprn)" class="govuk-label govuk-!-font-weight-bold" for="name">Uk Provider Reference Number</label>
-                @Html.TextBoxFor(m => m.SearchTrainingProvidersQuery.Ukprn, new { @class = "govuk-input" })
+            </summary>
+            <div class="govuk-details__text">
+                <h2>What is a UK Provider Reference Number?</h2>
+                <p>A UK Provider Reference Number (UKPRN) is a unique, 8-digit number that identifies a training provider. Your training provider can tell you their UKPRN.</p>
             </div>
-
-            <details class="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        What is a UK Provider Reference Number?
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    Lorem ipsum
-                </div>
-            </details>
-            <button type="submit" class="govuk-button">Continue</button>
+        </details>
+        <button type="submit" class="govuk-button">Continue</button>
         }
     </div>
-
     <div class="govuk-grid-column-one-third">
 
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
