@@ -3,7 +3,7 @@
     //todo: ideally interfaces should live in their own separate project
     public interface IAuthenticationService
     {
-        string GetCurrentUserClaimValue(string key);
+        string TryGetCurrentUserClaimValue(string key);
         bool IsUserAuthenticated();
         void SignOutUser();
     }
