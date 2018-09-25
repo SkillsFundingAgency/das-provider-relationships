@@ -10,6 +10,7 @@ using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.OidcMiddleware;
+using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 using SFA.DAS.ProviderRelationships.Configuration;
 
 //todo: signout. need full signout between ma/ec/pr
@@ -26,17 +27,20 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         private readonly IAppBuilder _app;
         private readonly IIdentityServerConfiguration _config;
         private readonly IAuthenticationUrls _authenticationUrls;
+        private readonly IClaimValue _claimValues;
         private readonly ILog _logger;
 
         public AuthenticationStartup(
             IAppBuilder app,
             IIdentityServerConfiguration config,
             IAuthenticationUrls authenticationUrls,
+            IClaimValue claimValues,
             ILog logger)
         {
             _app = app;
             _config = config;
             _authenticationUrls = authenticationUrls;
+            _claimValues = claimValues;
             _logger = logger;
         }
 
@@ -44,9 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             _logger.Info("Initialising Authentication");
 
-            //todo: should we DI everything we new up? e.g. ClaimValue, IdentityServerConfigurationFactory?
-
-            var claimValues = new ClaimValue(_config.ClaimIdentifierConfiguration);
+            //todo: should we DI everything we new up? e.g. IdentityServerConfigurationFactory?
 
             _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -74,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                 TokenValidationMethod = _config.UseCertificate
                     ? TokenValidationMethod.SigningKey
                     : TokenValidationMethod.BinarySecret,
-                AuthenticatedCallback = identity => { PostAuthenticationAction(identity, claimValues); }
+                AuthenticatedCallback = identity => PostAuthenticationAction(identity, _claimValues)
             });
 
             ConfigurationFactory.Current = new IdentityServerConfigurationFactory(_config);
@@ -117,8 +119,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             };
         }
 
-        //todo: need test coverage of this
-        internal void PostAuthenticationAction(ClaimsIdentity identity, ClaimValue claimValue)
+        internal void PostAuthenticationAction(ClaimsIdentity identity, IClaimValue claimValue)
         {
             _logger.Info("Retrieving claims from OIDC server");
 
@@ -136,9 +137,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             // so we'll have to consistently log the userRef elsewhere, and for support we might have to look up the user details from EAS's user db
             _logger.Info($"Claims retrieved from OIDC server for user '{userRef}'");
 
+            //todo: why are we adding claims where we already have claims with the same value?
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userRef));
             identity.AddClaim(new Claim(ClaimTypes.Name, displayName));
-            //todo: do we need to create 2 claims containing userRef?
             identity.AddClaim(new Claim("sub", userRef));
             identity.AddClaim(new Claim("email", email));
         }

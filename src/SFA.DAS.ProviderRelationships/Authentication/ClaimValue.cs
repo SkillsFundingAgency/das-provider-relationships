@@ -1,8 +1,9 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
+﻿using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
+using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    public sealed class ClaimValue
+    public sealed class ClaimValue : IClaimValue
     {
         private readonly IClaimIdentifierConfiguration _config;
 

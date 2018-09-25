@@ -19,14 +19,14 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels
             IAuthenticationUrls authenticationUrls)
         {
             var urlHelper = new UrlHelper();
-            ChangePasswordLink = $"{authenticationUrls.ChangePasswordLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.DashboardUrl + "/service/password/change")}";
-            ChangeEmailLink = $"{authenticationUrls.ChangeEmailLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.DashboardUrl + "/service/email/change")}";
+            ChangePasswordLink = $"{authenticationUrls.ChangePasswordLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + "/service/password/change")}";
+            ChangeEmailLink = $"{authenticationUrls.ChangeEmailLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + "/service/email/change")}";
         }
 
         //private string GenerateChangeUrl(UrlHelper urlHelper, ProviderRelationshipsConfiguration providerRelationshipsConfig, string urlStart, string returnUrlEnd)
         //{
         //    //todo: create Uri with scheme etc. instead of hardcoding
-        //    return $"{urlStart}{urlHelper.Encode("https://" + providerRelationshipsConfig.DashboardUrl + returnUrlEnd)}";
+        //    return $"{urlStart}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + returnUrlEnd)}";
         //}
     }
 }

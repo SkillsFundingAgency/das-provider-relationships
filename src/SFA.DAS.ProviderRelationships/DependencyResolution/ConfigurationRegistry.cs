@@ -12,6 +12,8 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             //interface??
             For<ProviderRelationshipsConfiguration>().Use(() => providerRelationshipsConfig).Singleton();
             For<IIdentityServerConfiguration>().Use(() => providerRelationshipsConfig.Identity).Singleton();
+            //todo: change consumers of this to accept IIdentityServerConfiguration instead?
+            For<IClaimIdentifierConfiguration>().Use(() => providerRelationshipsConfig.Identity.ClaimIdentifierConfiguration).Singleton();
         }
     }
 }
