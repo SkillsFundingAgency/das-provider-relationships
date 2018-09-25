@@ -6,6 +6,7 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels;
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [RoutePrefix("accounts/{hashedAccountId}/providers")]
+    [Authorize]
     public class ProvidersController : Controller
     {
         private readonly IMediator _mediator;

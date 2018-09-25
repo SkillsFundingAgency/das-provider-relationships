@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public ActionResult Index()
         {
-            return View(_authenticationService.IsUserAuthenticated());
+            return View();
         }
     }
 }
