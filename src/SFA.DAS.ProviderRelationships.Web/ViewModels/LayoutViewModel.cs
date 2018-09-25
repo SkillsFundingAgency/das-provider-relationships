@@ -23,11 +23,5 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels
             ChangePasswordLink = $"{authenticationUrls.ChangePasswordLink}{urlHelper.Encode(providerRelationshipsConfig.EmployerPortalBaseUrl.TrimEnd('/') + "/service/password/change")}";
             ChangeEmailLink = $"{authenticationUrls.ChangeEmailLink}{urlHelper.Encode(providerRelationshipsConfig.EmployerPortalBaseUrl.TrimEnd('/') + "/service/email/change")}";
         }
-
-        //private string GenerateChangeUrl(UrlHelper urlHelper, ProviderRelationshipsConfiguration providerRelationshipsConfig, string urlStart, string returnUrlEnd)
-        //{
-        //    //todo: create Uri with scheme etc. instead of hardcoding
-        //    return $"{urlStart}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + returnUrlEnd)}";
-        //}
     }
 }
