@@ -3,6 +3,7 @@ using SFA.DAS.ProviderRelationships.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
+    [RoutePrefix("")]
     [Authorize]
     public class HomeController : Controller
     {
@@ -12,6 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _authenticationService = authenticationService;
         }
 
+        [Route]
         public ActionResult Index()
         {
             return View(_authenticationService.IsUserAuthenticated());

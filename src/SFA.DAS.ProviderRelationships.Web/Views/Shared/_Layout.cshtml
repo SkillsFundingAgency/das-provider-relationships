@@ -12,6 +12,7 @@
         <p><a href="@LayoutViewModel.Instance.ChangePasswordLink">Change your password</a></p>
         <p><a href="@LayoutViewModel.Instance.ChangeEmailLink">Change your email address</a></p>
 
+        @RenderSection("breadcrumb", false)
         @RenderBody()
     </body>
 </html>

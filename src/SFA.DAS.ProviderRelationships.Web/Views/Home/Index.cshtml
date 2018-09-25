@@ -1,9 +1,20 @@
 ﻿@model bool
 
 @{
-    ViewBag.Title = "Homepage";
+    ViewBag.Title = "Training provider permissions";
 }
 
-Hello World
+@section breadcrumb {
+    <div>
+        <ol>
+            <li><a href="">Home</a></li>
+            <li><a href="">Training provider permissions</a></li>
+        </ol>
+    </div>
+}
+
+<h1>Training provider permissions</h1>
+<p>Give training providers permission to create cohorts on your behalf.</p>
+<a href="">Choose a training provider</a>
 
 <p>IsUserAuthenticated=@Model</p>
