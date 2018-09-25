@@ -66,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
         private readonly AuthenticationStartup _authenticationStartup;
         public ClaimsIdentity ClaimsIdentity;
-        public readonly Mock<IClaimValue> MockClaimValue;
+        private readonly Mock<IClaimValue> _mockClaimValue;
 
         public AuthenticationStartupTestsFixture()
         {
@@ -87,19 +87,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var identityServerConfiguration = new Mock<IIdentityServerConfiguration>();
             var authenticationUrls = new Mock<IAuthenticationUrls>();
 
-            MockClaimValue = new Mock<IClaimValue>();
-            MockClaimValue.Setup(cv => cv.Id).Returns(idType);
-            MockClaimValue.Setup(cv => cv.Email).Returns(emailAddressType);
-            MockClaimValue.Setup(cv => cv.DisplayName).Returns(displayNameType);
+            _mockClaimValue = new Mock<IClaimValue>();
+            _mockClaimValue.Setup(cv => cv.Id).Returns(idType);
+            _mockClaimValue.Setup(cv => cv.Email).Returns(emailAddressType);
+            _mockClaimValue.Setup(cv => cv.DisplayName).Returns(displayNameType);
 
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object,
-                authenticationUrls.Object, MockClaimValue.Object, logger.Object);
+                authenticationUrls.Object, _mockClaimValue.Object, logger.Object);
         }
 
         public void CallPostAuthenticationAction()
         {
-            _authenticationStartup.PostAuthenticationAction(ClaimsIdentity, MockClaimValue.Object);
+            _authenticationStartup.PostAuthenticationAction(ClaimsIdentity, _mockClaimValue.Object);
         }
 
         public void AssertClaim(string claimType, string expectedValue)
