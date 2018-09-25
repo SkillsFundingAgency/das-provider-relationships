@@ -19,8 +19,9 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels
             IAuthenticationUrls authenticationUrls)
         {
             var urlHelper = new UrlHelper();
-            ChangePasswordLink = $"{authenticationUrls.ChangePasswordLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + "/service/password/change")}";
-            ChangeEmailLink = $"{authenticationUrls.ChangeEmailLink}{urlHelper.Encode("https://" + providerRelationshipsConfig.EmployerPortalBaseUrl + "/service/email/change")}";
+            // the second interpolated expression is the return url (we send them back to MA)
+            ChangePasswordLink = $"{authenticationUrls.ChangePasswordLink}{urlHelper.Encode(providerRelationshipsConfig.EmployerPortalBaseUrl.TrimEnd('/') + "/service/password/change")}";
+            ChangeEmailLink = $"{authenticationUrls.ChangeEmailLink}{urlHelper.Encode(providerRelationshipsConfig.EmployerPortalBaseUrl.TrimEnd('/') + "/service/email/change")}";
         }
 
         //private string GenerateChangeUrl(UrlHelper urlHelper, ProviderRelationshipsConfiguration providerRelationshipsConfig, string urlStart, string returnUrlEnd)

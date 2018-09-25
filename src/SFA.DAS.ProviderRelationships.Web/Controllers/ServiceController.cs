@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
-using Microsoft.Azure;
 using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
@@ -35,30 +35,27 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             _authenticationService.SignOutUser();
 
-            //todo: we'll probably want some sort of url helper at some point
-            return new RedirectResult($"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}service/signout");
+            var url = Url.EmployerPortalAction("service/signout");
+            return new RedirectResult(url);
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("password/change")]
-        public ActionResult HandlePasswordChanged(bool userCancelled = false)
-        {
-            //todo: we'll probably want some sort of url helper at some point
-            //var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
-            var url = $"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}password/change?userCancelled={userCancelled}";
-            return Redirect(url);
-        }
+        //[Authorize]
+        //[HttpGet]
+        //[Route("password/change")]
+        //public ActionResult HandlePasswordChanged(bool userCancelled = false)
+        //{
+        //    var url = Url.EmployerPortalAction($"service/password/change?userCancelled={userCancelled}");
+        //    return Redirect(url);
+        //}
 
-        [Authorize]
-        [HttpGet]
-        [Route("email/change")]
-        public ActionResult HandleEmailChanged(bool userCancelled = false)
-        {
-            //todo: we'll probably want some sort of url helper at some point
-            //var url = Url.ExternalMyaUrlAction("service", $"password/change?userCancelled={userCancelled}", true);
-            var url = $"{CloudConfigurationManager.GetSetting("MyaBaseUrl")}password/change?userCancelled={userCancelled}";
-            return Redirect(url);
-        }
+        //[Authorize]
+        //[HttpGet]
+        //[Route("email/change")]
+        //public ActionResult HandleEmailChanged(bool userCancelled = false)
+        //{
+        //    //todo: employercommitments send email changes to /password/change! is that correct?
+        //    var url = Url.EmployerPortalAction($"service/email/change?userCancelled={userCancelled}");
+        //    return Redirect(url);
+        //}
     }
 }
