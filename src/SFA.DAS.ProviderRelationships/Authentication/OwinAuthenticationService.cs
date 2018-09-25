@@ -1,8 +1,5 @@
 ﻿using System.Security.Claims;
 using System.Web;
-//using IdentityModel.Client;
-//using SFA.DAS.EmployerUsers.WebClientComponents;
-//using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
@@ -13,14 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Authentication
     /// </remarks>
     public class OwinAuthenticationService : IAuthenticationService
     {
-        //todo: extract authentication config into own class, and use to compose service config: that way we could put this class in a common package, and use it in EAS, employercommitments and here
-        //private readonly ProviderRelationshipsConfiguration _configuration;
-
-        //public OwinAuthenticationService(ProviderRelationshipsConfiguration configuration)
-        //{
-        //    _configuration = configuration;
-        //}
-
         /// <returns>Claim value, or null if not found (EAS & EC return "" if not found)</returns>
         public string GetCurrentUserClaimValue(string key)
         {

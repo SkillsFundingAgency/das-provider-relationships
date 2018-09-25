@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Moq;
 using Owin;
 using SFA.DAS.NLog.Logger;
@@ -46,8 +41,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
             var appBuilder = new Mock<IAppBuilder>();
             var identityServerConfiguration = new Mock<IIdentityServerConfiguration>();
+            var authenticationUrls = new Mock<IAuthenticationUrls>();
             var logger = new Mock<ILog>();
-            _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object, logger.Object);
+            _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object, authenticationUrls.Object, logger.Object);
         }
     }
 }
