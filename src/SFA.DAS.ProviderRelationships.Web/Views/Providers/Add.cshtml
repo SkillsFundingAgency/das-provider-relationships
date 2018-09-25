@@ -1,2 +1,38 @@
-﻿@model dynamic
+﻿@model AddProviderViewModel
 
+@{
+    ViewBag.Title = "Confirm training provider";
+}
+
+@section breadcrumb {
+    <a class="govuk-back-link" href="@Url.Action("Search", "Providers" )">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Confirm training provider</h1>
+        <p class="govuk-body">UK Provider Reference Number '@Model.Provider.Ukprn' matches:</p>
+        <h2 class="govuk-heading-l">@Model.Provider.Name</h2>
+        <p class="govuk-body-m">UKPRN @Model.Provider.Ukprn</p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Ukprn)
+            <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
+                <p>Is this the training provider you would like to set permissions for?</p>
+                <span class="govuk-error-message">
+                    @Html.ValidationMessageFor(m => m.Choice)
+                </span>
+                <label class="govuk-label govuk-!-font-weight-bold">
+                    @Html.RadioButtonFor(m => m.Choice, "Confirm")
+                    Yes, use @Model.Provider.Name
+                </label>
+                <label class="govuk-label govuk-!-font-weight-bold">
+                    @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn")
+                    No, change UK Provider Reference Number
+                </label>
+            </div>
+            <button class="govuk-button" type="submit">Continue</button>
+        }
+    </div>
+</div>

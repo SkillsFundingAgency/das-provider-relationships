@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using AutoMapper;
 using MediatR;
+using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
@@ -9,10 +12,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     public class ProvidersController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public ProvidersController(IMediator mediator)
+        public ProvidersController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [Route("search")]
@@ -32,9 +37,28 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [Route("add")]
-        public ActionResult Add()
+        public async Task<ActionResult> Add(GetProviderQuery query)
         {
-            return View();
+            var response = await _mediator.Send(query);
+            var model = _mapper.Map<AddProviderViewModel>(response);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("add")]
+        public ActionResult Add(AddProviderViewModel model)
+        {
+            switch (model.Choice)
+            {
+                case "Confirm":
+                    return RedirectToAction("Index", "Home", new { ukprn = model.Ukprn });
+                case "ReEnterUkprn":
+                    return RedirectToAction("Search");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+            }
         }
     }
 }

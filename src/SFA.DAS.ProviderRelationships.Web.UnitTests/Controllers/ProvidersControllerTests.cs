@@ -1,12 +1,16 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AutoMapper;
 using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application;
+using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Testing;
 
@@ -16,17 +20,55 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class ProvidersControllerTests : FluentTest<ProvidersControllerTestsFixture>
     {
         [Test]
-        public void Search_WhenGettingTheProviderSearchPage_ThenShouldReturnAViewResult()
+        public void Search_WhenGettingTheSearchProvidersAction_ThenShouldReturnTheSearchProvidersView()
         {
-            Run(f => f.Search(), (f, a) => a.Should().NotBeNull().And.Match<ViewResult>(v =>
-                v.ViewName == "" && v.Model.GetType() == typeof(SearchProvidersViewModel)));
+            Run(f => f.Search(), (f, r) =>
+            {
+                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
+                r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<SearchProvidersViewModel>();
+            });
         }
 
         [Test]
-        public Task Search_WhenPostingTheProviderSearchPage_ThenShouldReturnARedirectToRouteResult()
+        public Task Search_WhenPostingTheSearchProvidersAction_ThenShouldRedirectToTheAddProviderAction()
         {
-            return RunAsync(f => f.SetSearchProvidersQueryResponse(), f => f.PostSearch(), (f, a) => a.Should().NotBeNull().And.Match<RedirectToRouteResult>(r =>
-                r.RouteValues["Action"].Equals("Add") && r.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
+            return RunAsync(f => f.PostSearch(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Add") &&
+                a.RouteValues["Controller"] == null &&
+                a.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
+        }
+
+        [Test]
+        public Task Add_WhenGettingTheAddProviderAction_ThenShouldReturnTheAddProviderView()
+        {
+            return RunAsync(f => f.Add(), (f, r) =>
+            {
+                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddProviderViewModel>(m => m.Provider == f.GetProviderQueryResponse.Provider);
+            });
+        }
+
+        [Test]
+        public void Add_WhenPostingTheAddProviderActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheHomeAction()
+        {
+            Run(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
+                a.RouteValues["Action"].Equals("Index") &&
+                a.RouteValues["Controller"].Equals("Home") &&
+                a.RouteValues["ukprn"].Equals(f.AddProviderViewModel.Ukprn)));
+        }
+
+        [Test]
+        public void Add_WhenPostingTheAddProviderActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
+        {
+            Run(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Search") &&
+                a.RouteValues["Controller"] == null));
+        }
+
+        [Test]
+        public void Add_WhenPostingTheAddProviderActionAndNoOptionWasSelected_ThenShouldThrowException()
+        {
+            Run(f => f.PostAdd(), (f, r) => r.ShouldThrow<ArgumentOutOfRangeException>());
         }
     }
 
@@ -35,12 +77,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public ProvidersController ProvidersController { get; set; }
         public SearchProvidersViewModel SearchProvidersViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
+        public IMapper Mapper { get; set; }
         public SearchProvidersQueryResponse SearchProvidersQueryResponse { get; set; }
+        public GetProviderQuery GetProviderQuery { get; set; }
+        public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
+        public AddProviderViewModel AddProviderViewModel { get; set; }
 
         public ProvidersControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            ProvidersController = new ProvidersController(Mediator.Object);
+            Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
+            ProvidersController = new ProvidersController(Mediator.Object, Mapper);
         }
 
         public ActionResult Search()
@@ -49,11 +96,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         public Task<ActionResult> PostSearch()
-        {
-            return ProvidersController.Search(SearchProvidersViewModel);
-        }
-
-        public ProvidersControllerTestsFixture SetSearchProvidersQueryResponse()
         {
             SearchProvidersViewModel = new SearchProvidersViewModel
             {
@@ -70,7 +112,39 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             Mediator.Setup(m => m.Send(SearchProvidersViewModel.SearchProvidersQuery, CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);
 
-            return this;
+            return ProvidersController.Search(SearchProvidersViewModel);
+        }
+
+        public Task<ActionResult> Add()
+        {
+            GetProviderQuery = new GetProviderQuery
+            {
+                Ukprn = "12345678"
+            };
+
+            GetProviderQueryResponse = new GetProviderQueryResponse
+            {
+                Provider = new ProviderDto
+                {
+                    Ukprn = 12345678,
+                    Name = "Foo"
+                }
+            };
+
+            Mediator.Setup(m => m.Send(GetProviderQuery, CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
+
+            return ProvidersController.Add(GetProviderQuery);
+        }
+
+        public ActionResult PostAdd(string choice = null)
+        {
+            AddProviderViewModel = new AddProviderViewModel
+            {
+                Choice = choice,
+                Ukprn = "12345678"
+            };
+
+            return ProvidersController.Add(AddProviderViewModel);
         }
     }
 }

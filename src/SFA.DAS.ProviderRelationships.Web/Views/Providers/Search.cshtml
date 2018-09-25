@@ -18,7 +18,7 @@
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(Html.IsValid(m => m.SearchProvidersQuery.Ukprn) ? "" : " govuk-form-group--error")">
-                <span class="govuk-error-message" id="dob-error">
+                <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.SearchProvidersQuery.Ukprn)
                 </span>
                 <label class="govuk-label govuk-!-font-weight-bold" for="@Html.IdFor(m => m.SearchProvidersQuery.Ukprn)">UK Provider Reference Number</label>
