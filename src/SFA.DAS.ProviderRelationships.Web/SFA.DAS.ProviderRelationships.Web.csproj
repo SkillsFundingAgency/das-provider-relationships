@@ -147,7 +147,7 @@
   <ItemGroup>
     <Folder Include="Content\css\" />
     <Folder Include="Content\img\" />
-    <Folder Include="Content\javascript\" />
+    <Folder Include="Content\js\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
