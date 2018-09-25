@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("")]
+    [RoutePrefix("accounts/{hashedAccountId}")]
     public class HomeController : Controller
     {
         [Route]
