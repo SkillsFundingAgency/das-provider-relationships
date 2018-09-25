@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using FluentAssertions;
 using NUnit.Framework;
 using Moq;
@@ -8,6 +9,7 @@ using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Testing;
+using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.AuthenticationStartupTestsFixture;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
@@ -17,34 +19,51 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
         [Test]
         public void WhenPostAuthenticationActionIsCalled_ThenShouldAddClaims()
         {
-            const string idType = "id", emailAddressType = "email_address", displayNameType = "display_name";
-            const string idValue = "id_value", emailAddressValue = "email_address_value", displayNameValue = "display_name_value";
+            const string idValue = "id_value",
+                emailAddressValue = "email_address_value",
+                displayNameValue = "display_name_value";
 
             Run(f =>
                 {
                     f.ClaimsIdentity = new ClaimsIdentity(new[]
                     {
-                        new Claim(idType, idValue),
-                        new Claim(emailAddressType, emailAddressValue),
-                        new Claim(displayNameType, displayNameValue)
+                        new Claim(Fix.idType, idValue),
+                        new Claim(Fix.emailAddressType, emailAddressValue),
+                        new Claim(Fix.displayNameType, displayNameValue)
                     });
-                    f.MockClaimValue.Setup(cv => cv.Id).Returns(idType);
-                    f.MockClaimValue.Setup(cv => cv.Email).Returns(emailAddressType);
-                    f.MockClaimValue.Setup(cv => cv.DisplayName).Returns(displayNameType);
                 },
                 f => f.CallPostAuthenticationAction(),
-            f =>
-            {
-                f.AssertClaim(ClaimTypes.NameIdentifier, idValue);
-                f.AssertClaim(ClaimTypes.Name, displayNameValue);
-                f.AssertClaim("sub", idValue);
-                f.AssertClaim("email", emailAddressValue);
-            });
+                f =>
+                {
+                    f.AssertClaim(ClaimTypes.NameIdentifier, idValue);
+                    f.AssertClaim(ClaimTypes.Name, displayNameValue);
+                    f.AssertClaim("sub", idValue);
+                    f.AssertClaim("email", emailAddressValue);
+                });
+        }
+
+        [Test]
+        public void WhenPostAuthenticationActionIsCalled_ThenShouldThrowIfIdClaimMissing()
+        {
+            const string emailAddressValue = "email_address_value", displayNameValue = "display_name_value";
+
+            Run(f =>
+                {
+                    f.ClaimsIdentity = new ClaimsIdentity(new[]
+                    {
+                        new Claim(Fix.emailAddressType, emailAddressValue),
+                        new Claim(Fix.displayNameType, displayNameValue)
+                    });
+                },
+                f => f.CallPostAuthenticationAction(),
+                (f, ea) => ea.ShouldThrow<Exception>().WithMessage($"Missing claim 'null', '{emailAddressValue}', '{displayNameValue}'"));
         }
     }
 
     public class AuthenticationStartupTestsFixture : FluentTestFixture
     {
+        public const string idType = "id", emailAddressType = "email_address", displayNameType = "display_name";
+
         private readonly AuthenticationStartup _authenticationStartup;
         public ClaimsIdentity ClaimsIdentity;
         public readonly Mock<IClaimValue> MockClaimValue;
@@ -67,7 +86,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var appBuilder = new Mock<IAppBuilder>();
             var identityServerConfiguration = new Mock<IIdentityServerConfiguration>();
             var authenticationUrls = new Mock<IAuthenticationUrls>();
-           MockClaimValue = new Mock<IClaimValue>();
+
+            MockClaimValue = new Mock<IClaimValue>();
+            MockClaimValue.Setup(cv => cv.Id).Returns(idType);
+            MockClaimValue.Setup(cv => cv.Email).Returns(emailAddressType);
+            MockClaimValue.Setup(cv => cv.DisplayName).Returns(displayNameType);
+
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object,
                 authenticationUrls.Object, MockClaimValue.Object, logger.Object);
