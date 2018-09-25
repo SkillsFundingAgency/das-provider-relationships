@@ -20,7 +20,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    //todo: better name for this?
     //todo: this code is boilerplate code. do we want to package it somehow and make it easier to reuse?
     public class AuthenticationStartup : IAuthenticationStartup
     {
