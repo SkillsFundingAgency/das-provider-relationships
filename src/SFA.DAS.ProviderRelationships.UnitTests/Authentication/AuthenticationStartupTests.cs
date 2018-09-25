@@ -27,9 +27,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
                 {
                     f.ClaimsIdentity = new ClaimsIdentity(new[]
                     {
-                        new Claim(Fix.idType, idValue),
-                        new Claim(Fix.emailAddressType, emailAddressValue),
-                        new Claim(Fix.displayNameType, displayNameValue)
+                        new Claim(Fix.IdType, idValue),
+                        new Claim(Fix.EmailAddressType, emailAddressValue),
+                        new Claim(Fix.DisplayNameType, displayNameValue)
                     });
                 },
                 f => f.CallPostAuthenticationAction(),
@@ -43,6 +43,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
         }
 
         [Test]
+        public void WhenPostAuthenticationActionIsCalled_ThenShouldThrowIfAllClaimsMissing()
+        {
+            Run(f => f.ClaimsIdentity = new ClaimsIdentity(),
+                f => f.CallPostAuthenticationAction(),
+                (f, ea) => ea.ShouldThrow<Exception>().WithMessage($"Missing claim 'null', 'null', 'null'"));
+        }
+
+        [Test]
         public void WhenPostAuthenticationActionIsCalled_ThenShouldThrowIfIdClaimMissing()
         {
             const string emailAddressValue = "email_address_value", displayNameValue = "display_name_value";
@@ -51,8 +59,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
                 {
                     f.ClaimsIdentity = new ClaimsIdentity(new[]
                     {
-                        new Claim(Fix.emailAddressType, emailAddressValue),
-                        new Claim(Fix.displayNameType, displayNameValue)
+                        new Claim(Fix.EmailAddressType, emailAddressValue),
+                        new Claim(Fix.DisplayNameType, displayNameValue)
                     });
                 },
                 f => f.CallPostAuthenticationAction(),
@@ -62,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
     public class AuthenticationStartupTestsFixture : FluentTestFixture
     {
-        public const string idType = "id", emailAddressType = "email_address", displayNameType = "display_name";
+        public const string IdType = "id", EmailAddressType = "email_address", DisplayNameType = "display_name";
 
         private readonly AuthenticationStartup _authenticationStartup;
         public ClaimsIdentity ClaimsIdentity;
@@ -88,9 +96,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var authenticationUrls = new Mock<IAuthenticationUrls>();
 
             _mockClaimValue = new Mock<IClaimValue>();
-            _mockClaimValue.Setup(cv => cv.Id).Returns(idType);
-            _mockClaimValue.Setup(cv => cv.Email).Returns(emailAddressType);
-            _mockClaimValue.Setup(cv => cv.DisplayName).Returns(displayNameType);
+            _mockClaimValue.Setup(cv => cv.Id).Returns(IdType);
+            _mockClaimValue.Setup(cv => cv.Email).Returns(EmailAddressType);
+            _mockClaimValue.Setup(cv => cv.DisplayName).Returns(DisplayNameType);
 
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object,
