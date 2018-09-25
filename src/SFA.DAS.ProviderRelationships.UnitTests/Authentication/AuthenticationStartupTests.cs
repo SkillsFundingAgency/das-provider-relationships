@@ -7,7 +7,7 @@ using Owin;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
-using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
 using SFA.DAS.Testing;
 using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.AuthenticationStartupTestsFixture;
 

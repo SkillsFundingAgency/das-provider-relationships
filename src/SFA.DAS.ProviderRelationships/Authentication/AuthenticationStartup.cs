@@ -11,7 +11,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.OidcMiddleware;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
-using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
 
 //todo: signout. need full signout between ma/ec/pr
 // can we access cookies of parent domain to delete them? can the tld store cookies in subdomain? can we delegate all cookie deleted to ma (can tld create subdomain cookies)

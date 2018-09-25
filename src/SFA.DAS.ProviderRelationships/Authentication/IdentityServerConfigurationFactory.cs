@@ -1,5 +1,5 @@
 ﻿using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {

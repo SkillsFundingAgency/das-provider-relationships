@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ProviderRelationships.Configuration
+﻿using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
+
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class IdentityServerConfiguration : IIdentityServerConfiguration
     {

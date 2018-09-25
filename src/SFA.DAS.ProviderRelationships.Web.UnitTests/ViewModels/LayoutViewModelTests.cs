@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Testing;
@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.ViewModels
                 {
                     f.Config.EmployerPortalBaseUrl = employerPortalBaseUrl;
                     f.AuthenticationUrls.Setup(au => au.ChangePasswordLink).Returns(changePasswordLink);
-                    // Links are generated in LayoutViewModel's c'tor, so we need to new it here, rather than the Fixture's c'tor
+                    // links are generated in LayoutViewModel's c'tor, so we need to new it here, rather than the Fixture's c'tor
                     f.LayoutViewModel = new LayoutViewModel(f.Config, f.AuthenticationUrls.Object);
                 },
                 f => f.LayoutViewModel.ChangePasswordLink,
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.ViewModels
                 {
                     f.Config.EmployerPortalBaseUrl = employerPortalBaseUrl;
                     f.AuthenticationUrls.Setup(au => au.ChangeEmailLink).Returns(changeEmailLink);
-                    // Links are generated in LayoutViewModel's c'tor, so we need to new it here, rather than the Fixture's c'tor
+                    // links are generated in LayoutViewModel's c'tor, so we need to new it here, rather than the Fixture's c'tor
                     f.LayoutViewModel = new LayoutViewModel(f.Config, f.AuthenticationUrls.Object);
                 },
                 f => f.LayoutViewModel.ChangeEmailLink,

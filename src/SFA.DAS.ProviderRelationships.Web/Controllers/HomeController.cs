@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {

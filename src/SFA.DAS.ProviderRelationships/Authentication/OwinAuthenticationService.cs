@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Web;
+using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
