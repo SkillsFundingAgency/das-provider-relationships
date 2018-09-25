@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Mappings
         [Test]
         public void AssertConfigurationIsValid_WhenAssertingConfigurationIsValid_ThenShouldNotThrowException()
         {
-            var config = new MapperConfiguration(c => c.AddProfiles(typeof(TrainingProviderMappings)));
+            var config = new MapperConfiguration(c => c.AddProfiles(typeof(ProviderMappings)));
 
             config.AssertConfigurationIsValid();
         }

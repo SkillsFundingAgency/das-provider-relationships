@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public MapperRegistry()
         {
-            For<IConfigurationProvider>().Use(c => new MapperConfiguration(cfg => cfg.AddProfiles(typeof(TrainingProviderMappings).Assembly))).Singleton();
+            For<IConfigurationProvider>().Use(c => new MapperConfiguration(cfg => cfg.AddProfiles(typeof(ProviderMappings).Assembly))).Singleton();
             For<IMapper>().Use(c => c.GetInstance<IConfigurationProvider>().CreateMapper()).Singleton();
         }
     }

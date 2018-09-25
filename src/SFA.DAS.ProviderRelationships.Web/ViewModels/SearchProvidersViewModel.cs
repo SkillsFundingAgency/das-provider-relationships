@@ -3,9 +3,9 @@ using SFA.DAS.ProviderRelationships.Application;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels
 {
-    public class SearchTrainingProvidersViewModel
+    public class SearchProvidersViewModel
     {
         [Required]
-        public SearchTrainingProvidersQuery SearchTrainingProvidersQuery { get; set; }
+        public SearchProvidersQuery SearchProvidersQuery { get; set; }
     }
 }

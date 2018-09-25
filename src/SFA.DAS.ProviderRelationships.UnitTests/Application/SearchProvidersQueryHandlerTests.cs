@@ -15,48 +15,48 @@ using SFA.DAS.Validation;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
     [TestFixture]
-    public class SearchTrainingProvidersQueryHandlerTests : FluentTest<SearchTrainingProvidersQueryHandlerTestsFixture>
+    public class SearchProvidersQueryHandlerTests : FluentTest<SearchProvidersQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingASearchTrainingProvidersQueryAndATrainingProviderIsFound_ThenShouldReturnTheTrainingProvidersDetails()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsFound_ThenShouldReturnTheProvidersDetails()
         {
-            return RunAsync(f => f.SetTrainingProviderResponse(), f => f.Handle(), (f, r) => r.TrainingProvider.Should().NotBeNull()
-                .And.Match<TrainingProviderDto>(d => d.Ukprn == f.ProviderResponse.Ukprn && d.Name == f.ProviderResponse.ProviderName));
+            return RunAsync(f => f.SetProviderResponse(), f => f.Handle(), (f, r) => r.Provider.Should().NotBeNull()
+                .And.Match<ProviderDto>(d => d.Ukprn == f.ProviderResponse.Ukprn && d.Name == f.ProviderResponse.ProviderName));
         }
 
         [Test]
-        public Task Handle_WhenHandlingASearchTrainingProvidersQueryAndATrainingProviderIsNotFound_ThenShouldThrowAValidationException()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsNotFound_ThenShouldThrowAValidationException()
         {
             return RunAsync(f => f.Handle(), (f, r) => r.ShouldThrow<ValidationException>());
         }
     }
 
-    public class SearchTrainingProvidersQueryHandlerTestsFixture
+    public class SearchProvidersQueryHandlerTestsFixture
     {
-        public SearchTrainingProvidersQueryHandler Handler { get; set; }
-        public SearchTrainingProvidersQuery Query { get; set; }
+        public SearchProvidersQueryHandler Handler { get; set; }
+        public SearchProvidersQuery Query { get; set; }
         public Mock<IProviderApiClient> ProviderApiClient { get; set; }
         public IMapper Mapper { get; set; }
         public Provider ProviderResponse { get; set; }
 
-        public SearchTrainingProvidersQueryHandlerTestsFixture()
+        public SearchProvidersQueryHandlerTestsFixture()
         {
             ProviderApiClient = new Mock<IProviderApiClient>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<TrainingProviderMappings>()).CreateMapper();
-            Handler = new SearchTrainingProvidersQueryHandler(ProviderApiClient.Object, Mapper);
+            Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
+            Handler = new SearchProvidersQueryHandler(ProviderApiClient.Object, Mapper);
 
-            Query = new SearchTrainingProvidersQuery
+            Query = new SearchProvidersQuery
             {
                 Ukprn = "12345678"
             };
         }
 
-        public Task<SearchTrainingProvidersQueryResponse> Handle()
+        public Task<SearchProvidersQueryResponse> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }
 
-        public SearchTrainingProvidersQueryHandlerTestsFixture SetTrainingProviderResponse()
+        public SearchProvidersQueryHandlerTestsFixture SetProviderResponse()
         {
             ProviderResponse = new Provider
             {

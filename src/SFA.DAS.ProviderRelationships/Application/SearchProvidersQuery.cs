@@ -3,7 +3,7 @@ using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.Application
 {
-    public class SearchTrainingProvidersQuery : IRequest<SearchTrainingProvidersQueryResponse>
+    public class SearchProvidersQuery : IRequest<SearchProvidersQueryResponse>
     {
         [Required(ErrorMessage = ErrorMessages.InvalidUkprn)]
         [RegularExpression(@"[\d+]{8}", ErrorMessage = ErrorMessages.InvalidUkprn)]

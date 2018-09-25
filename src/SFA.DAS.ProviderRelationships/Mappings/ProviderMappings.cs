@@ -4,11 +4,11 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Mappings
 {
-    public class TrainingProviderMappings : Profile
+    public class ProviderMappings : Profile
     {
-        public TrainingProviderMappings()
+        public ProviderMappings()
         {
-            CreateMap<Provider, TrainingProviderDto>()
+            CreateMap<Provider, ProviderDto>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.ProviderName));
         }
     }

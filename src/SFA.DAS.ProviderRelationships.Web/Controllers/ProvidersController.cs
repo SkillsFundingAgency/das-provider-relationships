@@ -5,12 +5,12 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("trainingproviders")]
-    public class TrainingProvidersController : Controller
+    [RoutePrefix("providers")]
+    public class ProvidersController : Controller
     {
         private readonly IMediator _mediator;
 
-        public TrainingProvidersController(IMediator mediator)
+        public ProvidersController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -18,17 +18,17 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("search")]
         public ActionResult Search()
         {
-            return View(new SearchTrainingProvidersViewModel());
+            return View(new SearchProvidersViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("search")]
-        public async Task<ActionResult> Search(SearchTrainingProvidersViewModel model)
+        public async Task<ActionResult> Search(SearchProvidersViewModel model)
         {
-            var response = await _mediator.Send(model.SearchTrainingProvidersQuery);
+            var response = await _mediator.Send(model.SearchProvidersQuery);
 
-            return RedirectToAction("Add", new { ukprn = response.TrainingProvider.Ukprn });
+            return RedirectToAction("Add", new { ukprn = response.Provider.Ukprn });
         }
 
         [Route("add")]
