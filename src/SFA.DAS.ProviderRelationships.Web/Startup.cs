@@ -21,8 +21,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             authenticationStartupArgs.Set(app);
             var authenticationStartup = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
             authenticationStartup.Initialise();
-
-            //todo: config repo - whats this??
         }
     }
 }
