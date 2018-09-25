@@ -100,7 +100,6 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
                 try
                 {
-                    //todo: add config
                     var thumbprint = CloudConfigurationManager.GetSetting("TokenCertificateThumbprint");
                     var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
 
