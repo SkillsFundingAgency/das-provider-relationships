@@ -3,7 +3,7 @@ using SFA.DAS.ProviderRelationships.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("")]
+    [RoutePrefix("accounts/{hashedAccountId}")]
     [Authorize]
     public class HomeController : Controller
     {

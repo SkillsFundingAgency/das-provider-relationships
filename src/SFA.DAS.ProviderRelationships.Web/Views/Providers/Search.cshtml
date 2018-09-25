@@ -1,0 +1,41 @@
+﻿@model SearchProvidersViewModel
+
+@{
+    ViewBag.Title = "Search for a training provider";
+}
+
+@section breadcrumb {
+    <a class="govuk-back-link" href="@Url.Action("Index", "Home" )">Back</a>
+}
+
+@Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Search for a training provider</h1>
+        <p class="govuk-body">Add a new training provider via a UKPRN.</p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group @(Html.IsValid(m => m.SearchProvidersQuery.Ukprn) ? "" : " govuk-form-group--error")">
+                <span class="govuk-error-message" id="dob-error">
+                    @Html.ValidationMessageFor(m => m.SearchProvidersQuery.Ukprn)
+                </span>
+                <label class="govuk-label govuk-!-font-weight-bold" for="@Html.IdFor(m => m.SearchProvidersQuery.Ukprn)">UK Provider Reference Number</label>
+                @Html.TextBoxFor(m => m.SearchProvidersQuery.Ukprn, new { @class = "govuk-input" })
+            </div>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        What is a UK Provider Reference Number?
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <h2>What is a UK Provider Reference Number?</h2>
+                    <p>A UK Provider Reference Number (UKPRN) is a unique, 8-digit number that identifies a training provider. Your training provider can tell you their UKPRN.</p>
+                </div>
+            </details>
+            <button class="govuk-button" type="submit">Continue</button>
+        }
+    </div>
+</div>

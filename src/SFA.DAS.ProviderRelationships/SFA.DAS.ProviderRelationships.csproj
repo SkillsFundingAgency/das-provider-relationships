@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper " Version="7.0.1" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="FAKEBuildScript" Version="1.2.8" />
     <PackageReference Include="MediatR" Version="5.1.0" />
@@ -28,6 +29,9 @@
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
+    <PackageReference Include="SFA.DAS.Providers.Api.Client" Version="0.11.97" />
+    <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="1.0.2" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
