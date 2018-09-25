@@ -25,8 +25,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             var owinContext = HttpContext.Current.GetOwinContext();
             var authenticationManager = owinContext.Authentication;
-            //Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie
-            authenticationManager.SignOut("Cookies");
+            
+            authenticationManager.SignOut(/* Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie */"Cookies");
         }
     }
 }
