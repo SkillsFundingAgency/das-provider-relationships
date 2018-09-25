@@ -6,7 +6,6 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application;
-using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Testing;
@@ -27,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Search_WhenPostingTheProviderSearchPage_ThenShouldReturnARedirectToRouteResult()
         {
             return RunAsync(f => f.SetSearchProvidersQueryResponse(), f => f.PostSearch(), (f, a) => a.Should().NotBeNull().And.Match<RedirectToRouteResult>(r =>
-                r.RouteValues["Action"].Equals("Add") && r.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Provider.Ukprn)));
+                r.RouteValues["Action"].Equals("Add") && r.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
         }
     }
 
@@ -66,10 +65,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             SearchProvidersQueryResponse = new SearchProvidersQueryResponse
             {
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678
-                }
+                Ukprn = 12345678
             };
 
             Mediator.Setup(m => m.Send(SearchProvidersViewModel.SearchProvidersQuery, CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);

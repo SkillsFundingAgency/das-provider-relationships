@@ -1,9 +1,7 @@
-﻿using SFA.DAS.ProviderRelationships.Dtos;
-
-namespace SFA.DAS.ProviderRelationships.Application
+﻿namespace SFA.DAS.ProviderRelationships.Application
 {
     public class SearchProvidersQueryResponse
     {
-        public ProviderDto Provider { get; set; }
+        public int Ukprn { get; set; }
     }
 }

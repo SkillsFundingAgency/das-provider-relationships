@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             var response = await _mediator.Send(model.SearchProvidersQuery);
 
-            return RedirectToAction("Add", new { ukprn = response.Provider.Ukprn });
+            return RedirectToAction("Add", new { ukprn = response.Ukprn });
         }
 
         [Route("add")]
