@@ -95,8 +95,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ProvidersController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -146,7 +145,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Permissions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\css\" />
@@ -179,9 +178,9 @@
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Providers\Search.cshtml" />
+    <Content Include="Views\Permissions\SearchProviders.cshtml" />
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\Providers\Add.cshtml" />
+    <Content Include="Views\Permissions\AddProvider.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

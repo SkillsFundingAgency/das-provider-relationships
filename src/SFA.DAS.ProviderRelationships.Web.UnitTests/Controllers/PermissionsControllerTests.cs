@@ -17,7 +17,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
     [TestFixture]
-    public class ProvidersControllerTests : FluentTest<ProvidersControllerTestsFixture>
+    public class PermissionsControllerTests : FluentTest<PermissionsControllerTestsFixture>
     {
         [Test]
         public void Search_WhenGettingTheSearchProvidersAction_ThenShouldReturnTheSearchProvidersView()
@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Search_WhenPostingTheSearchProvidersAction_ThenShouldRedirectToTheAddProviderAction()
         {
             return RunAsync(f => f.PostSearch(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Add") &&
+                a.RouteValues["Action"].Equals("AddProvider") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
         }
@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             Run(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
                 a.RouteValues["Action"].Equals("Index") &&
-                a.RouteValues["Controller"].Equals("Home") &&
+                a.RouteValues["Controller"] == null &&
                 a.RouteValues["ukprn"].Equals(f.AddProviderViewModel.Ukprn)));
         }
 
@@ -61,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public void Add_WhenPostingTheAddProviderActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
         {
             Run(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Search") &&
+                a.RouteValues["Action"].Equals("SearchProviders") &&
                 a.RouteValues["Controller"] == null));
         }
 
@@ -72,9 +72,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
     }
 
-    public class ProvidersControllerTestsFixture
+    public class PermissionsControllerTestsFixture
     {
-        public ProvidersController ProvidersController { get; set; }
+        public PermissionsController PermissionsController { get; set; }
         public SearchProvidersViewModel SearchProvidersViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
@@ -83,16 +83,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
         public AddProviderViewModel AddProviderViewModel { get; set; }
 
-        public ProvidersControllerTestsFixture()
+        public PermissionsControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
-            ProvidersController = new ProvidersController(Mediator.Object, Mapper);
+            PermissionsController = new PermissionsController(Mediator.Object, Mapper);
         }
 
         public ActionResult Search()
         {
-            return ProvidersController.Search();
+            return PermissionsController.SearchProviders();
         }
 
         public Task<ActionResult> PostSearch()
@@ -112,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             Mediator.Setup(m => m.Send(SearchProvidersViewModel.SearchProvidersQuery, CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);
 
-            return ProvidersController.Search(SearchProvidersViewModel);
+            return PermissionsController.SearchProviders(SearchProvidersViewModel);
         }
 
         public Task<ActionResult> Add()
@@ -133,7 +133,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             Mediator.Setup(m => m.Send(GetProviderQuery, CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
 
-            return ProvidersController.Add(GetProviderQuery);
+            return PermissionsController.AddProvider(GetProviderQuery);
         }
 
         public ActionResult PostAdd(string choice = null)
@@ -144,7 +144,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = "12345678"
             };
 
-            return ProvidersController.Add(AddProviderViewModel);
+            return PermissionsController.AddProvider(AddProviderViewModel);
         }
     }
 }
