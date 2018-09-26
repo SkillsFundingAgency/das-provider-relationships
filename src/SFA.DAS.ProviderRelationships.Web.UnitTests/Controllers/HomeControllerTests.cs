@@ -18,16 +18,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Run(f => f.SetEnvironment(DasEnv.AT), f => f.Index(), (f, r) => r.Should().NotBeNull()
                 .And.Match<RedirectResult>(a => a.Url == f.Configuration.EmployerPortalBaseUrl));
         }
-
-        [Test]
-        public void Index_WhenGettingIndexActionAndEnvironmentIsLocal_ThenShouldRedirectToEmployerPortal()
-        {
-            Run(f => f.SetEnvironment(DasEnv.LOCAL), f => f.Index(), (f, r) => r.Should().NotBeNull()
-                .And.Match<RedirectToRouteResult>(a => 
-                    a.RouteValues["Action"].Equals("Index") &&
-                    a.RouteValues["Controller"].Equals("Permissions") &&
-                    a.RouteValues[UrlParameterKeys.HashedAccountId].Equals("ABC123")));
-        }
     }
 
     public class HomeControllerTestsFixture
