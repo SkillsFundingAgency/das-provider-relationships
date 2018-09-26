@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 .And.Match<RedirectToRouteResult>(a => 
                     a.RouteValues["Action"].Equals("Index") &&
                     a.RouteValues["Controller"].Equals("Permissions") &&
-                    a.RouteValues[RouteDataKeys.HashedAccountId].Equals("ABC123")));
+                    a.RouteValues[UrlParameterKeys.HashedAccountId].Equals("ABC123")));
         }
     }
 

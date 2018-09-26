@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
         private static string AccountAction(UrlHelper helper, string baseUrl, string path)
         {
-            var hashedAccountId = helper.RequestContext.RouteData.Values[RouteDataKeys.HashedAccountId];
+            var hashedAccountId = helper.RequestContext.RouteData.Values[UrlParameterKeys.HashedAccountId];
             var accountPath = hashedAccountId == null ? $"accounts/{path}" : $"accounts/{hashedAccountId}/{path}";
 
             return Action(baseUrl, accountPath);
