@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Moq;
 using Owin;
+using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
@@ -91,18 +92,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
             // perhaps unit testing AuthenticationStartup has a poor effort:benefit ratio!
 
-            var appBuilder = new Mock<IAppBuilder>();
-            var identityServerConfiguration = new Mock<IIdentityServerConfiguration>();
-            var authenticationUrls = new Mock<IAuthenticationUrls>();
+            var mockAppBuilder = new Mock<IAppBuilder>();
+            var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
+            var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
 
             _mockClaimValue = new Mock<IClaimValue>();
             _mockClaimValue.Setup(cv => cv.Id).Returns(IdType);
             _mockClaimValue.Setup(cv => cv.Email).Returns(EmailAddressType);
             _mockClaimValue.Setup(cv => cv.DisplayName).Returns(DisplayNameType);
 
+            var mockConfigurationFactory = new Mock<ConfigurationFactory>();
             var logger = new Mock<ILog>();
-            _authenticationStartup = new AuthenticationStartup(appBuilder.Object, identityServerConfiguration.Object,
-                authenticationUrls.Object, _mockClaimValue.Object, logger.Object);
+            _authenticationStartup = new AuthenticationStartup(mockAppBuilder.Object, mockIdentityServerConfig.Object,
+                mockAuthenticationUrls.Object, _mockClaimValue.Object, mockConfigurationFactory.Object, logger.Object);
         }
 
         public void CallPostAuthenticationAction()
