@@ -5,7 +5,6 @@ using MediatR;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.Providers.Api.Client;
-using SFA.DAS.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Application
 {
@@ -26,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Application
 
             if (providerResponse == null)
             {
-                throw new ValidationException().AddError(request, r => r.Ukprn, ErrorMessages.InvalidUkprn);
+                return null;
             }
 
             var provider = _mapper.Map<ProviderDto>(providerResponse);

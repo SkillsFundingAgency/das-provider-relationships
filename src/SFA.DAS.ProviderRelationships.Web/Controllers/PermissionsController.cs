@@ -5,6 +5,7 @@ using AutoMapper;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
@@ -42,6 +43,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("AddProvider", new { ukprn = response.Ukprn });
         }
 
+        [HttpNotFoundForNullModel]
         [Route("providers/add")]
         public async Task<ActionResult> AddProvider(GetProviderQuery query)
         {
