@@ -12,6 +12,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         /// <returns>Claim value, or null if not found (EAS & EC return "" if not found)</returns>
         public string TryGetCurrentUserClaimValue(string key)
         {
+            //todo: move this functionality to extension method off 
+            // https://stackoverflow.com/questions/32922064/owin-selfhost-user-context
+            // https://stackoverflow.com/questions/27723244/how-to-pass-owin-context-to-a-repo-being-injected-into-api-controller
             return ((ClaimsIdentity)HttpContext.Current.User.Identity).GetClaimValue(key);
         }
 
@@ -19,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             //todo: is using HttpContext going to kill self-hosting?
             return HttpContext.Current.GetOwinContext().Authentication.User.Identity.IsAuthenticated;
+            // in .net core: HttpContext.Authentication
         }
 
         public void SignOutUser()

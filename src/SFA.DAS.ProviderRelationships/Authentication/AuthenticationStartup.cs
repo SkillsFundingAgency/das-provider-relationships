@@ -27,6 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         private readonly IIdentityServerConfiguration _config;
         private readonly IAuthenticationUrls _authenticationUrls;
         private readonly IClaimValue _claimValues;
+        private readonly ConfigurationFactory _configurationFactory;
         private readonly ILog _logger;
 
         public AuthenticationStartup(
@@ -34,20 +35,20 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             IIdentityServerConfiguration config,
             IAuthenticationUrls authenticationUrls,
             IClaimValue claimValues,
+            ConfigurationFactory configurationFactory,
             ILog logger)
         {
             _app = app;
             _config = config;
             _authenticationUrls = authenticationUrls;
             _claimValues = claimValues;
+            _configurationFactory = configurationFactory;
             _logger = logger;
         }
 
         public void Initialise()
         {
             _logger.Info("Initialising Authentication");
-
-            //todo: should we DI everything we new up? e.g. IdentityServerConfigurationFactory?
 
             _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -78,7 +79,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                 AuthenticatedCallback = identity => PostAuthenticationAction(identity, _claimValues)
             });
 
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(_config);
+            ConfigurationFactory.Current = _configurationFactory;
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 

@@ -10,7 +10,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         {
             var providerRelationshipsConfig = ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships");
 
-            //interface??
             For<ProviderRelationshipsConfiguration>().Use(() => providerRelationshipsConfig).Singleton();
             For<IIdentityServerConfiguration>().Use(() => providerRelationshipsConfig.Identity).Singleton();
             //todo: change consumers of this to accept IIdentityServerConfiguration instead?
