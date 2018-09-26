@@ -6,6 +6,8 @@ package up layout and/or layout functionality
 
 package up authentication
 
+security: app service full access to db
+
 full sign-out between subsites:
     // the current sign-out solution will only sign-out the user from the current sub-site and mya
     // a solution to sign out of every sub-site, would be to have 2 sign out endpoints per site
