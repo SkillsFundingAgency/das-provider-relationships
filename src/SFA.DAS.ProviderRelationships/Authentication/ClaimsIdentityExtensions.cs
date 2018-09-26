@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public static class ClaimsIdentityExtensions
     {
-        public static string GetClaimValue(this ClaimsIdentity identity, string claimType)
+        /// <returns>Claim value, or null if not found</returns>
+        public static string TryGetClaimValue(this ClaimsIdentity identity, string claimType)
         {
-            return identity.Claims.FirstOrDefault(claim => claim.Type == claimType)?.Value;
+            return identity.FindFirst(claimType)?.Value;
         }
     }
 }

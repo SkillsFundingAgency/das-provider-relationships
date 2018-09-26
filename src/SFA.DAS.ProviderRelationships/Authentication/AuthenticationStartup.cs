@@ -116,9 +116,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         {
             _logger.Info("Retrieving claims from OIDC server");
 
-            var userRef = identity.GetClaimValue(claimValue.Id);
-            var email = identity.GetClaimValue(claimValue.Email);
-            var displayName = identity.GetClaimValue(claimValue.DisplayName);
+            var userRef = identity.TryGetClaimValue(claimValue.Id);
+            var email = identity.TryGetClaimValue(claimValue.Email);
+            var displayName = identity.TryGetClaimValue(claimValue.DisplayName);
 
             // these claims should be there, but we don't need them:
             // claimValue.GivenName (firstname), claimValue.FamilyName (lastname)
