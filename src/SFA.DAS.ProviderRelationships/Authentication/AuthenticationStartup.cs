@@ -13,14 +13,8 @@ using SFA.DAS.OidcMiddleware;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
 
-//todo: signout. need full signout between ma/ec/pr
-// can we access cookies of parent domain to delete them? can the tld store cookies in subdomain? can we delegate all cookie deleted to ma (can tld create subdomain cookies)
-// can we round robin around the websites to give them all a chance to signout. we could have a set path through the signouts and terminate it when site is already signed out
-// e.g. ma returns to empcom, empcom returns to prorel, prorel returns to ma, then it doens't matter which signout gets called first
-
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    //todo: this code is boilerplate code. do we want to package it somehow and make it easier to reuse?
     public class AuthenticationStartup : IAuthenticationStartup
     {
         private readonly IAppBuilder _app;

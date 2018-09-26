@@ -7,13 +7,11 @@ namespace SFA.DAS.ProviderRelationships.Authentication
     {
         private readonly IClaimIdentifierConfiguration _config;
 
-        //todo: extensions on ClaimIdentifierConfiguration?
         public ClaimValue(IClaimIdentifierConfiguration config)
         {
             _config = config;
         }
 
-        //todo: generate once?
         public string DisplayName => Generate(_config.DisplayName);
         public string Email => Generate(_config.Email);
         public string Id => Generate(_config.Id);
