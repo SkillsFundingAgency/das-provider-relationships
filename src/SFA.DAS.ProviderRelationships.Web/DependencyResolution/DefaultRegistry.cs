@@ -15,9 +15,24 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 s.RegisterConcreteTypesAgainstTheFirstInterface();
                 s.With(new ControllerConvention());
             });
-
-            For<ILoggingContext>().Use(c => HttpContext.Current == null ? null : new LoggingContext(new HttpContextWrapper(HttpContext.Current)));
+            
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
+            For<ILoggingContext>().Use(c => GetLoggingContext(c));
+        }
+
+        private ILoggingContext GetLoggingContext(IContext context)
+        {
+            LoggingContext loggingContext = null;
+
+            try
+            {
+                loggingContext = new LoggingContext(context.GetInstance<HttpContextBase>());
+            }
+            catch (HttpException)
+            {
+            }
+
+            return loggingContext;
         }
     }
 }
