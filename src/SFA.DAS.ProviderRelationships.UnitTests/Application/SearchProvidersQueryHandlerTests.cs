@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
         [Test]
         public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsNotFound_ThenShouldThrowAValidationException()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.ShouldThrow<ValidationException>());
+            return RunAsync(f => f.Handle(), (f, r) => r.Should().Throw<ValidationException>());
         }
     }
 
