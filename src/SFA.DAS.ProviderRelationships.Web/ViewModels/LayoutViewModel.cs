@@ -4,7 +4,7 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels
 {
-    public class LayoutViewModel
+    internal class LayoutViewModel
     {
         private static LayoutViewModel _instance;
         public static LayoutViewModel Instance => _instance ??
@@ -13,7 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels
         public string ChangePasswordLink { get; }
         public string ChangeEmailLink { get; }
 
-        public LayoutViewModel(
+        internal LayoutViewModel(
             ProviderRelationshipsConfiguration providerRelationshipsConfig,
             IAuthenticationUrls authenticationUrls)
         {

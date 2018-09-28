@@ -42,11 +42,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.ViewModels
         }
     }
 
-    public class LayoutViewModelTestsFixture
+    internal class LayoutViewModelTestsFixture
     {
-        public LayoutViewModel LayoutViewModel;
-        public readonly ProviderRelationshipsConfiguration Config;
-        public readonly Mock<IAuthenticationUrls> AuthenticationUrls;
+        internal LayoutViewModel LayoutViewModel;
+        internal readonly ProviderRelationshipsConfiguration Config;
+        internal readonly Mock<IAuthenticationUrls> AuthenticationUrls;
 
         public LayoutViewModelTestsFixture()
         {
