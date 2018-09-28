@@ -1,5 +1,4 @@
 ﻿using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution

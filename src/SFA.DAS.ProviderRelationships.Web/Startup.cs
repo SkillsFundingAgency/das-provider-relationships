@@ -1,7 +1,7 @@
 ﻿using Owin;
 using Microsoft.Owin;
 using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
+using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
 using StructureMap.Pipeline;

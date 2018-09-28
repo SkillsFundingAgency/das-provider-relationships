@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Authentication.Interfaces
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     //todo: ideally interfaces should live in their own separate project
     public interface IAuthenticationService

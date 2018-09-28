@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Configuration.Interfaces;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication

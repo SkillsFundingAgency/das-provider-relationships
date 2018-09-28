@@ -1,5 +1,5 @@
 ﻿
-namespace SFA.DAS.ProviderRelationships.Configuration.Interfaces
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public interface IIdentityServerConfiguration
     {

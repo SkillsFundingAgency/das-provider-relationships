@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
+using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Testing;
