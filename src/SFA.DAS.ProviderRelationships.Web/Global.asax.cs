@@ -2,11 +2,13 @@
 using System.Data.Common;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.ApplicationInsights;
 using NServiceBus;
+using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.NServiceBus.NewtonsoftJsonSerializer;
@@ -26,6 +28,8 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         protected void Application_Start()
         {
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = DasClaimTypes.Id;
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -56,6 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             telemetryClient.TrackException(exception);
         }
 
+        //todo: move servicebus methods out into own class with dependencies injected
         private void StartServiceBusEndpoint()
         {
             var container = StructuremapMvc.StructureMapDependencyScope.Container;

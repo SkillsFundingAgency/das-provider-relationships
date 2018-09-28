@@ -17,56 +17,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
     [TestFixture]
     public class AuthenticationStartupTests : FluentTest<AuthenticationStartupTestsFixture> // might have to update fluenttest to handle 2-phase construction of the testfixture for async construction
     {
-        [Test]
-        public void WhenPostAuthenticationActionIsCalled_ThenShouldAddClaims()
-        {
-            const string idValue = "id_value",
-                emailAddressValue = "email_address_value",
-                displayNameValue = "display_name_value";
-
-            Run(f =>
-                {
-                    f.ClaimsIdentity = new ClaimsIdentity(new[]
-                    {
-                        new Claim(Fix.IdType, idValue),
-                        new Claim(Fix.EmailAddressType, emailAddressValue),
-                        new Claim(Fix.DisplayNameType, displayNameValue)
-                    });
-                },
-                f => f.CallPostAuthenticationAction(),
-                f =>
-                {
-                    f.AssertClaim(ClaimTypes.NameIdentifier, idValue);
-                    f.AssertClaim(ClaimTypes.Name, displayNameValue);
-                    f.AssertClaim("sub", idValue);
-                    f.AssertClaim("email", emailAddressValue);
-                });
-        }
-
-        [Test]
-        public void WhenPostAuthenticationActionIsCalled_ThenShouldThrowIfAllClaimsMissing()
-        {
-            Run(f => f.ClaimsIdentity = new ClaimsIdentity(),
-                f => f.CallPostAuthenticationAction(),
-                (f, ea) => ea.ShouldThrow<Exception>().WithMessage($"Missing claim 'null', 'null', 'null'"));
-        }
-
-        [Test]
-        public void WhenPostAuthenticationActionIsCalled_ThenShouldThrowIfIdClaimMissing()
-        {
-            const string emailAddressValue = "email_address_value", displayNameValue = "display_name_value";
-
-            Run(f =>
-                {
-                    f.ClaimsIdentity = new ClaimsIdentity(new[]
-                    {
-                        new Claim(Fix.EmailAddressType, emailAddressValue),
-                        new Claim(Fix.DisplayNameType, displayNameValue)
-                    });
-                },
-                f => f.CallPostAuthenticationAction(),
-                (f, ea) => ea.ShouldThrow<Exception>().WithMessage($"Missing claim 'null', '{emailAddressValue}', '{displayNameValue}'"));
-        }
     }
 
     public class AuthenticationStartupTestsFixture : FluentTestFixture
@@ -75,7 +25,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
         private readonly AuthenticationStartup _authenticationStartup;
         public ClaimsIdentity ClaimsIdentity;
-        private readonly Mock<IClaimValue> _mockClaimValue;
 
         public AuthenticationStartupTestsFixture()
         {
@@ -96,25 +45,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
             var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
 
-            _mockClaimValue = new Mock<IClaimValue>();
-            _mockClaimValue.Setup(cv => cv.Id).Returns(IdType);
-            _mockClaimValue.Setup(cv => cv.Email).Returns(EmailAddressType);
-            _mockClaimValue.Setup(cv => cv.DisplayName).Returns(DisplayNameType);
-
             var mockConfigurationFactory = new Mock<ConfigurationFactory>();
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(mockAppBuilder.Object, mockIdentityServerConfig.Object,
-                mockAuthenticationUrls.Object, _mockClaimValue.Object, mockConfigurationFactory.Object, logger.Object);
+                mockAuthenticationUrls.Object, mockConfigurationFactory.Object, logger.Object);
         }
 
-        public void CallPostAuthenticationAction()
-        {
-            _authenticationStartup.PostAuthenticationAction(ClaimsIdentity, _mockClaimValue.Object);
-        }
-
-        public void AssertClaim(string claimType, string expectedValue)
-        {
-            ClaimsIdentity.Claims.Should().ContainSingle(c => c.Type == claimType).Which.Value.Should().Be(expectedValue);
-        }
+        //public void AssertClaim(string claimType, string expectedValue)
+        //{
+        //    ClaimsIdentity.Claims.Should().ContainSingle(c => c.Type == claimType).Which.Value.Should().Be(expectedValue);
+        //}
     }
 }

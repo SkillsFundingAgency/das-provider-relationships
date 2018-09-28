@@ -11,7 +11,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration.Interfaces
         string UserInfoEndpoint { get; }
         bool UseCertificate { get; }
         string Scopes { get; }
-        ClaimIdentifierConfiguration ClaimIdentifierConfiguration { get; }
         string ChangePasswordLink { get; }
         string ChangeEmailLink { get; }
         string AccountActivationUrl { get; }

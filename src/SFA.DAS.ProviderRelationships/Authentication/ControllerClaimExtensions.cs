@@ -5,6 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public static class ControllerExtensions
     {
+        /// <param name="key">Use values from DasClaimTypes, e.g. DasClaimTypes.Id</param>
         /// <returns>Claim value, or null if not found</returns>
         public static string TryGetClaimValue(this Controller controller, string key)
         {
