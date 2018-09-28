@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Authentication.Interfaces;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web.App_Start;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels
 {
@@ -9,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels
     {
         private static LayoutViewModel _instance;
         public static LayoutViewModel Instance => _instance ??
-            (_instance = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<LayoutViewModel>());
+            (_instance = DependencyResolver.Current.GetService<LayoutViewModel>());
 
         public string ChangePasswordLink { get; }
         public string ChangeEmailLink { get; }
