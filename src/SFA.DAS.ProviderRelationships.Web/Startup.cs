@@ -14,12 +14,13 @@ namespace SFA.DAS.ProviderRelationships.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            var log = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ILog>();
+            var container = StructuremapMvc.StructureMapDependencyScope.Container;
+            var log = container.GetInstance<ILog>();
             log.Info("Starting ProviderRelations Web Application");
 
             var authenticationStartupArgs = new ExplicitArguments();
             authenticationStartupArgs.Set(app);
-            var authenticationStartup = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
+            var authenticationStartup = container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
             authenticationStartup.Initialise();
         }
     }
