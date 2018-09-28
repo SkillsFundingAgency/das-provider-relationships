@@ -28,7 +28,7 @@
     <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
-    <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.0.0.56651" />
+    <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
     <PackageReference Include="SFA.DAS.Providers.Api.Client" Version="0.11.97" />

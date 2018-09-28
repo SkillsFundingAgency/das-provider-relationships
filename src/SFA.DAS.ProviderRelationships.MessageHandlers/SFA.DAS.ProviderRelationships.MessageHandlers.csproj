@@ -12,9 +12,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.1.66" />
-    <PackageReference Include="NLog.Schema" Version="4.5.3" />
-    <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.0.0.56651" />
-    <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.0.0.56651" />
+    <PackageReference Include="NLog.Schema" Version="4.5.10" />
+    <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
+    <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFramework" Version="2.0.1" />
