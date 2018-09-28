@@ -10,6 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<DataRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }
