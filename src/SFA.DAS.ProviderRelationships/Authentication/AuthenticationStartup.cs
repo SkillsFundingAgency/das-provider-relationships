@@ -13,6 +13,16 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
+    /// <remarks>
+    /// Works with DAS's implementation of OpenID Connect Provider (https://github.com/SkillsFundingAgency/das-employerusers)
+    /// which uses/implements...
+    /// SFA.DAS.OidcMiddleware (https://github.com/SkillsFundingAgency/das-shared-packages)
+    /// IdentityServer3 (https://github.com/IdentityServer/IdentityServer3)
+    /// OpenID Connect (https://openid.net/specs/openid-connect-core-1_0.html#toc)
+    /// OAuth2 (https://tools.ietf.org/html/rfc6749)
+    /// Backgrounder...
+    /// https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
+    /// </remarks>>
     public class AuthenticationStartup : IAuthenticationStartup
     {
         private readonly IAppBuilder _app;
@@ -68,6 +78,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             });
 
             ConfigurationFactory.Current = _configurationFactory;
+            // replace MS's default claim mapping (between OIDC claims and MS .net proprietary claim types)
+            // with an empty mapper - the claim types we receive are DAS specific
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 
