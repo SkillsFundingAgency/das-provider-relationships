@@ -68,7 +68,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Add_WhenPostingTheAddProviderActionAndNoOptionWasSelected_ThenShouldThrowException()
         {
-            Run(f => f.PostAdd(), (f, r) => r.ShouldThrow<ArgumentOutOfRangeException>());
+            Run(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
     }
 

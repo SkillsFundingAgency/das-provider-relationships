@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ProviderRelationships.Configuration
+﻿using SFA.DAS.ProviderRelationships.Extensions;
+
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class ProviderRelationshipsConfiguration
     {
@@ -9,5 +11,11 @@
         public string NServiceBusLicense { get; set; }
         public string ServiceBusConnectionString { get; set; }
         public IdentityServerConfiguration Identity { get; set; }
+
+        public ProviderRelationshipsConfiguration InitialTransform()
+        {
+            NServiceBusLicense = NServiceBusLicense.HtmlDecode();
+            return this;
+        }
     }
 }

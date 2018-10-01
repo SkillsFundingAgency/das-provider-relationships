@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
         }
     }
 
-    public class IdentityServerConfigurationFactoryTestsFixture : FluentTestFixture
+    public class IdentityServerConfigurationFactoryTestsFixture
     {
         private readonly IdentityServerConfigurationFactory _identityServerConfigurationFactory;
         private readonly Mock<IIdentityServerConfiguration> _mockIdentityServerConfiguration;

@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Configuration
         }
     }
 
-    public class ConfigurationHelpersTestsFixture : FluentTestFixture
+    public class ConfigurationHelpersTestsFixture
     {
         public ConfigurationHelpersTestsFixture SetCurrentEnvironment(DasEnv environment)
         {

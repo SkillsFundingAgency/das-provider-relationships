@@ -86,7 +86,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
         #endregion ChangeLinks
     }
 
-    public class AuthenticationUrlsTestsFixture : FluentTestFixture
+    public class AuthenticationUrlsTestsFixture
     {
         public readonly AuthenticationUrls AuthenticationUrls;
         public readonly Mock<IIdentityServerConfiguration> _mockIdentityServerConfig;

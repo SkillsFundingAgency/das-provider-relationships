@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
     {
     }
 
-    public class AuthenticationStartupTestsFixture : FluentTestFixture
+    public class AuthenticationStartupTestsFixture
     {
         public const string IdType = "id", EmailAddressType = "email_address", DisplayNameType = "display_name";
 
