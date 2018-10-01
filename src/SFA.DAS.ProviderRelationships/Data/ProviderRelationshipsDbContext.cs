@@ -1,11 +1,14 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
     [DbConfigurationType(typeof(SqlAzureDbConfiguration))]
     public class ProviderRelationshipsDbContext : DbContext
     {
+        public virtual DbSet<HealthCheck> HealthChecks { get; set; }
+
         static ProviderRelationshipsDbContext()
         {
             Database.SetInitializer<ProviderRelationshipsDbContext>(null);

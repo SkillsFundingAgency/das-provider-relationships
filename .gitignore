@@ -332,6 +332,8 @@ ASALocalRun/
 .localhistory/
 
 # SFA.DAS
+.learningtransport/
+App_Data/
 src/Tools/**/*.*
 !src/DasAmlCert.pfx
 !src/DasIDPCert.pfx

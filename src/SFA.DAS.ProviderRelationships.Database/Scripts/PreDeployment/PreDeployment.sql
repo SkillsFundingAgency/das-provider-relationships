@@ -9,3 +9,8 @@
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+
+IF EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'dbo')
+BEGIN
+	:r .\DeleteHealthChecks.sql
+END

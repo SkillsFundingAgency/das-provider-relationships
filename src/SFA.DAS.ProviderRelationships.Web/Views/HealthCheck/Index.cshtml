@@ -1,0 +1,67 @@
+﻿@model HealthCheckViewModel
+
+@{
+    ViewBag.Title = "Health check";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">Health check</h1>
+        <p class="govuk-body">Running a health check will test the availability of each application. Please note that this can take a few minutes to complete.</p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group">
+                @if (Model.HealthCheck !=null)
+                {
+                    <table class="govuk-table govuk-!-font-size-16">
+                        <thead>
+                            <tr>
+                                <td class="govuk-table__cell"></td>
+                                <th class="govuk-table__header" colspan="2" style="text-align: center">Request/Response</th>
+                                <th class="govuk-table__header" colspan="2" style="text-align: center">Publish/Subscribe</th>
+                            </tr>
+                            <tr>
+                                <td class="govuk-table__cell" style="text-align: center"></td>
+                                <td class="govuk-table__cell" style="text-align: center">Request sent</td>
+                                <td class="govuk-table__cell" style="text-align: center">Response received</td>
+                                <td class="govuk-table__cell" style="text-align: center">Event published</td>
+                                <td class="govuk-table__cell" style="text-align: center">Event received</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="govuk-table__cell">SFA.DAS.ApprenticeshipInfoService</td>
+                                <td class="govuk-table__cell" style="text-align: center">@Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest.ToString("HH:mm:ss")</td>
+                                <td class="govuk-table__cell" style="text-align: center">@(Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse?.ToString("HH:mm:ss") ?? "Failed")</td>
+                                <td class="govuk-table__cell" style="text-align: center">-</td>
+                                <td class="govuk-table__cell" style="text-align: center">-</td>
+                            </tr>
+                            <tr>
+                                <td class="govuk-table__cell">SFA.DAS.ProviderRelationships</td>
+                                <td class="govuk-table__cell" style="text-align: center">-</td>
+                                <td class="govuk-table__cell" style="text-align: center">-</td>
+                                <td class="govuk-table__cell" style="text-align: center">@Model.HealthCheck.PublishedProviderRelationshipsEvent.ToString("HH:mm:ss")</td>
+                                <td class="govuk-table__cell" style="text-align: center">
+                                    @if (Model.HealthCheck.ReceivedProviderRelationshipsEvent == null)
+                                    {
+                                        @:Waiting (@DateTime.UtcNow.Subtract(Model.HealthCheck.PublishedProviderRelationshipsEvent).ToHumanReadableString())
+                                    }
+                                    else
+                                    {
+                                        @Model.HealthCheck.ReceivedProviderRelationshipsEvent.Value.ToString("HH:mm:ss") @:(@Model.HealthCheck.ReceivedProviderRelationshipsEvent.Value.Subtract(Model.HealthCheck.PublishedProviderRelationshipsEvent).ToHumanReadableString())
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="govuk-body">A health check has not been run since the last deployment, please click the run button below.</p>
+                }
+            </div>
+            <button class="govuk-button" type="submit">Run</button>
+        }
+    </div>
+        </div>

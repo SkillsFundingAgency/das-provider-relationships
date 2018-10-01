@@ -77,5 +77,7 @@
   <ItemGroup>
     <Build Include="Tables\ClientOutboxData.sql" />
     <Build Include="Tables\OutboxData.sql" />
+    <Build Include="Tables\HealthChecks.sql" />
+    <None Include="Scripts\PreDeployment\DeleteHealthChecks.sql" />
   </ItemGroup>
 </Project>
