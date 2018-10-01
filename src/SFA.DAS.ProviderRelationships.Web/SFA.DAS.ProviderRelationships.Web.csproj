@@ -141,7 +141,6 @@
     <Compile Include="UrlParameterKeys.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddProviderViewModel.cs" />
-    <Compile Include="ViewModels\LayoutViewModel.cs" />
     <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

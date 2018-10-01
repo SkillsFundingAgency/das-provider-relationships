@@ -1,19 +1,14 @@
 ﻿using System.Web.Mvc;
-using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels
+namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    public class LayoutViewModel
+    public class AccountLinks
     {
-        private static LayoutViewModel _instance;
-        public static LayoutViewModel Instance => _instance ??
-            (_instance = DependencyResolver.Current.GetService<LayoutViewModel>());
-
         public string ChangePasswordLink { get; }
         public string ChangeEmailLink { get; }
 
-        public LayoutViewModel(
+        public AccountLinks(
             ProviderRelationshipsConfiguration providerRelationshipsConfig,
             IAuthenticationUrls authenticationUrls)
         {
