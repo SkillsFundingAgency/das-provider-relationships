@@ -5,6 +5,7 @@
         LOCAL,
         AT,
         TEST,
+        TEST2,
         PROD,
         MO,
         DEMO
