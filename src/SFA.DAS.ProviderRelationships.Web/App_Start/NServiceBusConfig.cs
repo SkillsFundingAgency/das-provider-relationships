@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .UseAzureServiceBusTransport(() => container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
                 .UseErrorQueue()
                 .UseInstallers()
-                .UseLicense(container.GetInstance<ProviderRelationshipsConfiguration>().NServiceBusLicense.HtmlDecode())
+                .UseLicense(container.GetInstance<ProviderRelationshipsConfiguration>().NServiceBusLicense)
                 .UseSqlServerPersistence(() => container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()

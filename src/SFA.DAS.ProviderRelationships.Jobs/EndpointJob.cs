@@ -16,18 +16,20 @@ namespace SFA.DAS.ProviderRelationships.Jobs
     public class EndpointJob
     {
         private readonly IContainer _container;
+        private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
 
-        public EndpointJob(IContainer container)
+        public EndpointJob(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
+            _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
         }
 
         [NoAutomaticTrigger]
         public async Task RunAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
-                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
-                .UseLicense(_container.GetInstance<ProviderRelationshipsConfiguration>().NServiceBusLicense.HtmlDecode())
+                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString)
+                .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
