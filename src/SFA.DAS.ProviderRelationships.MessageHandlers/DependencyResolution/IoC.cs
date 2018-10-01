@@ -11,6 +11,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<DataRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();
                 c.AddRegistry<MediatorRegistry>();
