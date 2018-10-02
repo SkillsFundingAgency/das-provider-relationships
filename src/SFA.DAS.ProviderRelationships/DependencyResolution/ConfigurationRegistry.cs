@@ -7,7 +7,10 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public ConfigurationRegistry()
         {
-            For<ProviderRelationshipsConfiguration>().Use(() => ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
+            var providerRelationshipsConfig = ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform();
+
+            For<ProviderRelationshipsConfiguration>().Use(() => providerRelationshipsConfig).Singleton();
+            For<IIdentityServerConfiguration>().Use(() => providerRelationshipsConfig.Identity).Singleton();
         }
     }
 }
