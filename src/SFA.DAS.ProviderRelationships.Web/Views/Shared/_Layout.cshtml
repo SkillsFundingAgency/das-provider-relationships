@@ -42,14 +42,26 @@
                         </span>
                     </a>
                 </div>
+                <div aria-label="Top Level Navigation" class="govuk-header__content" id="navigation">
+                    <nav>
+                        <ul class="govuk-header__navigation">
+                            <li class="govuk-header__navigation-item">
+                                <a class="govuk-header__link" href="@ViewBag.ChangePasswordUrl">Change your password</a>
+                            </li>
+                            <li class="govuk-header__navigation-item">
+                                <a class="govuk-header__link" href="@ViewBag.ChangeEmailUrl">Change your email address</a>
+                            </li>
+                            <li class="govuk-header__navigation-item">
+                                <a class="govuk-header__link" href="@Url.Action("SignOut", "Service")">Sign out</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-            <p><a href="@Url.Action("SignOut", "Service")">Sign out</a></p>
-            <p><a href="@ViewBag.ChangePasswordUrl">Change your password</a></p>
-            <p><a href="@ViewBag.ChangeEmailUrl">Change your email address</a></p>
         </header>
         <div class="govuk-width-container">
+            @RenderSection("breadcrumb", false)
             <main class="govuk-main-wrapper " id="main-content" role="main">
-                @RenderSection("breadcrumb", false)
                 @RenderBody()
             </main>
         </div>
