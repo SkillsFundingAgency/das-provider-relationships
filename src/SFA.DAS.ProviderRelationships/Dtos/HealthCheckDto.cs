@@ -7,8 +7,6 @@ namespace SFA.DAS.ProviderRelationships.Dtos
         public int Id { get; set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; set; }
-        public virtual DateTime SentProviderRelationshipsApiRequest { get; set; }
-        public virtual DateTime? ReceivedProviderRelationshipsApiResponse { get; set; }
         public DateTime PublishedProviderRelationshipsEvent { get; set; }
         public DateTime? ReceivedProviderRelationshipsEvent { get; set; }
     }

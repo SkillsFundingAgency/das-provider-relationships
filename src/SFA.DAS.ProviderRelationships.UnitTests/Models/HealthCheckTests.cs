@@ -15,31 +15,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Test]
         public void New_WhenCreatingAHealthCheck_ThenShouldCreateAHealthCheck()
         {
-            Run(f => f.New(), (f, r) => r.Should().NotBeNull().And.Match<HealthCheck>(h => h.UserRef == f.UserRef));
-        }
-
-        [Test]
-        public Task Run_WhenRunningAHealthCheck_ThenShouldSetSentProviderRelationshipsApiRequestProperty()
-        {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.SentProviderRelationshipsApiRequest >= f.PreRun && h.SentProviderRelationshipsApiRequest <= f.PostRun));
-        }
-
-        [Test]
-        public Task Run_WhenRunningAHealthCheck_ThenShouldSetReceivedProviderRelationshipsApiResponseProperty()
-        {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedProviderRelationshipsApiResponse >= f.PreRun && h.ReceivedProviderRelationshipsApiResponse <= f.PostRun));
+            Run(f => f.New(), (f, r) => r.Should().NotBeNull());
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldSetSentApprenticeshipInfoServiceApiRequestProperty()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.SentApprenticeshipInfoServiceApiRequest >= f.PreRun && h.SentProviderRelationshipsApiRequest <= f.PostRun));
+            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.SentApprenticeshipInfoServiceApiRequest >= f.PreRun && h.SentApprenticeshipInfoServiceApiRequest <= f.PostRun));
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldSetReceivedApprenticeshipInfoServiceApiResponseProperty()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse >= f.PreRun && h.ReceivedProviderRelationshipsApiResponse <= f.PostRun));
+            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse >= f.PreRun && h.ReceivedApprenticeshipInfoServiceApiResponse <= f.PostRun));
         }
 
         [Test]
@@ -75,7 +63,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
     public class HealthCheckTestsFixture
     {
-        public Guid UserRef { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public HealthCheck HealthCheck { get; set; }
         public Func<Task> ApprenticeshipInfoServiceApiRequest { get; set; }
@@ -84,21 +71,20 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture()
         {
-            UserRef = Guid.NewGuid();
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
         }
 
         public HealthCheck New()
         {
-            return new HealthCheck(UserRef);
+            return new HealthCheck();
         }
 
         public async Task Run()
         {
             PreRun = DateTime.UtcNow;
 
-            await HealthCheck.Run(() => Task.CompletedTask, ApprenticeshipInfoServiceApiRequest);
+            await HealthCheck.Run(ApprenticeshipInfoServiceApiRequest);
 
             PostRun = DateTime.UtcNow;
         }

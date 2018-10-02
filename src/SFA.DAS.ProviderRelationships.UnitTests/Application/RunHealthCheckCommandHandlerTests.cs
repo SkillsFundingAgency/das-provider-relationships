@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
         public RunHealthCheckCommandHandlerTestsFixture()
         {
             Db = new Mock<ProviderRelationshipsDbContext>();
-            RunHealthCheckCommand = new RunHealthCheckCommand { UserRef = Guid.NewGuid() };
+            RunHealthCheckCommand = new RunHealthCheckCommand();
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();
 

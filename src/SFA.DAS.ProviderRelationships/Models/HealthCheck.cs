@@ -7,27 +7,18 @@ namespace SFA.DAS.ProviderRelationships.Models
     public class HealthCheck : Entity
     {
         public virtual int Id { get; protected set; }
-        public virtual Guid UserRef { get; protected set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
-        public virtual DateTime SentProviderRelationshipsApiRequest { get; protected set; }
-        public virtual DateTime? ReceivedProviderRelationshipsApiResponse { get; protected set; }
         public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }
         public virtual DateTime? ReceivedProviderRelationshipsEvent { get; protected set; }
 
-        public HealthCheck(Guid userRef)
-        {
-            UserRef = userRef;
-        }
-
-        protected HealthCheck()
+        public HealthCheck()
         {
         }
 
-        public async Task Run(Func<Task> providerRelationshipsApiRequest, Func<Task> apprenticeshipInfoServiceApiRequest)
+        public async Task Run(Func<Task> apprenticeshipInfoServiceApiRequest)
         {
             await SendApprenticehipInfoServiceApiRequest(apprenticeshipInfoServiceApiRequest);
-            await SendProviderRelationshipsApiRequest(providerRelationshipsApiRequest);
             PublishProviderRelationshipsEvent();
         }
 
@@ -46,20 +37,6 @@ namespace SFA.DAS.ProviderRelationships.Models
                 ReceivedApprenticeshipInfoServiceApiResponse = DateTime.UtcNow;
             }
             catch (Exception)
-            {
-            }
-        }
-
-        private async Task SendProviderRelationshipsApiRequest(Func<Task> run)
-        {
-            SentProviderRelationshipsApiRequest = DateTime.UtcNow;
-
-            try
-            {
-                await run();
-                ReceivedProviderRelationshipsApiResponse = DateTime.UtcNow;
-            }
-            catch
             {
             }
         }
