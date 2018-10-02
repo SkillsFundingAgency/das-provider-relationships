@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Security.Claims;
+using System.Web;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
@@ -7,6 +8,12 @@ namespace SFA.DAS.ProviderRelationships.Authentication
     /// </remarks>
     public class OwinAuthenticationService : IAuthenticationService
     {
+        /// <returns>Claim value, or null if not found (EAS & EC return "" if not found)</returns>
+        public string TryGetCurrentUserClaimValue(string key)
+        {
+            return ((ClaimsIdentity)HttpContext.Current.User.Identity).TryGetClaimValue(key);
+        }
+
         public bool IsUserAuthenticated()
         {
             //todo: is using HttpContext going to kill self-hosting?
