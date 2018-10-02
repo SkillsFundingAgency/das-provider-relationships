@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Web.Mvc;
 
-namespace SFA.DAS.ProviderRelationships.Authentication
+namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 {
     public static class ControllerExtensions
     {

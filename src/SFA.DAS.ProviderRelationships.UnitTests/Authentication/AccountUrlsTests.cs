@@ -8,46 +8,46 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
-    class AccountLinksTests : FluentTest<AccountLinksTestsFixture>
+    class AccountUrlsTests : FluentTest<AccountUrlsTestsFixture>
     {
         [TestCase("https://test2-eas.apprenticeships.sfa.bis.gov.uk/", "https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=clientId&returnurl=",
           "https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=clientId&returnurl=https%3a%2f%2ftest2-eas.apprenticeships.sfa.bis.gov.uk%2fservice%2fpassword%2fchange")]
-        public void WhenGettingPasswordLink_ThenShouldBeCorrect(string employerPortalBaseUrl, string changePasswordLink, string expectedChangePasswordLink)
+        public void WhenGettingPasswordUrl_ThenShouldBeCorrect(string employerPortalBaseUrl, string changePasswordLink, string expectedChangePasswordUrl)
         {
             Run(f =>
             {
                 f.Config.EmployerPortalBaseUrl = employerPortalBaseUrl;
-                f.AuthenticationUrls.Setup(au => au.ChangePasswordLink).Returns(changePasswordLink);
-                // links are generated in AccountLinks's c'tor, so we need to new it here, rather than the Fixture's c'tor
-                f.AccountLinks = new AccountLinks(f.Config, f.AuthenticationUrls.Object);
+                f.AuthenticationUrls.Setup(au => au.ChangePasswordUrl).Returns(changePasswordLink);
+                // links are generated in AccountUrls's c'tor, so we need to new it here, rather than the Fixture's c'tor
+                f.AccountUrls = new AccountUrls(f.Config, f.AuthenticationUrls.Object);
             },
-                f => f.AccountLinks.ChangePasswordLink,
-                (f, r) => r.Should().Be(expectedChangePasswordLink));
+                f => f.AccountUrls.ChangePasswordUrl,
+                (f, r) => r.Should().Be(expectedChangePasswordUrl));
         }
 
         [TestCase("https://test2-eas.apprenticeships.sfa.bis.gov.uk/", "https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changeemail?clientId=clientId&returnurl=",
             "https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changeemail?clientId=clientId&returnurl=https%3a%2f%2ftest2-eas.apprenticeships.sfa.bis.gov.uk%2fservice%2femail%2fchange")]
-        public void WhenGettingEmailLink_ThenShouldBeCorrect(string employerPortalBaseUrl, string changeEmailLink, string expectedChangeEmailLink)
+        public void WhenGettingEmailUrl_ThenShouldBeCorrect(string employerPortalBaseUrl, string changeEmailLink, string expectedChangeEmailUrl)
         {
             Run(f =>
             {
                 f.Config.EmployerPortalBaseUrl = employerPortalBaseUrl;
-                f.AuthenticationUrls.Setup(au => au.ChangeEmailLink).Returns(changeEmailLink);
-                // links are generated in AccountLinks's c'tor, so we need to new it here, rather than the Fixture's c'tor
-                f.AccountLinks = new AccountLinks(f.Config, f.AuthenticationUrls.Object);
+                f.AuthenticationUrls.Setup(au => au.ChangeEmailUrl).Returns(changeEmailLink);
+                // links are generated in AccountUrls's c'tor, so we need to new it here, rather than the Fixture's c'tor
+                f.AccountUrls = new AccountUrls(f.Config, f.AuthenticationUrls.Object);
             },
-                f => f.AccountLinks.ChangeEmailLink,
-                (f, r) => r.Should().Be(expectedChangeEmailLink));
+                f => f.AccountUrls.ChangeEmailUrl,
+                (f, r) => r.Should().Be(expectedChangeEmailUrl));
         }
     }
 
-    internal class AccountLinksTestsFixture
+    internal class AccountUrlsTestsFixture
     {
-        internal AccountLinks AccountLinks;
+        internal AccountUrls AccountUrls;
         internal readonly ProviderRelationshipsConfiguration Config;
         internal readonly Mock<IAuthenticationUrls> AuthenticationUrls;
 
-        public AccountLinksTestsFixture()
+        public AccountUrlsTestsFixture()
         {
             Config = new ProviderRelationshipsConfiguration();
             AuthenticationUrls = new Mock<IAuthenticationUrls>();

@@ -1,5 +1,4 @@
-﻿
-namespace SFA.DAS.ProviderRelationships.Configuration
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public interface IIdentityServerConfiguration
     {
@@ -11,8 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         string UserInfoEndpoint { get; }
         bool UseCertificate { get; }
         string Scopes { get; }
-        string ChangePasswordLink { get; }
-        string ChangeEmailLink { get; }
+        string ChangePasswordUrl { get; }
+        string ChangeEmailUrl { get; }
         string AccountActivationUrl { get; }
     }
 }

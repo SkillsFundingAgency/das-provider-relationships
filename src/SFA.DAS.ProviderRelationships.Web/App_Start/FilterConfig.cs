@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Mvc;
 using SFA.DAS.UnitOfWork.Mvc;
 using SFA.DAS.Validation.Mvc;
 
@@ -11,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             filters.AddUnitOfWorkFilter();
             filters.AddValidationFilter();
-            filters.Add(DependencyResolver.Current.GetService<AccountLinksInViewBagFilter>());
+            filters.Add(DependencyResolver.Current.GetService<AccountUrlsViewBagFilter>());
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace SFA.DAS.ProviderRelationships.Authentication
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public interface IAuthenticationStartup
     {

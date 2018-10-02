@@ -1,5 +1,4 @@
-﻿
-namespace SFA.DAS.ProviderRelationships.Configuration
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public class IdentityServerConfiguration : IIdentityServerConfiguration
     {
@@ -11,8 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string UserInfoEndpoint { get; set; }
         public bool UseCertificate { get; set; }
         public string Scopes { get; set; }
-        public string ChangePasswordLink { get; set; }
-        public string ChangeEmailLink { get; set; }
+        public string ChangePasswordUrl { get; set; }
+        public string ChangeEmailUrl { get; set; }
         public string AccountActivationUrl { get; set; }
 
         #region required by EAS, but not by us (or employercomitments)

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
+﻿using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution

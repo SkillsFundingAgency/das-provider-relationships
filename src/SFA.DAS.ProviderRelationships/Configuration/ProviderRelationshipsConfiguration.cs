@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Extensions;
+﻿using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {

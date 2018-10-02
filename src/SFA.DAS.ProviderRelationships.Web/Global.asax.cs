@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Web
         protected void Application_Start()
         {
             AntiForgeryConfig.UniqueClaimTypeIdentifier = DasClaimTypes.Id;
-
             AreaRegistration.RegisterAllAreas();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -15,8 +15,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         public string TokenEndpoint => Generate(_config.TokenEndpoint);
         public string UserInfoEndpoint => Generate(_config.UserInfoEndpoint);
 
-        public string ChangePasswordLink => GenerateChangeUrl(_config.ChangePasswordLink);
-        public string ChangeEmailLink => GenerateChangeUrl(_config.ChangeEmailLink);
+        public string ChangePasswordUrl => GenerateChangeUrl(_config.ChangePasswordUrl);
+        public string ChangeEmailUrl => GenerateChangeUrl(_config.ChangeEmailUrl);
 
         //public string LogoutEndpoint() => $"{_configuration.BaseAddress}{_configuration.LogoutEndpoint}";
         //public string RegisterLink() => _configuration.BaseAddress.Replace("/identity", "") + string.Format(_configuration.RegisterLink, _configuration.ClientId);

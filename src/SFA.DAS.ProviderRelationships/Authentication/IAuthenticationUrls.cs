@@ -1,5 +1,4 @@
-﻿
-namespace SFA.DAS.ProviderRelationships.Authentication
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public interface IAuthenticationUrls
     {
@@ -7,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         string TokenEndpoint { get; }
         string UserInfoEndpoint { get; }
 
-        string ChangePasswordLink { get; }
-        string ChangeEmailLink { get; }
+        string ChangePasswordUrl { get; }
+        string ChangeEmailUrl { get; }
     }
 }
