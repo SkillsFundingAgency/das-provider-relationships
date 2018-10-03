@@ -2,7 +2,6 @@
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 {
-    //attribute as global filter?
     public class AccountUrlsViewBagFilter : ActionFilterAttribute
     {
         private readonly AccountUrls _accountUrls;
