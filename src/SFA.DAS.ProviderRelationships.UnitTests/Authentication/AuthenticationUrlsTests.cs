@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
@@ -53,37 +52,37 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 
         #endregion Endpoints
 
-        #region ChangeLinks
+        #region ChangeUrls
 
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=devprorel&returnurl=",
             "/account/changepassword?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangePasswordLink_ThenShouldReturnCorrectChangePasswordLink(string expectedLink, string changePasswordLink, string clientId, string baseAddress)
+        public void WhenGettingChangePasswordUrl_ThenShouldReturnCorrectChangePasswordUrl(string expectedUrl, string changePasswordUrl, string clientId, string baseAddress)
         {
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f._mockIdentityServerConfig.Setup(c => c.ClientId).Returns(clientId);
-                    f._mockIdentityServerConfig.Setup(c => c.ChangePasswordLink).Returns(changePasswordLink);
+                    f._mockIdentityServerConfig.Setup(c => c.ChangePasswordUrl).Returns(changePasswordUrl);
                 },
-                f => f.AuthenticationUrls.ChangePasswordLink,
-                (f, r) => r.Should().Be(expectedLink));
+                f => f.AuthenticationUrls.ChangePasswordUrl,
+                (f, r) => r.Should().Be(expectedUrl));
         }
 
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changeemail?clientId=devprorel&returnurl=",
             "/account/changeemail?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangeEmailLink_ThenShouldReturnChangeEmailLink(string expectedLink, string changeEmailLink, string clientId, string baseAddress)
+        public void WhenGettingChangeEmailUrl_ThenShouldReturnChangeEmailUrl(string expectedUrl, string changeEmailUrl, string clientId, string baseAddress)
         {
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f._mockIdentityServerConfig.Setup(c => c.ClientId).Returns(clientId);
-                    f._mockIdentityServerConfig.Setup(c => c.ChangeEmailLink).Returns(changeEmailLink);
+                    f._mockIdentityServerConfig.Setup(c => c.ChangeEmailUrl).Returns(changeEmailUrl);
                 },
-                f => f.AuthenticationUrls.ChangeEmailLink,
-                (f, r) => r.Should().Be(expectedLink));
+                f => f.AuthenticationUrls.ChangeEmailUrl,
+                (f, r) => r.Should().Be(expectedUrl));
         }
 
-        #endregion ChangeLinks
+        #endregion ChangeUrls
     }
 
     public class AuthenticationUrlsTestsFixture

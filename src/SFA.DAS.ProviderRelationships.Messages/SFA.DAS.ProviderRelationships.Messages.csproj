@@ -19,4 +19,8 @@
     <WarningsAsErrors />
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
+  </ItemGroup>
+
 </Project>

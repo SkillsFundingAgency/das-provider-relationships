@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,12 +21,13 @@
     <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-    <PackageReference Include="SFA.DAS.Testing" Version="2.0.1" />
+    <PackageReference Include="SFA.DAS.Testing" Version="2.0.2" />
     <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

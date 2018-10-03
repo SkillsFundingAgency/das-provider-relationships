@@ -9,8 +9,8 @@ using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("accounts/{hashedAccountId}")]
     [Authorize]
+    [RoutePrefix("accounts/{hashedAccountId}")]
     public class PermissionsController : Controller
     {
         private readonly IMediator _mediator;

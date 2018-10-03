@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Add_WhenGettingTheAddProviderAction_ThenShouldReturnTheAddProviderView()
+        public Task AddProvider_WhenGettingTheAddProviderAction_ThenShouldReturnTheAddProviderView()
         {
             return RunAsync(f => f.Add(), (f, r) =>
             {
@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void Add_WhenPostingTheAddProviderActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheHomeAction()
+        public void AddProvider_WhenPostingTheAddProviderActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheHomeAction()
         {
             Run(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
                 a.RouteValues["Action"].Equals("Index") &&
@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void Add_WhenPostingTheAddProviderActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
+        public void AddProvider_WhenPostingTheAddProviderActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
         {
             Run(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("SearchProviders") &&
@@ -66,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void Add_WhenPostingTheAddProviderActionAndNoOptionWasSelected_ThenShouldThrowException()
+        public void AddProvider_WhenPostingTheAddProviderActionAndNoOptionWasSelected_ThenShouldThrowException()
         {
             Run(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
