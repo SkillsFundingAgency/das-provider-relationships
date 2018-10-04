@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Messages;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
@@ -24,17 +19,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
     public class CreatedAccountEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<CreatedAccountEvent>
     {
-        public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db)
-            : base(db)
+        public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+            : base(db, log)
         {
         }
 
         public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            //todo: log inc. username/ref
+            Log.Info($"Received: {message.AccountId} ({message.PublicHashedId}), '{message.Name}', User:{message.UserRef}");
 
-            //Db.Value.Accounts.AddOrUpdate(new Account
-            Db.Value.Accounts.Add(new Account
+            Db.Accounts.Add(new Account
             {
                 AccountId = message.AccountId,
                 Name = message.Name,
@@ -42,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 PublicHashedId = message.PublicHashedId
             });
 
-            await Db.Value.SaveChangesAsync();
+            await Db.SaveChangesAsync();
         }
     }
 }

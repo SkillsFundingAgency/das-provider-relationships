@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
@@ -23,23 +20,24 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public long AccountLegalEntityId { get; set; }
     }
 
+    /// <remarks>
+    /// If we receive this event *before* the CreatedAccountEvent, this will fail, but should then work on a subsequent retry,
+    /// as long as the last retry happens after the CreatedAccountEvent is successfully handled.
+    /// With the exponential back-off potentially retrying messages 1/2 day after the first try, that gives a decent sized window.
+    /// (Alternatively, we could remove the FK constraint and have eventual consistency.)
+    /// </remarks>
     public class AddedLegalEntityEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<AddedLegalEntityEvent>
     {
-        public AddedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db)
-            : base(db)
+        public AddedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+            : base(db, log)
         {
         }
 
         public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            //todo: log inc. username/ref
+            Log.Info($"Received: {message.AccountLegalEntityId}, {message.AccountId}, {message.OrganisationName}, {message.UserRef}");
 
-            //todo what if we process the AddedLegalEntityEvent *before* we receive the CreatedAccountEvent?
-            // either:
-            // let it fail, and should work on a subsequent retry (unless CreatedAccountEvent takes longer than the retry window)
-            // remove the foreign key relationship - eventual consistency (but would EF be able to link entities together - looks like it can without an explicit FK)
-            //Db.Value.AccountLegalEntities.AddOrUpdate(new AccountLegalEntity
-            Db.Value.AccountLegalEntities.Add(new AccountLegalEntity
+            Db.AccountLegalEntities.Add(new AccountLegalEntity
             {
                 AccountLegalEntityId = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
@@ -48,8 +46,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 AccountId = message.AccountId
             });
 
-            await Db.Value.SaveChangesAsync();
+            await Db.SaveChangesAsync();
         }
-
     }
 }

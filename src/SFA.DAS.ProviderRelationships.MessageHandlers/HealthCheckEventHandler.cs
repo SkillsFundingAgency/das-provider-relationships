@@ -7,18 +7,16 @@ using SFA.DAS.ProviderRelationships.Messages;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class HealthCheckEventHandler : IHandleMessages<HealthCheckEvent>
+    public class HealthCheckEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<HealthCheckEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
-
         public HealthCheckEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+            : base(db, null)
         {
-            _db = db;
         }
 
         public async Task Handle(HealthCheckEvent message, IMessageHandlerContext context)
         {
-            var healthCheck = await _db.Value.HealthChecks.SingleAsync(h => h.Id == message.Id);
+            var healthCheck = await Db.HealthChecks.SingleAsync(h => h.Id == message.Id);
 
             healthCheck.ReceiveProviderRelationshipsEvent(message);
         }

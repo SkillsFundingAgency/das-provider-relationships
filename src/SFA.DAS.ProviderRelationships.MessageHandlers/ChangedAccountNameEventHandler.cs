@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 
@@ -19,27 +19,20 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
     public class ChangedAccountNameEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<ChangedAccountNameEvent>
     {
-        public ChangedAccountNameEventHandler(Lazy<ProviderRelationshipsDbContext> db)
-            : base(db)
+        public ChangedAccountNameEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+            : base(db, log)
         {
         }
 
         public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
         {
-            //todo: log inc. username/ref
+            //todo: check log contains ChangedAccountNameEventHandler. label fields??
+            Log.Info($"Received: {message.AccountId}, '{message.PreviousName}' => '{message.CurrentName}', User:{message.UserRef}");
 
-            //todo: add publichashedid so we can AddOrUpdate?
-            //_db.Value.Accounts.AddOrUpdate(new Account
-            //{
-            //    AccountId = message.AccountId,
-            //    Name = message.CurrentName,
-            //    PublicHashedId = message.PublicHashedId
-            //});
+            //todo: what to do if not found?
+            Db.Accounts.Single(a => a.AccountId == message.AccountId).Name = message.CurrentName;
 
-            //todo: what to do if not found? addorupdate?
-            Db.Value.Accounts.Single(a => a.AccountId == message.AccountId).Name = message.CurrentName;
-
-            await Db.Value.SaveChangesAsync();
+            await Db.SaveChangesAsync();
         }
     }
 }

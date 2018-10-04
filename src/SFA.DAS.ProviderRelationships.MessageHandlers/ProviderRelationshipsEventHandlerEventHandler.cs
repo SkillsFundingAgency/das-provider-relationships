@@ -1,15 +1,20 @@
 ﻿using System;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Data;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
     public class ProviderRelationshipsEventHandler
     {
-        protected readonly Lazy<ProviderRelationshipsDbContext> Db;
+        private readonly Lazy<ProviderRelationshipsDbContext> _lazyDb;
+        protected readonly ILog Log;
 
-        protected ProviderRelationshipsEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        protected ProviderRelationshipsDbContext Db => _lazyDb.Value;
+
+        protected ProviderRelationshipsEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
         {
-            Db = db;
+            _lazyDb = db;
+            Log = log;
         }
     }
 }
