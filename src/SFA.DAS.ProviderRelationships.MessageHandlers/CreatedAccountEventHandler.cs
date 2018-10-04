@@ -33,7 +33,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         {
             //todo: log inc. username/ref
 
-            Db.Value.Accounts.AddOrUpdate(new Account
+            //Db.Value.Accounts.AddOrUpdate(new Account
+            Db.Value.Accounts.Add(new Account
             {
                 AccountId = message.AccountId,
                 Name = message.Name,

@@ -38,7 +38,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             // either:
             // let it fail, and should work on a subsequent retry (unless CreatedAccountEvent takes longer than the retry window)
             // remove the foreign key relationship - eventual consistency (but would EF be able to link entities together - looks like it can without an explicit FK)
-            Db.Value.AccountLegalEntities.AddOrUpdate(new AccountLegalEntity
+            //Db.Value.AccountLegalEntities.AddOrUpdate(new AccountLegalEntity
+            Db.Value.AccountLegalEntities.Add(new AccountLegalEntity
             {
                 AccountLegalEntityId = message.AccountLegalEntityId,
                 Name = message.OrganisationName,

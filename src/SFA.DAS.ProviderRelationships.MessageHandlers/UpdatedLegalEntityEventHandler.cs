@@ -38,8 +38,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             //    AccountId = message.AccountId //todo: add accountid, so we can add or update?
             //});
 
-            //todo: unit tests to check idempotency
-
             var accountLegalEntity = Db.Value.AccountLegalEntities.Single(ale => ale.AccountLegalEntityId == message.AccountLegalEntityId);
 
             accountLegalEntity.Name = message.Name;
