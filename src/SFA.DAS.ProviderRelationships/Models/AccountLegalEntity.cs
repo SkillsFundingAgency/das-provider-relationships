@@ -8,13 +8,13 @@ namespace SFA.DAS.ProviderRelationships.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public virtual long AccountLegalEntityId { get; set; }
         public virtual string Name { get; set; }
-        public virtual string PublicHashedId { get; set; }
+        public virtual string PublicHashedId { get; set; } // rename AccountLegalEntityPublicHashedId
 
-        public virtual int AccountId { get; set; }
+        public virtual long AccountId { get; set; }
 
         //[ForeignKey("AccountId")]
         public virtual Account Account { get; set; }
 
-        public virtual ICollection<Permission> AccountLegalEntities { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
     }
 }
