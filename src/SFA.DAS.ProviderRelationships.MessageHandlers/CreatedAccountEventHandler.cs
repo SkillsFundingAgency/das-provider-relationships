@@ -22,27 +22,26 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public Guid UserRef { get; set; }
     }
 
-    public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
+    public class CreatedAccountEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<CreatedAccountEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
-
         public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+            : base(db)
         {
-            _db = db;
         }
 
         public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
             //todo: log inc. username/ref
 
-            _db.Value.Accounts.AddOrUpdate(new Account
+            Db.Value.Accounts.AddOrUpdate(new Account
             {
                 AccountId = message.AccountId,
                 Name = message.Name,
+                //todo: rename in event to AccountPublicHashedId, so that it's explicitly named and not confused with other ids?
                 PublicHashedId = message.PublicHashedId
             });
 
-            await _db.Value.SaveChangesAsync();
+            await Db.Value.SaveChangesAsync();
         }
     }
 }
