@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 AccountLegalEntityId = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
                 //todo: add to message? rename?
-                PublicHashedId = "123456", //message.AccountLegalEntityPublicHashedId
+                PublicHashedId = "123456", //todo: message.AccountLegalEntityPublicHashedId, or not store locally?
                 AccountId = message.AccountId
             });
 
