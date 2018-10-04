@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountLegalEntity : Entity
     {
-        //public virtual int Id { get; protected set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public virtual long AccountLegalEntityId { get; set; }
         public virtual string Name { get; set; }
         public virtual string PublicHashedId { get; set; }

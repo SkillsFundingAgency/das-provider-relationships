@@ -2,21 +2,14 @@
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    public enum PermissionType
-    {
-        CreateCohort
-    }
-
     public class Permission : Entity
     {
-        //public virtual int Id { get; protected set; }
         public virtual int PermissionId { get; set; }
         public virtual PermissionType Type { get; set; }
 
         public virtual int AccountLegalEntityId { get; set; }
 
         //[ForeignKey("AccountLegalEntityId")]
-        public virtual Account Account { get; set; }
-
+        public virtual AccountLegalEntity AccountLegalEntity { get; set; }
     }
 }
