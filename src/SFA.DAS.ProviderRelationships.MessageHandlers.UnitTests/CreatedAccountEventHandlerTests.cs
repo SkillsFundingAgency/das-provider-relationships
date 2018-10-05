@@ -9,10 +9,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.NUnit3;
-using CloneExtensions;
 using FluentAssertions;
 using Moq;
-using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Testing;
 using NUnit.Framework;
@@ -82,72 +80,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         public Task Handle(CreatedAccountEvent createdAccountEvent)
         {
             return Handler.Handle(createdAccountEvent, MessageHandlerContext);
-        }
-    }
-    //base for boilerplate?
-    public class TestProviderRelationshipsDbContext : IProviderRelationshipsDbContext
-    {
-        public TestProviderRelationshipsDbContext()
-        {
-            Accounts = new DbSetStubX<Account>();
-            AccountLegalEntities = new DbSetStubX<AccountLegalEntity>();
-            Permissions = new DbSetStubX<Permission>();
-            HealthChecks = new DbSetStubX<HealthCheck>();
-        }
-
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
-        public DbSet<HealthCheck> HealthChecks { get; set; }
-
-        public int SaveChangesCount { get; private set; }
-
-        //no need for copy at each save
-        //public List<DbSet<Account>> AccountsAtSaveChanges;
-
-        //public DbSet<Account> AccountsAtLastSaveChanges;
-
-        public IEnumerable<Account> AccountsAtLastSaveChanges;
-        public IEnumerable<AccountLegalEntity> AccountLegalEntitiesAtLastSaveChanges;
-        public IEnumerable<Permission> PermissionsAtLastSaveChanges;
-        public IEnumerable<HealthCheck> HealthChecksAtLastSaveChanges;
-
-        public int SaveChanges()
-        {
-            //AccountsAtLastSaveChanges = TestHelper.Clone(Accounts);
-            //AccountsAtLastSaveChanges = Accounts.CloneJson();
-            //AccountsAtLastSaveChanges = Accounts.GetClone();
-            AccountsAtLastSaveChanges = new List<Account>(Accounts).GetClone();//((DbSetStubX<Account>) Accounts).GetClone();
-            AccountLegalEntitiesAtLastSaveChanges = new List<AccountLegalEntity>(AccountLegalEntities).GetClone();
-            PermissionsAtLastSaveChanges = new List<Permission>(Permissions).GetClone();
-            HealthChecksAtLastSaveChanges = new List<HealthCheck>(HealthChecks).GetClone();
-
-            ++SaveChangesCount;
-            return 1;
-        }
-
-        public Task<int> SaveChangesAsync()
-        {
-            return Task.FromResult(SaveChanges());
-        }
-
-        public void Delete(object entity)
-        {
-            switch (entity)
-            {
-                case Account account:
-                    Accounts.Remove(account);
-                    break;
-                case AccountLegalEntity accountLegalEntity:
-                    AccountLegalEntities.Remove(accountLegalEntity);
-                    break;
-                case Permission permission:
-                    Permissions.Remove(permission);
-                    break;
-                case HealthCheck healthCheck:
-                    HealthChecks.Remove(healthCheck);
-                    break;
-            }
         }
     }
 
@@ -226,31 +158,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         }
 
         #endregion X
-    }
-
-    public static class TestHelper
-    {
-        //public static T Clone<T>(T source)
-        //{
-        //    var serialized = JsonConvert.SerializeObject(source);
-        //    return JsonConvert.DeserializeObject<T>(serialized);
-        //}
-
-        public static T CloneJson<T>(this T source)
-        {
-            // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
-            {
-                return default(T);
-            }
-
-            // initialize inner objects individually
-            // for example in default constructor some list property initialized with some values,
-            // but in 'source' these items are cleaned -
-            // without ObjectCreationHandling.Replace default constructor values will be added to result
-            var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
-
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
-        }
     }
 }
