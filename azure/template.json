@@ -28,6 +28,9 @@
         },
         "loggingRedisKey": {
             "type": "string"
+        },
+        "TokenCertificateThumbprint": {
+            "type": "string"
         }
     },
     "variables": {},
@@ -76,6 +79,10 @@
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                 "value": "[reference('app-insights-deployment').outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "WEBSITE_LOAD_CERTIFICATES",
+                                "value": "[parameter]('TokenCertificateThumbprint')"
                             }
                         ]
                     },
