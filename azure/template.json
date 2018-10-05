@@ -82,7 +82,7 @@
                             },
                             {
                                 "name": "WEBSITE_LOAD_CERTIFICATES",
-                                "value": "[parameter]('TokenCertificateThumbprint')"
+                                "value": "[parameter('TokenCertificateThumbprint')]"
                             }
                         ]
                     },
