@@ -38,42 +38,41 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         //[Test, AutoDataFixedName]
         //public async Task X(CreatedAccountEvent createdAccountEvent)
         [Test]
-        public async Task X()
+        public async Task WhenHandlingACreatedAccountEvent_ThenAccountShouldBeAddedToDb()
         {
             var createdAccountEvent = new Fixture().Create<CreatedAccountEvent>();
-            //var createdAccountEvent = new CreatedAccountEvent
-            //{
-            //    AccountId = 10,
-            //    Created = new DateTime(2020, 1, 1),
-            //    Name = "Account Name",
-            //    PublicHashedId = "123456",
-            //    UserName = "User Name",
-            //    UserRef = Guid.NewGuid()
-            //};
 
             //todo: clone in DbSetStub or test?
-            await RunAsync(f => f.Handle(createdAccountEvent), f => f.Db.Accounts.Should().BeEquivalentTo(new[] {new Account {AccountId = createdAccountEvent.AccountId, Name = createdAccountEvent.Name, PublicHashedId = createdAccountEvent .PublicHashedId} }));
+            await RunAsync(f => f.Handle(createdAccountEvent), 
+                f =>
+                {
+                    f.Db.Accounts.Should().BeEquivalentTo(new[]
+                    {
+                        new Account
+                        {
+                            AccountId = createdAccountEvent.AccountId, Name = createdAccountEvent.Name,
+                            PublicHashedId = createdAccountEvent.PublicHashedId
+                        }
+                    });
+                    //todo: doesn't guarantee savechanges was called after adding. have array of dbsets at savechanges time?
+                    f.Db.SaveChangesCount.Should().Be(1);
+                });
         }
     }
 
     public class CreatedAccountEventHandlerTestsFixture
     {
         public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
-        //public Mock<ProviderRelationshipsDbContext> Db { get; set; }
-        public IProviderRelationshipsDbContext Db { get; set; }
+        public TestProviderRelationshipsDbContext Db { get; set; }
         public List<Account> Accounts { get; set; }
         public IMessageHandlerContext MessageHandlerContext { get; }
 
         public CreatedAccountEventHandlerTestsFixture()
         {
-            //Db = new Mock<ProviderRelationshipsDbContext>();
             Db = new TestProviderRelationshipsDbContext();
-
-            //Db.Setup(d => d.Accounts).Returns(new DbSetStubX<Account>());
 
             MessageHandlerContext = new TestableMessageHandlerContext();
 
-            //Handler = new CreatedAccountEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db.Object), Mock.Of<ILog>());
             Handler = new CreatedAccountEventHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db), Mock.Of<ILog>());
         }
 
