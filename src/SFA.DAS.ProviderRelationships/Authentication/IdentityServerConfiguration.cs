@@ -13,6 +13,7 @@
         public string ChangePasswordUrl { get; set; }
         public string ChangeEmailUrl { get; set; }
         public string AccountActivationUrl { get; set; }
+        public string TokenCertificateThumbprint { get; set; }
 
         #region required by EAS, but not by us (or employercomitments)
         //public string LogoutEndpoint { get; set; }
