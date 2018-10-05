@@ -9,8 +9,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.NUnit3;
+using CloneExtensions;
 using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
 using NServiceBus;
 using NServiceBus.Testing;
 using NUnit.Framework;
@@ -46,7 +48,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             await RunAsync(f => f.Handle(createdAccountEvent), 
                 f =>
                 {
-                    f.Db.Accounts.Should().BeEquivalentTo(new[]
+                    f.Db.AccountsAtLastSaveChanges.Should().BeEquivalentTo(new[]
+                    //f.Db.Accounts.Should().BeEquivalentTo(new[]
                     {
                         new Account
                         {
@@ -99,8 +102,26 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 
         public int SaveChangesCount { get; private set; }
 
+        //no need for copy at each save
+        //public List<DbSet<Account>> AccountsAtSaveChanges;
+
+        //public DbSet<Account> AccountsAtLastSaveChanges;
+
+        public IEnumerable<Account> AccountsAtLastSaveChanges;
+        public IEnumerable<AccountLegalEntity> AccountLegalEntitiesAtLastSaveChanges;
+        public IEnumerable<Permission> PermissionsAtLastSaveChanges;
+        public IEnumerable<HealthCheck> HealthChecksAtLastSaveChanges;
+
         public int SaveChanges()
         {
+            //AccountsAtLastSaveChanges = TestHelper.Clone(Accounts);
+            //AccountsAtLastSaveChanges = Accounts.CloneJson();
+            //AccountsAtLastSaveChanges = Accounts.GetClone();
+            AccountsAtLastSaveChanges = new List<Account>(Accounts).GetClone();//((DbSetStubX<Account>) Accounts).GetClone();
+            AccountLegalEntitiesAtLastSaveChanges = new List<AccountLegalEntity>(AccountLegalEntities).GetClone();
+            PermissionsAtLastSaveChanges = new List<Permission>(Permissions).GetClone();
+            HealthChecksAtLastSaveChanges = new List<HealthCheck>(HealthChecks).GetClone();
+
             ++SaveChangesCount;
             return 1;
         }
@@ -177,6 +198,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 
         public override T Add(T item)
         {
+            //todo: clone on the way in?
             _local.Add(item);
             return item;
         }
@@ -206,11 +228,29 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         #endregion X
     }
 
-    //public static class TestHelper
-    //{
-    //    public static T Clone<T>(T toClone)
-    //    {
+    public static class TestHelper
+    {
+        //public static T Clone<T>(T source)
+        //{
+        //    var serialized = JsonConvert.SerializeObject(source);
+        //    return JsonConvert.DeserializeObject<T>(serialized);
+        //}
 
-    //    }
-    //}
+        public static T CloneJson<T>(this T source)
+        {
+            // Don't serialize a null object, simply return the default for that object
+            if (Object.ReferenceEquals(source, null))
+            {
+                return default(T);
+            }
+
+            // initialize inner objects individually
+            // for example in default constructor some list property initialized with some values,
+            // but in 'source' these items are cleaned -
+            // without ObjectCreationHandling.Replace default constructor values will be added to result
+            var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
+        }
+    }
 }
