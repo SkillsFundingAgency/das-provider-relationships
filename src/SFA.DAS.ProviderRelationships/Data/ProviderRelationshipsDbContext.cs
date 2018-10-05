@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Models;
 namespace SFA.DAS.ProviderRelationships.Data
 {
     [DbConfigurationType(typeof(SqlAzureDbConfiguration))]
-    public class ProviderRelationshipsDbContext : DbContext
+    public class ProviderRelationshipsDbContext : DbContext, IProviderRelationshipsDbContext
     {
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
@@ -14,7 +14,6 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         static ProviderRelationshipsDbContext()
         {
-            //Database.SetInitializer(new DropCreateDatabaseAlways<ProviderRelationshipsDbContext>());
             Database.SetInitializer<ProviderRelationshipsDbContext>(null);
         }
 
@@ -35,6 +34,11 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+        }
+
+        public void Delete(object entity)
+        {
+            Entry(entity).State = EntityState.Deleted;
         }
     }
 }

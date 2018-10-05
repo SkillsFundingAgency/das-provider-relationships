@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
     public class ChangedAccountNameEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<ChangedAccountNameEvent>
     {
-        public ChangedAccountNameEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+        public ChangedAccountNameEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
             : base(db, log)
         {
         }

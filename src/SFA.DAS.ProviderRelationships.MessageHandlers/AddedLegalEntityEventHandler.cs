@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
     /// </remarks>
     public class AddedLegalEntityEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<AddedLegalEntityEvent>
     {
-        public AddedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+        public AddedLegalEntityEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
             : base(db, log)
         {
         }

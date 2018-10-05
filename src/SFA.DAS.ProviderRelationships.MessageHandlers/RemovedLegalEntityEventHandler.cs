@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
     public class RemovedLegalEntityEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<RemovedLegalEntityEvent>
     {
-        public RemovedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+        public RemovedLegalEntityEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
             : base(db, log)
         {
         }
@@ -39,8 +39,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             //Db.Value.AccountLegalEntities.Remove(accountLegalEntity);
 
             // check cascade delete... https://stackoverflow.com/questions/17487577/entity-framework-ef-code-first-cascade-delete-for-one-to-zero-or-one-relations
-            var accountLegalEntity = new AccountLegalEntity { AccountLegalEntityId = message.AccountLegalEntityId };
-            Db.Entry(accountLegalEntity).State = EntityState.Deleted;
+            Db.Delete(new AccountLegalEntity { AccountLegalEntityId = message.AccountLegalEntityId });
+            //Db.Entry(accountLegalEntity).State = EntityState.Deleted;
 
             await Db.SaveChangesAsync();
         }

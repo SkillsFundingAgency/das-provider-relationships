@@ -27,12 +27,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
     public class HealthCheckEventHandlerTestsFixture
     {
         public IHandleMessages<HealthCheckEvent> Handler { get; set; }
-        public Mock<ProviderRelationshipsDbContext> Db { get; set; }
+        public Mock<IProviderRelationshipsDbContext> Db { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public HealthCheckEventHandlerTestsFixture()
         {
-            Db = new Mock<ProviderRelationshipsDbContext>();
+            Db = new Mock<IProviderRelationshipsDbContext>();
 
             HealthChecks = new List<HealthCheck>
             {
@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 
             Db.Setup(d => d.HealthChecks).Returns(new DbSetStub<HealthCheck>(HealthChecks));
 
-            Handler = new HealthCheckEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db.Object));
+            Handler = new HealthCheckEventHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db.Object));
         }
 
         public Task Handle()

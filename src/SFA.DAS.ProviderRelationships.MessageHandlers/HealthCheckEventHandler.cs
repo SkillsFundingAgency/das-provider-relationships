@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
     public class HealthCheckEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<HealthCheckEvent>
     {
-        public HealthCheckEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public HealthCheckEventHandler(Lazy<IProviderRelationshipsDbContext> db)
             : base(db, null)
         {
         }

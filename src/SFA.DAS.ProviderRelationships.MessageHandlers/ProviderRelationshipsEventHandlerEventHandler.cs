@@ -6,12 +6,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
     public class ProviderRelationshipsEventHandler
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _lazyDb;
+        private readonly Lazy<IProviderRelationshipsDbContext> _lazyDb;
         protected readonly ILog Log;
 
-        protected ProviderRelationshipsDbContext Db => _lazyDb.Value;
+        protected IProviderRelationshipsDbContext Db => _lazyDb.Value;
 
-        protected ProviderRelationshipsEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+        protected ProviderRelationshipsEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
         {
             _lazyDb = db;
             Log = log;

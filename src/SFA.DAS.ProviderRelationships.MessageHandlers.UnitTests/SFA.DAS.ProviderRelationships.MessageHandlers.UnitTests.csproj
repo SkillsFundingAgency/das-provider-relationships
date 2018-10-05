@@ -16,9 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.5.0" />
+    <PackageReference Include="AutoFixture.NUnit3" Version="4.5.0" />
     <PackageReference Include="AutoMapper " Version="7.0.1" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Moq" Version="4.10.0" />
+    <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="SFA.DAS.Testing" Version="2.0.2" />

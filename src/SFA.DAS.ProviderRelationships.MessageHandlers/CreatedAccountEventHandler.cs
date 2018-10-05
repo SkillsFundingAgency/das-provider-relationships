@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
     public class CreatedAccountEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<CreatedAccountEvent>
     {
-        public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db, ILog log)
+        public CreatedAccountEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
             : base(db, log)
         {
         }
