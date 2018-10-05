@@ -22,23 +22,23 @@
                                 <th class="govuk-table__header govuk-table__header--center" colspan="2">Publish/Subscribe</th>
                             </tr>
                             <tr>
-                                <td class="govuk-table__header govuk-table__header--center"></td>
-                                <td class="govuk-table__header govuk-table__header--center">Request sent</td>
-                                <td class="govuk-table__header govuk-table__header--center">Response received</td>
-                                <td class="govuk-table__header govuk-table__header--center">Event published</td>
-                                <td class="govuk-table__header govuk-table__header--center">Event received</td>
+                                <td class="govuk-table__cell govuk-table__cell--center"></td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Request sent</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Response received</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Event published</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Event received</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th class="govuk-table__header">SFA.DAS.ApprenticeshipInfoService</th>
+                                <td class="govuk-table__cell">SFA.DAS.ApprenticeshipInfoService</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest.ToString("HH:mm:ss")</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">@(Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse?.ToString("HH:mm:ss") ?? "Failed")</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                             </tr>
                             <tr>
-                                <th class="govuk-table__header">SFA.DAS.ProviderRelationships</th>
+                                <td class="govuk-table__cell">SFA.DAS.ProviderRelationships</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.PublishedProviderRelationshipsEvent.ToString("HH:mm:ss")</td>
