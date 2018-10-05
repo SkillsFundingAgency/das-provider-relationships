@@ -149,6 +149,8 @@
     <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\application.css" />
+    <Content Include="Content\js\application.js" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-152x152.png" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-167x167.png" />
@@ -167,6 +169,9 @@
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.js" />
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-ie8-2.0.0.min.css" />
     <Content Include="Content\lib\govuk-frontend\dist\VERSION.txt" />
+    <Content Include="Content\lib\jquery\dist\jquery.js" />
+    <Content Include="Content\lib\jquery\dist\jquery.min.js" />
+    <Content Include="Content\lib\jquery\LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -184,9 +189,7 @@
     <Content Include="Views\Permissions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\css\" />
     <Folder Include="Content\img\" />
-    <Folder Include="Content\js\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
@@ -208,6 +211,7 @@
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-498ea8ffe2-v1.eot" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-62cc6f0a28-v1.woff" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-851b10ccdd-v1.woff2" />
+    <Content Include="Content\lib\jquery\dist\jquery.min.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
