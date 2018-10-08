@@ -4,6 +4,7 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing.EntityFramework;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
@@ -48,19 +49,20 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 
         public void Delete(object entity)
         {
+            //todo: could do this generically, if we duplicate how EF picks a key
             switch (entity)
             {
                 case Account account:
-                    Accounts.Remove(account);
+                    Accounts = new DbSetStub<Account>(Accounts.Where(a => a.AccountId != account.AccountId));
                     break;
                 case AccountLegalEntity accountLegalEntity:
-                    AccountLegalEntities.Remove(accountLegalEntity);
+                    AccountLegalEntities = new DbSetStub<AccountLegalEntity>(AccountLegalEntities.Where(ale => ale.AccountLegalEntityId != accountLegalEntity.AccountLegalEntityId));
                     break;
                 case Permission permission:
-                    Permissions.Remove(permission);
+                    Permissions = new DbSetStub<Permission>(Permissions.Where(p => p.PermissionId != permission.PermissionId));
                     break;
                 case HealthCheck healthCheck:
-                    HealthChecks.Remove(healthCheck);
+                    HealthChecks = new DbSetStub<HealthCheck>(HealthChecks.Where(hc => hc.Id != healthCheck.Id));
                     break;
             }
         }
