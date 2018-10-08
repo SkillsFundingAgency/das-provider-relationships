@@ -14,8 +14,6 @@ using Moq;
 using NServiceBus;
 using NServiceBus.Testing;
 using NUnit.Framework;
-using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 using SFA.DAS.Testing.EntityFramework;
@@ -40,30 +38,25 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         [Test]
         public async Task WhenHandlingACreatedAccountEvent_ThenAccountShouldBeAddedToDb()
         {
-            var createdAccountEvent = new Fixture().Create<CreatedAccountEvent>();
-
             //todo: clone in DbSetStub or test?
-            await RunAsync(f => f.Handle(createdAccountEvent), 
+            await RunAsync(f => f.Event = new Fixture().Create<CreatedAccountEvent>(),
+                f => f.Handle(), 
                 f =>
                 {
                     f.Db.AccountsAtLastSaveChanges.Should().BeEquivalentTo(new[]
-                    //f.Db.Accounts.Should().BeEquivalentTo(new[]
                     {
                         new Account
                         {
-                            AccountId = createdAccountEvent.AccountId, Name = createdAccountEvent.Name,
-                            PublicHashedId = createdAccountEvent.PublicHashedId
+                            AccountId = f.Event.AccountId, Name = f.Event.Name,
+                            PublicHashedId = f.Event.PublicHashedId
                         }
                     });
-                    //todo: doesn't guarantee savechanges was called after adding. have array of dbsets at savechanges time?
-                    f.Db.SaveChangesCount.Should().Be(1);
                 });
         }
     }
 
     public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent, CreatedAccountEventHandler>
     {
-        //public List<Account> Accounts { get; set; }
     }
 
     /// <remarks>
