@@ -126,7 +126,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             return GetEnumerator();
         }
 
-        #region X
+        #region Entity Operations
 
         public override T Add(T item)
         {
@@ -157,6 +157,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             return Activator.CreateInstance<TDerivedEntity>();
         }
 
-        #endregion X
+        #endregion Entity Operations
     }
 }
