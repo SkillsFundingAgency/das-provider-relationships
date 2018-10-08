@@ -1,6 +1,7 @@
 ﻿using CloneExtensions;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.Testing.EntityFramework;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
     {
         public TestProviderRelationshipsDbContext()
         {
-            Accounts = new DbSetStubX<Account>();
-            AccountLegalEntities = new DbSetStubX<AccountLegalEntity>();
-            Permissions = new DbSetStubX<Permission>();
-            HealthChecks = new DbSetStubX<HealthCheck>();
+            Accounts = new DbSetStub<Account>();
+            AccountLegalEntities = new DbSetStub<AccountLegalEntity>();
+            Permissions = new DbSetStub<Permission>();
+            HealthChecks = new DbSetStub<HealthCheck>();
         }
 
         public DbSet<Account> Accounts { get; set; }

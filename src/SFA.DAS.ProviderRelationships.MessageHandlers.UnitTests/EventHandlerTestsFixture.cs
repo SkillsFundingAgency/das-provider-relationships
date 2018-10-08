@@ -6,6 +6,7 @@ using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using System;
 using System.Threading.Tasks;
+using CloneExtensions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
@@ -33,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 
         public virtual Task Handle()
         {
-            return Handler.Handle(Event, MessageHandlerContext);
+            return Handler.Handle(Event.GetClone(), MessageHandlerContext);
         }
     }
 }

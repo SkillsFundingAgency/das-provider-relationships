@@ -3,6 +3,7 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 using System.Threading.Tasks;
 using FluentAssertions;
+using SFA.DAS.Testing.EntityFramework;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
@@ -18,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             //todo: clone in DbSetStub or test?
             await RunAsync(f =>
                 {
-                    f.Db.Accounts = new DbSetStubX<Account>(new Account {AccountId = AccountId, Name = OldName});
+                    f.Db.Accounts = new DbSetStub<Account>(new Account {AccountId = AccountId, Name = OldName});
                     f.Event.AccountId = AccountId;
                     f.Event.PreviousName = OldName;
                     f.Event.CurrentName = NewName;
