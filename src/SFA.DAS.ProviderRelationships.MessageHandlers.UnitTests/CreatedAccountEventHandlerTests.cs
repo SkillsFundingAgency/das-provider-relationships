@@ -61,26 +61,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         }
     }
 
-    public class CreatedAccountEventHandlerTestsFixture
+    public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent, CreatedAccountEventHandler>
     {
-        public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
-        public TestProviderRelationshipsDbContext Db { get; set; }
-        public List<Account> Accounts { get; set; }
-        public IMessageHandlerContext MessageHandlerContext { get; }
-
-        public CreatedAccountEventHandlerTestsFixture()
-        {
-            Db = new TestProviderRelationshipsDbContext();
-
-            MessageHandlerContext = new TestableMessageHandlerContext();
-
-            Handler = new CreatedAccountEventHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db), Mock.Of<ILog>());
-        }
-
-        public Task Handle(CreatedAccountEvent createdAccountEvent)
-        {
-            return Handler.Handle(createdAccountEvent, MessageHandlerContext);
-        }
+        //public List<Account> Accounts { get; set; }
     }
 
     /// <remarks>
