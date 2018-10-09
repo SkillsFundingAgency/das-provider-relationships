@@ -56,7 +56,7 @@
                     <p class="floating-head-text">Your employer account</p>
                     <nav id="user-nav">
                         <ul role="menubar">
-                            <li><a href="" class="menu-main">Help</a></li>
+                            <li><a href="@Url.EmployerPortalAction("service/help")" class="menu-main">Help</a></li>
                             @if (Context.User.Identity.IsAuthenticated)
                             {
                                 <li class="has-sub-menu">
