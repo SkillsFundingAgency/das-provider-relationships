@@ -13,5 +13,6 @@
         string ChangePasswordUrl { get; }
         string ChangeEmailUrl { get; }
         string AccountActivationUrl { get; }
+        string TokenCertificateThumbprint { get; }
     }
 }
