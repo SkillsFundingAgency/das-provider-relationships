@@ -4,7 +4,7 @@ body {
 }
 
 .govuk-header {
-    border-bottom:0;
+    border-bottom: 0;
 }
 
 .govuk-header__container {
@@ -12,6 +12,14 @@ body {
     margin-bottom: 0;
     padding-top: 10px;
     border-bottom: 0;
+}
+
+.govuk-header__link--service-name {
+    margin-left: 10px;
+}
+
+.govuk-header__logo {
+    margin-bottom: 8px;
 }
 
 /*** MA Legacy menu styles ***/
