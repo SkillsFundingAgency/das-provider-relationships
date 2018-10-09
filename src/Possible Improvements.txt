@@ -10,9 +10,11 @@ package up authentication
 		have a single config containing the endpoints shared between all relying parties, rather than duplicating it in each websites config
 	we might be able to optimise the authentication flow by using Hybrid, rather than code and get the tokens at the same time as the code
 
-add sourcelink support to packages
+add sourcelink support to packages (https://github.com/dotnet/sourcelink)
 
 security: app service full access to db
+
+auto-create deadletters queue
 
 full sign-out between subsites:
     // the current sign-out solution will only sign-out the user from the current sub-site and mya

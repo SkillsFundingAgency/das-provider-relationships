@@ -18,6 +18,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public long AgreementId { get; set; }
         public long LegalEntityId { get; set; }
         public long AccountLegalEntityId { get; set; }
+        public string AccountLegalEntityPublicHashedId { get; set; }
     }
 
     /// <remarks>
@@ -41,8 +42,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             {
                 AccountLegalEntityId = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
-                //todo: add to message? rename?
-                PublicHashedId = "123456", //todo: message.AccountLegalEntityPublicHashedId, or not store locally?
+                PublicHashedId = message.AccountLegalEntityPublicHashedId,
                 AccountId = message.AccountId
             });
 
