@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.Azure;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.OidcMiddleware;
-using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
@@ -101,13 +99,12 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
                 try
                 {
-                    var thumbprint = CloudConfigurationManager.GetSetting("TokenCertificateThumbprint");
-                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, _config.TokenCertificateThumbprint, false);
 
                     if (certificates.Count < 1)
-                        throw new Exception($"Could not find certificate with thumbprint '{thumbprint}' in CurrentUser store");
+                        throw new Exception($"Could not find certificate with thumbprint '{_config.TokenCertificateThumbprint}' in CurrentUser store");
 
-                    _logger.Info($"Found and using certificate with thumbprint '{thumbprint}' in CurrentUser store");
+                    _logger.Info($"Found and using certificate with thumbprint '{_config.TokenCertificateThumbprint}' in CurrentUser store");
 
                     return certificates[0];
                 }
