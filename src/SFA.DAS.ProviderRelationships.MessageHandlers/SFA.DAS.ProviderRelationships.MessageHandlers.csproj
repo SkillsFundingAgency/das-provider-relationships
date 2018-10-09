@@ -3,6 +3,7 @@
   <PropertyGroup>
     <IsGenerateRunCommandFileDisabled>true</IsGenerateRunCommandFileDisabled>
     <IsWebJobProject>true</IsWebJobProject>
+    <LangVersion>latest</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>net462</TargetFramework>
     <WebJobName>ProviderRelationships-MessageHandlers</WebJobName>
