@@ -1,5 +1,6 @@
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using NServiceBus;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 {

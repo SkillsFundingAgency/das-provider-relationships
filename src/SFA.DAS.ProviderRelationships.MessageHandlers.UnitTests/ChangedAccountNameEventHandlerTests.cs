@@ -4,6 +4,7 @@ using SFA.DAS.Testing;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SFA.DAS.Testing.EntityFramework;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {

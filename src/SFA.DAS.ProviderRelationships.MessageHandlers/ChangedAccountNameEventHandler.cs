@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.EmployerAccounts.Messages.Events
 {
     public class ChangedAccountNameEvent : Event
     {
@@ -16,7 +17,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public string PreviousName { get; set; }
         public string CurrentName { get; set; }
     }
+}
 
+namespace SFA.DAS.ProviderRelationships.MessageHandlers
+{
     public class ChangedAccountNameEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<ChangedAccountNameEvent>
     {
         public ChangedAccountNameEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)

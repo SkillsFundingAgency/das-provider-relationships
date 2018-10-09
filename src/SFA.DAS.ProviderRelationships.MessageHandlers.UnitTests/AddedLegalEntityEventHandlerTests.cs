@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                             AccountLegalEntityId = f.Event.AccountLegalEntityId,
                             Name = f.Event.OrganisationName,
                             AccountId = f.Event.AccountId,
-                            PublicHashedId = "123456"
+                            AccountLegalEntityPublicHashedId = f.Event.AccountLegalEntityPublicHashedId
                         }
                     });
                 });

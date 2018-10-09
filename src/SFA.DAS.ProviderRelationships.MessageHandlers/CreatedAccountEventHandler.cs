@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.EmployerAccounts.Messages.Events
 {
     public class CreatedAccountEvent : Event
     {
@@ -16,7 +17,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public string UserName { get; set; }
         public Guid UserRef { get; set; }
     }
+}
 
+namespace SFA.DAS.ProviderRelationships.MessageHandlers
+{
     public class CreatedAccountEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<CreatedAccountEvent>
     {
         public CreatedAccountEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)

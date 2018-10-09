@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.EmployerAccounts.Messages.Events
 {
     //todo: these will come from SFA.DAS.EmployerAccounts.Messages nuget package once it's available
     public class AddedLegalEntityEvent : Event
@@ -20,7 +21,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public long AccountLegalEntityId { get; set; }
         public string AccountLegalEntityPublicHashedId { get; set; }
     }
+}
 
+namespace SFA.DAS.ProviderRelationships.MessageHandlers
+{
     /// <remarks>
     /// If we receive this event *before* the CreatedAccountEvent, this will fail, but should then work on a subsequent retry,
     /// as long as the last retry happens after the CreatedAccountEvent is successfully handled.
@@ -42,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             {
                 AccountLegalEntityId = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
-                PublicHashedId = message.AccountLegalEntityPublicHashedId,
+                AccountLegalEntityPublicHashedId = message.AccountLegalEntityPublicHashedId,
                 AccountId = message.AccountId
             });
 
