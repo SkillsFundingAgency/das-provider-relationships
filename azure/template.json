@@ -177,7 +177,9 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverFarms/',parameters('workerAppServiceName'))]"
+            ]
         },
         {
             "apiVersion": "2017-08-01",
