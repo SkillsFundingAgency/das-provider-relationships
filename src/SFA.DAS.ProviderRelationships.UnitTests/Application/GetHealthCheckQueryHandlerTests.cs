@@ -35,14 +35,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
     {
         public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
         public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse> Handler { get; set; }
-        public Mock<ProviderRelationshipsDbContext> Db { get; set; }
+        public Mock<IProviderRelationshipsDbContext> Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public GetHealthCheckQueryHandlerTestsFixture()
         {
             GetHealthCheckQuery = new GetHealthCheckQuery();
-            Db = new Mock<ProviderRelationshipsDbContext>();
+            Db = new Mock<IProviderRelationshipsDbContext>();
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>());
 
             HealthChecks = new List<HealthCheck>
@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 
             Db.Setup(d => d.HealthChecks).Returns(new DbSetStub<HealthCheck>(HealthChecks));
 
-            Handler = new GetHealthCheckQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db.Object), ConfigurationProvider);
+            Handler = new GetHealthCheckQueryHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db.Object), ConfigurationProvider);
         }
 
         public Task<GetHealthCheckQueryResponse> Handle()

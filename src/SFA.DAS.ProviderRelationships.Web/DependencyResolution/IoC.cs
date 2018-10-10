@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
+                //todo: interface?
                 c.AddRegistry<EntityFrameworkUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();

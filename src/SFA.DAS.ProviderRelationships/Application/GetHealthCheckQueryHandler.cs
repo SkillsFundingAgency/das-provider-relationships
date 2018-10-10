@@ -13,10 +13,10 @@ namespace SFA.DAS.ProviderRelationships.Application
 {
     public class GetHealthCheckQueryHandler : IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly Lazy<IProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
 
-        public GetHealthCheckQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
+        public GetHealthCheckQueryHandler(Lazy<IProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
         {
             _db = db;
             _configurationProvider = configurationProvider;

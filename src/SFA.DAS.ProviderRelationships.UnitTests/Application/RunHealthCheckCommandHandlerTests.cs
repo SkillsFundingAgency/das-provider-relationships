@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 
     public class RunHealthCheckCommandHandlerTestsFixture
     {
-        public Mock<ProviderRelationshipsDbContext> Db { get; set; }
+        public Mock<IProviderRelationshipsDbContext> Db { get; set; }
         public RunHealthCheckCommand RunHealthCheckCommand { get; set; }
         public IRequestHandler<RunHealthCheckCommand, Unit> Handler { get; set; }
         public UnitOfWorkContext UnitOfWorkContext { get; set; }
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 
         public RunHealthCheckCommandHandlerTestsFixture()
         {
-            Db = new Mock<ProviderRelationshipsDbContext>();
+            Db = new Mock<IProviderRelationshipsDbContext>();
             RunHealthCheckCommand = new RunHealthCheckCommand();
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();
@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
             Db.Setup(d => d.HealthChecks.Add(It.IsAny<HealthCheck>()));
             ProviderApiClient.Setup(c => c.SearchAsync("", 1)).ReturnsAsync(new ProviderSearchResponseItem());
 
-            Handler = new RunHealthCheckCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db.Object), ProviderApiClient.Object);
+            Handler = new RunHealthCheckCommandHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db.Object), ProviderApiClient.Object);
         }
 
         public Task Handle()

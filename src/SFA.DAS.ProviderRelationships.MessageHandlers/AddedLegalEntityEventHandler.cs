@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
         public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            Log.Info($"Received: {message.AccountLegalEntityId}, {message.AccountId}, {message.OrganisationName}, {message.UserRef}");
+            Log.Info($"Received: {message.AccountLegalEntityId}, {message.AccountId}, '{message.OrganisationName}', {message.UserRef}");
 
             Db.AccountLegalEntities.Add(new AccountLegalEntity
             {

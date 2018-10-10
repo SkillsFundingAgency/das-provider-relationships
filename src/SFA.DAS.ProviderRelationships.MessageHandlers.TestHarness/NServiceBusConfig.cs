@@ -25,8 +25,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 
         public void Start()
         {
-            var xxx = _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString;
-
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.EAS.Web")
                 .UseAzureServiceBusTransport(() =>
                     _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
@@ -39,9 +37,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 //.UseOutbox()
                 .UseStructureMapBuilder(_container);
                 //.UseUnitOfWork();
-
-            //should do this automatically when debugger is attached...
-            //endpointConfiguration.EnableInstallers(); //"phil");
 
             Endpoint = global::NServiceBus.Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
 

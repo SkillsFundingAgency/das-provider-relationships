@@ -130,6 +130,7 @@
     <Compile Include="NServiceBusConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenarios\CascadeDeletePermissions.cs" />
     <Compile Include="Scenarios\PublishAllEvents.cs" />
   </ItemGroup>
   <ItemGroup>

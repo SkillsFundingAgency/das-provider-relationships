@@ -10,10 +10,10 @@ namespace SFA.DAS.ProviderRelationships.Application
 {
     public class RunHealthCheckCommandHandler : AsyncRequestHandler<RunHealthCheckCommand>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly Lazy<IProviderRelationshipsDbContext> _db;
         private readonly IProviderApiClient _providerApiClient;
 
-        public RunHealthCheckCommandHandler(Lazy<ProviderRelationshipsDbContext> db, IProviderApiClient providerApiClient)
+        public RunHealthCheckCommandHandler(Lazy<IProviderRelationshipsDbContext> db, IProviderApiClient providerApiClient)
         {
             _db = db;
             _providerApiClient = providerApiClient;

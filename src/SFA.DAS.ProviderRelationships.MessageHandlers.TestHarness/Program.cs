@@ -1,8 +1,4 @@
-using System;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
-using NServiceBus;
-using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.EmployerCommitments.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness

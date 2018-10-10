@@ -16,9 +16,12 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
             For<IProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
+            
+            //todo: required for UnitOfWork (unless we switch it to work with an interface)
+            For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 
-        private IProviderRelationshipsDbContext GetDbContext(IContext context)
+        private ProviderRelationshipsDbContext GetDbContext(IContext context)
         {
             var unitOfWorkContext = context.GetInstance<IUnitOfWorkContext>();
             var clientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
