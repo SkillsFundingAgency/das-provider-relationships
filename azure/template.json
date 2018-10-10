@@ -123,7 +123,7 @@
                         "value": "[parameters('appServicePlanResourceGroup')]"
                     },
                     "deployStagingSlot": {
-                        "value": true
+                        "value": false
                     },
                     "appServiceAppSettings": {
                         "value": [
