@@ -5,6 +5,34 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class UrlHelperExtensions
     {
+        public static string EmployerAccountsAction(this UrlHelper urlHelper, string path = null)
+        {
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+
+            return Action(configuration.EmployerAccountsBaseUrl, path);
+        }
+
+        public static string EmployerAccountsAccountAction(this UrlHelper urlHelper, string path = null)
+        {
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+
+            return AccountAction(urlHelper, configuration.EmployerAccountsBaseUrl, path);
+        }
+
+        public static string EmployerCommitmentsAccountAction(this UrlHelper urlHelper, string path = null)
+        {
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+
+            return AccountAction(urlHelper, configuration.EmployerCommitmentsBaseUrl, path);
+        }
+
+        public static string EmployerFinanceAccountAction(this UrlHelper urlHelper, string path = null)
+        {
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+
+            return AccountAction(urlHelper, configuration.EmployerFinanceBaseUrl, path);
+        }
+
         public static string EmployerPortalAccountAction(this UrlHelper urlHelper, string path = null)
         {
             var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
@@ -17,6 +45,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
 
             return Action(configuration.EmployerPortalBaseUrl, path);
+        }
+
+        public static string EmployerRecruitAccountAction(this UrlHelper urlHelper, string path = null)
+        {
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+
+            return AccountAction(urlHelper, configuration.EmployerRecruitBaseUrl, path);
         }
 
         private static string AccountAction(UrlHelper helper, string baseUrl, string path)
