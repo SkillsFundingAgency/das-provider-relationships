@@ -178,7 +178,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceID('Microsoft.Resources/deployments/worker-app-service-plan-deployment')]"
+                "worker-app-service-plan-deployment"
             ]
         },
         {
