@@ -37,9 +37,6 @@
         },
         "workerAppServicePlanName": {
             "type" : "string"
-        },
-        "AppServicePlanLocation": {
-            "type": "string"
         }
     },
     "variables": {},
