@@ -31,6 +31,12 @@
         },
         "TokenCertificateThumbprint": {
             "type": "string"
+        },
+        "workerAppServiceName": {
+            "type": "string"
+        },
+        "workerAppServicePlanName": {
+            "type" : "string"
         }
     },
     "variables": {},
@@ -97,6 +103,57 @@
             "dependsOn": []
         },
         {
+            "apiVersion": "2017-05-10",
+            "name": "app-service-resources-deployment",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[parameters('workerAppServiceName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[parameters('workerAppServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[parameters('appServicePlanResourceGroup')]"
+                    },
+                    "deployStagingSlot": {
+                        "value": true
+                    },
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "ConfigurationStorageConnectionString",
+                                "value": "[parameters('configurationStorageConnectionString')]"
+                            },
+                            {
+                                "name": "EnvironmentName",
+                                "value": "[parameters('environmentName')]"
+                            },
+                            {
+                                "name": "LoggingRedisConnectionString",
+                                "value": "[parameters('loggingRedisConnectionString')]"
+                            },
+                            {
+                                "name": "LoggingRedisKey",
+                                "value": "[parameters('loggingRedisKey')]"
+                            },
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference('app-insights-deployment').outputs.InstrumentationKey.value]"
+                            }
+                        ]
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
             "apiVersion": "2017-08-01",
             "name": "app-insights-deployment",
             "type": "Microsoft.Resources/deployments",
@@ -112,6 +169,27 @@
                     },
                     "attachedService": {
                         "value": "[parameters('appServiceName')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "apiVersion": "2017-08-01",
+            "name": "app-insights-deployment",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[parameters('workerAppServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[parameters('workerAppServiceName')]"
                     }
                 }
             },
