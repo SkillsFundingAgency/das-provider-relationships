@@ -177,7 +177,9 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "worker-app-service-plan-deployment"
+            ]
         },
         {
             "apiVersion": "2017-08-01",
