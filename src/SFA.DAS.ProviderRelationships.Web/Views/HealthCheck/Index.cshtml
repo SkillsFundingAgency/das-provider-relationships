@@ -12,7 +12,7 @@
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group">
-                @if (Model.HealthCheck !=null)
+                @if (Model.HealthCheck != null)
                 {
                     <table class="govuk-table govuk-!-font-size-16">
                         <thead>
@@ -33,7 +33,16 @@
                             <tr>
                                 <td class="govuk-table__cell">SFA.DAS.ApprenticeshipInfoService</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest.ToString("HH:mm:ss")</td>
-                                <td class="govuk-table__cell govuk-table__cell--center">@(Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse?.ToString("HH:mm:ss") ?? "Failed")</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">
+                                    @if (Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse == null)
+                                    {
+                                        @:Failed
+                                    }
+                                    else
+                                    {
+                                        @Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse.Value.ToString("HH:mm:ss") @:(@Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse.Value.Subtract(Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest).ToHumanReadableString())
+                                    }
+                                </td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">-</td>
                             </tr>
@@ -64,4 +73,4 @@
             <button class="govuk-button" type="submit">Run</button>
         }
     </div>
-        </div>
+</div>
