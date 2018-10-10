@@ -178,7 +178,7 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Web/serverFarms/',parameters('workerAppServiceName'))]"
+                "[concat('Microsoft.Resources/deployments/',parameters('workerAppServiceName'))]"
             ]
         },
         {
