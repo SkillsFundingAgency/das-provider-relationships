@@ -41,7 +41,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             ////todo: require Equals/GetHashCode?
             //Db.Value.AccountLegalEntities.Remove(accountLegalEntity);
 
+            //todo: this fails if there are permissions referencing the ale entity
             // check cascade delete... https://stackoverflow.com/questions/17487577/entity-framework-ef-code-first-cascade-delete-for-one-to-zero-or-one-relations
+            
+            // either enable cascade delete on the db (but what if permissions are loaded into memory)
+            // or load ale & permissions into memory and then delete and let ef cascade delete (potentially much slower - need to load ale + n permissions, then 1+ delete)
+            //https://stackoverflow.com/questions/21314113/entity-framework-6-code-first-cascade-delete
             Db.Delete(new AccountLegalEntity { AccountLegalEntityId = message.AccountLegalEntityId });
             //Db.Entry(accountLegalEntity).State = EntityState.Deleted;
 
