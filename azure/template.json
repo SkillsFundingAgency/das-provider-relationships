@@ -104,7 +104,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "app-service-resources-deployment",
+            "name": "worker-app-service-resources-deployment",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -176,7 +176,7 @@
         },
         {
             "apiVersion": "2017-08-01",
-            "name": "app-insights-deployment",
+            "name": "worker-app-insights-deployment",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
