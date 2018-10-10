@@ -178,7 +178,7 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Resources/deployments/',parameters('workerAppServiceName'))]"
+                "[resourceID('Microsoft.Resources/deployments/worker-app-service-plan-deployment')]"
             ]
         },
         {
