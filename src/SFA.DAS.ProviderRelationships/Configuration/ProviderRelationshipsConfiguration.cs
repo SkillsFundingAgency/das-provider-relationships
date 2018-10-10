@@ -8,7 +8,12 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string AllowedHashstringCharacters { get; set; }
         public string Hashstring { get; set; }
         public string DatabaseConnectionString { get; set; }
+        public string EmployerAccountsBaseUrl { get; set; }
+        public string EmployerCommitmentsBaseUrl { get; set; }
+        public string EmployerFinanceBaseUrl { get; set; }
         public string EmployerPortalBaseUrl { get; set; }
+        public string EmployerProjectionsBaseUrl { get; set; }
+        public string EmployerRecruitBaseUrl { get; set; }
         public string NServiceBusLicense { get; set; }
         public string ServiceBusConnectionString { get; set; }
         public IdentityServerConfiguration Identity { get; set; }
@@ -16,6 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public ProviderRelationshipsConfiguration InitialTransform()
         {
             NServiceBusLicense = NServiceBusLicense.HtmlDecode();
+
             return this;
         }
     }

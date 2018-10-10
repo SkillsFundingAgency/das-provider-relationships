@@ -12,37 +12,46 @@
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group">
-                @if (Model.HealthCheck !=null)
+                @if (Model.HealthCheck != null)
                 {
                     <table class="govuk-table govuk-!-font-size-16">
                         <thead>
                             <tr>
                                 <td class="govuk-table__cell"></td>
-                                <th class="govuk-table__header" colspan="2" style="text-align: center">Request/Response</th>
-                                <th class="govuk-table__header" colspan="2" style="text-align: center">Publish/Subscribe</th>
+                                <th class="govuk-table__header govuk-table__header--center" colspan="2">Request/Response</th>
+                                <th class="govuk-table__header govuk-table__header--center" colspan="2">Publish/Subscribe</th>
                             </tr>
                             <tr>
-                                <td class="govuk-table__cell" style="text-align: center"></td>
-                                <td class="govuk-table__cell" style="text-align: center">Request sent</td>
-                                <td class="govuk-table__cell" style="text-align: center">Response received</td>
-                                <td class="govuk-table__cell" style="text-align: center">Event published</td>
-                                <td class="govuk-table__cell" style="text-align: center">Event received</td>
+                                <td class="govuk-table__cell govuk-table__cell--center"></td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Request sent</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Response received</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Event published</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">Event received</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="govuk-table__cell">SFA.DAS.ApprenticeshipInfoService</td>
-                                <td class="govuk-table__cell" style="text-align: center">@Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest.ToString("HH:mm:ss")</td>
-                                <td class="govuk-table__cell" style="text-align: center">@(Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse?.ToString("HH:mm:ss") ?? "Failed")</td>
-                                <td class="govuk-table__cell" style="text-align: center">-</td>
-                                <td class="govuk-table__cell" style="text-align: center">-</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest.ToString("HH:mm:ss")</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">
+                                    @if (Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse == null)
+                                    {
+                                        @:Failed
+                                    }
+                                    else
+                                    {
+                                        @Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse.Value.ToString("HH:mm:ss") @:(@Model.HealthCheck.ReceivedApprenticeshipInfoServiceApiResponse.Value.Subtract(Model.HealthCheck.SentApprenticeshipInfoServiceApiRequest).ToHumanReadableString())
+                                    }
+                                </td>
+                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
                             </tr>
                             <tr>
                                 <td class="govuk-table__cell">SFA.DAS.ProviderRelationships</td>
-                                <td class="govuk-table__cell" style="text-align: center">-</td>
-                                <td class="govuk-table__cell" style="text-align: center">-</td>
-                                <td class="govuk-table__cell" style="text-align: center">@Model.HealthCheck.PublishedProviderRelationshipsEvent.ToString("HH:mm:ss")</td>
-                                <td class="govuk-table__cell" style="text-align: center">
+                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.PublishedProviderRelationshipsEvent.ToString("HH:mm:ss")</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">
                                     @if (Model.HealthCheck.ReceivedProviderRelationshipsEvent == null)
                                     {
                                         @:Waiting (@DateTime.UtcNow.Subtract(Model.HealthCheck.PublishedProviderRelationshipsEvent).ToHumanReadableString())
@@ -64,4 +73,4 @@
             <button class="govuk-button" type="submit">Run</button>
         }
     </div>
-        </div>
+</div>

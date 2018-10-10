@@ -20,6 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _authenticationService.SignOutUser();
 
             var url = Url.EmployerPortalAction("service/signout");
+
             return new RedirectResult(url);
         }
     }
