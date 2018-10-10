@@ -4,6 +4,8 @@ namespace SFA.DAS.EmployerCommitments.Messages.Events // SFA.DAS.ProviderRelatio
 {
     public enum PermissionType
     {
-        CreateCohort
+        CreateCohort,
+        //todo: remove before merging!
+        Test
     }
 }
