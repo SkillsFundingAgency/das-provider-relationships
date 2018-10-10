@@ -15,10 +15,10 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public DataRegistry()
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
-            For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
+            For<IProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 
-        private ProviderRelationshipsDbContext GetDbContext(IContext context)
+        private IProviderRelationshipsDbContext GetDbContext(IContext context)
         {
             var unitOfWorkContext = context.GetInstance<IUnitOfWorkContext>();
             var clientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
