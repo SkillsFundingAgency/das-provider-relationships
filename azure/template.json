@@ -146,7 +146,7 @@
                         "value": "[parameters('workerAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[resourceGroup().name]"
                     },
                     "deployStagingSlot": {
                         "value": false
@@ -178,7 +178,7 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Web/serverFarms/',parameters('workerAppServiceName'))]"
+                "worker-app-service-plan-deployment"
             ]
         },
         {
