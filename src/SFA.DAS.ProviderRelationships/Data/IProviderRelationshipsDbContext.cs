@@ -10,7 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Data
         DbSet<AccountLegalEntity> AccountLegalEntities { get; }
         DbSet<Permission> Permissions { get; }
         DbSet<HealthCheck> HealthChecks { get; }
-
+        DbSet<Provider> Providers { get; set; }
+        
         int SaveChanges();
         Task<int> SaveChangesAsync();
 

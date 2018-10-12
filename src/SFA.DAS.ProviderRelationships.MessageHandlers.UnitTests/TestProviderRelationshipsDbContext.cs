@@ -17,12 +17,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             AccountLegalEntities = new DbSetStub<AccountLegalEntity>();
             Permissions = new DbSetStub<Permission>();
             HealthChecks = new DbSetStub<HealthCheck>();
+            Providers = new DbSetStub<Provider>();
         }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<HealthCheck> HealthChecks { get; set; }
+        public DbSet<Provider> Providers { get; set; }
 
         public int SaveChangesCount { get; private set; }
 
@@ -30,6 +32,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         public IEnumerable<AccountLegalEntity> AccountLegalEntitiesAtLastSaveChanges;
         public IEnumerable<Permission> PermissionsAtLastSaveChanges;
         public IEnumerable<HealthCheck> HealthChecksAtLastSaveChanges;
+        public IEnumerable<Provider> ProvidersAtLastSaveChanges;
 
         public int SaveChanges()
         {
@@ -37,6 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             AccountLegalEntitiesAtLastSaveChanges = new List<AccountLegalEntity>(AccountLegalEntities).GetClone();
             PermissionsAtLastSaveChanges = new List<Permission>(Permissions).GetClone();
             HealthChecksAtLastSaveChanges = new List<HealthCheck>(HealthChecks).GetClone();
+            ProvidersAtLastSaveChanges = new List<Provider>(Providers).GetClone();
 
             ++SaveChangesCount;
             return 1;
@@ -60,6 +64,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                     break;
                 case Permission permission:
                     Permissions = new DbSetStub<Permission>(Permissions.Where(p => p.PermissionId != permission.PermissionId));
+                    break;
+                case Provider provider:
+                    Providers = new DbSetStub<Provider>(Providers.Where(p => p.UKPRN != provider.UKPRN));
                     break;
                 case HealthCheck healthCheck:
                     HealthChecks = new DbSetStub<HealthCheck>(HealthChecks.Where(hc => hc.Id != healthCheck.Id));

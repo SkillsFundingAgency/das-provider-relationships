@@ -11,6 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Data
         public virtual DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<HealthCheck> HealthChecks { get; set; }
+        public virtual DbSet<Provider> Providers { get; set; }
 
         static ProviderRelationshipsDbContext()
         {

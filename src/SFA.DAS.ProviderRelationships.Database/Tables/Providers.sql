@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Providers]
+(
+	[Id] BIGINT NOT NULL IDENTITY,
+	[UKPRN] BIGINT NOT NULL PRIMARY KEY,
+	[Name] nvarchar(100) NOT NULL,  -- 100, max? what's source?
+	--CONSTRAINT AK_UKPRN UNIQUE(UKPRN)
+	CONSTRAINT AK_Providers_Id UNIQUE CLUSTERED(Id)
+)

@@ -33,6 +33,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         {
             Log.Info($"Received: {message.AccountLegalEntityId}, '{(int)message.Type}:{message.Type}', User:{message.UserRef}");
 
+            //todo: this will be directly invoked and the event handler will update the read store
             Db.Permissions.AddOrUpdate(p => new { p.AccountLegalEntityId, p.Type }, new Permission
             {
                 AccountLegalEntityId = message.AccountLegalEntityId,

@@ -17,5 +17,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual Account Account { get; set; }
 
         public virtual ICollection<Permission> Permissions { get; set; }
+        
+        // providers that have been set-up as having a relationships with the AccountLegalEntity
+        public virtual ICollection<Provider> Providers { get; set; }
     }
 }
