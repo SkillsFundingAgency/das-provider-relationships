@@ -35,3 +35,4 @@
 [Elastic Search]: https://www.elastic.co/products/elasticsearch
 [SQL Server Management Studio]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms
 [Visual Studio]: https://www.visualstudio.com
+[Cosmos DB Emulator] : https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
