@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{130DA403-E2FE-439E-89E6-8B764A094AB1}"
 	ProjectSection(SolutionItems) = preProject
 		Possible Improvements.txt = Possible Improvements.txt
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client", "SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj", "{7F2F7041-07E0-48C0-A65A-E7FF06C65532}"
