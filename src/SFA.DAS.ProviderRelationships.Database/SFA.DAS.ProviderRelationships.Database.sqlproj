@@ -64,6 +64,7 @@
     <Folder Include="Scripts\PreDeployment" />
     <Folder Include="Scripts\PostDeployment" />
     <Folder Include="Tables\" />
+    <Folder Include="Scripts\Manual\AML-2819" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeployment\PreDeployment.sql" />
@@ -73,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SFA.DAS.ProviderRelationships.Database.publish.xml" />
+    <None Include="Scripts\Manual\AML-2819\AML-2819_One_off_account_seeding.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\ClientOutboxData.sql" />
