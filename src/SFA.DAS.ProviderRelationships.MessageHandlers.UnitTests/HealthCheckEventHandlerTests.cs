@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
+using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Data;
@@ -10,7 +10,6 @@ using SFA.DAS.ProviderRelationships.Messages;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests;
 using SFA.DAS.Testing;
-using SFA.DAS.Testing.EntityFramework;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
@@ -28,22 +27,25 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
     public class HealthCheckEventHandlerTestsFixture
     {
         public IHandleMessages<HealthCheckEvent> Handler { get; set; }
-        public Mock<IProviderRelationshipsDbContext> Db { get; set; }
+        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
+        public ProviderRelationshipsDbContext Db { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public HealthCheckEventHandlerTestsFixture()
         {
-            Db = new Mock<IProviderRelationshipsDbContext>();
+            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            Db = new ProviderRelationshipsDbContext(DbContextOptions);
 
             HealthChecks = new List<HealthCheck>
             {
                 new HealthCheckBuilder().WithId(1).Build(),
                 new HealthCheckBuilder().WithId(2).Build()
             };
-
-            Db.Setup(d => d.HealthChecks).Returns(new DbSetStub<HealthCheck>(HealthChecks));
-
-            Handler = new HealthCheckEventHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db.Object));
+            
+            Db.HealthChecks.AddRange(HealthChecks);
+            Db.SaveChanges();
+            
+            Handler = new HealthCheckEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
         public Task Handle()

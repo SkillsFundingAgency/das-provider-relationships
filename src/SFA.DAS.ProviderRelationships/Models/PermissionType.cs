@@ -1,11 +1,8 @@
-﻿
-//todo: move to employercommitments
-namespace SFA.DAS.EmployerCommitments.Messages.Events // SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Models
 {
     public enum PermissionType
     {
         CreateCohort,
-        //todo: remove before merging!
-        Test
+        Test // TODO: Remove before merging!
     }
 }

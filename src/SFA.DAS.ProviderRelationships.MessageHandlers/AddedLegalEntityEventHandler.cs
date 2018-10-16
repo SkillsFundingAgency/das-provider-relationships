@@ -2,14 +2,12 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.EmployerAccounts.Messages.Events
 {
-    //todo: these will come from SFA.DAS.EmployerAccounts.Messages nuget package once it's available
     public class AddedLegalEntityEvent : Event
     {
         public long AccountId { get; set; }
@@ -31,18 +29,18 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
     /// With the exponential back-off potentially retrying messages 1/2 day after the first try, that gives a decent sized window.
     /// (Alternatively, we could remove the FK constraint and have eventual consistency.)
     /// </remarks>
-    public class AddedLegalEntityEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<AddedLegalEntityEvent>
+    public class AddedLegalEntityEventHandler : IHandleMessages<AddedLegalEntityEvent>
     {
-        public AddedLegalEntityEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
-            : base(db, log)
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+        public AddedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
+            _db = db;
         }
 
-        public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
+        public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            Log.Info($"Received: {message.AccountLegalEntityId}, {message.AccountId}, '{message.OrganisationName}', {message.UserRef}");
-
-            Db.AccountLegalEntities.Add(new AccountLegalEntity
+            _db.Value.AccountLegalEntities.Add(new AccountLegalEntity
             {
                 Id = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
@@ -50,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 AccountId = message.AccountId
             });
 
-            await Db.SaveChangesAsync();
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Persistence;
 using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
@@ -15,9 +17,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public DataRegistry()
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
-            For<IProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
-            
-            //todo: required for UnitOfWork (unless we switch it to work with an interface)
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 
@@ -27,8 +26,15 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             var clientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
             var serverSession = unitOfWorkContext.TryGet<SynchronizedStorageSession>();
             var sqlSession = clientSession?.GetSqlSession() ?? serverSession.GetSqlSession();
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>();
 
-            return new ProviderRelationshipsDbContext(sqlSession.Connection, sqlSession.Transaction);
+            optionsBuilder.UseSqlServer(sqlSession.Connection, o => o.EnableRetryOnFailure());
+            
+            var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
+            
+            db.Database.UseTransaction(sqlSession.Transaction);
+
+            return db;
         }
     }
 }

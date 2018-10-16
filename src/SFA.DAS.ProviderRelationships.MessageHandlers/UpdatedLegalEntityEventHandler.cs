@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 
@@ -21,22 +20,20 @@ namespace SFA.DAS.EmployerAccounts.Messages.Events
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class UpdatedLegalEntityEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<UpdatedLegalEntityEvent>
+    public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntityEvent>
     {
-        public UpdatedLegalEntityEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
-            : base(db, log)
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+        public UpdatedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
+            _db = db;
         }
 
         public async Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            Log.Info($"Received: {message.AccountLegalEntityId}, '{message.Name}', User:{message.UserRef}");
-
-            var accountLegalEntity = Db.AccountLegalEntities.Single(ale => ale.Id == message.AccountLegalEntityId);
+            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(ale => ale.Id == message.AccountLegalEntityId);
 
             accountLegalEntity.Name = message.Name;
-
-            await Db.SaveChangesAsync();
         }
     }
 }

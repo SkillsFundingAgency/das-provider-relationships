@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.NLog.Logger;
@@ -21,22 +22,20 @@ namespace SFA.DAS.EmployerAccounts.Messages.Events
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class ChangedAccountNameEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<ChangedAccountNameEvent>
+    public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountNameEvent>
     {
-        public ChangedAccountNameEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
-            : base(db, log)
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+        public ChangedAccountNameEventHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
+            _db = db;
         }
 
         public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
         {
-            //todo: check log contains ChangedAccountNameEventHandler. label fields??
-            Log.Info($"Received: {message.AccountId}, '{message.PreviousName}' => '{message.CurrentName}', User:{message.UserRef}");
-
-            //todo: what to do if not found?
-            Db.Accounts.Single(a => a.Id == message.AccountId).Name = message.CurrentName;
-
-            await Db.SaveChangesAsync();
+            var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
+                
+            account.Name = message.CurrentName;
         }
     }
 }

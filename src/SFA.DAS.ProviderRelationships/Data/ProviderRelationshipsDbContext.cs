@@ -1,45 +1,24 @@
-﻿using System.Data.Common;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
-    [DbConfigurationType(typeof(SqlAzureDbConfiguration))]
-    public class ProviderRelationshipsDbContext : DbContext, IProviderRelationshipsDbContext
+    public class ProviderRelationshipsDbContext : DbContext
     {
-        public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
-        public virtual DbSet<Permission> Permissions { get; set; }
-        public virtual DbSet<HealthCheck> HealthChecks { get; set; }
-        public virtual DbSet<Provider> Providers { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public DbSet<HealthCheck> HealthChecks { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Provider> Providers { get; set; }
 
-        static ProviderRelationshipsDbContext()
-        {
-            Database.SetInitializer<ProviderRelationshipsDbContext>(null);
-        }
-
-        public ProviderRelationshipsDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+        public ProviderRelationshipsDbContext(DbContextOptions<ProviderRelationshipsDbContext> options) : base(options)
         {
         }
 
-        public ProviderRelationshipsDbContext(DbConnection connection, DbTransaction transaction)
-            : base(connection, false)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Database.UseTransaction(transaction);
-        }
-
-        protected ProviderRelationshipsDbContext()
-        {
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-        }
-
-        public void Delete(object entity)
-        {
-            Entry(entity).State = EntityState.Deleted;
+            modelBuilder.Entity<AccountLegalEntity>().Property(a => a.Id).ValueGeneratedNever();
+            modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
         }
     }
 }

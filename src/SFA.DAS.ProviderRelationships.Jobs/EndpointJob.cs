@@ -38,10 +38,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
 
             var endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
 
-            _container.Configure(c =>
-            {
-                c.For<IMessageSession>().Use(endpoint);
-            });
+            _container.Configure(c => c.For<IMessageSession>().Use(endpoint));
         }
     }
 }

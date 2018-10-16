@@ -35,10 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             _endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
 
-            container.Configure(c =>
-            {
-                c.For<IMessageSession>().Use(_endpoint);
-            });
+            container.Configure(c => c.For<IMessageSession>().Use(_endpoint));
         }
 
         public static void Stop()

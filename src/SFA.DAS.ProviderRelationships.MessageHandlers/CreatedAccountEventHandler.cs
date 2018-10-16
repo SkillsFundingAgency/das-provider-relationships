@@ -21,25 +21,24 @@ namespace SFA.DAS.EmployerAccounts.Messages.Events
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class CreatedAccountEventHandler : ProviderRelationshipsEventHandler, IHandleMessages<CreatedAccountEvent>
+    public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
     {
-        //todo: as db is lazy, don't get exception until try to use it. add check to ctor? then not lazy!
-        public CreatedAccountEventHandler(Lazy<IProviderRelationshipsDbContext> db, ILog log)
-            : base(db, log)
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+        public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
+            _db = db;
         }
 
-        public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
+        public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            Log.Info($"Received: {message.AccountId} ({message.PublicHashedId}), '{message.Name}', User:{message.UserRef}");
-
-            Db.Accounts.Add(new Account
+            _db.Value.Accounts.Add(new Account
             {
                 Id = message.AccountId,
                 Name = message.Name
             });
 
-            await Db.SaveChangesAsync();
+            return Task.CompletedTask;
         }
     }
 }

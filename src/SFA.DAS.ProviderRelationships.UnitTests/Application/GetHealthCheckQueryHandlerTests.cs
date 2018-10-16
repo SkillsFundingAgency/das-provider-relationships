@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
-using Moq;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Data;
@@ -13,7 +13,6 @@ using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
-using SFA.DAS.Testing.EntityFramework;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
@@ -36,14 +35,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
     {
         public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
         public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse> Handler { get; set; }
-        public Mock<IProviderRelationshipsDbContext> Db { get; set; }
+        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
+        public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public GetHealthCheckQueryHandlerTestsFixture()
         {
             GetHealthCheckQuery = new GetHealthCheckQuery();
-            Db = new Mock<IProviderRelationshipsDbContext>();
+            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            Db = new ProviderRelationshipsDbContext(DbContextOptions);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>());
 
             HealthChecks = new List<HealthCheck>
@@ -51,10 +52,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
                 new HealthCheckBuilder().WithId(1).Build(),
                 new HealthCheckBuilder().WithId(2).Build()
             };
+            
+            Db.HealthChecks.AddRange(HealthChecks);
+            Db.SaveChanges();
 
-            Db.Setup(d => d.HealthChecks).Returns(new DbSetStub<HealthCheck>(HealthChecks));
-
-            Handler = new GetHealthCheckQueryHandler(new Lazy<IProviderRelationshipsDbContext>(() => Db.Object), ConfigurationProvider);
+            Handler = new GetHealthCheckQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
         public Task<GetHealthCheckQueryResponse> Handle()

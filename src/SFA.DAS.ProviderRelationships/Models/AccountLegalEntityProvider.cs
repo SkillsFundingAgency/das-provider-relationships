@@ -1,8 +1,8 @@
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    public class AccountLegalEntityProviders
+    public class AccountLegalEntityProvider
     {
         public long AccountLegalEntityId { get; set; }
-        public long UKPRN { get; set; }
+        public long Ukprn { get; set; }
     }
 }
