@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
 
         public HealthCheckBuilder WithId (int id)
         {
-            _healthCheck.Setup(h => h.Id).Returns(id);
+            _healthCheck.SetupProperty(h => h.Id, id);
 
             return this;
         }

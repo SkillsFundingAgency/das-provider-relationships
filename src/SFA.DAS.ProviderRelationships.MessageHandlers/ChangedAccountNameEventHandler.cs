@@ -31,9 +31,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
         public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
         {
-            var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
-            
-            //account.Name = message.CurrentName;
+            var account = await _db.Value.Accounts.FindAsync(message.AccountId);
+
+            account.ChangeName(message.CurrentName, message.Created);
         }
     }
 }
