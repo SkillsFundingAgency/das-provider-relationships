@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Document.Repository", "SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj", "{CF279807-AA86-45B4-9F28-2D3FFB7C2711}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +119,7 @@ Global
 		{EE123E95-CDD1-443C-8C9D-3723866796D9} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 		{9946FBAB-9D13-4B85-924E-A3BE10CDC567} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 		{93F57F41-2B02-4DE2-853C-151873455CF5} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
+		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60F880F0-9517-4CDC-86E4-D8694C75B0EB}

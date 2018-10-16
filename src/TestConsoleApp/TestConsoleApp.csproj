@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
