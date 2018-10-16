@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {

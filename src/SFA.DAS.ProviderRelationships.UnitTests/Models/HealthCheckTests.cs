@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Messages;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;

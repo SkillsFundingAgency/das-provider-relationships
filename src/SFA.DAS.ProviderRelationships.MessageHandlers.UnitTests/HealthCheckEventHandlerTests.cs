@@ -7,6 +7,7 @@ using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests;
 using SFA.DAS.Testing;

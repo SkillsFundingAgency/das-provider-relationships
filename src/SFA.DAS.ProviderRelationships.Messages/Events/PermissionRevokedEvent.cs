@@ -1,9 +1,9 @@
 using System;
 using SFA.DAS.NServiceBus;
 
-namespace SFA.DAS.ProviderRelationships.Messages
+namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class PermissionGrantedEvent : Event
+    public class PermissionRevokedEvent : Event
     {
         public long PermissionId { get; set; }
         public long AccountLegalEntityId { get; set; }
