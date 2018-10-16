@@ -15,8 +15,4 @@
         <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Temp" />
-    </ItemGroup>
-
 </Project>

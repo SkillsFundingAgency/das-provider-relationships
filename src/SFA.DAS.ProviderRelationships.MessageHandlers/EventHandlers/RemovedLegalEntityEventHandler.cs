@@ -2,23 +2,7 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
-
-namespace SFA.DAS.EmployerAccounts.Messages.Events
-{
-    public class RemovedLegalEntityEvent : Event
-    {
-        public long AccountId { get; set; }
-        public string UserName { get; set; }
-        public Guid UserRef { get; set; }
-        public long AgreementId { get; set; }
-        public bool AgreementSigned { get; set; }
-        public long LegalEntityId { get; set; }
-        public string OrganisationName { get; set; }
-        public long AccountLegalEntityId { get; set; }
-    }
-}
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {

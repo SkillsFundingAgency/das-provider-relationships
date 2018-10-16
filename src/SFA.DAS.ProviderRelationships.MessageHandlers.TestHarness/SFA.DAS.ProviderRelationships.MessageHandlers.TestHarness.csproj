@@ -7,25 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NLog.Schema" Version="4.5.10" />
-        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="2.1.1" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="2.1.1" />
-        <PackageReference Include="StructureMap" Version="4.7.0" />
+        <PackageReference Include="NLog.Schema" Version="4.5.10"/>
+        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5"/>
+        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="2.1.1"/>
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="2.1.1"/>
+        <PackageReference Include="StructureMap" Version="4.7.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj"/>
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="SFA.DAS.ProviderRelationships.MessageHandlers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests\bin\Debug\net462\SFA.DAS.ProviderRelationships.MessageHandlers.exe</HintPath>
-        </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Configuration" />
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System"/>
+        <Reference Include="System.Configuration"/>
     </ItemGroup>
 
     <ItemGroup>
