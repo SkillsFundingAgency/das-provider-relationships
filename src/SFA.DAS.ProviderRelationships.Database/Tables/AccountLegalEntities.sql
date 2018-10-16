@@ -23,7 +23,7 @@ CREATE TABLE [dbo].[AccountLegalEntities]
 	[Name] NVARCHAR(100) NOT NULL, 
   [Created] DateTime2 NOT NULL,
 	[Updated] DateTime2 NOT NULL,
-	CONSTRAINT [FK_AccountLegalEntities_ToAccounts] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([AccountId]),
+	CONSTRAINT [FK_AccountLegalEntities_ToAccounts] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]),
  --if a new delete account event appears, we'll probably want... (should be set it anyway??)
  --ON DELETE CASCADE
 )
