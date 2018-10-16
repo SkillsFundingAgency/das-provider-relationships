@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
                 var host = new JobHost(config);
                 
-                host.Call(typeof(Program).GetMethod(nameof(MainAsync)));
+                host.Call(typeof(Program).GetMethod(nameof(RunAsync)));
                 host.RunAndBlock();
                 
                 await StartupTasks.StopAsync();
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         }
         
         [NoAutomaticTrigger]
-        private static async Task MainAsync(CancellationToken cancellationToken)
+        public static async Task RunAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
