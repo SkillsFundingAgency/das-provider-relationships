@@ -1,0 +1,62 @@
+using System;
+using System.Linq;
+using System.ServiceModel.Channels;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using NServiceBus;
+using NServiceBus.Testing;
+using NUnit.Framework;
+using SFA.DAS.EmployerAccounts.Messages.Events;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.Testing;
+
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
+{
+    [TestFixture]
+    public class CreatedAccountEventHandlerTests : FluentTest<CreatedAccountEventHandlerTestsFixture>
+    {
+        [Test]
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldAddAccount()
+        {
+            return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault().Should().NotBeNull()
+                .And.Match<Account>(a => 
+                    a.Id == f.Message.AccountId &&
+                    a.Name == f.Message.Name &&
+                    a.Created == f.Message.Created &&
+                    a.CreatedAt >= f.Now));
+        }
+    }
+
+    public class CreatedAccountEventHandlerTestsFixture
+    {
+        public DateTime Now { get; set; }
+        public ProviderRelationshipsDbContext Db { get; set; }
+        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
+        public CreatedAccountEvent Message { get; set; }
+        public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
+
+        public CreatedAccountEventHandlerTestsFixture()
+        {
+            Now = DateTime.UtcNow;
+            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            
+            Message = new CreatedAccountEvent
+            {
+                AccountId = 123,
+                Name = "Acme",
+                Created = DateTime.UtcNow
+            };
+            
+            Handler = new CreatedAccountEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
+        }
+
+        public async Task Handle()
+        {
+            await Handler.Handle(Message, null);
+            await Db.SaveChangesAsync();
+        }
+    }
+}

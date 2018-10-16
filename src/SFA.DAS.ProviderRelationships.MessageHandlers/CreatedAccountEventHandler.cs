@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
@@ -32,11 +31,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
         public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            _db.Value.Accounts.Add(new Account
-            {
-                Id = message.AccountId,
-                Name = message.Name
-            });
+            var account = new Account(message.AccountId, message.Name, message.Created);
+            
+            _db.Value.Accounts.Add(account);
 
             return Task.CompletedTask;
         }

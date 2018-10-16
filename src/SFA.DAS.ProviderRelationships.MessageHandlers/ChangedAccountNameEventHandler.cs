@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
 
@@ -34,8 +32,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
         {
             var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
-                
-            account.Name = message.CurrentName;
+            
+            //account.Name = message.CurrentName;
         }
     }
 }

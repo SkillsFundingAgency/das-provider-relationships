@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedNever();
             modelBuilder.Entity<AccountLegalEntity>().Property(a => a.Id).ValueGeneratedNever();
             modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
         }
