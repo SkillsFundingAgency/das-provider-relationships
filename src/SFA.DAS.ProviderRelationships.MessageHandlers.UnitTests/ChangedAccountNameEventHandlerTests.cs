@@ -9,6 +9,7 @@ using SFA.DAS.EmployerAccounts.Messages.Events;
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
     [TestFixture]
+    [Parallelizable]
     public class ChangedAccountNameEventHandlerTests : FluentTest<ChangedAccountNameEventHandlerTestsFixture>
     {
         [Test]

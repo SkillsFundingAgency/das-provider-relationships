@@ -15,6 +15,7 @@ using SFA.DAS.UnitOfWork;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
     [TestFixture]
+    [Parallelizable]
     public class RunHealthCheckCommandHandlerTests : FluentTest<RunHealthCheckCommandHandlerTestsFixture>
     {
         [Test]

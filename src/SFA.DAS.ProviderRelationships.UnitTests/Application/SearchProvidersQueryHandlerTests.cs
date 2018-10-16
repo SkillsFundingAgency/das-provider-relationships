@@ -11,6 +11,7 @@ using SFA.DAS.Validation;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
     [TestFixture]
+    [Parallelizable]
     public class SearchProvidersQueryHandlerTests : FluentTest<SearchProvidersQueryHandlerTestsFixture>
     {
         [Test]

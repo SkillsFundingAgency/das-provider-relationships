@@ -16,6 +16,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
     [TestFixture]
+    [Parallelizable]
     public class HealthCheckControllerTests : FluentTest<HealthCheckControllerTestsFixture>
     {
         [Test]

@@ -15,6 +15,7 @@ using SFA.DAS.Testing.EntityFramework;
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
     [TestFixture]
+    [Parallelizable]
     public class HealthCheckEventHandlerTests : FluentTest<HealthCheckEventHandlerTestsFixture>
     {
         [Test]

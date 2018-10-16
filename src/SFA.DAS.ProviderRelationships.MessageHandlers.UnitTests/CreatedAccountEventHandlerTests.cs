@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
     //}
 
     [TestFixture]
+    [Parallelizable]
     public class CreatedAccountEventHandlerTests : FluentTest<CreatedAccountEventHandlerTestsFixture>
     {
         //todo: wtf is AutoData stopping the test from running?

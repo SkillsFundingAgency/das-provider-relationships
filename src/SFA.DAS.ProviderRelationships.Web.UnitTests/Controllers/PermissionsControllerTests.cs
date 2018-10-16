@@ -17,6 +17,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
     [TestFixture]
+    [Parallelizable]
     public class PermissionsControllerTests : FluentTest<PermissionsControllerTestsFixture>
     {
         [Test]

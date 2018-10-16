@@ -14,6 +14,7 @@ using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.Authenticatio
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
+    [Parallelizable]
     public class AuthenticationStartupTests : FluentTest<AuthenticationStartupTestsFixture> // might have to update fluenttest to handle 2-phase construction of the testfixture for async construction
     {
     }

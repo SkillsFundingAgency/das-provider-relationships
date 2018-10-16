@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
 {
     [TestFixture]
+    [Parallelizable]
     public class RemovedLegalEntityEventHandlerTests : FluentTest<RemovedLegalEntityEventHandlerTestsFixture>
     {
         //todo: test cascade delete. create graph for test

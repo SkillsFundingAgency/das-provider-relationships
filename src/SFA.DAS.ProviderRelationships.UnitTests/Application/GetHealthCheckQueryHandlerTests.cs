@@ -18,6 +18,7 @@ using SFA.DAS.Testing.EntityFramework;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
     [TestFixture]
+    [Parallelizable]
     public class GetHealthCheckQueryHandlerTests : FluentTest<GetHealthCheckQueryHandlerTestsFixture>
     {
         [Test]

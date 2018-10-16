@@ -13,6 +13,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 {
     [TestFixture]
+    [Parallelizable]
     public class GetProviderQueryHandlerTests : FluentTest<GetProviderQueryHandlerTestsFixture>
     {
         [Test]

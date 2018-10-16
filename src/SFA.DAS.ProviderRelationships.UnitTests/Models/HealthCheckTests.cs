@@ -10,6 +10,7 @@ using SFA.DAS.UnitOfWork;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 {
     [TestFixture]
+    [Parallelizable]
     public class HealthCheckTests : FluentTest<HealthCheckTestsFixture>
     {
         [Test]
