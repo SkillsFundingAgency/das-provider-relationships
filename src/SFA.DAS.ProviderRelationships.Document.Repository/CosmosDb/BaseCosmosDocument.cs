@@ -12,6 +12,6 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
         public string ETag { get; set; }
 
         [JsonProperty("_etag")]
-        private string etag { set { ETag = value; } }
+        private string ReadOnlyETag { set { ETag = value; } }
     }
 }

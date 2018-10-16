@@ -66,6 +66,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
                 if(documentClientException.StatusCode == HttpStatusCode.NotFound)
                     throw new DocumentException("Collection Not Found", HttpStatusCode.NotFound, documentClientException) ;
 
+                if (documentClientException.StatusCode == HttpStatusCode.BadRequest && documentClientException.Message.StartsWith("Cross partition query is required but disabled"))
+                    throw new DocumentException("This Collection is partitioned, the query must include the partition key or you must set the option to query across all partitions.", HttpStatusCode.BadRequest, documentClientException);
+                
                 throw;
             }
 
