@@ -4,6 +4,10 @@
     <LangVersion>latest</LangVersion>
     <OutputType>Library</OutputType>
     <TargetFramework>net462</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <MSDeployPackagePublishDependsOn>CopyWebJobs</MSDeployPackagePublishDependsOn>
+    <WebJobProjects>$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj;$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj</WebJobProjects>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,21 +18,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <MSDeployPackagePublishDependsOn>CopyWebJobs</MSDeployPackagePublishDependsOn>
-    <WebJobProjects>$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj;$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj</WebJobProjects>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
 
   <Target Name="CopyWebJobs">
     <MSBuild Projects="$(WebJobProjects)" Targets="Restore;Build" Properties="DeployOnBuild=true;Configuration=$(Configuration);WebPublishMethod=FileSystem;PublishUrl=$(PublishIntermediateOutputPath)" RunEachTargetSeparately="true" StopOnFirstFailure="true" />
