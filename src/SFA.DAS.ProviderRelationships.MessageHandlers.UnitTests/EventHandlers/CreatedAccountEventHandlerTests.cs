@@ -1,18 +1,17 @@
 using System;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NServiceBus;
-using NServiceBus.Testing;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
     public class CreatedAccountEventHandlerTests : FluentTest<CreatedAccountEventHandlerTestsFixture>

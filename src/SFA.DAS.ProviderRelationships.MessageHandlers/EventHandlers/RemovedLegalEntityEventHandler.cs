@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerAccounts.Messages.Events
     }
 }
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     public class RemovedLegalEntityEventHandler : IHandleMessages<RemovedLegalEntityEvent>
     {

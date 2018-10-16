@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerAccounts.Messages.Events
     }
 }
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     /// <remarks>
     /// If we receive this event *before* the CreatedAccountEvent, this will fail, but should then work on a subsequent retry,

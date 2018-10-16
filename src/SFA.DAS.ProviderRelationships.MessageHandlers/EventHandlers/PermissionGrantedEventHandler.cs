@@ -2,10 +2,9 @@ using System;
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Messages;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     public class PermissionGrantedEventHandler : IHandleMessages<PermissionGrantedEvent>
     {
