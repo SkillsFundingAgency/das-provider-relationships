@@ -57,10 +57,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             switch (entity)
             {
                 case Account account:
-                    Accounts = new DbSetStub<Account>(Accounts.Where(a => a.AccountId != account.AccountId));
+                    Accounts = new DbSetStub<Account>(Accounts.Where(a => a.Id != account.Id));
                     break;
                 case AccountLegalEntity accountLegalEntity:
-                    AccountLegalEntities = new DbSetStub<AccountLegalEntity>(AccountLegalEntities.Where(ale => ale.AccountLegalEntityId != accountLegalEntity.AccountLegalEntityId));
+                    AccountLegalEntities = new DbSetStub<AccountLegalEntity>(AccountLegalEntities.Where(ale => ale.Id != accountLegalEntity.Id));
                     break;
                 case Permission permission:
                     Permissions = new DbSetStub<Permission>(Permissions.Where(p => p.PermissionId != permission.PermissionId));

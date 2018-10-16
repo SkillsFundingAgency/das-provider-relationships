@@ -14,15 +14,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         [Test]
         public async Task WhenHandlingAnUpdatedLegalEntityEvent_ThenLegalEntityShouldBeUpdated()
         {
-            const long AccountLegalEntityId = 888L;
-            const string OldName = "Old Name", NewName = "New Name";
+            const long accountLegalEntityId = 888L;
+            const string oldName = "Old Name", newName = "New Name";
 
             await RunAsync(f =>
                 {
                     f.Db.AccountLegalEntities = new DbSetStub<AccountLegalEntity>(new AccountLegalEntity
-                        { AccountLegalEntityId = AccountLegalEntityId, Name = OldName});   
-                    f.Event.AccountLegalEntityId = AccountLegalEntityId;
-                    f.Event.Name = NewName;
+                        { Id = accountLegalEntityId, Name = oldName});   
+                    f.Event.AccountLegalEntityId = accountLegalEntityId;
+                    f.Event.Name = newName;
                     //f.Event.Address = NewName;
                     //todo: add AccountId
                     //todo: username & userref?
@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                     {
                         new AccountLegalEntity
                         {
-                            AccountLegalEntityId = f.Event.AccountLegalEntityId, Name = NewName
+                            Id = f.Event.AccountLegalEntityId, Name = newName
                         }
                     });
                 });

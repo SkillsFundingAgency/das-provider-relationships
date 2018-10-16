@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         {
             Log.Info($"Received: {message.AccountLegalEntityId}, '{message.Name}', User:{message.UserRef}");
 
-            var accountLegalEntity = Db.AccountLegalEntities.Single(ale => ale.AccountLegalEntityId == message.AccountLegalEntityId);
+            var accountLegalEntity = Db.AccountLegalEntities.Single(ale => ale.Id == message.AccountLegalEntityId);
 
             accountLegalEntity.Name = message.Name;
 

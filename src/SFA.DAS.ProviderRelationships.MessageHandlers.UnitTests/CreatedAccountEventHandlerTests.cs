@@ -40,8 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                     {
                         new Account
                         {
-                            AccountId = f.Event.AccountId, Name = f.Event.Name,
-                            PublicHashedId = f.Event.PublicHashedId
+                            Id = f.Event.AccountId, Name = f.Event.Name,
                         }
                     });
                 });

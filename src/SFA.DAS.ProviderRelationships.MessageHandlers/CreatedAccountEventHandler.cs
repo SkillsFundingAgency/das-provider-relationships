@@ -35,10 +35,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
             Db.Accounts.Add(new Account
             {
-                AccountId = message.AccountId,
-                Name = message.Name,
-                //todo: rename in event to AccountPublicHashedId, so that it's explicitly named and not confused with other ids?
-                PublicHashedId = message.PublicHashedId
+                Id = message.AccountId,
+                Name = message.Name
             });
 
             await Db.SaveChangesAsync();

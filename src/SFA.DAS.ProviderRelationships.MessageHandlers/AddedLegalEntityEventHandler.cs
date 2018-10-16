@@ -44,9 +44,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
             Db.AccountLegalEntities.Add(new AccountLegalEntity
             {
-                AccountLegalEntityId = message.AccountLegalEntityId,
+                Id = message.AccountLegalEntityId,
                 Name = message.OrganisationName,
-                AccountLegalEntityPublicHashedId = message.AccountLegalEntityPublicHashedId,
+                PublicHashedId = message.AccountLegalEntityPublicHashedId,
                 AccountId = message.AccountId
             });
 

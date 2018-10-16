@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             Log.Info($"Received: {message.AccountId}, '{message.PreviousName}' => '{message.CurrentName}', User:{message.UserRef}");
 
             //todo: what to do if not found?
-            Db.Accounts.Single(a => a.AccountId == message.AccountId).Name = message.CurrentName;
+            Db.Accounts.Single(a => a.Id == message.AccountId).Name = message.CurrentName;
 
             await Db.SaveChangesAsync();
         }

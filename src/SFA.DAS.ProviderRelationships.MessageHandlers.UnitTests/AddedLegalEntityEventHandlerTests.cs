@@ -22,10 +22,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                     {
                         new AccountLegalEntity
                         {
-                            AccountLegalEntityId = f.Event.AccountLegalEntityId,
+                            Id = f.Event.AccountLegalEntityId,
                             Name = f.Event.OrganisationName,
                             AccountId = f.Event.AccountId,
-                            AccountLegalEntityPublicHashedId = f.Event.AccountLegalEntityPublicHashedId
+                            PublicHashedId = f.Event.AccountLegalEntityPublicHashedId
                         }
                     });
                 });

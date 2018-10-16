@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             await RunAsync(f =>
                 {
                     f.Db.AccountLegalEntities = new DbSetStub<AccountLegalEntity>(new AccountLegalEntity
-                        {AccountLegalEntityId = AccountLegalEntityId});
+                        {Id = AccountLegalEntityId});
                     f.Event.AccountLegalEntityId = AccountLegalEntityId;
                     //todo: username & userref?
                 }, f => f.Handle(),

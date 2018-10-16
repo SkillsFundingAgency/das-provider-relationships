@@ -14,16 +14,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
         [Test]
         public async Task WhenHandlingAChangedAccountNameEvent_ThenAccountNameShouldBeUpdated()
         {
-            const long AccountId = 54321;
-            const string OldName = "Old Name", NewName = "New Name";
+            const long accountId = 54321;
+            const string oldName = "Old Name", newName = "New Name";
 
             //todo: clone in DbSetStub or test?
             await RunAsync(f =>
                 {
-                    f.Db.Accounts = new DbSetStub<Account>(new Account {AccountId = AccountId, Name = OldName});
-                    f.Event.AccountId = AccountId;
-                    f.Event.PreviousName = OldName;
-                    f.Event.CurrentName = NewName;
+                    f.Db.Accounts = new DbSetStub<Account>(new Account {Id = accountId, Name = oldName});
+                    f.Event.AccountId = accountId;
+                    f.Event.PreviousName = oldName;
+                    f.Event.CurrentName = newName;
                 }, f => f.Handle(),
                 f =>
                 {
@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
                     {
                         new Account
                         {
-                            AccountId = f.Event.AccountId, Name = NewName
+                            Id = f.Event.AccountId, Name = newName
                         }
                     });
                 });
