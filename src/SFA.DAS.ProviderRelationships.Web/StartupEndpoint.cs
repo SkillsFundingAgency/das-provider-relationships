@@ -1,7 +1,5 @@
-﻿using System.Data.Common;
-using System.Threading;
+using System.Data.Common;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using NServiceBus;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.NServiceBus.NewtonsoftJsonSerializer;
@@ -13,25 +11,27 @@ using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.ProviderRelationships.Web
 {
-    public class EndpointJob
+    public class StartupEndpoint : IStartupTask
     {
         private readonly IContainer _container;
+        private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
+        private IEndpointInstance _endpoint;
 
-        public EndpointJob(IContainer container)
+        public StartupEndpoint(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
+            _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
         }
 
-        [NoAutomaticTrigger]
-        public async Task RunAsync(CancellationToken cancellationToken)
+        public async Task StartAsync()
         {
-            var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.MessageHandlers")
+            var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Web")
                 .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
                 .UseErrorQueue()
                 .UseInstallers()
-                .UseLicense(_container.GetInstance<ProviderRelationshipsConfiguration>().NServiceBusLicense)
+                .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
@@ -39,14 +39,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 .UseStructureMapBuilder(_container)
                 .UseUnitOfWork();
 
-            var endpoint = await Endpoint.Start(endpointConfiguration);
+            _endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
 
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(3000, cancellationToken);
-            }
+            _container.Configure(c => c.For<IMessageSession>().Use(_endpoint));
+        }
 
-            await endpoint.Stop();
+        public Task StopAsync()
+        {
+            return _endpoint.Stop();
         }
     }
 }

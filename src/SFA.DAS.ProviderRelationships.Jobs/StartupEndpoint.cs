@@ -1,6 +1,5 @@
 ﻿using System.Data.Common;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using NServiceBus;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.NServiceBus.NewtonsoftJsonSerializer;
@@ -13,19 +12,19 @@ using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
 {
-    public class EndpointJob
+    public class StartupEndpoint : IStartupTask
     {
         private readonly IContainer _container;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
+        private IEndpointInstance _endpoint;
 
-        public EndpointJob(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public StartupEndpoint(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
         }
-
-        [NoAutomaticTrigger]
-        public async Task RunAsync()
+        
+        public async Task StartAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
                 .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString)
@@ -36,9 +35,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs
                 .UseSendOnly()
                 .UseStructureMapBuilder(_container);
 
-            var endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
+            _endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
 
-            _container.Configure(c => c.For<IMessageSession>().Use(endpoint));
+            _container.Configure(c => c.For<IMessageSession>().Use(_endpoint));
+        }
+
+        public Task StopAsync()
+        {
+            return _endpoint.Stop();
         }
     }
 }
