@@ -1,6 +1,7 @@
 using System.Web;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Startup;
 using SFA.DAS.ProviderRelationships.Web.Logging;
 using StructureMap;
 

@@ -2,6 +2,7 @@
 using Microsoft.Azure.WebJobs;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Jobs.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
 {

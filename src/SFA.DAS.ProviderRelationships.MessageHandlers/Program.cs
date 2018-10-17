@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {

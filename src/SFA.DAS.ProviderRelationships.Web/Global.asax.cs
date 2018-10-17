@@ -7,7 +7,7 @@ using System.Web.Routing;
 using Microsoft.ApplicationInsights;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {

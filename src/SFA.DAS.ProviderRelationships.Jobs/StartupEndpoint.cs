@@ -8,6 +8,7 @@ using SFA.DAS.NServiceBus.SqlServer;
 using SFA.DAS.NServiceBus.StructureMap;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.ProviderRelationships.Startup;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs

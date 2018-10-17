@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Startup;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution
@@ -10,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         {
             For<ProviderRelationshipsConfiguration>().Use(() => ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
             For<IIdentityServerConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Identity).Singleton();
-            For<IStartup>().Use<Startup>().Singleton();
+            For<IStartup>().Use<Startup.Startup>().Singleton();
         }
     }
 }

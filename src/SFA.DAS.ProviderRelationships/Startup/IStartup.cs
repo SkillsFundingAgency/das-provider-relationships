@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ProviderRelationships.Configuration
+namespace SFA.DAS.ProviderRelationships.Startup
 {
     public interface IStartup
     {
