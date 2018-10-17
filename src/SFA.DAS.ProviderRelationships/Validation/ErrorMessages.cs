@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships
+﻿namespace SFA.DAS.ProviderRelationships.Validation
 {
     public static class ErrorMessages
     {

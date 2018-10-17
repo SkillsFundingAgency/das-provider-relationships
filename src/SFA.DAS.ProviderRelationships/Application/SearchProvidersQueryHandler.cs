@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Validation;
 
