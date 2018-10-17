@@ -14,17 +14,14 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
     public class CosmosDbClient<TResult> where TResult : class
     {
         private readonly IDocumentClient _dbClient;
-        private readonly CosmosDbConfiguration _configuration;
-        private readonly string _documentCollectionName;
+        private readonly IDocumentConfiguration _configuration;
 
         public CosmosDbClient(
             IDocumentClientFactory dbClientFactory,
-            CosmosDbConfiguration configuration,
-            string documentCollectionName)
+            IDocumentConfiguration configuration)
         {
             _dbClient = dbClientFactory.Create(configuration);
             _configuration = configuration;
-            _documentCollectionName = documentCollectionName;
         }
 
         public async Task<TResult> GetById(Guid id)
@@ -79,9 +76,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
         }
 
         protected Uri DocumentCollectionUri() =>
-            UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, _documentCollectionName);
+            UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, _configuration.CollectionName);
 
         protected Uri DocumentUri(string id) =>
-            UriFactory.CreateDocumentUri(_configuration.DatabaseName, _documentCollectionName, id);
+            UriFactory.CreateDocumentUri(_configuration.DatabaseName, _configuration.CollectionName, id);
     }
 }

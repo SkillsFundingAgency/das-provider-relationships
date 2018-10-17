@@ -6,8 +6,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class DocumentRepository<TEntity> : CosmosDbClient<TEntity>, IDocumentRepository<TEntity> where TEntity : class
     {
-        public DocumentRepository(IDocumentClientFactory dbClientFactory, CosmosDbConfiguration configuration, string collectionName)
-            : base (dbClientFactory, configuration, collectionName)
+        public DocumentRepository(IDocumentClientFactory dbClientFactory, IDocumentConfiguration configuration)
+            : base (dbClientFactory, configuration)
         {
         }
         public Task Delete(Guid id)

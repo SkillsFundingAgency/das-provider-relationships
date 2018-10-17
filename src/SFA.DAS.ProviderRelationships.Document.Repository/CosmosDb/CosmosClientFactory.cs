@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
     public class CosmosClientFactory : IDocumentClientFactory
     {
-        public IDocumentClient Create(CosmosDbConfiguration cosmosDbConfiguration)
+        public IDocumentClient Create(IDocumentConfiguration cosmosDbConfiguration)
         {
             return new DocumentClient(new Uri(cosmosDbConfiguration.Uri), cosmosDbConfiguration.SecurityKey);
         }
