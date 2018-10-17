@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.Providers.Api.Client;
 
-namespace SFA.DAS.ProviderRelationships.Application
+namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderQueryResponse>
     {

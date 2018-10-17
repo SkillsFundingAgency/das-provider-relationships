@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Validation;
 
-namespace SFA.DAS.ProviderRelationships.Application
+namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class SearchProvidersQueryHandler : IRequestHandler<SearchProvidersQuery, SearchProvidersQueryResponse>
     {

@@ -4,6 +4,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application;
+using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 using SFA.DAS.Validation;
