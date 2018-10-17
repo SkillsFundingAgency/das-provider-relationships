@@ -1,6 +1,9 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Api.Client
 {
-    public class ProviderRelationship
-    {
+    public enum PermissionEnumDto{
+        CreateCohort
     }
+
 }
+
+

@@ -68,10 +68,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
                 
                 throw;
             }
-
-            catch (Exception e)
+            catch (JsonSerializationException jsonException)
             {
-                throw new Exception("Fuck", e);
+                throw new DocumentException(jsonException.Message, HttpStatusCode.InternalServerError, jsonException);
             }
         }
 

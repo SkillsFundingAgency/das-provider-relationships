@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
     {
         public HttpStatusCode HttpStatusCode { get; }
 
-        public DocumentException(string message, HttpStatusCode httpStatusCode, DocumentClientException e) : base(message, e)
+        public DocumentException(string message, HttpStatusCode httpStatusCode, Exception e) : base(message, e)
         {
             HttpStatusCode = httpStatusCode;
         }

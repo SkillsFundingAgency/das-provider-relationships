@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
+using SFA.DAS.ProviderRelationships.DocumentModels;
 using StructureMap;
 
 namespace TestConsoleApp
@@ -24,16 +21,16 @@ namespace TestConsoleApp
 
         }
 
-        static async Task<List<Test>> CallIt()
+        static async Task CallIt()
         {
 
             var ioc = IoC.Initialize();
 
-            var rep = ioc.GetInstance<IDocumentRepository<Test>>();
+            var rep = ioc.GetInstance<IDocumentRepository<ProviderRelationship>>();
 
             try
             {
-                var docs = await rep.Search(m => m.Ukprn == 100024 && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
+                var docs = await rep.Search(m => m.Ukprn == 100024 /*&& m.Permissions.Contains(PermissionEnum.Another)/* && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
                 var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");
@@ -44,7 +41,6 @@ namespace TestConsoleApp
                         $"UKPRN : {item.Ukprn} EmployerAccountId {item.EmployerAccountId} and ID : {item.Id} and ETag @ {item.ETag} ");
                 }
 
-                return items;
             }
             catch (Exception e)
             {
@@ -54,17 +50,6 @@ namespace TestConsoleApp
         }
     }
 
-    public class Test : BaseCosmosDocument
-    {
-        public Test() : base(1, "Permissions")
-        {
-            
-        }
-        [JsonProperty("ukprn")] public long Ukprn { get; set; }
-
-        [JsonProperty("employerAccountId")] public long EmployerAccountId { get; set; }
-
-    }
 
     public static class IoC
     {

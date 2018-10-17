@@ -4,12 +4,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderPermissions : IProviderPermissions
     {
-        public bool HasAtLeastOneRelationshipsWithThisPermission(long ukprn, ProviderPermissionType permission)
+        public bool HasAtLeastOneRelationshipsWithThisPermission(long ukprn, PermissionEnumDto permission)
         {
             throw new System.NotImplementedException();
         }
 
-        public IList<ProviderRelationship> ListRelationshipsWithThisPermission(long ukprn, ProviderPermissionType permission)
+        public IList<ProviderRelationshipDto> ListRelationshipsWithThisPermission(long ukprn, PermissionEnumDto permission)
         {
             throw new System.NotImplementedException();
         }
