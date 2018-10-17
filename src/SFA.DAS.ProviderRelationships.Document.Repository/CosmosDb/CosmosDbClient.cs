@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
-    public class CosmosDbClient<TResult> where TResult : class
+    public class CosmosDbClient<TResult> : IDocumentDbClient<TResult> where TResult : class
     {
         private readonly IDocumentClient _dbClient;
         private readonly IDocumentConfiguration _configuration;
@@ -24,11 +24,11 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
             _configuration = configuration;
         }
 
-        public async Task<TResult> GetById(Guid id)
+        public async Task<TResult> GetById(string collectionName, Guid id)
         {
             try
             {
-                var resourceResponse = await _dbClient.ReadDocumentAsync(DocumentUri(id.ToString()));
+                var resourceResponse = await _dbClient.ReadDocumentAsync(DocumentUri(collectionName, id.ToString()));
 
                 var result = JsonConvert.DeserializeObject<TResult>(resourceResponse.Resource.ToString());
                 return result;
@@ -41,19 +41,19 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
             }
         }
 
-        public Task<IEnumerable<TResult>> Search(Expression<Func<TResult, bool>> sqlApiQuery)
+        public Task<IEnumerable<TResult>> Search(string collectionName, Expression<Func<TResult, bool>> sqlApiQuery)
         {
             var defaultFeedOptions = new FeedOptions {MaxItemCount = -1, EnableCrossPartitionQuery = false};
-            return Search(sqlApiQuery, defaultFeedOptions);
+            return Search(collectionName, sqlApiQuery, defaultFeedOptions);
         }
 
-        public async Task<IEnumerable<TResult>> Search(Expression<Func<TResult, bool>> sqlApiQuery, FeedOptions feedOptions)
+        public async Task<IEnumerable<TResult>> Search(string collectionName, Expression<Func<TResult, bool>> sqlApiQuery, FeedOptions feedOptions)
         {
             try
             {
                 var query =
                     _dbClient
-                        .CreateDocumentQuery<TResult>(DocumentCollectionUri(), feedOptions)
+                        .CreateDocumentQuery<TResult>(DocumentCollectionUri(collectionName), feedOptions)
                         .Where(sqlApiQuery);
 
                 return await query.AsDocumentQuery().ExecuteNextAsync<TResult>();
@@ -75,10 +75,10 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
             }
         }
 
-        protected Uri DocumentCollectionUri() =>
-            UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, _configuration.CollectionName);
+        protected Uri DocumentCollectionUri(string collectionName) =>
+            UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, collectionName);
 
-        protected Uri DocumentUri(string id) =>
-            UriFactory.CreateDocumentUri(_configuration.DatabaseName, _configuration.CollectionName, id);
+        protected Uri DocumentUri(string collectionName, string id) =>
+            UriFactory.CreateDocumentUri(_configuration.DatabaseName, collectionName, id);
     }
 }

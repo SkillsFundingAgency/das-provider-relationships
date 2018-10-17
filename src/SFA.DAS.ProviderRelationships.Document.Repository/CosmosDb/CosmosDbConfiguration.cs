@@ -5,6 +5,5 @@
         public string Uri { get; set; }
         public string SecurityKey { get; set; }
         public string DatabaseName { get; set; }
-        public string CollectionName { get; set; }
     }
 }

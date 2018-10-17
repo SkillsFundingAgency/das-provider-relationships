@@ -1,22 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public class DocumentRepository<TEntity> : CosmosDbClient<TEntity>, IDocumentRepository<TEntity> where TEntity : class
+    public class DocumentRepository<TEntity> : IDocumentRepository<TEntity> where TEntity : class
     {
-        public DocumentRepository(IDocumentClientFactory dbClientFactory, IDocumentConfiguration configuration)
-            : base (dbClientFactory, configuration)
+        private readonly CosmosDbClient<TEntity> _dbClient;
+        private readonly string _collection;
+
+        public DocumentRepository(CosmosDbClient<TEntity> dbClient, string collection)
         {
+            _dbClient = dbClient;
+            _collection = collection;
         }
+
+        public Task<TEntity> GetById(Guid id)
+        {
+            return _dbClient.GetById(_collection, id);
+        }
+
+        public Task Save(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task Delete(Guid id)
         {
             throw new NotImplementedException();
         }
-        public Task Save(TEntity entity)
+
+        public Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> sqlApiQuery)
         {
-            throw new NotImplementedException();
+            return _dbClient.Search(_collection, sqlApiQuery);
         }
     }
 }

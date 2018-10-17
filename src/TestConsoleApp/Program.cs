@@ -33,7 +33,7 @@ namespace TestConsoleApp
 
             try
             {
-                var docs = await rep.Search(m => m.Ukprn == 100024 && m.EmployerAccountId == 1235 && m.SchemaVersion == 0);
+                var docs = await rep.Search(m => m.Ukprn == 100024 && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
                 var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");
@@ -86,9 +86,11 @@ namespace TestConsoleApp
             {
                 DatabaseName = "SFA",
                 Uri = "https://localhost:8081",
-                SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-                CollectionName = "provider-relationships"
+                SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
             });
+            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>()
+                .Is("provider-relationships");
+
         }
     }
 

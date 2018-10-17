@@ -8,6 +8,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution
         public DocumentRegistry()
         {
             For<IDocumentClientFactory>().Use<CosmosClientFactory>();
+            For<IDocumentClientFactory>().Use<CosmosClientFactory>();
+            For<IDocumentClientFactory>().Use<CosmosClientFactory>();
             For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>));
             For<IDocumentConfiguration>().Use<CosmosDbConfiguration>();
 
