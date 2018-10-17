@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
 using SFA.DAS.ProviderRelationships.Startup;
@@ -16,11 +15,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 
                 await startup.StartAsync();
                 
-                var publisher = container.GetInstance<PublishAllEvents>();
-                
+                //var scenario = container.GetInstance<PublishAllEvents>();
+                var scenario = container.GetInstance<DeleteAccountLegalEntityWithPermissions>();
+
                 try
                 {
-                    await publisher.Run();
+                    await scenario.Run();
                 }
                 finally
                 {

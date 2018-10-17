@@ -13,5 +13,5 @@ CREATE TABLE [dbo].[Accounts]
 	[Id] BIGINT NOT NULL PRIMARY KEY,		  -- bigint
 	[Name] NVARCHAR(100) NOT NULL,				-- nvarchar(100)
 	[Created] DateTime2 NOT NULL,
-	[Updated] DateTime2 NOT NULL,
+	[Updated] DateTime2 NULL,
 )
