@@ -29,7 +29,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 
     public class RunHealthCheckCommandHandlerTestsFixture
     {
-        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public RunHealthCheckCommand RunHealthCheckCommand { get; set; }
         public IRequestHandler<RunHealthCheckCommand, Unit> Handler { get; set; }
@@ -38,8 +37,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
 
         public RunHealthCheckCommandHandlerTestsFixture()
         {
-            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             RunHealthCheckCommand = new RunHealthCheckCommand();
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();

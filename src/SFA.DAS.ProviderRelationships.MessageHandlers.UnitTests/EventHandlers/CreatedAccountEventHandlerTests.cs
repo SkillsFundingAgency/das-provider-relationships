@@ -31,15 +31,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     {
         public DateTime Now { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
-        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
         public CreatedAccountEvent Message { get; set; }
         public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
 
         public CreatedAccountEventHandlerTestsFixture()
         {
             Now = DateTime.UtcNow;
-            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             Message = new CreatedAccountEvent
             {

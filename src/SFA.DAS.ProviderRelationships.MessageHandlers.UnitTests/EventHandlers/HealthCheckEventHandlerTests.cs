@@ -28,14 +28,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class HealthCheckEventHandlerTestsFixture
     {
         public IHandleMessages<HealthCheckEvent> Handler { get; set; }
-        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public HealthCheckEventHandlerTestsFixture()
         {
-            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             HealthChecks = new List<HealthCheck>
             {

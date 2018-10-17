@@ -35,7 +35,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
     {
         public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
         public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse> Handler { get; set; }
-        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
@@ -43,8 +42,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application
         public GetHealthCheckQueryHandlerTestsFixture()
         {
             GetHealthCheckQuery = new GetHealthCheckQuery();
-            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>());
 
             HealthChecks = new List<HealthCheck>

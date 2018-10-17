@@ -44,7 +44,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public Account Account { get; set; }
         public IHandleMessages<ChangedAccountNameEvent> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
-        public DbContextOptions<ProviderRelationshipsDbContext> DbContextOptions { get; set; }
 
         public ChangedAccountNameEventHandlerTestsFixture()
         {
@@ -63,8 +62,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithName(Message.PreviousName)
                 .Build();
             
-            DbContextOptions = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            Db = new ProviderRelationshipsDbContext(DbContextOptions);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();
