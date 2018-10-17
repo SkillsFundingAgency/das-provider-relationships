@@ -17,7 +17,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Test]
         public void New_WhenCreatingAHealthCheck_ThenShouldCreateAHealthCheck()
         {
-            Run(f => f.New(), (f, r) => r.Should().NotBeNull());
+            Run(f => f.New(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.UserRef.Should().Be(f.UserRef);
+            });
         }
 
         [Test]
@@ -65,21 +69,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
     public class HealthCheckTestsFixture
     {
-        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
+        public Guid UserRef { get; set; }
         public HealthCheck HealthCheck { get; set; }
+        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public Func<Task> ApprenticeshipInfoServiceApiRequest { get; set; }
         public DateTime? PreRun { get; set; }
         public DateTime? PostRun { get; set; }
 
         public HealthCheckTestsFixture()
         {
+            UserRef = Guid.NewGuid();
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
         }
 
         public HealthCheck New()
         {
-            return new HealthCheck();
+            return new HealthCheck(UserRef);
         }
 
         public async Task Run()

@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Persistence;
 using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
@@ -26,10 +25,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             var clientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
             var serverSession = unitOfWorkContext.TryGet<SynchronizedStorageSession>();
             var sqlSession = clientSession?.GetSqlSession() ?? serverSession.GetSqlSession();
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>();
-
-            optionsBuilder.UseSqlServer(sqlSession.Connection, o => o.EnableRetryOnFailure());
-            
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(sqlSession.Connection);
             var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             
             db.Database.UseTransaction(sqlSession.Transaction);

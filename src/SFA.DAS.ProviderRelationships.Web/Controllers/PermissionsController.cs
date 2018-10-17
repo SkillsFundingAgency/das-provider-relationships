@@ -3,14 +3,15 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Application;
+using SFA.DAS.Authorization.EmployerRoles;
+using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [Authorize]
+    [DasAuthorize(EmployerRoles.Any)]
     [RoutePrefix("accounts/{hashedAccountId}")]
     public class PermissionsController : Controller
     {

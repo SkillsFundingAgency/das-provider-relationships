@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 using SFA.DAS.Validation;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Application
+namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
     [Parallelizable]

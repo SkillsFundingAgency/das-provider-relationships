@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Messages;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
@@ -8,15 +7,21 @@ namespace SFA.DAS.ProviderRelationships.Models
     public class HealthCheck : Entity
     {
         public virtual int Id { get; protected set; }
+        public virtual Guid UserRef { get; protected set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
         public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }
         public virtual DateTime? ReceivedProviderRelationshipsEvent { get; protected set; }
 
-        public HealthCheck()
+        public HealthCheck(Guid userRef)
         {
+            UserRef = userRef;
         }
 
+        protected HealthCheck()
+        {
+        }
+        
         public async Task Run(Func<Task> apprenticeshipInfoServiceApiRequest)
         {
             await SendApprenticehipInfoServiceApiRequest(apprenticeshipInfoServiceApiRequest);
