@@ -8,10 +8,9 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public ConfigurationRegistry()
         {
-            var providerRelationshipsConfig = ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform();
-
-            For<ProviderRelationshipsConfiguration>().Use(() => providerRelationshipsConfig).Singleton();
-            For<IIdentityServerConfiguration>().Use(() => providerRelationshipsConfig.Identity).Singleton();
+            For<ProviderRelationshipsConfiguration>().Use(() => ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
+            For<IIdentityServerConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Identity).Singleton();
+            For<IStartup>().Use<Startup>().Singleton();
         }
     }
 }

@@ -11,9 +11,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
         {
             using (var container = IoC.Initialize())
             {
-                var startupTasks = container.GetAllInstances<IStartupTask>();
-                
-                await StartupTasks.StartAsync(startupTasks);
+                var startup = container.GetInstance<IStartup>();
+
+                await startup.StartAsync();
                 
                 var publisher = container.GetInstance<PublishAllEvents>();
                 
@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 }
                 finally
                 {
-                    await StartupTasks.StopAsync();
+                    await startup.StartAsync();
                 }
             }
         }

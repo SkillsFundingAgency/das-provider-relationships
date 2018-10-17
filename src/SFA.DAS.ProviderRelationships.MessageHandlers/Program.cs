@@ -12,10 +12,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         {
             using (var container = IoC.Initialize())
             {
-                var startupTasks = container.GetAllInstances<IStartupTask>();
-                
-                await StartupTasks.StartAsync(startupTasks);
-                
+                var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
 
@@ -26,15 +23,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
 
                 var host = new JobHost(config);
                 
-                host.Call(typeof(Program).GetMethod(nameof(RunAsync)));
-                host.RunAndBlock();
-                
-                await StartupTasks.StopAsync();
+                await startup.StartAsync();
+                await host.CallAsync(typeof(Program).GetMethod(nameof(BlockAsync)));
+                await host.StopAsync();
+                await startup.StopAsync();
             }
         }
         
         [NoAutomaticTrigger]
-        public static async Task RunAsync(CancellationToken cancellationToken)
+        public static async Task BlockAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {

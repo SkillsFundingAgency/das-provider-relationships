@@ -11,10 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
         {
             using (var container = IoC.Initialize())
             {
-                var startupTasks = container.GetAllInstances<IStartupTask>();
-                
-                await StartupTasks.StartAsync(startupTasks);
-                
+                var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
 
@@ -27,9 +24,9 @@ namespace SFA.DAS.ProviderRelationships.Jobs
 
                 var host = new JobHost(config);
                 
+                await startup.StartAsync();
                 host.RunAndBlock();
-
-                await StartupTasks.StopAsync();
+                await startup.StopAsync();
             }
         }
     }

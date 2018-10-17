@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -18,19 +15,17 @@ namespace SFA.DAS.ProviderRelationships.Web
     {
         protected void Application_Start()
         {
-            var startupTasks = DependencyResolver.Current.GetServices<IStartupTask>();
-            
-            StartupTasks.StartAsync(startupTasks).GetAwaiter().GetResult();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = DasClaimTypes.Id;
             AreaRegistration.RegisterAllAreas();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            DependencyResolver.Current.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_End()
         {
-            StartupTasks.StopAsync().GetAwaiter().GetResult();
+            DependencyResolver.Current.GetService<IStartup>().StopAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_Error(object sender, EventArgs e)
