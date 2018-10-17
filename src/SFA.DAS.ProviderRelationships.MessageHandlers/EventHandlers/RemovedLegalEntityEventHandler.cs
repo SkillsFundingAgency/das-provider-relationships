@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NServiceBus;
+using Z.EntityFramework.Plus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
@@ -15,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             _db = db;
         }
 
-        public Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
+        public async Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
         {
             //var accountLegalEntity = await Db.Value.AccountLegalEntities.SingleAsync();
 
@@ -32,7 +35,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             //_db.Delete(new AccountLegalEntity { Id = message.AccountLegalEntityId });
             //Db.Entry(accountLegalEntity).State = EntityState.Deleted;
 
-            return Task.CompletedTask;
+//            _db.Value.Remove(new AccountLegalEntity {Id = message.AccountLegalEntityId});
+//            return Task.CompletedTask;
+
+            await _db.Value.AccountLegalEntities.Where(ale => ale.Id == message.AccountLegalEntityId).DeleteAsync();
         }
     }
 }
