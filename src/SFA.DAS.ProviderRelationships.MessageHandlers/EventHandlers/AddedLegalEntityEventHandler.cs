@@ -24,13 +24,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
         public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            _db.Value.AccountLegalEntities.Add(new AccountLegalEntity
-            {
-                Id = message.AccountLegalEntityId,
-                Name = message.OrganisationName,
-                PublicHashedId = message.AccountLegalEntityPublicHashedId,
-                AccountId = message.AccountId
-            });
+            _db.Value.AccountLegalEntities.Add(new AccountLegalEntity(
+                message.AccountLegalEntityId,
+                message.AccountLegalEntityPublicHashedId,
+                message.AccountId,
+                message.OrganisationName,
+                message.Created));
 
             return Task.CompletedTask;
         }

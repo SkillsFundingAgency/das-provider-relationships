@@ -47,6 +47,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithId(Message.AccountLegalEntityId)
                 .Build();
 
+            //todo: check if same name ok
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             
