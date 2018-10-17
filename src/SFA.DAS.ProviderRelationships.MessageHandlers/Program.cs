@@ -24,8 +24,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 var host = new JobHost(config);
                 
                 await startup.StartAsync();
-                await host.CallAsync(typeof(Program).GetMethod(nameof(BlockAsync)));
-                await host.StopAsync();
+                host.Call(typeof(Program).GetMethod(nameof(BlockAsync)));
+                host.RunAndBlock();
                 await startup.StopAsync();
             }
         }
