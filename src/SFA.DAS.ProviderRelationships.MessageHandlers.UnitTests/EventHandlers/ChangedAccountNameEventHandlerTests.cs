@@ -14,6 +14,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
+    [Parallelizable]
     public class ChangedAccountNameEventHandlerTests : FluentTest<ChangedAccountNameEventHandlerTestsFixture>
     {
         [Test]
