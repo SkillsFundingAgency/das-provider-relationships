@@ -23,8 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .And.Match<Account>(a => 
                     a.Id == f.Message.AccountId &&
                     a.Name == f.Message.Name &&
-                    a.Created == f.Message.Created &&
-                    a.CreatedAt >= f.Now));
+                    a.Created == f.Message.Created));
         }
     }
 

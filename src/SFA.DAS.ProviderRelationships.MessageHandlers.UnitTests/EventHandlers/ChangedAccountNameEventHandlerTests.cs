@@ -23,7 +23,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             {
                 f.Account.Name.Should().Be(f.Message.CurrentName);
                 f.Account.Updated.Should().Be(f.Message.Created);
-                f.Account.UpdatedAt.Should().BeAfter(f.Now);
             });
         }
         
@@ -34,7 +33,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             {
                 f.Account.Name.Should().Be(f.Message.PreviousName);
                 f.Account.Updated.Should().BeBefore(f.Now);
-                f.Account.UpdatedAt.Should().BeNull();
             });
         }
     }
