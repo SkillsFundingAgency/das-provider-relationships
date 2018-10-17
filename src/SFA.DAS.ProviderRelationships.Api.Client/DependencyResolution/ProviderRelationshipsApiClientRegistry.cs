@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             //    ProviderRelationshipCollection = "provider-relationships"
             //});
 
-            For<IProviderPermissions>().Use(Pr)
+            For<IProviderPermissions>().Use<ProviderPermissions>();
 
             For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
             {
