@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Application
+﻿namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class SearchProvidersQueryResponse
     {

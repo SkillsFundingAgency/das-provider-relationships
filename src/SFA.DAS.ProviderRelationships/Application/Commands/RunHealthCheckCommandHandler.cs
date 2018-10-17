@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Providers.Api.Client;
 
-namespace SFA.DAS.ProviderRelationships.Application
+namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
     public class RunHealthCheckCommandHandler : AsyncRequestHandler<RunHealthCheckCommand>
     {
