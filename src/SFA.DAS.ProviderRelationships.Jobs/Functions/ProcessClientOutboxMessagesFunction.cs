@@ -3,13 +3,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using SFA.DAS.NServiceBus.ClientOutbox;
 
-namespace SFA.DAS.ProviderRelationships.Jobs
+namespace SFA.DAS.ProviderRelationships.Jobs.Functions
 {
-    public class ProcessClientOutboxMessagesJob
+    public class ProcessClientOutboxMessagesFunction
     {
         private readonly IProcessClientOutboxMessagesJob _processClientOutboxMessagesJob;
 
-        public ProcessClientOutboxMessagesJob(IProcessClientOutboxMessagesJob processClientOutboxMessagesJob)
+        public ProcessClientOutboxMessagesFunction(IProcessClientOutboxMessagesJob processClientOutboxMessagesJob)
         {
             _processClientOutboxMessagesJob = processClientOutboxMessagesJob;
         }
