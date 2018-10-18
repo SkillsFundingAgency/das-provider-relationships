@@ -2,6 +2,6 @@
 {
     public static class RouteDataKeys
     {
-        public const string HashedAccountId = "hashedAccountId";
+        public const string AccountHashedId = "accountHashedId";
     }
 }

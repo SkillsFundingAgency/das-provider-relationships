@@ -8,14 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Apprenticeships.Api.Types.Providers;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Application
+namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {
     [TestFixture]
     [Parallelizable]

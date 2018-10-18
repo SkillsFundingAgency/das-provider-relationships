@@ -5,13 +5,12 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Apprenticeships.Api.Types.Providers;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Application
+namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
     [Parallelizable]

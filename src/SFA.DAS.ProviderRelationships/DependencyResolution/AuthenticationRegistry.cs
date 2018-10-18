@@ -9,6 +9,9 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public AuthenticationRegistry()
         {
             For<ConfigurationFactory>().Use<IdentityServerConfigurationFactory>();
+            For<IAuthenticationUrls>().Use<AuthenticationUrls>();
+            For<IAuthenticationService>().Use<OwinAuthenticationService>();
+            For<IAuthenticationStartup>().Use<AuthenticationStartup>();
         }
     }
 }

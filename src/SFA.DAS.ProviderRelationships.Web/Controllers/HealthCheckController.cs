@@ -2,14 +2,14 @@
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Application;
+using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [Authorize]
+    [DasAuthorize]
     [RoutePrefix("healthcheck")]
     public class HealthCheckController : Controller
     {
