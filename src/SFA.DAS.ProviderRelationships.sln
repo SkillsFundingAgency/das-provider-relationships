@@ -34,6 +34,7 @@ ProjectSection(SolutionItems) = preProject
 	..\LICENSE = ..\LICENSE
 	..\README.md = ..\README.md
 	..\Possible Improvements.txt = ..\Possible Improvements.txt
+	DevInstall.ps1 = DevInstall.ps1
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness", "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness\SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.csproj", "{67A9B56E-B40E-4691-A037-A105CD57FADF}"
