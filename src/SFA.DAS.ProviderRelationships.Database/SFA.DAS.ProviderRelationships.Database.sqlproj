@@ -85,6 +85,6 @@
     <Build Include="Tables\Providers.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\AccountLegalEntityProviders.sql" />
+    <Build Include="Tables\AccountLegalEntityProvider.sql" />
   </ItemGroup>
 </Project>
