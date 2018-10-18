@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 }
                 finally
                 {
-                    await startup.StartAsync();
+                    await startup.StopAsync();
                 }
             }
         }
