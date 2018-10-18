@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SFA.DAS.ProviderRelationships.Document.Model;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
-using SFA.DAS.ProviderRelationships.DocumentModels;
 using StructureMap;
 
 namespace TestConsoleApp

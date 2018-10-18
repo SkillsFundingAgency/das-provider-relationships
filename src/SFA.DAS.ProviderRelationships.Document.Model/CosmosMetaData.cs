@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SFA.DAS.ProviderRelationships.DocumentModels
+namespace SFA.DAS.ProviderRelationships.Document.Model
 {
     public class CosmosMetaData
     {
