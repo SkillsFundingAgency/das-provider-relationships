@@ -17,6 +17,7 @@ namespace TestConsoleApp
 
             Task.Run(CallIt).Wait();
 
+            Console.WriteLine("Press ENTER to finish");
             Console.ReadLine();
 
         }
@@ -30,7 +31,7 @@ namespace TestConsoleApp
 
             try
             {
-                var docs = await rep.Search(m => m.Ukprn == 100024 /*&& m.Permissions.Contains(PermissionEnum.Another)/* && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
+                var docs = await rep.Search(m => m.Ukprn == 100025 && m.Permissions.Contains(PermissionEnum.CreateCohort) && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
                 var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");

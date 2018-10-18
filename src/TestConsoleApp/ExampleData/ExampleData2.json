@@ -1,0 +1,10 @@
+﻿{
+  "ukprn": 100024,
+  "employerAccountId": 2235,
+  "employerName": "employer name 2235",
+  "legalEntityHashedId": "hashedIdD",
+  "legalEntityName": "nameD",
+  "permissions": [
+    "CreateCohort"
+  ]
+}
