@@ -27,11 +27,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests", "SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests\SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.csproj", "{9946FBAB-9D13-4B85-924E-A3BE10CDC567}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{130DA403-E2FE-439E-89E6-8B764A094AB1}"
-	ProjectSection(SolutionItems) = preProject
-		Possible Improvements.txt = Possible Improvements.txt
-		..\README.md = ..\README.md
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A18A25C8-23F9-4518-921B-780DE259FFF9}"
+ProjectSection(SolutionItems) = preProject
+	..\.editorconfig = ..\.editorconfig
+	..\.gitignore = ..\.gitignore
+	..\LICENSE = ..\LICENSE
+	..\README.md = ..\README.md
+	..\Possible Improvements.txt = ..\Possible Improvements.txt
+EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client", "SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj", "{7F2F7041-07E0-48C0-A65A-E7FF06C65532}"
 EndProject
