@@ -3,7 +3,7 @@ using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class PermissionRevokedEvent : Event
+    public class GrantedPermissionEvent : Event
     {
         public long Id { get; set; }
         public long AccountLegalEntityId { get; set; }

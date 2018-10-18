@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             }
             
             var grantedEventTasks = permissionsByGranted[true].Select(p => _messageSession.Publish(
-                new PermissionGrantedEvent
+                new GrantedPermissionEvent
                 {
                     AccountLegalEntityId = request.AccountLegalEntityId,
                     Ukprn = request.Ukprn,
@@ -65,7 +65,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
                     Created = DateTime.UtcNow
                 }));
 
-            var revokedEventTasks = permissionsByGranted[false].Select(p => _messageSession.Publish(new PermissionRevokedEvent
+            var revokedEventTasks = permissionsByGranted[false].Select(p => _messageSession.Publish(new RevokedPermissionEvent
             {
                 AccountLegalEntityId = request.AccountLegalEntityId,
                 Ukprn = request.Ukprn,
