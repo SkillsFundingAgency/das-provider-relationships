@@ -40,15 +40,19 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             //todo whenall everything at the end and return the task non-awaited?
 
             //use deleteasync or not required as already loaded existing permissions?
-            await db.Permissions.Where(
-                p => p.AccountLegalEntityId == request.AccountLegalEntityId
-                     && p.Ukprn == request.Ukprn
-                     && revokedPermissionTypes.Contains(p.Type)).DeleteAsync(cancellationToken);
+            if (revokedPermissionTypes.Any())
+            {
+                await db.Permissions.Where(
+                    p => p.AccountLegalEntityId == request.AccountLegalEntityId
+                         && p.Ukprn == request.Ukprn
+                         && revokedPermissionTypes.Contains(p.Type)).DeleteAsync(cancellationToken);
+            }
 
-            await db.Permissions.AddRangeAsync(grantedPermissionTypes.Select(pt =>
-                new Models.Permission(request.AccountLegalEntityId, request.Ukprn, pt)));
-            
-            //db.Permissions
+            if (grantedPermissionTypes.Any())
+            {
+                await db.Permissions.AddRangeAsync(grantedPermissionTypes.Select(pt =>
+                    new Models.Permission(request.AccountLegalEntityId, request.Ukprn, pt)));
+            }
 
             var grantedEventTasks = permissionsByGranted[true].Select(p => _messageSession.Publish(
                 new PermissionGrantedEvent

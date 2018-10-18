@@ -9,6 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual string Name { get; set; }
         public virtual DateTime Created { get; set; }
         public virtual DateTime Updated { get; set; }
-        public virtual ICollection<AccountLegalEntity> AccountLegalEntities { get; set; }
+        //public virtual ICollection<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; }
     }
 }

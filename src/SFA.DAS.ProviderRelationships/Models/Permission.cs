@@ -4,7 +4,7 @@
     {
         public Permission(long accountLegalEntityId, long ukprn, PermissionType type)
         {
-            //todo: calling vistuals in ctor. issue? https://stackoverflow.com/questions/119506/virtual-member-call-in-a-constructor
+            //todo: calling virtuals in ctor. issue? https://stackoverflow.com/questions/119506/virtual-member-call-in-a-constructor
             AccountLegalEntityId = accountLegalEntityId;
             Ukprn = ukprn;
             Type = type;

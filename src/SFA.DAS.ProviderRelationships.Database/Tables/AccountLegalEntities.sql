@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[AccountLegalEntities]
 	[PublicHashedId] CHAR(6) NOT NULL, 
 	[AccountId] BIGINT NOT NULL, 
 	[Name] NVARCHAR(100) NOT NULL, 
-  [Created] DateTime2 NOT NULL,
+    [Created] DateTime2 NOT NULL,
 	[Updated] DateTime2 NULL,
 	CONSTRAINT [FK_AccountLegalEntities_ToAccounts] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]),
  --if a new delete account event appears, we'll probably want... (should be set it anyway??)
