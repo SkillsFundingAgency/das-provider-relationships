@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
                 await db.Permissions.AddRangeAsync(grantedPermissionTypes.Select(pt =>
                     new Models.Permission(request.AccountLegalEntityId, request.Ukprn, pt)));
             }
-
+            
             var grantedEventTasks = permissionsByGranted[true].Select(p => _messageSession.Publish(
                 new PermissionGrantedEvent
                 {

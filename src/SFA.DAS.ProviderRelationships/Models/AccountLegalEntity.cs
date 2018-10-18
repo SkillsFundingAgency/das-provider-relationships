@@ -5,17 +5,18 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountLegalEntity : Entity
     {
-        public virtual long Id { get; set; }
-        public virtual string PublicHashedId { get; set; }
-        public virtual long AccountId { get; set; }
-        public virtual string Name { get; set; }
-        public virtual DateTime Created { get; set; }
-        public virtual DateTime? Updated { get; set; }
+        public virtual long Id { get; protected set; }
+        public virtual string PublicHashedId { get; protected set; }
+        public virtual long AccountId { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual DateTime Created { get; protected set; }
+        public virtual DateTime? Updated { get; protected set; }
         
         public virtual Account Account { get; protected set; }
-        public virtual ICollection<Permission> Permissions { get; protected set; }
+        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
         //public virtual ICollection<Provider> Providers { get; protected set; }
-        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; }
+        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } =
+            new List<AccountLegalEntityProvider>();
         
         public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
         {
