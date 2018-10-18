@@ -24,11 +24,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             //todo: plus's update?
             //todo: provider may already exist?
             //todo: whenall
+
+            //todo: move this into AddRelationship off ALE
             
             //do we want to check existence?
             var accountLegalEntity = await db.AccountLegalEntities.FindAsync(request.AccountLegalEntityId);
 
             // if provider already exists, we don't need the name
+            // if provider already exists need to surface to ui so can show message relationship already exists
             var provider = await db.Providers.FindAsync(request.Ukprn);
             if (provider == null)
                 provider = db.Providers.Add(new Provider(request.Ukprn, request.ProviderName, DateTime.UtcNow)).Entity;

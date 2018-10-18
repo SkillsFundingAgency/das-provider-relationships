@@ -21,5 +21,11 @@
         public virtual PermissionType Type { get; set; }
         public virtual AccountLegalEntity AccountLegalEntity { get; set; }
         public virtual Provider Provider { get; set; }
+        
+        //todo: need to add created / userref / username for auditing
+        // by deleting, we lose auditing from permissions table, unless we add PermissionAudit (name) table for deleted audits
+        // put all changes into audit table
+        
+        //todo: ^^ auditing for relationships and permissions in seperate tables that are updated from events
     }
 }

@@ -39,6 +39,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 //            return Task.CompletedTask;
 
             await _db.Value.AccountLegalEntities.Where(ale => ale.Id == message.AccountLegalEntityId).DeleteAsync();
+            
+            //todo: need to publish revokedpermission events - can we get away with deleted le event? yes
+            // delete relationships
         }
     }
 }

@@ -59,7 +59,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
                 {
                     AccountLegalEntityId = request.AccountLegalEntityId,
                     Ukprn = request.Ukprn,
-                    Type = (int)p.Type,
+                    Type = (short)p.Type,
                     UserRef = request.UserRef,
                     UserName = request.UserName,
                     Created = DateTime.UtcNow
@@ -69,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             {
                 AccountLegalEntityId = request.AccountLegalEntityId,
                 Ukprn = request.Ukprn,
-                Type = (int)p.Type,
+                Type = (short)p.Type,
                 UserRef = request.UserRef,
                 UserName = request.UserName,
                 Created = DateTime.UtcNow
