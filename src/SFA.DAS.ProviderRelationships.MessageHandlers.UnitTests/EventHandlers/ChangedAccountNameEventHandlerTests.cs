@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
     }
 
-    public class ChangedAccountNameEventHandlerTestsFixture: EventHandlerTestsFixture<ChangedAccountNameEvent>
+    public class ChangedAccountNameEventHandlerTestsFixture : EventHandlerTestsFixture<ChangedAccountNameEvent>
     {
         public Account Account { get; set; }
 
