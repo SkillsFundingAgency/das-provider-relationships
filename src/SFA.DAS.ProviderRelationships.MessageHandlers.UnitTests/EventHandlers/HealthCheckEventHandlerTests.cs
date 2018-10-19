@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using NServiceBus;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
@@ -25,16 +21,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
     }
 
-    public class HealthCheckEventHandlerTestsFixture
+    public class HealthCheckEventHandlerTestsFixture : EventHandlerTestsFixture<HealthCheckEvent>
     {
-        public IHandleMessages<HealthCheckEvent> Handler { get; set; }
-        public ProviderRelationshipsDbContext Db { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
 
         public HealthCheckEventHandlerTestsFixture()
+            : base(ldb => new HealthCheckEventHandler(ldb))
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-
             HealthChecks = new List<HealthCheck>
             {
                 new HealthCheckBuilder().WithId(1).Build(),
@@ -43,11 +36,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             
             Db.HealthChecks.AddRange(HealthChecks);
             Db.SaveChanges();
-            
-            Handler = new HealthCheckEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
-        public Task Handle()
+        public override Task Handle()
         {
             return Handler.Handle(new HealthCheckEvent { Id = HealthChecks[1].Id }, null);
         }
