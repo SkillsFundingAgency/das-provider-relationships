@@ -6,6 +6,11 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
+    <!--doesn't seem to work-->
+    <!--<ItemGroup>-->
+        <!--<AssemblyAttribute Include="NUnit.Framework.Parallelizable" />-->
+    <!--</ItemGroup>-->
+    
     <ItemGroup>
         <PackageReference Include="AutoFixture" Version="4.5.0" />
         <PackageReference Include="AutoFixture.NUnit3" Version="4.5.0" />

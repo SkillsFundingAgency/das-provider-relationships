@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
     //todo: seems the use of BatchDeleteManager kills the ability to run this in parallel
-    //[Parallelizable]
+    [NonParallelizable]
     public class RemovedLegalEntityEventHandlerTests : FluentTest<RemovedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
