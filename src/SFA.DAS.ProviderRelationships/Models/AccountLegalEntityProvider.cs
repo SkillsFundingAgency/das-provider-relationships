@@ -4,11 +4,11 @@ namespace SFA.DAS.ProviderRelationships.Models
     // see, https://github.com/aspnet/EntityFrameworkCore/issues/1368
     public class AccountLegalEntityProvider
     {
-        public virtual long AccountLegalEntityId { get; set; }
-        public virtual long Ukprn { get; set; }
+        public virtual long AccountLegalEntityId { get; protected set; }
+        public virtual long Ukprn { get; protected set; }
         
-        public virtual AccountLegalEntity AccountLegalEntity { get; set; }
-        public virtual Provider Provider { get; set; }
+        public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
+        public virtual Provider Provider { get; protected set; }
         
         public AccountLegalEntityProvider(long accountLegalEntityId, long ukprn)
         {

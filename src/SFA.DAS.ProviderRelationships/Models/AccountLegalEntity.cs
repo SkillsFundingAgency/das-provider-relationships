@@ -39,5 +39,9 @@ namespace SFA.DAS.ProviderRelationships.Models
                 Updated = changed;
             }
         }
+
+        public void AddRelationship(Provider provider)
+        {
+        }
     }
 }

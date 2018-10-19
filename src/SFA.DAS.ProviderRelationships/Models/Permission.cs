@@ -15,12 +15,12 @@
         }
 
         //Id?
-        public virtual int Id { get; set; }
-        public virtual long AccountLegalEntityId { get; set; }
-        public virtual long Ukprn { get; set; }
-        public virtual PermissionType Type { get; set; }
-        public virtual AccountLegalEntity AccountLegalEntity { get; set; }
-        public virtual Provider Provider { get; set; }
+        public virtual int Id { get; protected set; }
+        public virtual long AccountLegalEntityId { get; protected set; }
+        public virtual long Ukprn { get; protected set; }
+        public virtual PermissionType Type { get; protected set; }
+        public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
+        public virtual Provider Provider { get; protected set; }
         
         //todo: need to add created / userref / username for auditing
         // by deleting, we lose auditing from permissions table, unless we add PermissionAudit (name) table for deleted audits
