@@ -1,7 +1,8 @@
 CREATE TABLE [dbo].[AccountLegalEntityProvider] (
-  [AccountLegalEntity_AccountLegalEntityId] BIGINT NOT NULL,
-  [Provider_Ukprn] BIGINT NOT NULL,
-  PRIMARY KEY ([AccountLegalEntity_AccountLegalEntityId], [Provider_Ukprn]),
-  CONSTRAINT [FK_AccountLegalEntityProvider_ToAccountLegalEntities] FOREIGN KEY ([AccountLegalEntity_AccountLegalEntityId]) REFERENCES [AccountLegalEntities]([Id]),
-  CONSTRAINT [FK_AccountLegalEntityProvider_ToProviders] FOREIGN KEY ([Provider_Ukprn]) REFERENCES [Providers]([Ukprn])
+    [AccountLegalEntityId] BIGINT NOT NULL,
+    [Ukprn] BIGINT NOT NULL,
+    CONSTRAINT PK_AccountLegalEntityProvider PRIMARY KEY CLUSTERED ([AccountLegalEntityId], [Ukprn]),
+    CONSTRAINT [FK_AccountLegalEntityProvider_AccountLegalEntities_AccountLegalEntityId] FOREIGN KEY ([AccountLegalEntityId]) REFERENCES [AccountLegalEntities]([Id]),
+    CONSTRAINT [FK_AccountLegalEntityProvider_ToProviders] FOREIGN KEY ([Ukprn]) REFERENCES [Providers]([Ukprn]),
+    INDEX [IX_AccountLegalEntityProvider_Ukprn] NONCLUSTERED ([Ukprn])
 )

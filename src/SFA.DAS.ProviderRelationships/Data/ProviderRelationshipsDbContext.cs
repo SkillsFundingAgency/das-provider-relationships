@@ -20,6 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedNever();
             modelBuilder.Entity<AccountLegalEntity>().Property(a => a.Id).ValueGeneratedNever();
             modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
+            modelBuilder.Entity<Provider>().Property(a => a.Ukprn).ValueGeneratedNever();
 
             modelBuilder.Entity<AccountLegalEntityProvider>()
                 .HasKey(ap => new {ap.AccountLegalEntityId, ap.Ukprn});
