@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests;
@@ -38,18 +35,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
     }
 
-    public class ChangedAccountNameEventHandlerTestsFixture
+    public class ChangedAccountNameEventHandlerTestsFixture: EventHandlerTestsFixture<ChangedAccountNameEvent>
     {
-        public DateTime Now { get; set; }
-        public ChangedAccountNameEvent Message { get; set; }
         public Account Account { get; set; }
-        public IHandleMessages<ChangedAccountNameEvent> Handler { get; set; }
-        public ProviderRelationshipsDbContext Db { get; set; }
 
         public ChangedAccountNameEventHandlerTestsFixture()
+            : base(ldb => new ChangedAccountNameEventHandler(ldb))
         {
-            Now = DateTime.UtcNow;
-            
             Message = new ChangedAccountNameEvent
             {
                 AccountId = 123,
@@ -62,19 +54,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithId(Message.AccountId)
                 .WithName(Message.PreviousName)
                 .Build();
-            
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();
-            
-            Handler = new ChangedAccountNameEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
-        }
-
-        public async Task Handle()
-        {
-            await Handler.Handle(Message, null);
-            await Db.SaveChangesAsync();
         }
 
         public ChangedAccountNameEventHandlerTestsFixture SetAccountPreviouslyUpdated()

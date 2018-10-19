@@ -19,13 +19,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             Now = DateTime.UtcNow;
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
-            Message = new TEvent();
+            //Message = new TEvent();
             
             var lazyDbContext = new Lazy<ProviderRelationshipsDbContext>(() => Db);
             Handler = createEventHandler(lazyDbContext);
         }
 
-        public async Task Handle()
+        public virtual async Task Handle()
         {
             await Handler.Handle(Message, null);
             await Db.SaveChangesAsync();
