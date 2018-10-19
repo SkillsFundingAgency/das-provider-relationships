@@ -12,6 +12,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IAuthenticationUrls>().Use<AuthenticationUrls>();
             For<IAuthenticationService>().Use<OwinAuthenticationService>();
             For<IAuthenticationStartup>().Use<AuthenticationStartup>();
+            For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();
         }
     }
 }

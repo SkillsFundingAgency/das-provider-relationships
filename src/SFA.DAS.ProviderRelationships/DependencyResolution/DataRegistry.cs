@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NServiceBus.Persistence;
@@ -22,14 +23,14 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         private ProviderRelationshipsDbContext GetDbContext(IContext context)
         {
             var unitOfWorkContext = context.GetInstance<IUnitOfWorkContext>();
-            var clientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
-            var serverSession = unitOfWorkContext.TryGet<SynchronizedStorageSession>();
-            var sqlSession = clientSession?.GetSqlSession() ?? serverSession.GetSqlSession();
+            var clientSession = unitOfWorkContext.Find<IClientOutboxTransaction>();
+            var serverSession = unitOfWorkContext.Find<SynchronizedStorageSession>();
+            var sqlSession = clientSession?.GetSqlSession() ?? serverSession?.GetSqlSession() ?? throw new Exception("Cannot find the SQL session");
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(sqlSession.Connection);
             var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             
             db.Database.UseTransaction(sqlSession.Transaction);
-
+            
             return db;
         }
     }

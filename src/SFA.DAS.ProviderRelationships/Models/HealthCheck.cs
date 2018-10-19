@@ -7,15 +7,15 @@ namespace SFA.DAS.ProviderRelationships.Models
     public class HealthCheck : Entity
     {
         public virtual int Id { get; protected set; }
-        public virtual Guid UserRef { get; protected set; }
+        public virtual User User { get; protected set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
         public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }
         public virtual DateTime? ReceivedProviderRelationshipsEvent { get; protected set; }
 
-        public HealthCheck(Guid userRef)
+        public HealthCheck(User user)
         {
-            UserRef = userRef;
+            User = user;
         }
 
         protected HealthCheck()

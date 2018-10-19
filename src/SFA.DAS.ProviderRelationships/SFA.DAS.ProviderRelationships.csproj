@@ -22,11 +22,11 @@
         <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
         <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
         <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="5.0.1" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="5.0.1" />
         <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
         <PackageReference Include="SFA.DAS.Providers.Api.Client" Version="0.11.97" />
-        <PackageReference Include="SFA.DAS.UnitOfWork" Version="2.1.1" />
+        <PackageReference Include="SFA.DAS.UnitOfWork" Version="3.2.2" />
         <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
         <PackageReference Include="SFA.DAS.Validation.Mvc" Version="1.0.2" />
         <PackageReference Include="StructureMap" Version="4.7.0" />

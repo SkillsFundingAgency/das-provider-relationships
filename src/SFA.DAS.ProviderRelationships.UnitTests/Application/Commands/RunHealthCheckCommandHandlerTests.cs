@@ -10,6 +10,7 @@ using NUnit.Framework;
 using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
@@ -23,13 +24,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingARunHealthCheckCommand_ThenShouldAddAHealthCheck()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.HealthChecks.SingleOrDefault().Should().NotBeNull());
+            return RunAsync(f => f.Handle(), f => f.Db.HealthChecks.SingleOrDefault().Should().NotBeNull()
+                .And.Match<HealthCheck>(h => h.User == f.User));
         }
     }
 
     public class RunHealthCheckCommandHandlerTestsFixture
     {
         public ProviderRelationshipsDbContext Db { get; set; }
+        public User User { get; set; }
         public RunHealthCheckCommand RunHealthCheckCommand { get; set; }
         public IRequestHandler<RunHealthCheckCommand, Unit> Handler { get; set; }
         public UnitOfWorkContext UnitOfWorkContext { get; set; }
@@ -38,9 +41,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public RunHealthCheckCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            RunHealthCheckCommand = new RunHealthCheckCommand {UserRef = Guid.NewGuid()};
+            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
+            RunHealthCheckCommand = new RunHealthCheckCommand { UserRef = User.Ref };
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();
+
+            Db.Users.Add(User);
+            Db.SaveChanges();
             
             ProviderApiClient.Setup(c => c.SearchAsync("", 1)).ReturnsAsync(new ProviderSearchResponseItem());
 

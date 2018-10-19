@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Providers.Api.Client;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
@@ -21,7 +21,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override async Task Handle(RunHealthCheckCommand request, CancellationToken cancellationToken)
         {
-            var healthCheck = new HealthCheck(request.UserRef);
+            var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef.Value, cancellationToken);
+            var healthCheck = user.CreateHealthCheck();
 
             await healthCheck.Run(_providerApiClient.FindAllAsync);
 
