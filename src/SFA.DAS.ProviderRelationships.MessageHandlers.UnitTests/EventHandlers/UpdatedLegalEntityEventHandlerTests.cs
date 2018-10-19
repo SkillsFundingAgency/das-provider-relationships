@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests;
@@ -40,19 +37,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     }
 
     //base class?
-    public class UpdatedLegalEntityEventHandlerTestsFixture
+    public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedLegalEntityEvent>
     {
         public const string PreviouslyUpdatedName = "Previously Updated Name";
-        public DateTime Now { get; set; }
-        public UpdatedLegalEntityEvent Message { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
-        public IHandleMessages<UpdatedLegalEntityEvent> Handler { get; set; }
-        public ProviderRelationshipsDbContext Db { get; set; }
 
         public UpdatedLegalEntityEventHandlerTestsFixture()
+            : base(ldb => new UpdatedLegalEntityEventHandler(ldb))
         {
-            Now = DateTime.UtcNow;
-            
             Message = new UpdatedLegalEntityEvent
             {
                 AccountLegalEntityId = 123,
@@ -64,19 +56,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithId(Message.AccountLegalEntityId)
                 .WithName(Message.Name)
                 .Build();
-            
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
-            
-            Handler = new UpdatedLegalEntityEventHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
-        }
-
-        public async Task Handle()
-        {
-            await Handler.Handle(Message, null);
-            await Db.SaveChangesAsync();
         }
 
         public UpdatedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityPreviouslyUpdated()

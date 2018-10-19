@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
+using Z.EntityFramework.Plus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -17,8 +18,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public EventHandlerTestsFixture(Func<Lazy<ProviderRelationshipsDbContext>, IHandleMessages<TEvent>> createEventHandler)
         {
             Now = DateTime.UtcNow;
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            Db = new ProviderRelationshipsDbContext(dbContextOptionsBuilder.Options);
+            
+            BatchDeleteManager.InMemoryDbContextFactory = () => Db;
+            
             //Message = new TEvent();
             
             var lazyDbContext = new Lazy<ProviderRelationshipsDbContext>(() => Db);

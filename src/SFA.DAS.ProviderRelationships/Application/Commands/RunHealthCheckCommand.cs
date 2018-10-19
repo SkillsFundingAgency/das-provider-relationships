@@ -8,6 +8,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
     public class RunHealthCheckCommand : IRequest, IAuthorizationContextMessage
     {
         [Required]
-        public Guid? UserRef { get; set; }
+        public Guid UserRef { get; set; }
     }
 }
