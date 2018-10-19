@@ -7,9 +7,7 @@
     [Created] DateTime2 NOT NULL,
 	[Updated] DateTime2 NULL,
 	CONSTRAINT [PK_AccountLegalEntities] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [FK_AccountLegalEntities_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]),
- --if a new delete account event appears, we'll probably want... (should be set it anyway??)
- --ON DELETE CASCADE
+	CONSTRAINT [FK_AccountLegalEntities_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]) ON DELETE CASCADE,
     INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId])
 )
 
