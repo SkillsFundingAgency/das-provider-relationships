@@ -70,16 +70,6 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             );
         }
 
-        [Test]
-        public Task CosmosDbClient_WhenSearchngForExistingDocuments_ThenShouldNotThrowExcetion()
-        {
-            return RunAsyncCheckException(
-                f => f.ArrangeDocumentClientToReturnAListOfObjects(),
-                f => f.CosmosDbClient.Search("Collection", _ => true),
-                (f, r) =>  r.Should().NotThrow<DocumentException>()
-            );
-        }
-
         // Move to Shared Package
         public Task RunAsyncCheckException(Func<CosmosDbClientTestsFixture, Task> act,
             Action<CosmosDbClientTestsFixture, Func<Task>> assert)
