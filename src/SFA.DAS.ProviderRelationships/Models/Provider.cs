@@ -13,7 +13,6 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual DateTime? Updated { get; protected set; }
         public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
         
-        //todo: how best to handle created?
         public Provider(long ukprn, string name, DateTime created)
         {
             Ukprn = ukprn;
