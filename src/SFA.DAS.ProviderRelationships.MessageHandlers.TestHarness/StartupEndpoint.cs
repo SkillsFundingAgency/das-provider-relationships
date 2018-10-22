@@ -25,7 +25,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 
         public async Task StartAsync()
         {
-            //todo: need unitofwork for savechanges i think
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness")
                 .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
                 .UseErrorQueue()
@@ -33,7 +32,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
-                .UseStructureMapBuilder(_container);
+                .UseStructureMapBuilder(_container)
+                .UseSendOnly();
                 
             _endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
                 
