@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Document.Model\SFA.DAS.ProviderRelationships.Document.Model.csproj" />
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj" />
   </ItemGroup>
 
