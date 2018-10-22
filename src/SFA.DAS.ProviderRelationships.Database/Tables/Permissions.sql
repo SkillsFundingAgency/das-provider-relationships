@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Permissions]
 (
-	[Id] BIGINT NOT NULL IDENTITY, 
+	[Id] INT NOT NULL IDENTITY, 
 	[Type] SMALLINT NOT NULL, 
 	[AccountLegalEntityId] BIGINT NOT NULL, 
 	[Ukprn] BIGINT NOT NULL,
