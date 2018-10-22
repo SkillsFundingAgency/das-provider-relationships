@@ -9,7 +9,9 @@ namespace SFA.DAS.ProviderRelationships.Data
         public void Configure(EntityTypeBuilder<Provider> builder)
         {
             builder.HasKey(p => p.Ukprn);
-            builder.Property(a => a.Ukprn).ValueGeneratedNever();
+            builder.Property(p => p.Ukprn).ValueGeneratedNever();
+
+            builder.Property(p => p.Name).IsRequired().HasColumnType("nvarchar(100)");
         }
     }
 }

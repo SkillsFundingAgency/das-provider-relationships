@@ -26,6 +26,6 @@
         // by deleting, we lose auditing from permissions table, unless we add PermissionAudit (name) table for deleted audits
         // put all changes into audit table
         
-        //todo: ^^ auditing for relationships and permissions in seperate tables that are updated from events
+        //todo: ^^ auditing for relationships and permissions in separate tables that are updated from events
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    //todo: attributes so model matches + add othe lookup to index
     public class Account : Entity
     {
         public virtual long Id { get; protected set; }

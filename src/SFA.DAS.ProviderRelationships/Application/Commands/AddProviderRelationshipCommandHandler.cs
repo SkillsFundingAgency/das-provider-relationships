@@ -21,11 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         {
             var db = _db.Value;
 
-            //todo: plus's update?
             //todo: provider may already exist?
-            //todo: whenall
-
-            //todo: move this into AddRelationship off ALE
             
             //do we want to check existence?
             var accountLegalEntity = await db.AccountLegalEntities.FindAsync(request.AccountLegalEntityId);
@@ -33,9 +29,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             //todo: add Provider instance into command??
             accountLegalEntity.AddRelationship(new Provider(request.Ukprn, request.ProviderName, DateTime.UtcNow));
             
+            //todo:
 //            // if provider already exists, we don't need the name
 //            // if provider already exists need to surface to ui so can show message relationship already exists
-//            var provider = await db.Providers.FindAsync(request.Ukprn);
+
+            
+            //            var provider = await db.Providers.FindAsync(request.Ukprn);
 //            if (provider == null)
 //                provider = db.Providers.Add(new Provider(request.Ukprn, request.ProviderName, DateTime.UtcNow)).Entity;
 //
