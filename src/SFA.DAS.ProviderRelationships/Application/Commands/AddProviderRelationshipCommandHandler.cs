@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Exceptions;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
@@ -23,8 +24,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
             //todo: provider may already exist?
             
+            //todo: add ale, then add relationship where provider already exists. check join created
+            
             //do we want to check existence?
             var accountLegalEntity = await db.AccountLegalEntities.FindAsync(request.AccountLegalEntityId);
+            if (accountLegalEntity == null)  //todo: what exception to throw?
+                throw new MissingEntityException($"Attempt to add a provider relationship to an unknown AccountLegalEntity (Id: {request.AccountLegalEntityId})");
 
             //todo: add Provider instance into command??
             accountLegalEntity.AddRelationship(new Provider(request.Ukprn, request.ProviderName, DateTime.UtcNow));
@@ -32,6 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             //todo:
 //            // if provider already exists, we don't need the name
 //            // if provider already exists need to surface to ui so can show message relationship already exists
+            // provider exists, or relationships exists?
 
             
             //            var provider = await db.Providers.FindAsync(request.Ukprn);
