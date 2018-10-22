@@ -55,8 +55,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 AccountLegalEntityId = accountLegalEntityId, Ukprn = ukprn, UserName = userName, UserRef = userRef,
                 Permissions = new[]
                 {
-                    new Application.Commands.Permission { Type = PermissionType.CreateCohort, Granted = true},
-                    new Application.Commands.Permission { Type = PermissionType.Test, Granted = true}
+                    new Application.Commands.Permission { Type = PermissionType.CreateCohort, Granted = true}
+                    //new Application.Commands.Permission { Type = PermissionType.Test, Granted = true}
                 }
             });
 
