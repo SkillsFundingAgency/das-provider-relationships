@@ -44,11 +44,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var mockAppBuilder = new Mock<IAppBuilder>();
             var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
             var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
+            var mockPostAuthenticationHandler = new Mock<IPostAuthenticationHandler>();
 
             var mockConfigurationFactory = new Mock<ConfigurationFactory>();
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(mockAppBuilder.Object, mockIdentityServerConfig.Object,
-                mockAuthenticationUrls.Object, mockConfigurationFactory.Object, logger.Object);
+                mockAuthenticationUrls.Object, mockPostAuthenticationHandler.Object, mockConfigurationFactory.Object, logger.Object);
         }
 
         //public void AssertClaim(string claimType, string expectedValue)

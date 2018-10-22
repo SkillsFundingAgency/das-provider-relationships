@@ -10,7 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Data
         public DbSet<HealthCheck> HealthChecks { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Provider> Providers { get; set; }
-
+        public DbSet<User> Users { get; set; }
+        
         public ProviderRelationshipsDbContext(DbContextOptions<ProviderRelationshipsDbContext> options) : base(options)
         {
         }
@@ -19,12 +20,8 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
             modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedNever();
             modelBuilder.Entity<AccountLegalEntity>().Property(a => a.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
-            modelBuilder.Entity<Provider>().Property(a => a.Ukprn).ValueGeneratedNever();
-
-            modelBuilder.Entity<AccountLegalEntityProvider>()
-                .HasKey(ap => new {ap.AccountLegalEntityId, ap.Ukprn});
-
+            modelBuilder.Entity<AccountLegalEntityProvider>().HasKey(ap => new { ap.AccountLegalEntityId, ap.Ukprn });
+            
             modelBuilder.Entity<AccountLegalEntityProvider>()
                 .HasOne(ap => ap.AccountLegalEntity)
                 .WithMany(ap => ap.AccountLegalEntityProviders)
@@ -34,6 +31,11 @@ namespace SFA.DAS.ProviderRelationships.Data
                 .HasOne(ap => ap.Provider)
                 .WithMany(ap => ap.AccountLegalEntityProviders)
                 .HasForeignKey(ap => ap.Ukprn);
+            
+            modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
+            modelBuilder.Entity<Provider>().Property(a => a.Ukprn).ValueGeneratedNever();
+            modelBuilder.Entity<User>().HasKey(u => u.Ref);
+            modelBuilder.Entity<User>().Property(u => u.Ref).ValueGeneratedNever();
         }
     }
 }
