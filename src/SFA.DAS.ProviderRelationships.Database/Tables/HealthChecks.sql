@@ -7,5 +7,6 @@
 	[PublishedProviderRelationshipsEvent] DATETIME2 NOT NULL,
 	[ReceivedProviderRelationshipsEvent] DATETIME2 NULL,
 	CONSTRAINT [PK_HealthChecks] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_HealthChecks_Users] FOREIGN KEY ([UserRef]) REFERENCES [Users]([Ref])
+    CONSTRAINT [FK_HealthChecks_Users_UserRef] FOREIGN KEY ([UserRef]) REFERENCES [Users]([Ref]),
+    INDEX [IX_HealthChecks_UserRef] NONCLUSTERED ([UserRef])
 )
