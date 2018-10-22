@@ -9,11 +9,11 @@ namespace SFA.DAS.ProviderRelationships.Models
         
         public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
         public virtual Provider Provider { get; protected set; }
-
-        public AccountLegalEntityProvider(long accountLegalEntityId, Provider provider)
+        
+        public AccountLegalEntityProvider(long accountLegalEntityId, long ukprn)
         {
             AccountLegalEntityId = accountLegalEntityId;
-            Provider = provider;
+            Ukprn = ukprn;
         }
         
         protected AccountLegalEntityProvider()

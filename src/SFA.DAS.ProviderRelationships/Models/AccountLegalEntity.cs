@@ -38,9 +38,9 @@ namespace SFA.DAS.ProviderRelationships.Models
             }
         }
 
-        public void AddRelationship(Provider provider)
+        public void AddRelationship(long ukprn)
         {
-            AccountLegalEntityProviders.Add(new AccountLegalEntityProvider(Id, provider));
+            AccountLegalEntityProviders.Add(new AccountLegalEntityProvider(Id, ukprn));
         }
     }
 }
