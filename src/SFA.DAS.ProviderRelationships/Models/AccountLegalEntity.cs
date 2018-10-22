@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountLegalEntity : Entity
     {
         public virtual long Id { get; protected set; }
-        [Required]
-        [Column(TypeName = "char(6)")]
         public virtual string PublicHashedId { get; protected set; }
         public virtual long AccountId { get; protected set; }
-        [Required]
-        [Column(TypeName = "nvarchar(100)")]
         public virtual string Name { get; protected set; }
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }

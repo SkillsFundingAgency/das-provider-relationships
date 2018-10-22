@@ -18,24 +18,12 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedNever();
-            modelBuilder.Entity<AccountLegalEntity>().Property(a => a.Id).ValueGeneratedNever();
-            modelBuilder.Entity<AccountLegalEntityProvider>().HasKey(ap => new { ap.AccountLegalEntityId, ap.Ukprn });
-            
-            modelBuilder.Entity<AccountLegalEntityProvider>()
-                .HasOne(ap => ap.AccountLegalEntity)
-                .WithMany(ap => ap.AccountLegalEntityProviders)
-                .HasForeignKey(ap => ap.AccountLegalEntityId);
-            
-            modelBuilder.Entity<AccountLegalEntityProvider>()
-                .HasOne(ap => ap.Provider)
-                .WithMany(ap => ap.AccountLegalEntityProviders)
-                .HasForeignKey(ap => ap.Ukprn);
-            
-            modelBuilder.Entity<Provider>().HasKey(p => p.Ukprn);
-            modelBuilder.Entity<Provider>().Property(a => a.Ukprn).ValueGeneratedNever();
-            modelBuilder.Entity<User>().HasKey(u => u.Ref);
-            modelBuilder.Entity<User>().Property(u => u.Ref).ValueGeneratedNever();
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountLegalEntityProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new ProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }
