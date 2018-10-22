@@ -26,7 +26,10 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             var clientSession = unitOfWorkContext.Find<IClientOutboxTransaction>();
             var serverSession = unitOfWorkContext.Find<SynchronizedStorageSession>();
             var sqlSession = clientSession?.GetSqlSession() ?? serverSession?.GetSqlSession() ?? throw new Exception("Cannot find the SQL session");
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(sqlSession.Connection);
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseSqlServer(sqlSession.Connection);
+                // add package reference to Microsoft.EntityFrameworkCore.Proxies, if we want to enable this...
+                //.UseLazyLoadingProxies();
             var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             
             db.Database.UseTransaction(sqlSession.Transaction);
