@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         [Test]
         public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldAddAccount()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault().Should().NotBeNull()
+            return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault(a => a.Id == f.Message.AccountId).Should().NotBeNull()
                 .And.Match<Account>(a => 
                     a.Id == f.Message.AccountId &&
                     a.Name == f.Message.Name &&

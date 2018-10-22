@@ -26,8 +26,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             
             BatchDeleteManager.InMemoryDbContextFactory = () => Db;
             
-            //Message = new TEvent();
-            
             var lazyDbContext = new Lazy<ProviderRelationshipsDbContext>(() => Db);
             Handler = createEventHandler(lazyDbContext);
         }
