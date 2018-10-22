@@ -115,10 +115,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
-    <Compile Include="Data\EntityFrameworkCoreUnitOfWork.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
-    <Compile Include="DependencyResolution\EntityFrameworkCoreUnitOfWorkRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />

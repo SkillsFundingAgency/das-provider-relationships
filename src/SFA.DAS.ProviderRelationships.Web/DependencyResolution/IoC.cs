@@ -1,6 +1,7 @@
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using SFA.DAS.UnitOfWork.NServiceBus.ClientOutbox;
 using StructureMap;
