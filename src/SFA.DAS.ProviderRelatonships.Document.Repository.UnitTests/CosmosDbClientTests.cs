@@ -80,61 +80,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             );
         }
 
-
-        // This needs to go into the shared Class
-        //public Task RunAsync(Action<CosmosDbClientTestsFixture> arrange, 
-        //    Func<CosmosDbClientTestsFixture, Task> act, 
-        //    Func<CosmosDbClientTestsFixture, Func<Task>, AndConstraint<ObjectAssertions>> assert)
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-
-        //    assert(testFixture, async () =>
-        //    {
-        //        if (act != null)
-        //        {
-        //            await act(testFixture);
-        //        }
-        //    });
-
-        //    return Task.CompletedTask;
-        //}
-
-        //public Task RunAsync<TType>(Action<CosmosDbClientTestsFixture> arrange,
-        //    Func<CosmosDbClientTestsFixture, Task<TType>> act,
-        //    Func<CosmosDbClientTestsFixture, Func<Task<TType>>, TType> assert)
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-
-        //    assert(testFixture, async () => await act(testFixture));
-
-        //    return Task.CompletedTask;
-        //}
-
-        //public Task RunAsyncCheckException<TResult>(Func<CosmosDbClientTestsFixture, Task<TResult>> act,
-        //    Action<CosmosDbClientTestsFixture, Func<Task<TResult>>> assert)
-        //{
-        //    return RunAsyncCheckException(null, act, assert);
-        //}
-
-
-        //public Task RunAsyncCheckException<TResult>(Action<CosmosDbClientTestsFixture> arrange,
-        //    Func<CosmosDbClientTestsFixture, Task<TResult>> act,
-        //    Action<CosmosDbClientTestsFixture, Func<Task<TResult>>> assert)
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-
-        //    assert(testFixture, async () => await act(testFixture));
-
-        //    return Task.CompletedTask;
-        //}
-
-
+        // Move to Shared Package
         public Task RunAsyncCheckException(Func<CosmosDbClientTestsFixture, Task> act,
             Action<CosmosDbClientTestsFixture, Func<Task>> assert)
         {
@@ -258,21 +204,6 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             }, HttpStatusCode.BadRequest);
             DocumentClient.Setup(x => x.CreateDocumentQuery<Dummy>(It.IsAny<Uri>(), It.IsAny<FeedOptions>())).Throws(excepton);
             return this;
-        }
-
-        public async Task VerifyExceptionIsThrownWhenSearchIsCalled()
-        {
-            try
-            {
-                await CosmosDbClient.Search("", _ => true);
-                Assert.Fail("No exception thrown");
-            }
-            catch (DocumentException e)
-            {
-                e.HttpStatusCode.Should().Be(HttpStatusCode.BadRequest);
-                e.Message.Should().StartWith("This Collection is partitioned");
-            }
-
         }
     }
 
