@@ -67,11 +67,11 @@
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
-    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="5.0.1" />
+    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="5.0.1" />
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="2.1.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="2.1.1" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="3.1.1" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.1.1" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
     <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
     <PackageReference Include="SFA.DAS.Validation.Mvc" Version="1.0.2" />

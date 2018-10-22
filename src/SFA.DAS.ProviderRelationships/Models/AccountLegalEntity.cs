@@ -14,9 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         
         public virtual Account Account { get; protected set; }
         public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
-        //public virtual ICollection<Provider> Providers { get; protected set; }
-        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } =
-            new List<AccountLegalEntityProvider>();
+        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
         
         public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
         {
@@ -42,6 +40,10 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         public void AddRelationship(Provider provider)
         {
+            AccountLegalEntityProviders.Add(new AccountLegalEntityProvider(Id, provider));
+//            var accountLegalEntityProvider = new AccountLegalEntityProvider(Id, provider.Ukprn);
+//            AccountLegalEntityProviders.Add(accountLegalEntityProvider);
+//            accountLegalEntityProvider.Provider = provider;
         }
     }
 }
