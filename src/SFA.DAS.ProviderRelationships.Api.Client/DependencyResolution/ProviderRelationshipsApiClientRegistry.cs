@@ -11,15 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         {
             IncludeRegistry<DocumentRegistry>();
 
-            //For<ProviderPermissionsConfiguration>().Use(new ProviderPermissionsConfiguration
-            //{
-            //    DatabaseName = "SFA",
-            //    Uri = "https://localhost:8081",
-            //    SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-            //    ProviderRelationshipCollection = "provider-relationships"
-            //});
-
-            For<IProviderPermissions>().Use<ProviderPermissions>();
+            For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
             For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
             {
