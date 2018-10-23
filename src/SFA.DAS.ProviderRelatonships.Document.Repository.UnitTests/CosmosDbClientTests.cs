@@ -32,15 +32,15 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             );
         }
 
-        [Test]
-        public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
-        {
-            return RunAsync(
-                f => f.ArrangeDocumentClientToThrowNotFoundException(),
-                f => f.CosmosDbClient.GetById("Collection", new Guid()),
-                (f, r) => r.Should().BeNull()
-            );
-        }
+        //[Test]
+        //public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
+        //{
+        //    return RunAsync(
+        //        f => f.ArrangeDocumentClientToThrowNotFoundException(),
+        //        f => f.CosmosDbClient.GetById("Collection", new Guid()),
+        //        (f, r) => r.Should().BeNull()
+        //    );
+        //}
 
         //[Test]
         //public Task CosmosDbClient_WhenSearchingForObjectsInNoneExistentPartition_ThenShouldThrowDocumentException()
