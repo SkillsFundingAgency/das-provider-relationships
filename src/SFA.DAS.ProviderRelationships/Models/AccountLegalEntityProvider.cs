@@ -1,7 +1,8 @@
+using System.Collections.Generic;
+
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    // we currently need this CLR class for the join
-    // see, https://github.com/aspnet/EntityFrameworkCore/issues/1368
+    // Models the relationship between an AccountLegalEntity and a Provider
     public class AccountLegalEntityProvider
     {
         public virtual long AccountLegalEntityId { get; protected set; }
@@ -9,6 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         
         public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
         public virtual Provider Provider { get; protected set; }
+        
+        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
         
         public AccountLegalEntityProvider(long accountLegalEntityId, long ukprn)
         {

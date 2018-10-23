@@ -5,8 +5,6 @@
     [AccountLegalEntityId] BIGINT NOT NULL, 
     [Ukprn] BIGINT NOT NULL,
     CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Permissions_AccountLegalEntities_AccountLegalEntityId] FOREIGN KEY ([AccountLegalEntityId]) REFERENCES [AccountLegalEntities]([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Permissions_ToProviders] FOREIGN KEY ([Ukprn]) REFERENCES [Providers]([Ukprn]),
-    INDEX [IX_Permissions_AccountLegalEntityId] NONCLUSTERED ([AccountLegalEntityId]),
-    INDEX [IX_Permissions_Ukprn] NONCLUSTERED ([Ukprn])    
+    CONSTRAINT [FK_Permissions_AccountLegalEntityProvider] FOREIGN KEY ([AccountLegalEntityId], [Ukprn]) REFERENCES [AccountLegalEntityProvider]([AccountLegalEntityId], [Ukprn]) ON DELETE CASCADE,
+    INDEX [IX_Permissions_AccountLegalEntityId_Ukprn] NONCLUSTERED ([AccountLegalEntityId],[Ukprn])
 )

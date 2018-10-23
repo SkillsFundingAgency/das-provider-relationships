@@ -13,7 +13,6 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual DateTime? Updated { get; protected set; }
         
         public virtual Account Account { get; protected set; }
-        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
         public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
         
         public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
