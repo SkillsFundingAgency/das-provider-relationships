@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             var resourceResponse = new ResourceResponse<T>(resource);
             var documentServiceResponseType =
                 Type.GetType(
-                    "Microsoft.Azure.Documents.DocumentServiceResponse, Microsoft.Azure.DocumentDB.Core, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+                    "Microsoft.Azure.Documents.DocumentServiceResponse, Microsoft.Azure.DocumentDB.Core, Version=2.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
 
             var flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
 
             var headersDictionaryType =
                 Type.GetType(
-                    "Microsoft.Azure.Documents.Collections.DictionaryNameValueCollection, Microsoft.Azure.DocumentDB.Core, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+                    "Microsoft.Azure.Documents.Collections.DictionaryNameValueCollection, Microsoft.Azure.DocumentDB.Core, Version=2.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
 
             var headersDictionaryInstance = Activator.CreateInstance(headersDictionaryType, headers);
 
@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         {
             var feedResponseType =
                 Type.GetType(
-                    "Microsoft.Azure.Documents.Client.FeedResponse`1, Microsoft.Azure.DocumentDB.Core, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+                    "Microsoft.Azure.Documents.Client.FeedResponse`1, Microsoft.Azure.DocumentDB.Core, Version=2.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
 
             var flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -76,7 +76,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
 
             var headersDictionaryType =
                 Type.GetType(
-                    "Microsoft.Azure.Documents.Collections.DictionaryNameValueCollection, Microsoft.Azure.DocumentDB.Core, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+                    "Microsoft.Azure.Documents.Collections.DictionaryNameValueCollection, Microsoft.Azure.DocumentDB.Core, Version=2.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
 
             var headersDictionaryInstance = Activator.CreateInstance(headersDictionaryType, headers);
 
