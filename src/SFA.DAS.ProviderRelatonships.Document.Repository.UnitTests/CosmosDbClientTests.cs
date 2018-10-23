@@ -42,25 +42,25 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             );
         }
 
-        [Test]
-        public Task CosmosDbClient_WhenSearchingForObjectsInNoneExistentPartition_ThenShouldThrowDocumentException()
-        {
-            return RunAsyncCheckException(
-                f => f.ArrangeDocumentClientToThrowNotFoundExceptionWhenSearchingForDocuments(),
-                f => f.CosmosDbClient.Search("Collection", _ => true),
-                (f, r) => r.Should().Throw<DocumentException>().And.HttpStatusCode.Should().Be(HttpStatusCode.NotFound)
-            );
-        }
+        //[Test]
+        //public Task CosmosDbClient_WhenSearchingForObjectsInNoneExistentPartition_ThenShouldThrowDocumentException()
+        //{
+        //    return RunAsyncCheckException(
+        //        f => f.ArrangeDocumentClientToThrowNotFoundExceptionWhenSearchingForDocuments(),
+        //        f => f.CosmosDbClient.Search("Collection", _ => true),
+        //        (f, r) => r.Should().Throw<DocumentException>().And.HttpStatusCode.Should().Be(HttpStatusCode.NotFound)
+        //    );
+        //}
 
-        [Test]
-        public Task CosmosDbClient_WhenSearchingForObjectsAccrossMultiplePartition_ThenShouldThrowDocumentException()
-        {
-            return RunAsyncCheckException(
-                f => f.ArrangeDocumentClientToThrowBadRequestExceptionWhenSearchingForDocuments(),
-                f => f.CosmosDbClient.Search("Collection", _ => true),
-                (f, r) => r.Should().Throw<DocumentException>()//.And.HttpStatusCode.Should().Be(HttpStatusCode.BadRequest)
-               );
-        }
+        //[Test]
+        //public Task CosmosDbClient_WhenSearchingForObjectsAccrossMultiplePartition_ThenShouldThrowDocumentException()
+        //{
+        //    return RunAsyncCheckException(
+        //        f => f.ArrangeDocumentClientToThrowBadRequestExceptionWhenSearchingForDocuments(),
+        //        f => f.CosmosDbClient.Search("Collection", _ => true),
+        //        (f, r) => r.Should().Throw<DocumentException>()//.And.HttpStatusCode.Should().Be(HttpStatusCode.BadRequest)
+        //       );
+        //}
 
 
         [Test]
