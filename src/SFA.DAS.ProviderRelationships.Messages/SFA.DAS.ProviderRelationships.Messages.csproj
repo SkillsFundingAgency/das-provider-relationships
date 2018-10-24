@@ -9,6 +9,11 @@
         <Description>SFA.DAS.ProviderRelationships message library</Description>
         <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-provider-relationships</PackageProjectUrl>
+
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <EmbedUntrackedSources>false</EmbedUntrackedSources>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
     </PropertyGroup>
 
     <ItemGroup>
