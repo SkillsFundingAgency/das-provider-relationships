@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
     {
         [TestCase(1, true)]
         [TestCase(2, true)]
-        [TestCase(3, true)]
+        [TestCase(3, false)]
         public Task Handle_WhenCheckingForAnyProviderRelationshipsWithPermission_ThenShouldReturnTrue(long ukprn, bool result)
         {
             var request = new GetHasRelationshipWithPermissionQuery {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -25,17 +25,27 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             return DbClient.GetById(Collection, id);
         }
 
-        public async Task<IEnumerable<TEntity>> FindAll(Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> CreateQuery()
         {
-            var query = DbClient.CreateQuery(Collection, predicate);
-            
-            return await query.AsDocumentQuery().ExecuteNextAsync<TEntity>();
+            return DbClient.CreateQuery(Collection);
         }
 
-        public async Task<bool> FindAny(Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> CreateQuery(FeedOptions options)
         {
-            var query = DbClient.CreateQuery(Collection, predicate, new FeedOptions {MaxItemCount = 1});
-            return (await query.AsDocumentQuery().ExecuteNextAsync()).Any();
+            return DbClient.CreateQuery(Collection, options);
         }
+
+        public async Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken)
+        {
+            var docQuery = query.AsDocumentQuery();
+
+            var results = new List<TEntity>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync<TEntity>(cancellationToken));
+            }
+            return results;
+        }
+
     }
 }

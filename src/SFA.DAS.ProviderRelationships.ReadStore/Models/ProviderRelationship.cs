@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("legalEntityName")]
         public string LegalEntityName { get; set; }
 
-        [JsonProperty("permissions")]
+        [JsonProperty("grantPermissions")]
         public IEnumerable<GrantPermission> GrantPermissions { get; set; }
     }
 }

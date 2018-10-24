@@ -9,8 +9,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
     public interface IDocumentDbClient<TEntity> where TEntity : class
     {
         Task<TEntity> GetById(string collection, Guid id);
-        IQueryable<TEntity> CreateQuery(string collection, Expression<Func<TEntity, bool>> predicate);
-        IQueryable<TEntity> CreateQuery(string collection, Expression<Func<TEntity, bool>> predicate, FeedOptions feedOptions);
+        IOrderedQueryable<TEntity> CreateQuery(string collection);
+        IOrderedQueryable<TEntity> CreateQuery(string collection, FeedOptions feedOptions);
 
     }
 

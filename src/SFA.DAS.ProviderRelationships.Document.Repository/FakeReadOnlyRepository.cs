@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
@@ -18,22 +18,24 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             _singleItem = singleItem;
         }
 
-        public Task<IEnumerable<T>> FindAll(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> CreateQuery()
         {
-            var results = _list.Where(predicate.Compile());
-            return Task.Run(() => results);
+            return _list.AsQueryable();
         }
 
-        public Task<bool> FindAny(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> CreateQuery(FeedOptions options)
         {
-            var result = _list.Any(predicate.Compile());
-            return Task.Run(() => result);
-
+            return _list.AsQueryable();
         }
 
         public Task<T> GetById(Guid id)
         {
             return Task.Run(() => _singleItem);
+        }
+
+        public Task<IEnumerable<T>> ExecuteQuery(IQueryable<T> query, CancellationToken cancellationToken)
+        {
+            return Task.Run(()=>query.AsEnumerable(), cancellationToken);
         }
     }
 }

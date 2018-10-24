@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
@@ -39,15 +42,15 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
             }
         }
 
-        public IQueryable<TEntity> CreateQuery(string collectionName, Expression<Func<TEntity, bool>> predicate)
+        public IOrderedQueryable<TEntity> CreateQuery(string collectionName)
         {
             var defaultFeedOptions = new FeedOptions {MaxItemCount = -1, EnableCrossPartitionQuery = false};
-            return CreateQuery(collectionName, predicate, defaultFeedOptions);
+            return CreateQuery(collectionName, defaultFeedOptions);
         }
 
-        public IQueryable<TEntity> CreateQuery(string collectionName, Expression<Func<TEntity, bool>> predicate, FeedOptions feedOptions)
+        public IOrderedQueryable<TEntity> CreateQuery(string collectionName, FeedOptions feedOptions)
         {
-            return _dbClient.CreateDocumentQuery<TEntity>(DocumentCollectionUri(collectionName), feedOptions).Where(predicate);
+            return _dbClient.CreateDocumentQuery<TEntity>(DocumentCollectionUri(collectionName), feedOptions);
         }
 
         protected Uri DocumentCollectionUri(string collectionName) =>
