@@ -2,10 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using NServiceBus;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Exceptions;
-using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
@@ -22,10 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         {
             var db = _db.Value;
 
-            //todo: pass cancellationtoken to FindAsync?
-            var accountLegalEntity = await db.AccountLegalEntities.FindAsync(request.AccountLegalEntityId);
-            if (accountLegalEntity == null)  //todo: what exception to throw?
-                throw new MissingEntityException($"Attempt to add a provider relationship to an unknown AccountLegalEntity (Id: {request.AccountLegalEntityId})");
+            var accountLegalEntity = await db.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
             // providers will be added outside of these command handlers
             accountLegalEntity.AddRelationship(request.Ukprn);
