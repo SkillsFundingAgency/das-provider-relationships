@@ -63,15 +63,15 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         //}
 
 
-        [Test]
-        public Task CosmosDbClient_WhenSearchngForExistingDocuments_ThenShouldReturnAListOfObjects()
-        {
-            return RunAsync(
-                f => f.ArrangeDocumentClientToReturnAListOfObjects(),
-                f => f.CosmosDbClient.Search("Collection", _ => true),
-                (f, r) => r.IsSameOrEqualTo(f.ListOfItems)
-            );
-        }
+        //[Test]
+        //public Task CosmosDbClient_WhenSearchngForExistingDocuments_ThenShouldReturnAListOfObjects()
+        //{
+        //    return RunAsync(
+        //        f => f.ArrangeDocumentClientToReturnAListOfObjects(),
+        //        f => f.CosmosDbClient.Search("Collection", _ => true),
+        //        (f, r) => r.IsSameOrEqualTo(f.ListOfItems)
+        //    );
+        //}
 
 
         //public void RunCheckException(Action<CosmosDbClientTestsFixture> arrange, Action<CosmosDbClientTestsFixture> act, Func<CosmosDbClientTestsFixture, Action, AndConstraint<ObjectAssertions>> assert)
