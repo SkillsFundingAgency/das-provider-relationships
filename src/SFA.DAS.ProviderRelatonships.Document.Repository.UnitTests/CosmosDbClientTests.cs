@@ -22,26 +22,28 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
     [TestFixture]
     public class CosmosDbClientTests : FluentTest<CosmosDbClientTestsFixture>
     {
-        //[Test]
-        //public Task CosmosDbClient_WhenGettingASingleDocmentWhichExists_ThenShouldReturnObject()
-        //{
-        //    return RunAsync(
-        //        f => f.ArrangeDocumentClientToReturnASingleDocument(),
-        //        f => f.CosmosDbClient.GetById("Collection", new Guid()),
-        //        (f, r) => r.Should().NotBeNull()
-        //    );
-        //}
+        [Test]
+        public Task CosmosDbClient_WhenGettingASingleDocmentWhichExists_ThenShouldReturnObject()
+        {
+            return RunAsync(
+                f => f.ArrangeDocumentClientToReturnASingleDocument(),
+                f => f.CosmosDbClient.GetById("Collection", new Guid()),
+                (f, r) => r.Should().NotBeNull()
+            );
+        }
 
-        //[Test]
-        //public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
-        //{
-        //    return RunAsync(
-        //        f => f.ArrangeDocumentClientToThrowNotFoundException(),
-        //        f => f.CosmosDbClient.GetById("Collection", new Guid()),
-        //        (f, r) => r.Should().BeNull()
-        //    );
-        //}
+        [Test]
+        public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
+        {
+            return RunAsync(
+                f => f.ArrangeDocumentClientToThrowNotFoundException(),
+                f => f.CosmosDbClient.GetById("Collection", new Guid()),
+                (f, r) => r.Should().BeNull()
+            );
+        }
 
+
+        
         //[Test]
         //public Task CosmosDbClient_WhenSearchingForObjectsInNoneExistentPartition_ThenShouldThrowDocumentException()
         //{
