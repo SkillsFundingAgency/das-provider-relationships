@@ -22,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         {
             var db = _db.Value;
 
+            //todo: pass cancellationtoken to FindAsync?
             var accountLegalEntity = await db.AccountLegalEntities.FindAsync(request.AccountLegalEntityId);
             if (accountLegalEntity == null)  //todo: what exception to throw?
                 throw new MissingEntityException($"Attempt to add a provider relationship to an unknown AccountLegalEntity (Id: {request.AccountLegalEntityId})");

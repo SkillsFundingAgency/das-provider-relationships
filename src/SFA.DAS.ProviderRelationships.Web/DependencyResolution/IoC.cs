@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<ApprenticeshipInfoServiceApiConfigurationRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
