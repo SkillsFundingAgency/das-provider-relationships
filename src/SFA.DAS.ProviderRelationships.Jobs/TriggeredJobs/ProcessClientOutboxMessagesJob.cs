@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
             _processClientOutboxMessagesJob = processClientOutboxMessagesJob;
         }
 
-        public Task Run([TimerTrigger("0 */10 * * * *")] TimerInfo timer, TraceWriter logger)
+        public Task Run([TimerTrigger("0 */10 * * * *", RunOnStartup = true)] TimerInfo timer, TraceWriter logger)
         {
             return _processClientOutboxMessagesJob.RunAsync();
         }

@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
             _db = db;
         }
 
-        public async Task Run([TimerTrigger("0 0 0 * * *")] TimerInfo timer, TraceWriter logger)
+        public async Task Run([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo timer, TraceWriter logger)
         {
             var providers = await _providerApiClient.FindAllAsync();
             var batches = providers.Batch(1000).Select(b => b.ToDataTable());
