@@ -7,7 +7,11 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public StartupRegistry()
         {
-            For<IStartup>().Use<Startup.Startup>().Singleton();
+            Scan(s =>
+            {
+                s.AssembliesAndExecutablesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));
+                s.Convention<CompositeDecorator<DefaultStartup, IStartup>>();
+            });
         }
     }
 }

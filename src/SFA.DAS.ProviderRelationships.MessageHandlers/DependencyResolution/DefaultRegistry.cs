@@ -1,6 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Startup;
-using StructureMap;
+﻿using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
 {
@@ -8,7 +6,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
     {
         public DefaultRegistry()
         {
-            For<IStartupTask>().Add<StartupEndpoint>();
         }
     }
 }

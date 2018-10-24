@@ -1,5 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Startup;
-using StructureMap;
+﻿using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution
 {
@@ -7,7 +6,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
     {
         public DefaultRegistry()
         {
-            For<IStartupTask>().Add<StartupEndpoint>();
         }
     }
 }

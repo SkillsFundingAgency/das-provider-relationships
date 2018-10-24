@@ -10,7 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
     {
         public DefaultRegistry()
         {
-            For<IStartupTask>().Add<StartupEndpoint>();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 
