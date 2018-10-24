@@ -3,6 +3,6 @@
     public class ProviderRelationshipRequest
     {
         public long Ukprn { get; set; }
-        private PermissionEnumDto Permission { get; set; }
+        public PermissionEnumDto Permission { get; set; }
     }
 }

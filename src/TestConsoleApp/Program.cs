@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Document.Model;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
+using SFA.DAS.ProviderRelationships.ReadStore.Models;
+using SFA.DAS.ProviderRelationships.Types;
 using StructureMap;
 
 namespace TestConsoleApp
@@ -27,11 +28,11 @@ namespace TestConsoleApp
 
             var ioc = IoC.Initialize();
 
-            var rep = ioc.GetInstance<IDocumentRepository<ProviderRelationship>>();
+            var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderRelationship>>();
 
             try
             {
-                var docs = await rep.Search(m => m.Ukprn == 100025 && m.Permissions.Contains(PermissionEnum.CreateCohort) && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
+                var docs = await rep.FindAll(m => m.Ukprn == 100025 && m.GrantPermissions.Any(g => g.Permission == PermissionEnumDto.CreateCohort) && m.EmployerAccountId == 1235 /*&& m.SchemaVersion == 0*/);
                 var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");
@@ -39,7 +40,7 @@ namespace TestConsoleApp
                 foreach (var item in items)
                 {
                     Console.WriteLine(
-                        $"UKPRN : {item.Ukprn} EmployerAccountId {item.EmployerAccountId} and ID : {item.Id} and ETag @ {item.ETag} ");
+                        $"UKPRN : {item.Ukprn} EmployerAccountId {item.EmployerAccountId} "); //and ID : {item.Id} and ETag @ {item.ETag} ");
                 }
 
             }
@@ -72,9 +73,13 @@ namespace TestConsoleApp
             {
                 DatabaseName = "SFA",
                 Uri = "https://localhost:8081",
-                SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+                SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                MaxRetryAttemptsOnThrottledRequests = 3,
+                MaxRetryWaitTimeInSeconds = 2
             });
             For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>()
+                .Is("provider-relationships");
+            For(typeof(IDocumentReadOnlyRepository<>)).Use(typeof(DocumentReadOnlyRepository<>)).Ctor<string>()
                 .Is("provider-relationships");
 
         }

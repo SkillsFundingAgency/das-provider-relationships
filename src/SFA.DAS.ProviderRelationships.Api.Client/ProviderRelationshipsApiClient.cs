@@ -6,6 +6,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
+        public ProviderRelationshipsApiClient()
+        {
+            
+        }
         public Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request)
         {
             throw new System.NotImplementedException();

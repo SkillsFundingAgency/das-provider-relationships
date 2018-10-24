@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class Permisson
+    public class ProviderRelationship
     {
         [JsonProperty("ukprn")]
         public long Ukprn { get; set; }
@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public string LegalEntityName { get; set; }
 
         [JsonProperty("permissions")]
-        public IEnumerable<Permission> Permissions { get; set; }
+        public IEnumerable<GrantPermission> GrantPermissions { get; set; }
     }
 }
 
