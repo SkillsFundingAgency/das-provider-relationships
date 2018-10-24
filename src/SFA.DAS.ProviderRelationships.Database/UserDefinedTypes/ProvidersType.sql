@@ -1,0 +1,5 @@
+﻿CREATE TYPE [dbo].[ProvidersType] AS TABLE
+(
+    [Ukprn] BIGINT NOT NULL PRIMARY KEY,
+    [Name] NVARCHAR(100) NOT NULL
+)

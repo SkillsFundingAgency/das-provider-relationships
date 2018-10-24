@@ -1,5 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Startup;
+﻿using SFA.DAS.ProviderRelationships.Startup;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution
