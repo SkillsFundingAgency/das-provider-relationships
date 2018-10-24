@@ -14,5 +14,4 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         IQueryable<TEntity> CreateQuery(FeedOptions options);
         Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken);
     }
-
 }

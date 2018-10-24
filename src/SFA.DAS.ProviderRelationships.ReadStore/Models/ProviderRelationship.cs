@@ -3,8 +3,12 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class ProviderRelationship
+    public class ProviderRelationship : BaseCosmosDocument
     {
+        public ProviderRelationship() : base(1, "ProviderRelationship")
+        {
+        }
+
         [JsonProperty("ukprn")]
         public long Ukprn { get; set; }
 

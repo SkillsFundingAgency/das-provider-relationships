@@ -44,8 +44,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Document.Model", "SFA.DAS.ProviderRelationships.Document.Model\SFA.DAS.ProviderRelationships.Document.Model.csproj", "{D3A94A5A-433C-4AD4-B906-FC7D2DD92CA5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests", "SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests\SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.csproj", "{FC8FCB28-AFB4-416B-87E9-9A29360005D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Types", "SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj", "{9E04AE68-5753-49E7-AC56-A0CF005D19D6}"
@@ -120,10 +118,6 @@ Global
 		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11DB94F8-FF6D-41FE-9F7E-458A2B57E3F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3A94A5A-433C-4AD4-B906-FC7D2DD92CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3A94A5A-433C-4AD4-B906-FC7D2DD92CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3A94A5A-433C-4AD4-B906-FC7D2DD92CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3A94A5A-433C-4AD4-B906-FC7D2DD92CA5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC8FCB28-AFB4-416B-87E9-9A29360005D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC8FCB28-AFB4-416B-87E9-9A29360005D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC8FCB28-AFB4-416B-87E9-9A29360005D1}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -8,5 +8,4 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         Task Update(TEntity entity);
         Task Remove(Guid id);
     }
-
 }

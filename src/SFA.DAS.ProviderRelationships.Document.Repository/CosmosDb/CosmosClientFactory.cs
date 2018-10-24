@@ -8,9 +8,12 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
     {
         public IDocumentClient Create(IDocumentConfiguration cosmosDbConfiguration)
         {
-            var connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.RetryOptions.MaxRetryAttemptsOnThrottledRequests = cosmosDbConfiguration.MaxRetryAttemptsOnThrottledRequests;
-            connectionPolicy.RetryOptions.MaxRetryWaitTimeInSeconds = cosmosDbConfiguration.MaxRetryWaitTimeInSeconds;
+            var connectionPolicy = new ConnectionPolicy {
+                RetryOptions = {
+                    MaxRetryAttemptsOnThrottledRequests = cosmosDbConfiguration.MaxRetryAttemptsOnThrottledRequests,
+                    MaxRetryWaitTimeInSeconds = cosmosDbConfiguration.MaxRetryWaitTimeInSeconds
+                }
+            };
 
             return new DocumentClient(new Uri(cosmosDbConfiguration.Uri), cosmosDbConfiguration.SecurityKey, connectionPolicy);
         }

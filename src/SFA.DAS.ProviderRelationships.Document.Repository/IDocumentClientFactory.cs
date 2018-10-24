@@ -5,6 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public interface IDocumentClientFactory
     {
-        IDocumentClient Create(IDocumentConfiguration cosmosDbConfiguration);
+        IDocumentClient Create(IDocumentConfiguration documentConfiguration);
     }
 }
