@@ -1,13 +1,14 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
-using Moq;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
-using SFA.DAS.Providers.Api.Client;
+using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
@@ -19,10 +20,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingAGetProviderQueryAndAProviderIsFound_ThenShouldReturnAGetProviderQueryResponse()
         {
-            return RunAsync(f => f.SetProviderResponse(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
+            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetProviderQueryResponse>(r2 =>
-                    r2.Provider.Ukprn == f.ProviderResponse.Ukprn &&
-                    r2.Provider.Name == f.ProviderResponse.ProviderName));
+                    r2.Provider.Ukprn == f.Provider.Ukprn &&
+                    r2.Provider.Name == f.Provider.Name));
         }
 
         [Test]
@@ -36,19 +37,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     {
         public GetProviderQueryHandler Handler { get; set; }
         public GetProviderQuery Query { get; set; }
-        public Mock<IProviderApiClient> ProviderApiClient { get; set; }
-        public IMapper Mapper { get; set; }
-        public Provider ProviderResponse { get; set; }
-
+        public ProviderRelationshipsDbContext Db { get; set; }
+        public IConfigurationProvider ConfigurationProvider { get; set; }
+        public Provider Provider { get; set; }
+        
         public GetProviderQueryHandlerTestsFixture()
         {
-            ProviderApiClient = new Mock<IProviderApiClient>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
-            Handler = new GetProviderQueryHandler(ProviderApiClient.Object, Mapper);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<ProviderMappings>());
+            Handler = new GetProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
 
             Query = new GetProviderQuery
             {
-                Ukprn = "12345678"
+                Ukprn = 12345678
             };
         }
 
@@ -57,15 +58,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return Handler.Handle(Query, CancellationToken.None);
         }
 
-        public GetProviderQueryHandlerTestsFixture SetProviderResponse()
+        public GetProviderQueryHandlerTestsFixture SetProvider()
         {
-            ProviderResponse = new Provider
-            {
-                Ukprn = int.Parse(Query.Ukprn),
-                ProviderName = "Foo"
-            };
-
-            ProviderApiClient.Setup(c => c.GetAsync(Query.Ukprn)).ReturnsAsync(ProviderResponse);
+            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn.Value).WithName("Foo").Build();
+            
+            Db.Providers.Add(Provider);
+            Db.SaveChanges();
 
             return this;
         }

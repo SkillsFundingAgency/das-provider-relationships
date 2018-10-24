@@ -2,6 +2,6 @@
 {
     public class SearchProvidersQueryResponse
     {
-        public int Ukprn { get; set; }
+        public long Ukprn { get; set; }
     }
 }

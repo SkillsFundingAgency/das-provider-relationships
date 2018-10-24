@@ -1,33 +1,35 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Validation;
-using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class SearchProvidersQueryHandler : IRequestHandler<SearchProvidersQuery, SearchProvidersQueryResponse>
     {
-        private readonly IProviderApiClient _providerApiClient;
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
-        public SearchProvidersQueryHandler(IProviderApiClient providerApiClient)
+        public SearchProvidersQueryHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
-            _providerApiClient = providerApiClient;
+            _db = db;
         }
 
         public async Task<SearchProvidersQueryResponse> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
         {
-            var isUkprnValid = await _providerApiClient.ExistsAsync(request.Ukprn);
+            var isValid = long.TryParse(request.Ukprn, out var ukprn) && await _db.Value.Providers.AnyAsync(p => p.Ukprn == ukprn, cancellationToken);
 
-            if (!isUkprnValid)
+            if (!isValid)
             {
                 throw new ValidationException().AddError(request, r => r.Ukprn, ErrorMessages.InvalidUkprn);
             }
 
             return new SearchProvidersQueryResponse
             {
-                Ukprn = int.Parse(request.Ukprn)
+                Ukprn = ukprn
             };
         }
     }

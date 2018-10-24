@@ -121,7 +121,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             GetProviderQuery = new GetProviderQuery
             {
-                Ukprn = "12345678"
+                Ukprn = 12345678
             };
 
             GetProviderQueryResponse = new GetProviderQueryResponse

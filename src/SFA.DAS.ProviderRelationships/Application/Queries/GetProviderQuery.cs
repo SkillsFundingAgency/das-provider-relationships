@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetProviderQuery : IRequest<GetProviderQueryResponse>
     {
-        public string Ukprn { get; set; }
+        [Required]
+        public long? Ukprn { get; set; }
     }
 }

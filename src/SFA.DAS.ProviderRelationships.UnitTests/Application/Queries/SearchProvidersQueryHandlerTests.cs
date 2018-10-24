@@ -1,10 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.Providers.Api.Client;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.Testing;
 using SFA.DAS.Validation;
 
@@ -17,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsFound_ThenShouldReturnASearchProvidersQueryResponse()
         {
-            return RunAsync(f => f.SetProviderResponse(), f => f.Handle(), (f, r) =>
+            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().Be(int.Parse(f.Query.Ukprn));
@@ -35,12 +36,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     {
         public SearchProvidersQueryHandler Handler { get; set; }
         public SearchProvidersQuery Query { get; set; }
-        public Mock<IProviderApiClient> ProviderApiClient { get; set; }
+        public ProviderRelationshipsDbContext Db { get; set; }
 
         public SearchProvidersQueryHandlerTestsFixture()
         {
-            ProviderApiClient = new Mock<IProviderApiClient>();
-            Handler = new SearchProvidersQueryHandler(ProviderApiClient.Object);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Handler = new SearchProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
 
             Query = new SearchProvidersQuery
             {
@@ -53,9 +54,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return Handler.Handle(Query, CancellationToken.None);
         }
 
-        public SearchProvidersQueryHandlerTestsFixture SetProviderResponse()
+        public SearchProvidersQueryHandlerTestsFixture SetProvider()
         {
-            ProviderApiClient.Setup(c => c.ExistsAsync(Query.Ukprn)).ReturnsAsync(true);
+            var provider = new ProviderBuilder().WithUkprn(int.Parse(Query.Ukprn)).Build();
+            
+            Db.Providers.Add(provider);
+            Db.SaveChanges();
 
             return this;
         }
