@@ -14,16 +14,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
             return this;
         }
 
-        public Provider Build()
-        {
-            return _provider.Object;
-        }
-
         public ProviderBuilder WithName(string name)
         {
             _provider.SetupProperty(p => p.Name, name);
             
             return this;
+        }
+
+        public Provider Build()
+        {
+            return _provider.Object;
         }
     }
 }

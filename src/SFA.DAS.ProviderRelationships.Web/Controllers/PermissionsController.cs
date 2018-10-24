@@ -7,7 +7,7 @@ using SFA.DAS.Authorization.Mvc;
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerRoles.Any)]
-    [RoutePrefix("accounts/{hashedAccountId}/permissions")]
+    [RoutePrefix("accounts/{accountHashedId}/permissions")]
     public class PermissionsController : Controller
     {
         private readonly IMediator _mediator;

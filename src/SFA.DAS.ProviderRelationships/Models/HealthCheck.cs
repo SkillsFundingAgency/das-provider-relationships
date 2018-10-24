@@ -8,6 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Models
     {
         public virtual int Id { get; protected set; }
         public virtual User User { get; protected set; }
+        public virtual Guid UserRef { get; protected set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
         public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }

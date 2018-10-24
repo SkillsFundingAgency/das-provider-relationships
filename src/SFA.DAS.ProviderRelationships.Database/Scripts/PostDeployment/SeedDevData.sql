@@ -1,0 +1,1 @@
+﻿INSERT INTO [dbo].[Accounts] ([Id], [Name], [Created]) VALUES (1, 'Tesco Plc', GETUTCDATE())

@@ -7,6 +7,7 @@ using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
@@ -50,26 +51,26 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheHomeAction()
+        public Task AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheAddedAction()
         {
-            Run(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
+            return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
                 a.RouteValues["Action"].Equals("Added") &&
                 a.RouteValues["Controller"] == null &&
-                a.RouteValues["ukprn"].Equals(f.AddViewModel.Ukprn)));
+                a.RouteValues["accountProviderId"].Equals(f.AccountProviderId)));
         }
 
         [Test]
-        public void AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
+        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
         {
-            Run(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return RunAsync(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Search") &&
                 a.RouteValues["Controller"] == null));
         }
 
         [Test]
-        public void AddProvider_WhenPostingTheAddActionAndNoOptionWasSelected_ThenShouldThrowException()
+        public Task AddProvider_WhenPostingTheAddActionAndNoOptionWasSelected_ThenShouldThrowException()
         {
-            Run(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
     }
 
@@ -83,6 +84,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetProviderQuery GetProviderQuery { get; set; }
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
         public AddProviderViewModel AddViewModel { get; set; }
+        public int AccountProviderId { get; set; }
 
         public ProvidersControllerTestsFixture()
         {
@@ -137,14 +139,22 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return ProvidersController.Add(GetProviderQuery);
         }
 
-        public ActionResult PostAdd(string choice = null)
+        public Task<ActionResult> PostAdd(string choice = null)
         {
             AddViewModel = new AddProviderViewModel
             {
-                Choice = choice,
-                Ukprn = "12345678"
+                AddAccountProviderCommand = new AddAccountProviderCommand
+                {
+                    AccountId = 1,
+                    Ukprn = 12345678
+                },
+                Choice = choice
             };
 
+            AccountProviderId = 12;
+
+            Mediator.Setup(m => m.Send(AddViewModel.AddAccountProviderCommand, CancellationToken.None)).ReturnsAsync(AccountProviderId);
+            
             return ProvidersController.Add(AddViewModel);
         }
     }

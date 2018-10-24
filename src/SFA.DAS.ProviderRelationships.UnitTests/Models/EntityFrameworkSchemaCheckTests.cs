@@ -18,8 +18,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
         {
             //load connection string from config?
-            const string databaseConnectionString = "Server=tcp:phils.database.windows.net,1433;Initial Catalog=SFA.DAS.ProviderRelationships.Database;Persist Security Info=False;User ID=phil;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //const string databaseConnectionString = "Bobs DB";
+            //const string databaseConnectionString = "Server=tcp:phils.database.windows.net,1433;Initial Catalog=SFA.DAS.ProviderRelationships.Database;Persist Security Info=False;User ID=phil;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            const string databaseConnectionString = "Data Source=(localDB)\\MSSQLLocalDB;Database=SFA.DAS.ProviderRelationships.Database;Integrated Security = true;Trusted_Connection=True;Pooling=False;Connect Timeout=30;MultipleActiveResultSets=True";
 
             var connection = new SqlConnection(databaseConnectionString);
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);

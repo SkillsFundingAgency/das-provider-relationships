@@ -12,7 +12,7 @@ using SFA.DAS.Validation.Mvc;
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerRoles.Any)]
-    [RoutePrefix("accounts/{hashedAccountId}/providers")]
+    [RoutePrefix("accounts/{accountHashedId}/providers")]
     public class ProvidersController : Controller
     {
         private readonly IMediator _mediator;
@@ -53,12 +53,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("add")]
-        public ActionResult Add(AddProviderViewModel model)
+        public async Task<ActionResult> Add(AddProviderViewModel model)
         {
+            var accountProviderId = await _mediator.Send(model.AddAccountProviderCommand);
+            
             switch (model.Choice)
             {
                 case "Confirm":
-                    return RedirectToAction("Added", new { ukprn = model.Ukprn });
+                    return RedirectToAction("Added", new { accountProviderId = accountProviderId });
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");
                 default:
@@ -67,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpNotFoundForNullModel]
-        [Route("added")]
+        [Route("{accountProviderId}/added")]
         public ActionResult Added()
         {
             return View();

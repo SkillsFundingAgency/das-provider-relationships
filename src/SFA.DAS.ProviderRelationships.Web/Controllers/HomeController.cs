@@ -10,15 +10,20 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     public class HomeController : Controller
     {
         [Route]
-        [Route("accounts/{hashedAccountId}")]
-        public ActionResult Index()
+        public ActionResult Local()
         {
             if (ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL))
             {
-                return RedirectToAction("Index", new { hashedAccountId = "ABC123" });
+                return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
             }
 
             return Redirect(Url.EmployerPortalAction());
+        }
+        
+        [Route("accounts/{accountHashedId}")]
+        public ActionResult Index()
+        {
+            return View();
         }
     }
 }

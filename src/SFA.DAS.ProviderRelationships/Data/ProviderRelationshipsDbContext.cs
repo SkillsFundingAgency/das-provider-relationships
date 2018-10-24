@@ -8,6 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public DbSet<AccountProvider> AccountProviders { get; set; }
         public DbSet<HealthCheck> HealthChecks { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Provider> Providers { get; set; }
@@ -31,6 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AccountLegalEntityProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountProviderConfiguration());
             modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
