@@ -3,8 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
+using static MoreLinq.Extensions.BatchExtension;
+using static MoreLinq.Extensions.ToDataTableExtension;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.Providers.Api.Client;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
@@ -23,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
         public async Task Run([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo timer, TraceWriter logger)
         {
             var providers = await _providerApiClient.FindAllAsync();
-            var batches = providers.Batch(1000).Select(b => b.ToDataTable());
+            var batches = providers.Batch(1000).Select(b => b.ToDataTable(p => p.Ukprn, p => p.ProviderName));
 
             foreach (var batch in batches)
             {
