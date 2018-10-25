@@ -12,7 +12,7 @@ using SFA.DAS.OidcMiddleware;
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
     /// <remarks>
-    /// Works with DAS's implementation of OpenID Connect Provider (https://github.com/SkillsFundingAgency/das-employerusers)
+    /// Works with DAS' implementation of OpenID Connect Provider (https://github.com/SkillsFundingAgency/das-employerusers)
     /// which uses/implements...
     /// SFA.DAS.OidcMiddleware (https://github.com/SkillsFundingAgency/das-shared-packages)
     /// IdentityServer3 (https://github.com/IdentityServer/IdentityServer3)
@@ -26,6 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         private readonly IAppBuilder _app;
         private readonly IIdentityServerConfiguration _config;
         private readonly IAuthenticationUrls _authenticationUrls;
+        private readonly IPostAuthenticationHandler _postAuthenticationHandler;
         private readonly ConfigurationFactory _configurationFactory;
         private readonly ILog _logger;
 
@@ -33,12 +34,14 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             IAppBuilder app,
             IIdentityServerConfiguration config,
             IAuthenticationUrls authenticationUrls,
+            IPostAuthenticationHandler postAuthenticationHandler,
             ConfigurationFactory configurationFactory,
             ILog logger)
         {
             _app = app;
             _config = config;
             _authenticationUrls = authenticationUrls;
+            _postAuthenticationHandler = postAuthenticationHandler;
             _configurationFactory = configurationFactory;
             _logger = logger;
         }
@@ -70,9 +73,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication
                 TokenEndpoint = _authenticationUrls.TokenEndpoint,
                 UserInfoEndpoint = _authenticationUrls.UserInfoEndpoint,
                 TokenSigningCertificateLoader = GetSigningCertificate(_config.UseCertificate),
-                TokenValidationMethod = _config.UseCertificate
-                    ? TokenValidationMethod.SigningKey
-                    : TokenValidationMethod.BinarySecret
+                TokenValidationMethod = _config.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
+                AuthenticatedCallback = i => _postAuthenticationHandler.Handle(i)
             });
 
             ConfigurationFactory.Current = _configurationFactory;

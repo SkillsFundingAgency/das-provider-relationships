@@ -7,6 +7,8 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application;
+using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -16,6 +18,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
     [TestFixture]
+    [Parallelizable]
     public class HealthCheckControllerTests : FluentTest<HealthCheckControllerTestsFixture>
     {
         [Test]

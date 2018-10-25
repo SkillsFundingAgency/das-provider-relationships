@@ -1,36 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>net462</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net462</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
+    <!--doesn't seem to work-->
+    <!--<ItemGroup>-->
+        <!--<AssemblyAttribute Include="NUnit.Framework.Parallelizable" />-->
+    <!--</ItemGroup>-->
+    
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.5.0" />
+        <PackageReference Include="AutoFixture.NUnit3" Version="4.5.0" />
+        <PackageReference Include="AutoMapper " Version="7.0.1" />
+        <PackageReference Include="CloneExtensions" Version="1.4.2" />
+        <PackageReference Include="MediatR" Version="5.1.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+        <PackageReference Include="Moq" Version="4.10.0" />
+        <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+        <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
+        <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
+    </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Moq" Version="4.10.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-    <PackageReference Include="SFA.DAS.Testing" Version="2.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
-    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System" />
+    </ItemGroup>
 
 </Project>

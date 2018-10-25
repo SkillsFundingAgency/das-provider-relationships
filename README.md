@@ -23,6 +23,14 @@
 
 > The two repositories above are private. If the links appear to be dead make sure that you are logged into GitHub with an account that has access to these i.e. that you are part of the Skills Funding Agency Team organization.
 
+##### Add Certificates
+
+Execute DevInstall.ps1 as an admin to import required certificates into their appropriate store locations.
+
+##### Create deadletters Queue (optional)
+
+If you intend on using your own development service bus (LearningTransport is used by default), create a queue name `deadletters`.
+
 ##### Open the solution
 
 * Open the solution in Visual Studio

@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net462</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NLog.Schema" Version="4.5.10" />
+        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="3.2.2" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.2.2" />
+        <PackageReference Include="StructureMap" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System" />
+        <Reference Include="System.Configuration" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="App.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </None>
+        <None Include="App.*.config">
+            <DependentUpon>App.config</DependentUpon>
+            <IsTransformFile>True</IsTransformFile>
+        </None>
+    </ItemGroup>
+
+</Project>

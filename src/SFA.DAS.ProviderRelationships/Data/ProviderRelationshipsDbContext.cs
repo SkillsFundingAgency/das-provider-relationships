@@ -1,36 +1,29 @@
-﻿using System.Data.Common;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
-    [DbConfigurationType(typeof(SqlAzureDbConfiguration))]
     public class ProviderRelationshipsDbContext : DbContext
     {
-        public virtual DbSet<HealthCheck> HealthChecks { get; set; }
-
-        static ProviderRelationshipsDbContext()
-        {
-            Database.SetInitializer<ProviderRelationshipsDbContext>(null);
-        }
-
-        public ProviderRelationshipsDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
-        {
-        }
-
-        public ProviderRelationshipsDbContext(DbConnection connection, DbTransaction transaction)
-            : base(connection, false)
-        {
-            Database.UseTransaction(transaction);
-        }
-
-        protected ProviderRelationshipsDbContext()
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public DbSet<HealthCheck> HealthChecks { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+        public DbSet<User> Users { get; set; }
+        
+        public ProviderRelationshipsDbContext(DbContextOptions<ProviderRelationshipsDbContext> options) : base(options)
         {
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountLegalEntityProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new ProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

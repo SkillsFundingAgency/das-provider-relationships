@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Microsoft.ApplicationInsights;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -16,15 +17,16 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             AntiForgeryConfig.UniqueClaimTypeIdentifier = DasClaimTypes.Id;
             AreaRegistration.RegisterAllAreas();
+            BinderConfig.RegisterBinders(ModelBinders.Binders);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            NServiceBusConfig.Start();
+            DependencyResolver.Current.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_End()
         {
-            NServiceBusConfig.Stop();
+            DependencyResolver.Current.GetService<IStartup>().StopAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_Error(object sender, EventArgs e)

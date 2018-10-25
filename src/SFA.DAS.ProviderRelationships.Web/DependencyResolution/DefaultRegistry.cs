@@ -1,5 +1,8 @@
 using System.Web;
+using SFA.DAS.Authorization;
 using SFA.DAS.NLog.Logger;
+using SFA.DAS.ProviderRelationships.Startup;
+using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.Logging;
 using StructureMap;
 
@@ -9,15 +12,16 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
     {
         public DefaultRegistry()
         {
+            For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
+            For<IStartupTask>().Add<StartupEndpoint>();
+            For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
+            For<ILoggingContext>().Use(c => GetLoggingContext(c));
+            
             Scan(s =>
             {
                 s.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));
-                s.RegisterConcreteTypesAgainstTheFirstInterface();
                 s.With(new ControllerConvention());
             });
-            
-            For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
-            For<ILoggingContext>().Use(c => GetLoggingContext(c));
         }
 
         private ILoggingContext GetLoggingContext(IContext context)
