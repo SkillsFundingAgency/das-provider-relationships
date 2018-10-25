@@ -20,7 +20,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 
         public async Task<SearchProvidersQueryResponse> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
         {
-            var isValid = long.TryParse(request.Ukprn, out var ukprn) && await _db.Value.Providers.AnyAsync(p => p.Ukprn == ukprn, cancellationToken);
+            var ukprn = long.Parse(request.Ukprn);
+            var isValid = await _db.Value.Providers.AnyAsync(p => p.Ukprn == ukprn, cancellationToken);
 
             if (!isValid)
             {
