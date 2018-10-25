@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
@@ -42,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             var results = new List<TEntity>();
             while (docQuery.HasMoreResults)
             {
-                results.AddRange(await docQuery.ExecuteNextAsync<TEntity>(cancellationToken));
+                results.AddRange(await DbClient.GetEntities(docQuery, cancellationToken));
             }
             return results;
         }

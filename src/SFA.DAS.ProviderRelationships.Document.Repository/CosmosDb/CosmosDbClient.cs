@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -51,6 +53,11 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
         }
 
         public IDocumentQuery<TEntity> ConvertToDocumentQuery(IQueryable<TEntity> query) => query.AsDocumentQuery();
+
+        public async Task<IEnumerable<TEntity>> GetEntities(IDocumentQuery<TEntity> docQuery, CancellationToken cancellationToken)
+        {
+            return await docQuery.ExecuteNextAsync<TEntity>(cancellationToken);
+        }
 
         protected Uri DocumentCollectionUri(string collectionName) =>
             UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, collectionName);

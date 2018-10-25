@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentAssertions.Common;
-using FluentAssertions.Primitives;
-using FluentAssertions.Specialized;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Moq;
@@ -29,6 +25,17 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
                 f => f.ArrangeDocumentClientToReturnASingleDocument(),
                 f => f.CosmosDbClient.GetById("Collection", new Guid()),
                 (f, r) => r.Should().NotBeNull()
+            );
+        }
+
+        //[Ignore("")]
+        [Test]
+        public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
+        {
+            return RunAsync(
+                f => f.ArrangeDocumentClientToThrowNotFoundException(),
+                f => f.CosmosDbClient.GetById("Collection", new Guid()),
+                (f, r) => r.Should().BeNull()
             );
         }
 
@@ -100,13 +107,11 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
                     It.IsAny<FeedOptions>()))
                 .Returns(OrderedQuery);
         }
+
+        public void ArrangeDocumentClientToThrowNotFoundException()
+        {
+            var e = CosmosDbHelper.CreateDocumentClientExceptionForTesting(new Error(), HttpStatusCode.NotFound);
+            DocumentClient.Setup(x => x.ReadDocumentAsync(It.IsAny<Uri>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>())).ThrowsAsync(e);
+        }
     }
-
-    public class Dummy
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
-
-
 }
