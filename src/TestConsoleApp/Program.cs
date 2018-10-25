@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
@@ -34,8 +34,8 @@ namespace TestConsoleApp
             try
             {
                 var q = rep.CreateQuery();
-                var docs = q.Where(m => m.Ukprn == 100025).AsEnumerable().Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == PermissionEnumDto.CreateCohort)); 
-                //docs = await rep.FindAll(m => m.Ukprn == 100025 && m.EmployerAccountId == 1235 && m.GrantPermissions.Select(p=>p.Permission).Contains(PermissionEnumDto.CreateCohort) /*&& m.SchemaVersion == 0*/);
+                var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100025), CancellationToken.None);
+                docs = docs.Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == PermissionEnumDto.CreateCohort));
                 var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");
