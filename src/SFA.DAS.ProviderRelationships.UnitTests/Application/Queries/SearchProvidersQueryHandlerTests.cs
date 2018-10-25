@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Ukprn.Should().Be(int.Parse(f.Query.Ukprn));
+                r.Ukprn.Should().Be(long.Parse(f.Query.Ukprn));
             });
         }
 
