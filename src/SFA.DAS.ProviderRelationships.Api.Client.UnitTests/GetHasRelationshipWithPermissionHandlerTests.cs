@@ -31,23 +31,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
     {
         public GetHasRelationshipWithPermissionHandler Handler;
 
-        public IDocumentReadOnlyRepository<ProviderRelationship> ReadRepository  { get; set; }
-        public List<ProviderRelationship> ProviderRelationships { get; set; }
+        public IDocumentReadOnlyRepository<ProviderPermissions> ReadRepository  { get; set; }
+        public List<ProviderPermissions> ProviderRelationships { get; set; }
 
         public GetHasRelationshipWithPermissionHandlerTestsFixture()
         {
 
-            ProviderRelationships = new List<ProviderRelationship>
+            ProviderRelationships = new List<ProviderPermissions>
             {
-                new ProviderRelationship { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
-                new ProviderRelationship { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderRelationship { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
-                new ProviderRelationship { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
-                new ProviderRelationship { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderRelationship { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
+                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
+                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
+                new ProviderPermissions { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
             };
 
-            ReadRepository = new FakeReadOnlyRepository<ProviderRelationship>(ProviderRelationships, null);
+            ReadRepository = new FakeReadOnlyRepository<ProviderPermissions>(ProviderRelationships, null);
 
             Handler = new GetHasRelationshipWithPermissionHandler(ReadRepository);
         }

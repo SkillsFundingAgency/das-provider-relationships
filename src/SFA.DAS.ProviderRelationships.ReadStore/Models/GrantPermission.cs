@@ -11,6 +11,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         [JsonProperty("createdOn")]
         public DateTime CreatedOn { get; set; }
+
+        [JsonProperty("messageId")]
+        public string MessageId { get; set; }
     }
 }
 

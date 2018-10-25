@@ -10,9 +10,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Application
 {
     public class GetHasRelationshipWithPermissionHandler : IRequestHandler<GetHasRelationshipWithPermissionQuery, bool>
     {
-        private readonly IDocumentReadOnlyRepository<ProviderRelationship> _repository;
+        private readonly IDocumentReadOnlyRepository<ProviderPermissions> _repository;
 
-        public GetHasRelationshipWithPermissionHandler(IDocumentReadOnlyRepository<ProviderRelationship> repository)
+        public GetHasRelationshipWithPermissionHandler(IDocumentReadOnlyRepository<ProviderPermissions> repository)
         {
             _repository = repository;
         }

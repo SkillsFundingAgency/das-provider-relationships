@@ -29,7 +29,7 @@ namespace TestConsoleApp
 
             var ioc = IoC.Initialize();
 
-            var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderRelationship>>();
+            var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderPermissions>>();
 
             try
             {

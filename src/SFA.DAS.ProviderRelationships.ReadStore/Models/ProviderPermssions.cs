@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class ProviderRelationship : BaseCosmosDocument
+    public class ProviderPermissions : BaseCosmosDocument
     {
-        public ProviderRelationship() : base(1, "ProviderRelationship")
+        public ProviderPermissions() : base(1, "ProviderRelationship")
         {
         }
 
@@ -15,14 +15,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("employerAccountId")]
         public long EmployerAccountId { get; set; }
 
-        [JsonProperty("legalEntityHashedId")]
-        public string LegalEntityHashedId { get; set; }
+        [JsonProperty("employerAccountLegalEntityPublicHashedId")]
+        public string EmployerAccountLegalEntityPublicHashedId { get; set; }
 
-        [JsonProperty("legalEntityName")]
-        public string LegalEntityName { get; set; }
+        [JsonProperty("employerAccountLegalEntityName")]
+        public string EmployerAccountLegalEntityName { get; set; }
 
         [JsonProperty("grantPermissions")]
         public IEnumerable<GrantPermission> GrantPermissions { get; set; }
+
+
     }
 }
 

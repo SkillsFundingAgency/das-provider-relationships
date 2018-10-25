@@ -1,10 +1,14 @@
 ﻿{
-  "ukprn": 100024,
-  "employerAccountId": 2234,
-  "employerName": "employer name 2234",
-  "legalEntityHashedId": "hashedIdC",
-  "legalEntityName": "nameC",
-  "permissions": [
-    "CreateCohort"
-  ]
+    "ukprn": 100024,
+    "employerAccountId": 2234,
+    "employerName": "employer name 2234",
+    "employerAccountLegalEntityPublicHashedId": "hashedIdC",
+    "employerAccountLegalEntityName": "nameC",
+    "grantPermissions": [
+        {
+            "permission": "CreateCohort",
+            "createdOn": "2018-04-23T18:25:43.511Z",
+            "messageId": "1234"
+        }
+    ]
 }
