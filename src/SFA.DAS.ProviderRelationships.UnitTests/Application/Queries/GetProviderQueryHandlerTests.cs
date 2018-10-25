@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
-        public Task Handle_WhenHandlingAGetProviderQueryAndAProviderIsNotFound_ThenShouldReturnAGetProviderQueryResponseWithNullProvider()
+        public Task Handle_WhenHandlingAGetProviderQueryAndAProviderIsNotFound_ThenShouldReturnNull()
         {
             return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
@@ -35,22 +35,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
     public class GetProviderQueryHandlerTestsFixture
     {
-        public GetProviderQueryHandler Handler { get; set; }
         public GetProviderQuery Query { get; set; }
+        public GetProviderQueryHandler Handler { get; set; }
+        public Provider Provider { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
-        public Provider Provider { get; set; }
-        
+
         public GetProviderQueryHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<ProviderMappings>());
-            Handler = new GetProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
-
             Query = new GetProviderQuery
             {
                 Ukprn = 12345678
             };
+            
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<ProviderMappings>());
+            Handler = new GetProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
         public Task<GetProviderQueryResponse> Handle()

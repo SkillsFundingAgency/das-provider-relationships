@@ -69,9 +69,30 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
-        public ActionResult Added()
+        public async Task<ActionResult> Added(GetAddedProviderQuery query)
         {
-            return View();
+            var response = await _mediator.Send(query);
+            var model = _mapper.Map<AddedProviderViewModel>(response);
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{accountProviderId}/added")]
+        public ActionResult Added(AddedProviderViewModel model)
+        {
+            switch (model.Choice)
+            {
+                case "SetPermissions":
+                    return RedirectToAction("Index", "Permissions", new { accountProviderId = model.AccountProviderId });
+                case "AddTrainingProvider":
+                    return RedirectToAction("Search");
+                case "GoToHomepage":
+                    return RedirectToAction("Index", "Home");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+            }
         }
     }
 }

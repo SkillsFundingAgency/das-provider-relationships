@@ -30,15 +30,15 @@
                     <span class="govuk-error-message">
                         @Html.ValidationMessageFor(m => m.Choice)
                     </span>
-                    <div class="govuk-radios govuk-radios--inline">
+                    <div class="govuk-radios">
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "Confirm", new { @id = "choice-1", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "Confirm", new { id = "choice-1", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-1">
                                 Yes, use @Model.Provider.Name
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn", new { @id = "choice-2", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn", new { id = "choice-2", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-2">
                                 No, change UK Provider Reference Number
                             </label>

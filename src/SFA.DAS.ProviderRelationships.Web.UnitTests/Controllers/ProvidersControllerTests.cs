@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenGettingTheAddAction_ThenShouldReturnTheAddView()
+        public Task Add_WhenGettingTheAddAction_ThenShouldReturnTheAddView()
         {
             return RunAsync(f => f.Add(), (f, r) =>
             {
@@ -51,13 +51,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldAddAccountProvider()
+        public Task Add_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldAddAccountProvider()
         {
             return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Once));
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheAddedAction()
+        public Task Add_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheAddedAction()
         {
             return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
                 a.RouteValues["Action"].Equals("Added") &&
@@ -66,13 +66,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
+        public Task Add_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
         {
             return RunAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Never));
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldRedirectToTheSearchAction()
+        public Task Add_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldRedirectToTheSearchAction()
         {
             return RunAsync(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Search") &&
@@ -80,9 +80,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndNoOptionIsSelected_ThenShouldThrowException()
+        public Task Add_WhenPostingTheAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
             return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public Task Added_WhenGettingTheAddedAction_ThenShouldReturnTheAddedView()
+        {
+            return RunAsync(f => f.Added(), (f, r) =>
+            {
+                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedProviderViewModel>(m => m.AccountProvider == f.GetAddedProviderQueryResponse.AccountProvider);
+            });
         }
     }
 
@@ -97,6 +107,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
         public AddProviderViewModel AddViewModel { get; set; }
         public int AccountProviderId { get; set; }
+        public GetAddedProviderQueryResponse GetAddedProviderQueryResponse { get; set; }
+        public GetAddedProviderQuery GetAddedProviderQuery { get; set; }
 
         public ProvidersControllerTestsFixture()
         {
@@ -168,6 +180,31 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator.Setup(m => m.Send(AddViewModel.AddAccountProviderCommand, CancellationToken.None)).ReturnsAsync(AccountProviderId);
             
             return ProvidersController.Add(AddViewModel);
+        }
+
+        public Task<ActionResult> Added()
+        {
+            GetAddedProviderQuery = new GetAddedProviderQuery
+            {
+                AccountProviderId = 12
+            };
+
+            GetAddedProviderQueryResponse = new GetAddedProviderQueryResponse
+            {
+                AccountProvider = new AccountProviderDto
+                {
+                    Id = 12,
+                    Provider = new ProviderDto
+                    {
+                        Ukprn = 12345678,
+                        Name = "Foo"
+                    }
+                }
+            };
+
+            Mediator.Setup(m => m.Send(GetAddedProviderQuery, CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResponse);
+            
+            return ProvidersController.Added(GetAddedProviderQuery);
         }
     }
 }
