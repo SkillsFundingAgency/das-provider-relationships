@@ -14,10 +14,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class HomeControllerTests : FluentTest<HomeControllerTestsFixture>
     {
         [Test]
-        public void Index_WhenGettingIndexAction_ThenShouldRedirectToEmployerPortal()
+        public void Index_WhenGettingLocalAction_ThenShouldRedirectToEmployerPortal()
+        {
+            Run(f => f.SetEnvironment(DasEnv.AT), f => f.Local(), (f, r) => r.Should().NotBeNull()
+                .And.Match<RedirectResult>(a => a.Url == f.Configuration.EmployerPortalBaseUrl));
+        }
+        
+        [Test]
+        public void Index_WhenGettingIndexAction_ThenShouldReturnView()
         {
             Run(f => f.SetEnvironment(DasEnv.AT), f => f.Index(), (f, r) => r.Should().NotBeNull()
-                .And.Match<RedirectResult>(a => a.Url == f.Configuration.EmployerPortalBaseUrl));
+                .And.Match<ViewResult>(a => a.ViewName == "" && a.Model == null));
         }
     }
 
@@ -46,6 +53,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public ActionResult Index()
         {
             return HomeController.Index();
+        }
+
+        public ActionResult Local()
+        {
+            return HomeController.Local();
         }
 
         public HomeControllerTestsFixture SetEnvironment(DasEnv environment)
