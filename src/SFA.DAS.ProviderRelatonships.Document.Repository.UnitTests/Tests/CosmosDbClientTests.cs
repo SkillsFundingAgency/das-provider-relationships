@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             );
         }
 
-        //[Ignore("")]
+        [Ignore("Creatng the exception DocumentClientException via reflection appears t then require System.Net.Http and fails")]
         [Test]
         public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
         {
