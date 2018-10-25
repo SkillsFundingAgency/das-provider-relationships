@@ -40,6 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Add", new { ukprn = response.Ukprn });
         }
 
+        [HttpNotFoundForInvalidModel]
         [HttpNotFoundForNullModel]
         [Route("add")]
         public async Task<ActionResult> Add(GetProviderQuery query)
@@ -67,6 +68,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
+        [HttpNotFoundForInvalidModel]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
         public async Task<ActionResult> Added(GetAddedProviderQuery query)

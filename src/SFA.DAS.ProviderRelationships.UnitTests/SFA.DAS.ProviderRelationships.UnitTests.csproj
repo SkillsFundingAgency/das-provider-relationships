@@ -16,7 +16,7 @@
         <PackageReference Include="NUnit" Version="3.10.1" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
         <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
-        <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
+        <PackageReference Include="SFA.DAS.Validation" Version="1.1.1" />
     </ItemGroup>
 
     <ItemGroup>
