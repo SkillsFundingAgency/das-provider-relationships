@@ -56,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public SearchProvidersQueryHandlerTestsFixture SetProvider()
         {
-            var provider = new ProviderBuilder().WithUkprn(int.Parse(Query.Ukprn)).Build();
+            var provider = new ProviderBuilder().WithUkprn(long.Parse(Query.Ukprn)).Build();
             
             Db.Providers.Add(provider);
             Db.SaveChanges();
