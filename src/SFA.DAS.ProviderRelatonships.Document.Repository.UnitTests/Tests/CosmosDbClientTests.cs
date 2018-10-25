@@ -13,7 +13,7 @@ using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
+namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
 {
     [TestFixture]
     public class CosmosDbClientTests : FluentTest<CosmosDbClientTestsFixture>
