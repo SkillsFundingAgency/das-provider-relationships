@@ -11,10 +11,10 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class DocumentReadOnlyRepository<TEntity> : IDocumentReadOnlyRepository<TEntity> where TEntity : class
     {
-        protected readonly CosmosDbClient<TEntity> DbClient;
+        protected readonly IDocumentDbClient<TEntity> DbClient;
         protected readonly string Collection;
 
-        public DocumentReadOnlyRepository(CosmosDbClient<TEntity> dbClient, string collection)
+        public DocumentReadOnlyRepository(IDocumentDbClient<TEntity> dbClient, string collection)
         {
             DbClient = dbClient;
             Collection = collection;
@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 
         public async Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken)
         {
-            var docQuery = query.AsDocumentQuery();
+            var docQuery = DbClient.ConvertToDocumentQuery(query);
 
             var results = new List<TEntity>();
             while (docQuery.HasMoreResults)
@@ -46,6 +46,5 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             }
             return results;
         }
-
     }
 }

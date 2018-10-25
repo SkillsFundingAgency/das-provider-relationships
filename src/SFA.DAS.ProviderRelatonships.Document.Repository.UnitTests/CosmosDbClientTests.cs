@@ -33,127 +33,13 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         }
 
         [Test]
-        public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
+        public void CosmosDbClient_WhenCreatingAQuery_ThenShouldReturnQueryableInterface()
         {
-            return RunAsync(
-                f => f.ArrangeDocumentClientToThrowNotFoundException(),
-                f => f.CosmosDbClient.GetById("Collection", new Guid()),
-                (f, r) => r.Should().BeNull()
+            Run(
+                f =>  f.ArrangeDocumentClientToReturnOrderedQueryableInterface(),
+                f => f.CosmosDbClient.CreateQuery("Collection"),
+                (f, r) => r.Should().NotBeNull()
             );
-        }
-
-
-        
-        //[Test]
-        //public Task CosmosDbClient_WhenSearchingForObjectsInNoneExistentPartition_ThenShouldThrowDocumentException()
-        //{
-        //    return RunAsyncCheckException(
-        //        f => f.ArrangeDocumentClientToThrowNotFoundExceptionWhenSearchingForDocuments(),
-        //        f => f.CosmosDbClient.Search("Collection", _ => true),
-        //        (f, r) => r.Should().Throw<DocumentException>().And.HttpStatusCode.Should().Be(HttpStatusCode.NotFound)
-        //    );
-        //}
-
-        //[Test]
-        //public Task CosmosDbClient_WhenSearchingForObjectsAccrossMultiplePartition_ThenShouldThrowDocumentException()
-        //{
-        //    return RunAsyncCheckException(
-        //        f => f.ArrangeDocumentClientToThrowBadRequestExceptionWhenSearchingForDocuments(),
-        //        f => f.CosmosDbClient.Search("Collection", _ => true),
-        //        (f, r) => r.Should().Throw<DocumentException>()//.And.HttpStatusCode.Should().Be(HttpStatusCode.BadRequest)
-        //       );
-        //}
-
-
-        //[Test]
-        //public Task CosmosDbClient_WhenSearchngForExistingDocuments_ThenShouldReturnAListOfObjects()
-        //{
-        //    return RunAsync(
-        //        f => f.ArrangeDocumentClientToReturnAListOfObjects(),
-        //        f => f.CosmosDbClient.Search("Collection", _ => true),
-        //        (f, r) => r.IsSameOrEqualTo(f.ListOfItems)
-        //    );
-        //}
-
-
-        //public void RunCheckException(Action<CosmosDbClientTestsFixture> arrange, Action<CosmosDbClientTestsFixture> act, Func<CosmosDbClientTestsFixture, Action, AndConstraint<ObjectAssertions>> assert)
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-        //    assert(testFixture, () => act.Invoke(testFixture));
-        //}
-
-        //public void RunCheckException<TException>(Action<CosmosDbClientTestsFixture> arrange, Action<CosmosDbClientTestsFixture> act, Func<CosmosDbClientTestsFixture, Action, ExceptionAssertions<TException>> assert) where TException : Exception
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-        //    assert(testFixture, () => act.Invoke(testFixture));
-        //}
-
-
-        // This needs to go into the shared Class
-        //public Task RunAsync(Action<CosmosDbClientTestsFixture> arrange, 
-        //    Func<CosmosDbClientTestsFixture, Task> act, 
-        //    Func<CosmosDbClientTestsFixture, Func<Task>, AndConstraint<ObjectAssertions>> assert)
-        //{
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-
-        //    assert(testFixture, async () =>
-        //    {
-        //        if (act != null)
-        //        {
-        //            await act(testFixture);
-        //        }
-        //    });
-
-        //    return Task.CompletedTask;
-        //}
-
-
-        //public void RunCheckException(Action<CosmosDbClientTestsFixture> arrange,
-        //    Action<CosmosDbClientTestsFixture> act,
-        //    Action<CosmosDbClientTestsFixture, Func<Action>> assert)
-        //{
-
-        //    if (act == null) throw new ArgumentNullException(nameof(act));
-        //    if (assert == null) throw new ArgumentNullException(nameof(assert));
-
-        //    var testFixture = new CosmosDbClientTestsFixture();
-
-        //    arrange?.Invoke(testFixture);
-
-        //    assert(testFixture, act() =>
-        //    {
-        //        act.Invoke(testFixture);
-        //        return;
-        //    });
-
-        //}
-
-
-
-        // Move to Shared Package
-        public Task RunAsyncCheckException(Func<CosmosDbClientTestsFixture, Task> act,
-            Action<CosmosDbClientTestsFixture, Func<Task>> assert)
-        {
-            return RunAsyncCheckException(null, act, assert);
-        }
-
-        public Task RunAsyncCheckException(Action<CosmosDbClientTestsFixture> arrange,
-            Func<CosmosDbClientTestsFixture, Task> act,
-            Action<CosmosDbClientTestsFixture, Func<Task>> assert)
-        {
-            var testFixture = new CosmosDbClientTestsFixture();
-
-            arrange?.Invoke(testFixture);
-
-            assert(testFixture, async () => await act(testFixture));
-
-            return Task.CompletedTask;
         }
     }
 
@@ -165,6 +51,9 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         public CosmosDbClient<Dummy> CosmosDbClient { get; set; }
 
         public List<Dummy> ListOfItems;
+
+        public IOrderedQueryable<Dummy> OrderedQuery{ get; set; }
+
 
         public CosmosDbClientTestsFixture()
         {
@@ -189,6 +78,8 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
                 }
             };
 
+            OrderedQuery = ListOfItems.AsQueryable() as IOrderedQueryable<Dummy>;
+
             DocumentClient = new Mock<IDocumentClient>();
             DocumentClientFactory.Setup(x => x.Create(DocumentConfguration)).Returns(DocumentClient.Object);
             CosmosDbClient = new CosmosDbClient<Dummy>(DocumentClientFactory.Object, DocumentConfguration);
@@ -203,63 +94,11 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             return this;
         }
 
-        public CosmosDbClientTestsFixture ArrangeDocumentClientToThrowNotFoundException()
+        public void ArrangeDocumentClientToReturnOrderedQueryableInterface()
         {
-            DocumentClientException excepton = CosmosDbHelper.CreateDocumentClientExceptionForTesting(new Error(), HttpStatusCode.NotFound);
-            DocumentClient.Setup(x => x.ReadDocumentAsync(It.IsAny<Uri>(), null, CancellationToken.None)).Throws(excepton);
-            return this;
-        }
-
-        public CosmosDbClientTestsFixture ArrangeDocumentClientToReturnAListOfObjects()
-        {
-            Expression<Func<Dummy, bool>> predicate = t => true;
-
-            var dataSource = ListOfItems.AsQueryable();
-            var expected = dataSource.Where(predicate);
-
-            var response = expected.ToFeedResponse();
-
-            var mockDocumentQuery = new Mock<IFakeDocumentQuery<Dummy>>();
-            mockDocumentQuery
-                .SetupSequence(_ => _.HasMoreResults)
-                .Returns(true)
-                .Returns(false);
-
-            mockDocumentQuery
-                .Setup(_ => _.ExecuteNextAsync<Dummy>(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(response);
-
-            var provider = new Mock<IQueryProvider>();
-            provider
-                .Setup(_ => _.CreateQuery<Dummy>(It.IsAny<Expression>()))
-                .Returns(mockDocumentQuery.Object);
-
-            mockDocumentQuery.As<IQueryable<Dummy>>().Setup(x => x.Provider).Returns(provider.Object);
-            mockDocumentQuery.As<IQueryable<Dummy>>().Setup(x => x.Expression).Returns(dataSource.Expression);
-            mockDocumentQuery.As<IQueryable<Dummy>>().Setup(x => x.ElementType).Returns(dataSource.ElementType);
-            mockDocumentQuery.As<IQueryable<Dummy>>().Setup(x => x.GetEnumerator()).Returns(dataSource.GetEnumerator);
-
             DocumentClient.Setup(x => x.CreateDocumentQuery<Dummy>(It.IsAny<Uri>(),
                     It.IsAny<FeedOptions>()))
-                .Returns(mockDocumentQuery.Object);
-
-            return this;
-        }
-
-        public CosmosDbClientTestsFixture ArrangeDocumentClientToThrowNotFoundExceptionWhenSearchingForDocuments()
-        {
-            DocumentClientException excepton = CosmosDbHelper.CreateDocumentClientExceptionForTesting(new Error(), HttpStatusCode.NotFound);
-            DocumentClient.Setup(x => x.CreateDocumentQuery<Dummy>(It.IsAny<Uri>(), It.IsAny<FeedOptions>())).Throws(excepton);
-            return this;
-        }
-
-        public CosmosDbClientTestsFixture ArrangeDocumentClientToThrowBadRequestExceptionWhenSearchingForDocuments()
-        {
-            DocumentClientException excepton = CosmosDbHelper.CreateDocumentClientExceptionForTesting(new Error {
-                Message = "Cross partition query is required but disabled. Please....."
-            }, HttpStatusCode.BadRequest);
-            DocumentClient.Setup(x => x.CreateDocumentQuery<Dummy>(It.IsAny<Uri>(), It.IsAny<FeedOptions>())).Throws(excepton);
-            return this;
+                .Returns(OrderedQuery);
         }
     }
 
