@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Application
         {
             var query = _repository.CreateQuery().Where(x => x.Ukprn == request.Ukprn);
             var all = await _repository.ExecuteQuery(query, cancellationToken);
-            return all.Any(x => x.GrantPermissions.Any(y => y.Permission == request.Permission));
+            return all.Any(x => x.GrantPermissions != null && x.GrantPermissions.Any(y => y.Permission == request.Permission));
         }
     }
 }

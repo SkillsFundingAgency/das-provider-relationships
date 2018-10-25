@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SFA.DAS.ProviderRelationships.Api.Client;
+using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
-using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types;
 using StructureMap;
@@ -29,8 +30,18 @@ namespace TestConsoleApp
 
             var ioc = IoC.Initialize();
 
-            var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderPermissions>>();
+            //var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderPermissions>>();
+            var apiClient = ioc.GetInstance<IProviderRelationshipsApiClient>();
 
+            var result = await apiClient.HasRelationshipWithPermission(
+                new ProviderRelationshipRequest {Ukprn = 100025, Permission = PermissionEnumDto.CreateCohort});
+
+            if (result == true)
+            {
+                Console.WriteLine("Yes");
+            }
+
+            var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderPermissions>>();
             try
             {
                 var q = rep.CreateQuery();
@@ -43,7 +54,7 @@ namespace TestConsoleApp
                 foreach (var item in items)
                 {
                     Console.WriteLine(
-                        $"UKPRN : {item.Ukprn} EmployerAccountId {item.EmployerAccountId} "); //and ID : {item.Id} and ETag @ {item.ETag} ");
+                        $"UKPRN : {item.Ukprn} EmployerAccountId {item.EmployerAccountId} and ID : {item.Id} and ETag @ {item.ETag} ");
                 }
 
             }
@@ -62,7 +73,7 @@ namespace TestConsoleApp
         {
             return new Container(c =>
             {
-                c.AddRegistry<DocumentRegistry>();
+                c.AddRegistry<ProviderRelationshipsApiClientRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }
@@ -72,6 +83,9 @@ namespace TestConsoleApp
     {
         public DefaultRegistry()
         {
+
+
+
             For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
             {
                 DatabaseName = "SFA",

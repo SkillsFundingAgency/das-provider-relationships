@@ -10,9 +10,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         public ProviderRelationshipsApiClientRegistry()
         {
             IncludeRegistry<DocumentRegistry>();
+            IncludeRegistry<MediatorRegistry>();
 
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
+            // TODO config to wire up later
             For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
             {
                 DatabaseName = "SFA",
@@ -22,8 +24,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 
             For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>()
                 .Is("provider-relationships");
-
         }
     }
-
 }
