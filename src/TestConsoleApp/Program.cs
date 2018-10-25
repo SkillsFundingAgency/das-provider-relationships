@@ -34,7 +34,7 @@ namespace TestConsoleApp
             try
             {
                 var q = rep.CreateQuery();
-                var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100025), CancellationToken.None);
+                var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100024 && m.MetaData.SchemaType == "ProviderPermissions"), CancellationToken.None);
                 docs = docs.Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == PermissionEnumDto.CreateCohort));
                 var items = docs.ToList();
 

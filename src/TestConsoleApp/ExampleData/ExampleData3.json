@@ -1,10 +1,18 @@
 ﻿{
-	"ukprn": 100025,
-	"employerAccountId": 1235,
-	"employerName": "employer name4",
-	"legalEntityHashedId": "hashedId5",
-	"legalEntityName": "name26",
-	"permissions": [
-		"CreateCohort"
-	]
+    "ukprn": 100025,
+    "employerAccountId": 1235,
+    "employerName": "employer name4",
+    "employerAccountLegalEntityPublicHashedId": "hashedIdE",
+    "employerAccountLegalEntityName": "nameE",
+    "grantPermissions": [
+        {
+            "permission": "CreateCohort",
+            "createdOn": "2018-05-23T18:25:43.511Z",
+            "messageId": "1234"
+        }
+    ],
+    "metaData": {
+        "schemaVersion": 1,
+        "schemaType": "ProviderPermissions"
+    }
 }

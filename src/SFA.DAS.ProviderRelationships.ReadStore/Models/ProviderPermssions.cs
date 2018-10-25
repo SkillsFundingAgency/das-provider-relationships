@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     public class ProviderPermissions : BaseCosmosDocument
     {
-        public ProviderPermissions() : base(1, "ProviderRelationship")
+        public ProviderPermissions() : base(1, "ProviderPermissions")
         {
         }
 
@@ -23,9 +23,5 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         [JsonProperty("grantPermissions")]
         public IEnumerable<GrantPermission> GrantPermissions { get; set; }
-
-
     }
 }
-
-
