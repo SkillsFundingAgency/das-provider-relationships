@@ -1,20 +1,19 @@
-﻿using Microsoft.Azure.WebJobs;
+﻿using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Jobs.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
 {
     public static class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
             using (var container = IoC.Initialize())
             {
-                var config = new JobHostConfiguration
-                {
-                    JobActivator = new StructureMapJobActivator(container)
-                };
-
+                var startup = container.GetInstance<IStartup>();
+                var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
 
                 if (isDevelopment)
@@ -25,9 +24,10 @@ namespace SFA.DAS.ProviderRelationships.Jobs
                 config.UseTimers();
 
                 var host = new JobHost(config);
-
-                host.Call(typeof(EndpointJob).GetMethod(nameof(EndpointJob.RunAsync)));
+                
+                await startup.StartAsync();
                 host.RunAndBlock();
+                await startup.StopAsync();
             }
         }
     }

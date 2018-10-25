@@ -5,6 +5,7 @@ using SFA.DAS.ProviderRelationships.Web.Mappings;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Mappings
 {
     [TestFixture]
+    [Parallelizable]
     public class MappingsTests
     {
         [Test]

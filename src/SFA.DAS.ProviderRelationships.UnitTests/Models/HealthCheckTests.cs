@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Messages;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
@@ -10,12 +10,17 @@ using SFA.DAS.UnitOfWork;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 {
     [TestFixture]
+    [Parallelizable]
     public class HealthCheckTests : FluentTest<HealthCheckTestsFixture>
     {
         [Test]
         public void New_WhenCreatingAHealthCheck_ThenShouldCreateAHealthCheck()
         {
-            Run(f => f.New(), (f, r) => r.Should().NotBeNull());
+            Run(f => f.New(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.User.Should().Be(f.User);
+            });
         }
 
         [Test]
@@ -63,21 +68,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
     public class HealthCheckTestsFixture
     {
-        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
+        public User User { get; set; }
         public HealthCheck HealthCheck { get; set; }
+        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public Func<Task> ApprenticeshipInfoServiceApiRequest { get; set; }
         public DateTime? PreRun { get; set; }
         public DateTime? PostRun { get; set; }
 
         public HealthCheckTestsFixture()
         {
+            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
         }
 
         public HealthCheck New()
         {
-            return new HealthCheck();
+            return new HealthCheck(User);
         }
 
         public async Task Run()

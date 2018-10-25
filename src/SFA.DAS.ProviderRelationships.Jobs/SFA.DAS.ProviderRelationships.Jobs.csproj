@@ -11,7 +11,7 @@
         <WebJobName>ProviderRelationships-Jobs</WebJobName>
         <WebJobType>Continuous</WebJobType>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.2.0" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.2.0" />
@@ -19,24 +19,24 @@
         <PackageReference Include="NLog.Schema" Version="4.5.10" />
         <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFramework" Version="2.1.1" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="2.1.1" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="5.0.1" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="5.0.1" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="3.2.2" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.2.2" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <Reference Include="Microsoft.CSharp" />
         <Reference Include="System" />
         <Reference Include="System.Configuration" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Include="App.config">
             <TransformOnBuild>true</TransformOnBuild>
@@ -46,7 +46,7 @@
             <IsTransformFile>True</IsTransformFile>
         </None>
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Update="settings.job">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

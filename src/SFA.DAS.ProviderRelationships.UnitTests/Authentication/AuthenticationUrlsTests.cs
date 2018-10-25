@@ -7,6 +7,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
+    [Parallelizable]
     public class AuthenticationUrlsTests : FluentTest<AuthenticationUrlsTestsFixture>
     {
         #region Endpoints

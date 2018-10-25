@@ -7,6 +7,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Configuration
 {
     [TestFixture]
+    [Parallelizable]
     public class ConfigurationHelpersTests : FluentTest<ConfigurationHelpersTestsFixture>
     {
         [Test]

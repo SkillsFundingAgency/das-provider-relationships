@@ -3,17 +3,8 @@ using System.Web;
 
 namespace SFA.DAS.ProviderRelationships.Authentication
 {
-    /// <remarks>
-    /// in EmployerCommitments this class still has its old name of OwinWrapper
-    /// </remarks>
     public class OwinAuthenticationService : IAuthenticationService
     {
-        /// <returns>Claim value, or null if not found (EAS & EC return "" if not found)</returns>
-        public string TryGetCurrentUserClaimValue(string key)
-        {
-            return ((ClaimsIdentity)HttpContext.Current.User.Identity).TryGetClaimValue(key);
-        }
-
         public bool IsUserAuthenticated()
         {
             //todo: is using HttpContext going to kill self-hosting?
@@ -27,6 +18,16 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             var authenticationManager = owinContext.Authentication;
             
             authenticationManager.SignOut(/* Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie */"Cookies");
+        }
+        
+        public bool TryGetCurrentUserClaimValue(string key, out string value)
+        {
+            var claimsIdentity = (ClaimsIdentity)HttpContext.Current.User.Identity;
+            var claim = claimsIdentity.FindFirst(key);
+            
+            value = claim?.Value;
+
+            return claim != null;
         }
     }
 }

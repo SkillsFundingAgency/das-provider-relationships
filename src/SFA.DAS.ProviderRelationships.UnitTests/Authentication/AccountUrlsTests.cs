@@ -8,6 +8,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
+    [Parallelizable]
     class AccountUrlsTests : FluentTest<AccountUrlsTestsFixture>
     {
         [TestCase("https://test2-eas.apprenticeships.sfa.bis.gov.uk/", "https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=clientId&returnurl=",

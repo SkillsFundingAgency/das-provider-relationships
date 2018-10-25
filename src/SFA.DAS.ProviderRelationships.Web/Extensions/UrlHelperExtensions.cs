@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Web.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
@@ -56,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
         private static string AccountAction(UrlHelper helper, string baseUrl, string path)
         {
-            var hashedAccountId = helper.RequestContext.RouteData.Values[UrlParameterKeys.HashedAccountId];
+            var hashedAccountId = helper.RequestContext.RouteData.Values[RouteDataKeys.AccountHashedId];
             var accountPath = hashedAccountId == null ? $"accounts/{path}" : $"accounts/{hashedAccountId}/{path}";
 
             return Action(baseUrl, accountPath);
