@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         public Mock<IDocumentClientFactory> DocumentClientFactory { get; set; }
         public Mock<IDocumentClient> DocumentClient { get; set; }
         public IDocumentConfiguration DocumentConfguration { get; set; }
-        public CosmosDbClient<Dummy> CosmosDbClient { get; set; }
+        public IDocumentDbClient<Dummy> CosmosDbClient { get; set; }
 
         public List<Dummy> ListOfItems;
 

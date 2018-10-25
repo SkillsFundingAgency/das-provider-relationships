@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class DocumentRepository<TEntity> : DocumentReadOnlyRepository<TEntity>, IDocumentRepository<TEntity> where TEntity : class
     {
-        public DocumentRepository(CosmosDbClient<TEntity> dbClient, string collection) : base(dbClient, collection)
+        public DocumentRepository(IDocumentDbClient<TEntity> dbClient, string collection) : base(dbClient, collection)
         {
         }
 
