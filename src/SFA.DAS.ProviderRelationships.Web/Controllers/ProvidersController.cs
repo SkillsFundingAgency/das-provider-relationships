@@ -5,6 +5,7 @@ using AutoMapper;
 using MediatR;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Validation.Mvc;
@@ -35,15 +36,17 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("search")]
         public async Task<ActionResult> Search(SearchProvidersViewModel model)
         {
-            var response = await _mediator.Send(model.SearchProvidersQuery);
+            var query = new SearchProvidersQuery(model.Ukprn);
+            var response = await _mediator.Send(query);
 
             return RedirectToAction("Add", new { ukprn = response.Ukprn });
         }
 
         [HttpNotFoundForNullModel]
         [Route("add")]
-        public async Task<ActionResult> Add(GetProviderQuery query)
+        public async Task<ActionResult> Add(AddProviderParameters parameters)
         {
+            var query = new GetProviderQuery(parameters.Ukprn.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddProviderViewModel>(response);
 
@@ -58,7 +61,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "Confirm":
-                    var accountProviderId = await _mediator.Send(model.AddAccountProviderCommand);
+                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.UserRef.Value, model.Ukprn.Value);
+                    var accountProviderId = await _mediator.Send(command);
+
                     return RedirectToAction("Added", new { accountProviderId = accountProviderId });
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");
@@ -69,8 +74,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
-        public async Task<ActionResult> Added(GetAddedProviderQuery query)
+        public async Task<ActionResult> Added(AddedProviderParameters parameters)
         {
+            var query = new GetAddedProviderQuery(parameters.AccountId.Value, parameters.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddedProviderViewModel>(response);
             

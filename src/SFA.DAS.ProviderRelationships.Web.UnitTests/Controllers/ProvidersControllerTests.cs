@@ -103,12 +103,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public SearchProvidersQueryResponse SearchProvidersQueryResponse { get; set; }
-        public GetProviderQuery GetProviderQuery { get; set; }
+        public AddProviderParameters AddProviderParameters { get; set; }
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
-        public AddProviderViewModel AddViewModel { get; set; }
+        public AddProviderViewModel AddProviderViewModel { get; set; }
         public int AccountProviderId { get; set; }
         public GetAddedProviderQueryResponse GetAddedProviderQueryResponse { get; set; }
-        public GetAddedProviderQuery GetAddedProviderQuery { get; set; }
+        public AddedProviderParameters AddedProviderParameters { get; set; }
 
         public ProvidersControllerTestsFixture()
         {
@@ -126,10 +126,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             SearchViewModel = new SearchProvidersViewModel
             {
-                SearchProvidersQuery = new SearchProvidersQuery
-                {
-                    Ukprn = "12345678"
-                }
+                Ukprn = "12345678"
             };
 
             SearchProvidersQueryResponse = new SearchProvidersQueryResponse
@@ -137,18 +134,18 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = 12345678
             };
 
-            Mediator.Setup(m => m.Send(SearchViewModel.SearchProvidersQuery, CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);
+            Mediator.Setup(m => m.Send(It.Is<SearchProvidersQuery>(q => q.Ukprn == SearchViewModel.Ukprn), CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);
 
             return ProvidersController.Search(SearchViewModel);
         }
 
         public Task<ActionResult> Add()
         {
-            GetProviderQuery = new GetProviderQuery
+            AddProviderParameters = new AddProviderParameters
             {
                 Ukprn = 12345678
             };
-
+            
             GetProviderQueryResponse = new GetProviderQueryResponse
             {
                 Provider = new ProviderDto
@@ -158,37 +155,36 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             };
 
-            Mediator.Setup(m => m.Send(GetProviderQuery, CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
+            Mediator.Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == AddProviderParameters.Ukprn), CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
 
-            return ProvidersController.Add(GetProviderQuery);
+            return ProvidersController.Add(AddProviderParameters);
         }
 
         public Task<ActionResult> PostAdd(string choice = null)
         {
-            AddViewModel = new AddProviderViewModel
+            AddProviderViewModel = new AddProviderViewModel
             {
-                AddAccountProviderCommand = new AddAccountProviderCommand
-                {
-                    AccountId = 1,
-                    Ukprn = 12345678
-                },
+                AccountId = 1,
+                UserRef = Guid.NewGuid(),
+                Ukprn = 12345678,
                 Choice = choice
             };
 
             AccountProviderId = 12;
 
-            Mediator.Setup(m => m.Send(AddViewModel.AddAccountProviderCommand, CancellationToken.None)).ReturnsAsync(AccountProviderId);
+            Mediator.Setup(m => m.Send(It.Is<AddAccountProviderCommand>(c => c.AccountId == AddProviderViewModel.AccountId && c.UserRef == AddProviderViewModel.UserRef && c.Ukprn == AddProviderViewModel.Ukprn), CancellationToken.None)).ReturnsAsync(AccountProviderId);
             
-            return ProvidersController.Add(AddViewModel);
+            return ProvidersController.Add(AddProviderViewModel);
         }
 
         public Task<ActionResult> Added()
         {
-            GetAddedProviderQuery = new GetAddedProviderQuery
+            AddedProviderParameters = new AddedProviderParameters
             {
+                AccountId = 1,
                 AccountProviderId = 12
             };
-
+            
             GetAddedProviderQueryResponse = new GetAddedProviderQueryResponse
             {
                 AccountProvider = new AccountProviderDto
@@ -202,9 +198,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             };
 
-            Mediator.Setup(m => m.Send(GetAddedProviderQuery, CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResponse);
+            Mediator.Setup(m => m.Send(It.Is<GetAddedProviderQuery>(q => q.AccountId == AddedProviderParameters.AccountId && q.AccountProviderId == AddedProviderParameters.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResponse);
             
-            return ProvidersController.Added(GetAddedProviderQuery);
+            return ProvidersController.Added(AddedProviderParameters);
         }
     }
 }

@@ -47,12 +47,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedProviderQueryHandlerTestsFixture()
         {
-            Query = new GetAddedProviderQuery
-            {
-                AccountId = 1,
-                AccountProviderId = 12
-            };
-
+            Query = new GetAddedProviderQuery(1, 12);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             ConfigurationProvider = new MapperConfiguration(c =>
@@ -71,11 +66,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedProviderQueryHandlerTestsFixture SetProvider()
         {
-            Account = new AccountBuilder().WithId(Query.AccountId.Value).Build();
+            Account = new AccountBuilder().WithId(Query.AccountId).Build();
             Provider = new ProviderBuilder().WithUkprn(12345678).Build();
             
             AccountProvider = new AccountProviderBuilder()
-                .WithId(Query.AccountProviderId.Value)
+                .WithId(Query.AccountProviderId)
                 .WithAccountId(Account.Id)
                 .WithProviderUkprn(Provider.Ukprn)
                 .Build();

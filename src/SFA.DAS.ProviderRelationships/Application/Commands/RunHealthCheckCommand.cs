@@ -1,13 +1,15 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using MediatR;
-using SFA.DAS.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class RunHealthCheckCommand : IRequest, IAuthorizationContextMessage
+    public class RunHealthCheckCommand : IRequest
     {
-        [Required]
-        public Guid? UserRef { get; set; }
+        public Guid UserRef { get; }
+
+        public RunHealthCheckCommand(Guid userRef)
+        {
+            UserRef = userRef;
+        }
     }
 }

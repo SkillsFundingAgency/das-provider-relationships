@@ -42,11 +42,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Handler = new SearchProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
-
-            Query = new SearchProvidersQuery
-            {
-                Ukprn = "12345678"
-            };
+            Query = new SearchProvidersQuery("12345678");
         }
 
         public Task<SearchProvidersQueryResponse> Handle()

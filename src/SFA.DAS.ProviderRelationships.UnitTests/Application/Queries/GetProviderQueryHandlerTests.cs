@@ -43,11 +43,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetProviderQueryHandlerTestsFixture()
         {
-            Query = new GetProviderQuery
-            {
-                Ukprn = 12345678
-            };
-            
+            Query = new GetProviderQuery(12345678);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<ProviderMappings>());
             Handler = new GetProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
@@ -60,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetProviderQueryHandlerTestsFixture SetProvider()
         {
-            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn.Value).WithName("Foo").Build();
+            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn).WithName("Foo").Build();
             
             Db.Providers.Add(Provider);
             Db.SaveChanges();

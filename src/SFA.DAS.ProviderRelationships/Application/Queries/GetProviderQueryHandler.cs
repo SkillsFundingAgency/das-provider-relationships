@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         public async Task<GetProviderQueryResponse> Handle(GetProviderQuery request, CancellationToken cancellationToken)
         {
             var provider = await _db.Value.Providers
-                .Where(p => p.Ukprn == request.Ukprn.Value)
+                .Where(p => p.Ukprn == request.Ukprn)
                 .ProjectTo<ProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 

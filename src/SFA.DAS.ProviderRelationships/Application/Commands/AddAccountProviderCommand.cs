@@ -1,19 +1,19 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using MediatR;
-using SFA.DAS.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class AddAccountProviderCommand : IRequest<int>, IAuthorizationContextMessage
+    public class AddAccountProviderCommand : IRequest<int>
     {
-        [Required]
-        public long? AccountId { get; set; }
+        public long AccountId { get;  }
+        public Guid UserRef { get;  }
+        public long Ukprn { get;  }
 
-        [Required]
-        public Guid? UserRef { get; set; }
-        
-        [Required]
-        public long? Ukprn { get; set; }
+        public AddAccountProviderCommand(long accountId, Guid userRef, long ukprn)
+        {
+            AccountId = accountId;
+            UserRef = userRef;
+            Ukprn = ukprn;
+        }
     }
 }

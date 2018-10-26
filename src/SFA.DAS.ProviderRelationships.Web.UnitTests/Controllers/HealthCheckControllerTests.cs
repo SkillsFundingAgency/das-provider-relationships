@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -6,7 +7,6 @@ using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
@@ -43,11 +43,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class HealthCheckControllerTestsFixture
     {
         public HealthCheckController HealthCheckController { get; set; }
-        public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public GetHealthCheckQueryResponse GetHealthCheckQueryResponse { get; set; }
-        public RunHealthCheckCommand RunHealthCheckCommand { get; set; }
+        public HealthCheckParameters HealthCheckParameters { get; set; }
 
         public HealthCheckControllerTestsFixture()
         {
@@ -58,25 +57,23 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Index()
         {
-            GetHealthCheckQuery = new GetHealthCheckQuery();
-
             GetHealthCheckQueryResponse = new GetHealthCheckQueryResponse
             {
                 HealthCheck = new HealthCheckDto()
             };
 
-            Mediator.Setup(m => m.Send(GetHealthCheckQuery, CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResponse);
+            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResponse);
 
-            return HealthCheckController.Index(GetHealthCheckQuery);
+            return HealthCheckController.Index();
         }
 
         public Task<ActionResult> PostIndex()
         {
-            RunHealthCheckCommand = new RunHealthCheckCommand();
+            HealthCheckParameters = new HealthCheckParameters { UserRef = Guid.NewGuid() };
+            
+            Mediator.Setup(m => m.Send(It.Is<RunHealthCheckCommand>(c => c.UserRef == HealthCheckParameters.UserRef), CancellationToken.None)).ReturnsAsync(Unit.Value);
 
-            Mediator.Setup(m => m.Send(RunHealthCheckCommand, CancellationToken.None)).ReturnsAsync(Unit.Value);
-
-            return HealthCheckController.Index(RunHealthCheckCommand);
+            return HealthCheckController.Index(HealthCheckParameters);
         }
     }
 }

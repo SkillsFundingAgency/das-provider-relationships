@@ -133,8 +133,11 @@
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AddedProviderParameters.cs" />
     <Compile Include="ViewModels\AddedProviderViewModel.cs" />
+    <Compile Include="ViewModels\AddProviderParameters.cs" />
     <Compile Include="ViewModels\AddProviderViewModel.cs" />
+    <Compile Include="ViewModels\HealthCheckParameters.cs" />
     <Compile Include="ViewModels\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
   </ItemGroup>

@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         public async Task<GetAddedProviderQueryResponse> Handle(GetAddedProviderQuery request, CancellationToken cancellationToken)
         {
             var accountProvider = await _db.Value.AccountProviders
-                .Where(ap => ap.Id == request.AccountProviderId.Value && ap.Account.Id == request.AccountId.Value)
+                .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
                 .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
             
