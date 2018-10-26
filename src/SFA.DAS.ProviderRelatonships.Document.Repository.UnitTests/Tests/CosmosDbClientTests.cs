@@ -16,6 +16,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
 {
     [TestFixture]
+    [Parallelizable]
     public class CosmosDbClientTests : FluentTest<CosmosDbClientTestsFixture>
     {
         [Test]

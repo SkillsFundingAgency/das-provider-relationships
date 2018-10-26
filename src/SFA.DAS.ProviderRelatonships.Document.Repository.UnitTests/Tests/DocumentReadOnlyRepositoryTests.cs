@@ -15,6 +15,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
 {
     [TestFixture]
+    [Parallelizable]
     public class DocumentReadOnlyRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
     {
         [Test]
