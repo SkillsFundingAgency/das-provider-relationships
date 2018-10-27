@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
 
             foreach (var batch in batches)
             {
-                await _db.Value.Database.ImportProviders(batch);
+                await _db.Value.ImportProviders(batch);
             }
         }
     }
