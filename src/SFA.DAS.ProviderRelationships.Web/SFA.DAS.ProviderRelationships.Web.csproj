@@ -111,7 +111,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Authorization\AuthorizationContextProvider.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
@@ -143,6 +142,9 @@
     <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="403.html" />
+    <Content Include="404.html" />
+    <Content Include="500.html" />
     <Content Include="Content\css\application.css" />
     <Content Include="Content\js\application.js" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
@@ -213,9 +215,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Shared\AccessDenied.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
     <Content Include="Views\HealthCheck\Index.cshtml" />
   </ItemGroup>
