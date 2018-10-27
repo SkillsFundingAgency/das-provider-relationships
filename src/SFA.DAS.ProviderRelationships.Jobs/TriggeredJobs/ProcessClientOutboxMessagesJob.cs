@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.NServiceBus.ClientOutbox;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
@@ -14,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs
             _processClientOutboxMessagesJob = processClientOutboxMessagesJob;
         }
 
-        public Task Run([TimerTrigger("0 */10 * * * *", RunOnStartup = true)] TimerInfo timer, TraceWriter logger)
+        public Task Run([TimerTrigger("0 */10 * * * *", RunOnStartup = true)] TimerInfo timer, ILogger logger)
         {
             return _processClientOutboxMessagesJob.RunAsync();
         }
