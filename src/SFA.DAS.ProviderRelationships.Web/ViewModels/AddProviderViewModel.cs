@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels
 {
-    public class AddProviderViewModel : IAuthorizationContextMessage
+    public class AddProviderViewModel : IAuthorizationContextModel
     {
         public ProviderDto Provider { get; set; }
         

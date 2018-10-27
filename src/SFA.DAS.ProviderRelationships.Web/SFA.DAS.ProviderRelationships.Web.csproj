@@ -61,8 +61,9 @@
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.1.1" />
-    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.1.1" />
+    <PackageReference Include="SFA.DAS.Authorization" Version="0.1.4" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.1.4" />
+    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.1.4" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -73,8 +74,8 @@
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="3.2.2" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.2.2" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
-    <PackageReference Include="SFA.DAS.Validation" Version="2.0.1" />
-    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="2.0.1" />
+    <PackageReference Include="SFA.DAS.Validation" Version="4.0.2" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="4.0.2" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="StructureMap.MVC5" Version="3.1.1.134" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
