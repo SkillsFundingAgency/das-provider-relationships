@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.NServiceBus.ClientOutbox;
 
