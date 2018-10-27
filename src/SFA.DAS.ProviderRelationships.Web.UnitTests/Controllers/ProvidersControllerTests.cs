@@ -53,13 +53,18 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldAddAccountProvider()
         {
-            return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Once));
+            return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(
+                It.Is<AddAccountProviderCommand>(c => 
+                    c.AccountId == f.AddProviderViewModel.AccountId &&
+                    c.UserRef == f.AddProviderViewModel.UserRef &&
+                    c.Ukprn == f.AddProviderViewModel.Ukprn),
+                CancellationToken.None), Times.Once));
         }
 
         [Test]
         public Task Add_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheAddedAction()
         {
-            return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
+            return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Added") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["accountProviderId"].Equals(f.AccountProviderId)));
@@ -68,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
         {
-            return RunAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Never));
+            return RunAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None), Times.Never));
         }
 
         [Test]
@@ -172,7 +177,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             AccountProviderId = 12;
 
-            Mediator.Setup(m => m.Send(It.Is<AddAccountProviderCommand>(c => c.AccountId == AddProviderViewModel.AccountId && c.UserRef == AddProviderViewModel.UserRef && c.Ukprn == AddProviderViewModel.Ukprn), CancellationToken.None)).ReturnsAsync(AccountProviderId);
+            Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
             
             return ProvidersController.Add(AddProviderViewModel);
         }
