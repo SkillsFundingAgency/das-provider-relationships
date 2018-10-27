@@ -55,11 +55,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("add")]
         public async Task<ActionResult> Add(AddProviderViewModel model)
         {
-            var accountProviderId = await _mediator.Send(model.AddAccountProviderCommand);
-            
             switch (model.Choice)
             {
                 case "Confirm":
+                    var accountProviderId = await _mediator.Send(model.AddAccountProviderCommand);
                     return RedirectToAction("Added", new { accountProviderId = accountProviderId });
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");

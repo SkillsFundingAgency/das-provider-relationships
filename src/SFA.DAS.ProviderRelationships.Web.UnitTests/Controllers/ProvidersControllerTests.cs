@@ -51,6 +51,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
+        public Task AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldAddAccountProvider()
+        {
+            return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Once));
+        }
+
+        [Test]
         public Task AddProvider_WhenPostingTheAddActionAndTheConfirmOptionIsSelected_ThenShouldRedirectToTheAddedAction()
         {
             return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => 
@@ -60,7 +66,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionWasSelected_ThenShouldRedirectToTheSearchAction()
+        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
+        {
+            return RunAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(f.AddViewModel.AddAccountProviderCommand, CancellationToken.None), Times.Never));
+        }
+
+        [Test]
+        public Task AddProvider_WhenPostingTheAddActionAndTheReEnterUkprnOptionIsSelected_ThenShouldRedirectToTheSearchAction()
         {
             return RunAsync(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Search") &&
@@ -68,7 +80,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task AddProvider_WhenPostingTheAddActionAndNoOptionWasSelected_ThenShouldThrowException()
+        public Task AddProvider_WhenPostingTheAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
             return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
