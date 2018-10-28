@@ -74,8 +74,8 @@
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="3.2.2" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.2.2" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
-    <PackageReference Include="SFA.DAS.Validation" Version="4.0.2" />
-    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="4.0.2" />
+    <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="5.1.3" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="StructureMap.MVC5" Version="3.1.1.134" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
