@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
@@ -32,12 +34,26 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Search_WhenPostingTheSearchAction_ThenShouldRedirectToTheAddAction()
+        public Task Search_WhenPostingTheSearchActionAndProviderExists_ThenShouldRedirectToTheAddAction()
         {
-            return RunAsync(f => f.PostSearch(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return RunAsync(f => f.PostSearch(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Add") &&
                 a.RouteValues["Controller"] == null &&
-                a.RouteValues["ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
+                a.RouteValues["Ukprn"].Equals(f.SearchProvidersQueryResponse.Ukprn)));
+        }
+
+        [Test]
+        public Task Search_WhenPostingTheSearchActionAndProviderDoesNotExist_ThenShouldAddModelError()
+        {
+            return RunAsync(f => f.PostSearch(false), f => f.ProvidersController.ModelState.ContainsKey(nameof(SearchProvidersViewModel.Ukprn)).Should().BeTrue());
+        }
+
+        [Test]
+        public Task Search_WhenPostingTheSearchActionAndProviderDoesNotExist_ThenShouldRedirectToTheSearchAction()
+        {
+            return RunAsync(f => f.PostSearch(false), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Search") &&
+                a.RouteValues["Controller"] == null));
         }
 
         [Test]
@@ -67,7 +83,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Added") &&
                 a.RouteValues["Controller"] == null &&
-                a.RouteValues["accountProviderId"].Equals(f.AccountProviderId)));
+                a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId)));
         }
 
         [Test]
@@ -108,12 +124,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public SearchProvidersQueryResponse SearchProvidersQueryResponse { get; set; }
-        public AddProviderParameters AddProviderParameters { get; set; }
+        public AddProviderRouteValues AddProviderRouteValues { get; set; }
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
         public AddProviderViewModel AddProviderViewModel { get; set; }
         public int AccountProviderId { get; set; }
         public GetAddedProviderQueryResponse GetAddedProviderQueryResponse { get; set; }
-        public AddedProviderParameters AddedProviderParameters { get; set; }
+        public AddedProviderRouteValues AddedProviderRouteValues { get; set; }
 
         public ProvidersControllerTestsFixture()
         {
@@ -127,17 +143,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return ProvidersController.Search();
         }
 
-        public Task<ActionResult> PostSearch()
+        public Task<ActionResult> PostSearch(bool providerExists)
         {
             SearchViewModel = new SearchProvidersViewModel
             {
                 Ukprn = "12345678"
             };
 
-            SearchProvidersQueryResponse = new SearchProvidersQueryResponse
-            {
-                Ukprn = 12345678
-            };
+            SearchProvidersQueryResponse = new SearchProvidersQueryResponse(12345678, providerExists);
 
             Mediator.Setup(m => m.Send(It.Is<SearchProvidersQuery>(q => q.Ukprn == SearchViewModel.Ukprn), CancellationToken.None)).ReturnsAsync(SearchProvidersQueryResponse);
 
@@ -146,23 +159,20 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Add()
         {
-            AddProviderParameters = new AddProviderParameters
+            AddProviderRouteValues = new AddProviderRouteValues
             {
                 Ukprn = 12345678
             };
             
-            GetProviderQueryResponse = new GetProviderQueryResponse
+            GetProviderQueryResponse = new GetProviderQueryResponse(new ProviderDto
             {
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678,
-                    Name = "Foo"
-                }
-            };
+                Ukprn = 12345678,
+                Name = "Foo"
+            });
 
-            Mediator.Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == AddProviderParameters.Ukprn), CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
+            Mediator.Setup(m => m.Send(It.Is<GetProviderQuery>(q => q.Ukprn == AddProviderRouteValues.Ukprn), CancellationToken.None)).ReturnsAsync(GetProviderQueryResponse);
 
-            return ProvidersController.Add(AddProviderParameters);
+            return ProvidersController.Add(AddProviderRouteValues);
         }
 
         public Task<ActionResult> PostAdd(string choice = null)
@@ -184,28 +194,25 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Added()
         {
-            AddedProviderParameters = new AddedProviderParameters
+            AddedProviderRouteValues = new AddedProviderRouteValues
             {
                 AccountId = 1,
                 AccountProviderId = 12
             };
             
-            GetAddedProviderQueryResponse = new GetAddedProviderQueryResponse
+            GetAddedProviderQueryResponse = new GetAddedProviderQueryResponse(new AccountProviderDto
             {
-                AccountProvider = new AccountProviderDto
+                Id = 12,
+                Provider = new ProviderDto
                 {
-                    Id = 12,
-                    Provider = new ProviderDto
-                    {
-                        Ukprn = 12345678,
-                        Name = "Foo"
-                    }
+                    Ukprn = 12345678,
+                    Name = "Foo"
                 }
-            };
+            });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedProviderQuery>(q => q.AccountId == AddedProviderParameters.AccountId && q.AccountProviderId == AddedProviderParameters.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResponse);
+            Mediator.Setup(m => m.Send(It.Is<GetAddedProviderQuery>(q => q.AccountId == AddedProviderRouteValues.AccountId && q.AccountProviderId == AddedProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResponse);
             
-            return ProvidersController.Added(AddedProviderParameters);
+            return ProvidersController.Added(AddedProviderRouteValues);
         }
     }
 }

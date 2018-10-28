@@ -29,10 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .ProjectTo<ProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            return provider == null ? null : new GetProviderQueryResponse
-            {
-                Provider = provider
-            };
+            return provider == null ? null : new GetProviderQueryResponse(provider);
         }
     }
 }

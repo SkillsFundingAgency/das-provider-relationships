@@ -34,10 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 return null;
             }
             
-            return new GetAddedProviderQueryResponse
-            {
-                AccountProvider = accountProvider
-            };
+            return new GetAddedProviderQueryResponse(accountProvider);
         }
     }
 }

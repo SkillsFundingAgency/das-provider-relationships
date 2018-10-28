@@ -7,6 +7,7 @@ using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 using SFA.DAS.Validation.Mvc;
 
@@ -39,14 +40,21 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new SearchProvidersQuery(model.Ukprn);
             var response = await _mediator.Send(query);
 
-            return RedirectToAction("Add", new { ukprn = response.Ukprn });
+            if (!response.ProviderExists)
+            {
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+            }
+            
+            return ModelState.IsValid
+                ? RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn })
+                : RedirectToAction("Search");
         }
 
         [HttpNotFoundForNullModel]
         [Route("add")]
-        public async Task<ActionResult> Add(AddProviderParameters parameters)
+        public async Task<ActionResult> Add(AddProviderRouteValues routeValues)
         {
-            var query = new GetProviderQuery(parameters.Ukprn.Value);
+            var query = new GetProviderQuery(routeValues.Ukprn.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddProviderViewModel>(response);
 
@@ -64,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                     var command = new AddAccountProviderCommand(model.AccountId.Value, model.UserRef.Value, model.Ukprn.Value);
                     var accountProviderId = await _mediator.Send(command);
 
-                    return RedirectToAction("Added", new { accountProviderId = accountProviderId });
+                    return RedirectToAction("Added", new AddedProviderRouteValues { AccountProviderId = accountProviderId });
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");
                 default:
@@ -74,9 +82,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
-        public async Task<ActionResult> Added(AddedProviderParameters parameters)
+        public async Task<ActionResult> Added(AddedProviderRouteValues routeValues)
         {
-            var query = new GetAddedProviderQuery(parameters.AccountId.Value, parameters.AccountProviderId.Value);
+            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddedProviderViewModel>(response);
             

@@ -16,19 +16,25 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class SearchProvidersQueryHandlerTests : FluentTest<SearchProvidersQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsFound_ThenShouldReturnASearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderExists_ThenShouldReturnValidSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().Be(long.Parse(f.Query.Ukprn));
+                r.ProviderExists.Should().BeTrue();
             });
         }
 
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderIsNotFound_ThenShouldThrowAValidationException()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderDoesNotExist_ThenShouldReturnInvalidSearchProvidersQueryResponse()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().Throw<ValidationException>());
+            return RunAsync(f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.Ukprn.Should().Be(long.Parse(f.Query.Ukprn));
+                r.ProviderExists.Should().BeFalse();
+            });
         }
     }
 

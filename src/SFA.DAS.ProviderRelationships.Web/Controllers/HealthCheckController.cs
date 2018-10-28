@@ -35,9 +35,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route]
-        public async Task<ActionResult> Index(HealthCheckParameters parameters)
+        public async Task<ActionResult> Index(HealthCheckRouteValues routeValues)
         {
-            var command = new RunHealthCheckCommand(parameters.UserRef.Value);
+            var command = new RunHealthCheckCommand(routeValues.UserRef.Value);
             
             await _mediator.Send(command);
 

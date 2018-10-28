@@ -3,7 +3,7 @@ using SFA.DAS.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels
 {
-    public class AddedProviderParameters : IAuthorizationContextModel
+    public class AddedProviderRouteValues : IAuthorizationContextModel
     {
         [Required]
         public long? AccountId { get; set; }

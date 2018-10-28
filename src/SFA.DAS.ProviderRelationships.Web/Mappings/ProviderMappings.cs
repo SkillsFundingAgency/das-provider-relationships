@@ -12,9 +12,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.Choice, o => o.Ignore());
             
             CreateMap<GetProviderQueryResponse, AddProviderViewModel>()
+                .ForMember(d => d.Ukprn, o => o.MapFrom(s => s.Provider.Ukprn))
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
-                .ForMember(d => d.Ukprn, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
         }
     }
