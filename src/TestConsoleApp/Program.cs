@@ -44,10 +44,18 @@ namespace TestConsoleApp
             var rep = ioc.GetInstance<IDocumentReadOnlyRepository<ProviderPermissions>>();
             try
             {
+
                 var q = rep.CreateQuery();
-                var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100024 && m.MetaData.SchemaType == "ProviderPermissions"), CancellationToken.None);
-                docs = docs.Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == PermissionEnumDto.CreateCohort));
+                var wrapper = q.Where(m => m.Ukprn == 100024 && m.MetaData.SchemaType == "ProviderPermissions").AsDocumentQueryWrapper();
+                var docs = await wrapper.ExecuteNextAsync<ProviderPermissions>(CancellationToken.None);
+                docs = docs.Where(m => m.GrantPermissions != null && m.GrantPermissions.Any(x => x?.Permission == PermissionEnumDto.CreateCohort));
                 var items = docs.ToList();
+
+
+                //var q = rep.CreateQuery();
+                //var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100024 && m.MetaData.SchemaType == "ProviderPermissions"), CancellationToken.None);
+                //docs = docs.Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == PermissionEnumDto.CreateCohort));
+                //var items = docs.ToList();
 
                 Console.WriteLine($"Count {items.Count}");
 
@@ -83,8 +91,6 @@ namespace TestConsoleApp
     {
         public DefaultRegistry()
         {
-
-
 
             For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
             {

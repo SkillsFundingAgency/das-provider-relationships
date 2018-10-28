@@ -13,8 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         Task<TEntity> GetById(string collection, Guid id);
         IQueryable<TEntity> CreateQuery(string collection);
         IQueryable<TEntity> CreateQuery(string collection, FeedOptions feedOptions);
-        IDocumentQuery<TEntity> ConvertToDocumentQuery(IQueryable<TEntity> query);
-        Task<IEnumerable<TEntity>> GetEntities(IDocumentQuery<TEntity> docQuery, CancellationToken cancellationToken);
+        //IDocumentQuery<TEntity> ConvertToDocumentQuery(IQueryable<TEntity> query);
+        //Task<IEnumerable<TEntity>> GetEntities(IDocumentQuery<TEntity> docQuery, CancellationToken cancellationToken);
     }
 
 }

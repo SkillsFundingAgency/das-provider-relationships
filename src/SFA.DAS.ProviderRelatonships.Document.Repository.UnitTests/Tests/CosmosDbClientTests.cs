@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
             );
         }
 
-        [Ignore("Creatng the exception DocumentClientException via reflection requires System.Net.Http 4.1.0 and fails")]
+        //[Ignore("Creatng the exception DocumentClientException via reflection requires System.Net.Http 4.1.0 and fails")]
         [Test]
         public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
         {

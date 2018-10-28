@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Client.Application;
 using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types;
 using SFA.DAS.Testing;
@@ -30,7 +32,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
     public class GetHasRelationshipWithPermissionHandlerTestsFixture
     {
         public GetHasRelationshipWithPermissionHandler Handler;
-
+        //public Mock<ICosmosQueryWrapper<ProviderPermissions>> CosmosQueryWrapper;
+        public ICosmosQueryWrapper<ProviderPermissions> CosmosQueryWrapper;
         public IDocumentReadOnlyRepository<ProviderPermissions> ReadRepository  { get; set; }
         public List<ProviderPermissions> ProviderRelationships { get; set; }
 
@@ -48,7 +51,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             };
 
             ReadRepository = new FakeReadOnlyRepository<ProviderPermissions>(ProviderRelationships, null);
-
+            //CosmosQueryWrapper = new FakeCosmosQueryWrapper<ProviderPermissions>(ProviderRelationships);
+            //CosmosQueryWrapper = new Mock<ICosmosQueryWrapper<ProviderPermissions>>();
+            //CosmosQueryWrapper.Setup()
             Handler = new GetHasRelationshipWithPermissionHandler(ReadRepository);
         }
     }

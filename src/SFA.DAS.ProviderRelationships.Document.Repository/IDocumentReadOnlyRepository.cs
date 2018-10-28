@@ -12,6 +12,6 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         Task<TEntity> GetById(Guid id);
         IQueryable<TEntity> CreateQuery();
         IQueryable<TEntity> CreateQuery(FeedOptions options);
-        Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken);
+        //Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken);
     }
 }

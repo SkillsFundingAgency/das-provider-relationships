@@ -33,16 +33,16 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             return DbClient.CreateQuery(Collection, options);
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken)
-        {
-            var docQuery = DbClient.ConvertToDocumentQuery(query);
+        //public async Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken)
+        //{
+        //    var docQuery = DbClient.ConvertToDocumentQuery(query);
 
-            var results = new List<TEntity>();
-            while (docQuery.HasMoreResults)
-            {
-                results.AddRange(await DbClient.GetEntities(docQuery, cancellationToken));
-            }
-            return results;
-        }
+        //    var results = new List<TEntity>();
+        //    while (docQuery.HasMoreResults)
+        //    {
+        //        results.AddRange(await DbClient.GetEntities(docQuery, cancellationToken));
+        //    }
+        //    return results;
+        //}
     }
 }

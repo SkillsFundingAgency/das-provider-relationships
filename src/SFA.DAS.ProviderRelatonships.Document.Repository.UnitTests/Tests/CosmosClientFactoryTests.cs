@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
     [Parallelizable]
     public class CosmosClientFactoryTests : FluentTest<CosmosClientFactoryTestsFixture>
     {
-        [Ignore("Trying to load DocumentClient requires System.Net.Http 4.1.0 and fails")]
+        //[Ignore("Trying to load DocumentClient requires System.Net.Http 4.1.0 and fails")]
         [Test]
         public void CosmosClientFactory_WhenCreatingDocumentClient_ThenShouldReturnDocumentClientObject()
         {
