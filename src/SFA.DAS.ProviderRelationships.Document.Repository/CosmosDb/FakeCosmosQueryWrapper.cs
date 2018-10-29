@@ -1,34 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 
+[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
+
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
-    public class FakeCosmosQueryWrapper<T> : ICosmosQueryWrapper<T>
+    internal class FakeCosmosQueryWrapper<T> : IDocumentQueryWrapper<T>
     {
-        private readonly IEnumerable<T> _data;
-
-        public FakeCosmosQueryWrapper(IEnumerable<T> data)
-        {
-            _data = data;
-        }
+        public IEnumerable<T> Data { get; set; }
 
         public IDocumentQuery<T> DocumentQuery { get; set; }
 
         public async Task<IEnumerable<T>> ExecuteNextAsync<T>(CancellationToken token = new CancellationToken())
         {
-            return (IEnumerable<T>) await Task.Run(() => _data.ToList().AsEnumerable()); 
-            //return await DocumentQuery.ExecuteNextAsync<TResult>(token);
+            return (IEnumerable<T>) await Task.Run(() => Data.ToList().AsEnumerable()); 
         }
 
-        public Task<IEnumerable<T>> ExecuteQuery<T>(CancellationToken token)
+        public Task<IEnumerable<T>> ExecuteAsync<T>(CancellationToken token)
         {
             return ExecuteNextAsync<T>(token);
         }
 
-        public bool HasMoreResults => true;
+        public bool HasMoreResults => false;
 
         public void Dispose()
         {

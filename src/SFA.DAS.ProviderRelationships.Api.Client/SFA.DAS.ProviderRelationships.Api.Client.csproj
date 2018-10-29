@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
   </ItemGroup>
 

@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
         [Test]
         public Task DocumentReadOnlyRepository_WhenGettingASingleDocment_ThenShouldReturnObject()
         {
-            Guid id = Guid.NewGuid();
+            var id = Guid.NewGuid();
             return RunAsync(
                 f => f.ArrangeDocumentDbClientToReturnASingleDocumentForSpecificGuid(id),
                 f => f.DocumentReadOnlyRepository.GetById(id),
@@ -86,7 +86,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
     {
         public string Collection { get; set; }
         public Mock<IDocumentDbClient<Dummy>> DocumentDbClient { get; set; }
-        public Mock<ICosmosQueryWrapper<Dummy>> CosmosQueryWrapper { get; set; }
+        public Mock<IDocumentQueryWrapper<Dummy>> CosmosQueryWrapper { get; set; }
         //public Mock<IDocumentQuery<Dummy>> MockedDocumentQuery { get; set; }
         public DocumentReadOnlyRepository<Dummy> DocumentReadOnlyRepository { get; set; }
         public List<Dummy> ListOfItems;
@@ -95,7 +95,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
         {
             DocumentDbClient = new Mock<IDocumentDbClient<Dummy>>();
             //MockedDocumentQuery = new Mock<IDocumentQuery<Dummy>>();
-            CosmosQueryWrapper = new Mock<ICosmosQueryWrapper<Dummy>>();
+            CosmosQueryWrapper = new Mock<IDocumentQueryWrapper<Dummy>>();
 
             ListOfItems = new List<Dummy>
             {
@@ -136,7 +136,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
 
         public void ArrangeDocumentDbClientToReturnOneSetOfMatchingObjects(List<Dummy> list)
         {
-            CosmosQueryWrapper.Setup(x => x.ExecuteQuery<Dummy>(It.IsAny<CancellationToken>()))
+            CosmosQueryWrapper.Setup(x => x.ExecuteAsync<Dummy>(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(list.AsEnumerable);
 
             //MockedDocumentQuery.SetupSequence(x => x.HasMoreResults).Returns(true).Returns(false);

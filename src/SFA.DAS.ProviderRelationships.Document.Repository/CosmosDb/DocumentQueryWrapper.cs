@@ -7,7 +7,7 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
-    public class CosmosQueryWrapper<T> : ICosmosQueryWrapper<T>
+    public class DocumentQueryWrapper<T> : IDocumentQueryWrapper<T>
     {
         public IDocumentQuery<T> DocumentQuery { get; set; }
 
@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
             return await DocumentQuery.ExecuteNextAsync<TResult>(token);
         }
 
-        public async Task<IEnumerable<TResult>> ExecuteQuery<TResult>(CancellationToken token)
+        public async Task<IEnumerable<TResult>> ExecuteAsync<TResult>(CancellationToken token)
         {
             if (DocumentQuery == null)
                 throw new ArgumentNullException(nameof(DocumentQuery), "DocumentQuery must be set before calling this method");

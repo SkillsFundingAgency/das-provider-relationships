@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Document.Repository;
+﻿using SFA.DAS.ProviderRelationships.Api.Client.Application;
+using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
 using StructureMap;
@@ -10,8 +11,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         public ProviderRelationshipsApiClientRegistry()
         {
             IncludeRegistry<DocumentRegistry>();
-            IncludeRegistry<MediatorRegistry>();
 
+            For<IProviderRelationshipService>().Use<ProviderRelationshipService>();
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
             // TODO config to wire up later

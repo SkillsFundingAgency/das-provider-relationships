@@ -1,31 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Azure.Documents.Linq;
-using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
-using StructureMap;
 
+[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
-
     public static class CosmosDbExtensions
     {
-        public static bool TestMode = false;
+        internal static bool TestMode = false;
 
-        public static ICosmosQueryWrapper<T> AsDocumentQueryWrapper<T>(this IQueryable<T> query)
+        public static IDocumentQueryWrapper<T> AsDocumentQueryWrapper<T>(this IQueryable<T> query)
         {
-            Registry registry = TestMode ? (Registry) new FakeDocumentRegistry() : new DocumentRegistry();
-            var container = new Container(registry);
-            var instance = container.GetInstance<ICosmosQueryWrapper<T>>();
-            instance.DocumentQuery = query.AsDocumentQuery();
-            return instance;
+            if (TestMode)
+                return new FakeCosmosQueryWrapper<T> {
+                    Data = query.AsEnumerable()
+                };
+
+            return new DocumentQueryWrapper<T> {
+                DocumentQuery = query.AsDocumentQuery()
+            };
         }
-
-        //public static async Task<IEnumerable<TEntity>> GetEntities<TEntity>(this ICosmosQueryWrapper<TEntity> docQuery, CancellationToken cancellationToken)
-        //{
-        //    return await docQuery.ExecuteNextAsync<TEntity>(cancellationToken);
-        //}
-
     }
 }
