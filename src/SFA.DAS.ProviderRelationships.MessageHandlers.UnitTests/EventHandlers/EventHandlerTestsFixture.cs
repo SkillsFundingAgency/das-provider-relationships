@@ -8,14 +8,14 @@ using Z.EntityFramework.Plus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
-    public abstract class EventHandlerTestsFixture<T> where T : Event
+    public abstract class EventHandlerTestsFixture<TEvent> where TEvent : Event
     {
         public DateTime Now { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
-        public IHandleMessages<T> Handler { get; set; }
-        public T Message { get; set; }
+        public IHandleMessages<TEvent> Handler { get; set; }
+        public TEvent Message { get; set; }
 
-        protected EventHandlerTestsFixture(Func<Lazy<ProviderRelationshipsDbContext>, IHandleMessages<T>> createEventHandler)
+        protected EventHandlerTestsFixture(Func<Lazy<ProviderRelationshipsDbContext>, IHandleMessages<TEvent>> createEventHandler)
         {
             Now = DateTime.UtcNow;
 
