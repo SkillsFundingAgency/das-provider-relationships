@@ -32,8 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .SingleOrDefaultAsync(cancellationToken);
             
             return new SearchProvidersQueryResponse(data?.Ukprn, data?.AccountProviderId);
-
-
         }
     }
 }
