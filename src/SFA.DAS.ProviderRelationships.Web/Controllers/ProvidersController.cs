@@ -37,12 +37,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("search")]
         public async Task<ActionResult> Search(SearchProvidersViewModel model)
         {
-            var query = new SearchProvidersQuery(model.AccountId.Value, long.Parse(model.Ukprn));
+            var ukprn = long.Parse(model.Ukprn);
+            var query = new SearchProvidersQuery(model.AccountId.Value, ukprn);
             var response = await _mediator.Send(query);
 
-            if (response.Ukprn != null)
+            if (response.ProviderFound)
             {
-                return response.AccountProviderId != null
+                return response.ProviderAlreadyAdded
                     ? RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value })
                     : RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
             }

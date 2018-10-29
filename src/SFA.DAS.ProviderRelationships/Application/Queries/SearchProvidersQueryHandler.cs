@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
-using Z.EntityFramework.Plus;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
@@ -19,22 +19,21 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 
         public async Task<SearchProvidersQueryResponse> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
         {
-            var ukprnQuery = _db.Value.Providers
+            var data = await _db.Value.Providers
                 .Where(p => p.Ukprn == request.Ukprn)
-                .Select(p => (long?)p.Ukprn)
-                .DeferredSingleOrDefault()
-                .FutureValue();
-
-            var accountProviderIdQuery = _db.Value.AccountProviders
-                .Where(ap => ap.AccountId == request.AccountId && ap.ProviderUkprn == request.Ukprn)
-                .Select(ap => (int?)ap.Id)
-                .DeferredSingleOrDefault()
-                .FutureValue();
-
-            var ukprn = await ukprnQuery.ValueAsync();
-            var accountProviderId = await accountProviderIdQuery.ValueAsync();
+                .Select(p => new
+                {
+                    p.Ukprn,
+                    AccountProviderId = p.AccountProviders
+                        .Where(ap => ap.AccountId == request.AccountId)
+                        .Select(ap => (int?)ap.Id)
+                        .FirstOrDefault()
+                })
+                .SingleOrDefaultAsync(cancellationToken);
             
-            return new SearchProvidersQueryResponse(ukprn, accountProviderId);
+            return new SearchProvidersQueryResponse(data?.Ukprn, data?.AccountProviderId);
+
+
         }
     }
 }
