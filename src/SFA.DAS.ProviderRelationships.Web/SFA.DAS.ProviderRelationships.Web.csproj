@@ -144,7 +144,7 @@
   <ItemGroup>
     <Content Include="403.html" />
     <Content Include="404.html" />
-    <Content Include="500.html" />
+    <Content Include="Error.html" />
     <Content Include="Content\css\application.css" />
     <Content Include="Content\js\application.js" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
