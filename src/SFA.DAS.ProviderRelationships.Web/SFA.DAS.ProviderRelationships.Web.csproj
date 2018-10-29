@@ -137,6 +137,8 @@
     <Compile Include="ViewModels\AddedProviderViewModel.cs" />
     <Compile Include="ViewModels\AddProviderRouteValues.cs" />
     <Compile Include="ViewModels\AddProviderViewModel.cs" />
+    <Compile Include="ViewModels\AlreadyAddedProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AlreadyAddedProviderViewModel.cs" />
     <Compile Include="ViewModels\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
@@ -175,6 +177,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Providers\Add.cshtml" />
     <Content Include="Views\Providers\Added.cshtml" />
+    <Content Include="Views\Providers\AlreadyAdded.cshtml" />
     <Content Include="Views\Providers\Search.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
-using SFA.DAS.Validation;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
@@ -16,24 +16,55 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class SearchProvidersQueryHandlerTests : FluentTest<SearchProvidersQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderExists_ThenShouldReturnValidSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderExists_ThenShouldReturnUkprnInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Ukprn.Should().Be(long.Parse(f.Query.Ukprn));
-                r.ProviderExists.Should().BeTrue();
+                r.Ukprn.Should().Be(f.Provider.Ukprn);
             });
         }
 
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndAProviderDoesNotExist_ThenShouldReturnInvalidSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesNotExist_ThenShouldReturnNullUkprnInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Ukprn.Should().Be(long.Parse(f.Query.Ukprn));
-                r.ProviderExists.Should().BeFalse();
+                r.Ukprn.Should().BeNull();
+            });
+        }
+        
+        [Test]
+        public Task Handle_WhenHandlingASearchProvidersQueryAndPProvidersDoesExistAndroviderAlreadyAdded_ThenShouldReturnUkprnAndAccountProviderIdInSearchProvidersQueryResponse()
+        {
+            return RunAsync(f => f.SetProvider().SetAccountProvider(), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.Ukprn.Should().Be(f.Provider.Ukprn);
+                r.AccountProviderId.Should().Be(f.AccountProvider.Id);
+            });
+        }
+        
+        [Test]
+        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesExistAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
+        {
+            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.Ukprn.Should().Be(f.Provider.Ukprn);
+                r.AccountProviderId.Should().BeNull();
+            });
+        }
+        
+        [Test]
+        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesNotExistAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
+        {
+            return RunAsync(f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.Ukprn.Should().BeNull();
+                r.AccountProviderId.Should().BeNull();
             });
         }
     }
@@ -43,12 +74,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public SearchProvidersQueryHandler Handler { get; set; }
         public SearchProvidersQuery Query { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
+        public Provider Provider { get; set; }
+        public Account Account { get; set; }
+        public AccountProvider AccountProvider { get; set; }
 
         public SearchProvidersQueryHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Handler = new SearchProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
-            Query = new SearchProvidersQuery("12345678");
+            Query = new SearchProvidersQuery(1, 12345678);
         }
 
         public Task<SearchProvidersQueryResponse> Handle()
@@ -58,11 +92,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public SearchProvidersQueryHandlerTestsFixture SetProvider()
         {
-            var provider = new ProviderBuilder().WithUkprn(long.Parse(Query.Ukprn)).Build();
+            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn).Build();
             
-            Db.Providers.Add(provider);
+            Db.Providers.Add(Provider);
             Db.SaveChanges();
 
+            return this;
+        }
+
+        public SearchProvidersQueryHandlerTestsFixture SetAccountProvider()
+        {
+            Account = new AccountBuilder().WithId(Query.AccountId).Build();
+            AccountProvider = new AccountProviderBuilder().WithId(1).WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn).Build();
+            
+            Db.AccountProviders.Add(AccountProvider);
+            Db.SaveChanges();
+            
             return this;
         }
     }

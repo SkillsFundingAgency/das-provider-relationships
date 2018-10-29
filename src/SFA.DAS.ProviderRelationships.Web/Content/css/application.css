@@ -458,43 +458,54 @@ li.menu-link.sub-menu-open ul {
     text-align: center;
 }
 
-.govuk-success-summary {
+.govuk-info-summary, .govuk-success-summary {
     color: #0b0c0c;
     padding: 15px;
     margin-bottom: 30px;
     border: 4px solid #28a197
 }
 
+.govuk-info-summary {
+    border: 4px solid #2e358b
+}
+
+.govuk-success-summary {
+    border: 4px solid #28a197
+}
+
 @media print {
-    .govuk-success-summary {
+    .govuk-info-summary, .govuk-success-summary {
         color: #000
     }
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary {
+    .govuk-info-summary, .govuk-success-summary {
         padding:20px
     }
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary {
+    .govuk-info-summary, .govuk-success-summary {
         margin-bottom:50px
     }
 }
 
-.govuk-success-summary:focus {
+.govuk-info-summary:focus, .govuk-success-summary:focus {
     outline: 3px solid #ffbf47;
     outline-offset: 0
 }
 
 @media (min-width: 40.0625em) {
+    .govuk-info-summary {
+        border:5px solid #2e358b
+    }
     .govuk-success-summary {
         border:5px solid #28a197
     }
 }
 
-.govuk-success-summary__title {
+.govuk-info-summary__title, .govuk-success-summary__title {
     font-family: "nta",Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -507,13 +518,13 @@ li.menu-link.sub-menu-open ul {
 }
 
 @media print {
-    .govuk-success-summary__title {
+    .govuk-info-summary__title, .govuk-success-summary__title {
         font-family: sans-serif
     }
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary__title {
+    .govuk-info-summary__title, .govuk-success-summary__title {
         font-size:24px;
         font-size: 1.5rem;
         line-height: 1.25
@@ -521,19 +532,19 @@ li.menu-link.sub-menu-open ul {
 }
 
 @media print {
-    .govuk-success-summary__title {
+    .govuk-info-summary__title, .govuk-success-summary__title {
         font-size: 18pt;
         line-height: 1.15
     }
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary__title {
+    .govuk-info-summary__title, .govuk-success-summary__title {
         margin-bottom:20px
     }
 }
 
-.govuk-success-summary__body {
+.govuk-info-summary__body, .govuk-success-summary__body {
     font-family: "nta",Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -544,13 +555,13 @@ li.menu-link.sub-menu-open ul {
 }
 
 @media print {
-    .govuk-success-summary__body {
+    .govuk-info-summary__body, .govuk-success-summary__body {
         font-family: sans-serif
     }
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary__body {
+    .govuk-info-summary__body, .govuk-success-summary__body {
         font-size:19px;
         font-size: 1.1875rem;
         line-height: 1.31579
@@ -558,46 +569,46 @@ li.menu-link.sub-menu-open ul {
 }
 
 @media print {
-    .govuk-success-summary__body {
+    .govuk-info-summary__body, .govuk-success-summary__body {
         font-size: 14pt;
         line-height: 1.15
     }
 }
 
-.govuk-success-summary__body p {
+.govuk-info-summary__body p, .govuk-success-summary__body p {
     margin-top: 0;
     margin-bottom: 15px
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-success-summary__body p {
+    .govuk-info-summary__body p, .govuk-success-summary__body p {
         margin-bottom:20px
     }
 }
 
-.govuk-success-summary__list {
+.govuk-info-summary__list, .govuk-success-summary__list {
     margin-top: 0;
     margin-bottom: 0
 }
 
-.govuk-success-summary__list a {
+.govuk-info-summary__list a, .govuk-success-summary__list a {
     font-weight: 700
 }
 
-.govuk-success-summary__list a:focus {
+.govuk-info-summary__list a:focus, .govuk-success-summary__list a:focus {
     outline: 3px solid #ffbf47;
     outline-offset: 0;
     background-color: #ffbf47
+}
+
+.govuk-info-summary__list a:link,.govuk-info-summary__list a:visited,.govuk-info-summary__list a:hover,.govuk-info-summary__list a:active {
+    color: #2e358b
 }
 
 .govuk-success-summary__list a:link,.govuk-success-summary__list a:visited,.govuk-success-summary__list a:hover,.govuk-success-summary__list a:active {
     color: #28a197
 }
 
-.govuk-success-summary__list a:focus {
+.govuk-info-summary__list a:focus, .govuk-success-summary__list a:focus {
     color: #0b0c0c
-}
-
-.govuk-\!-text-align-center {
-    text-align: center;
 }

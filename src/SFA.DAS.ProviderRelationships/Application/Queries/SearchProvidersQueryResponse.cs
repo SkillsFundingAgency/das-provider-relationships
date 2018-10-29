@@ -2,13 +2,13 @@
 {
     public class SearchProvidersQueryResponse
     {
-        public long Ukprn { get; }
-        public bool ProviderExists { get; }
+        public long? Ukprn { get; }
+        public int? AccountProviderId { get; }
 
-        public SearchProvidersQueryResponse(long ukprn, bool providerExists)
+        public SearchProvidersQueryResponse(long? ukprn, int? accountProviderId)
         {
             Ukprn = ukprn;
-            ProviderExists = providerExists;
+            AccountProviderId = accountProviderId;
         }
     }
 }

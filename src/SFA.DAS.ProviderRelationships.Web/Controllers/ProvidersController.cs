@@ -37,17 +37,20 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("search")]
         public async Task<ActionResult> Search(SearchProvidersViewModel model)
         {
-            var query = new SearchProvidersQuery(model.Ukprn);
+            var query = new SearchProvidersQuery(model.AccountId.Value, long.Parse(model.Ukprn));
             var response = await _mediator.Send(query);
 
-            if (!response.ProviderExists)
+            if (response.Ukprn != null)
             {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                return response.AccountProviderId != null
+                    ? RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value })
+                    : RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
             }
             
-            return ModelState.IsValid
-                ? RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn })
-                : RedirectToAction("Search");
+            ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+
+            return RedirectToAction("Search");
+
         }
 
         [HttpNotFoundForNullModel]
@@ -104,6 +107,33 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                     return RedirectToAction("Search");
                 case "GoToHomepage":
                     return RedirectToAction("Index", "Home");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+            }
+        }
+
+        [HttpNotFoundForNullModel]
+        [Route("{accountProviderId}/alreadyadded")]
+        public async Task<ActionResult> AlreadyAdded(AlreadyAddedProviderRouteValues routeValues)
+        {
+            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+            var response = await _mediator.Send(query);
+            var model = _mapper.Map<AlreadyAddedProviderViewModel>(response);
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{accountProviderId}/alreadyadded")]
+        public ActionResult AlreadyAdded(AlreadyAddedProviderViewModel model)
+        {
+            switch (model.Choice)
+            {
+                case "SetPermissions":
+                    return RedirectToAction("Index", "Permissions", new { accountProviderId = model.AccountProviderId });
+                case "AddTrainingProvider":
+                    return RedirectToAction("Search");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice));
             }
