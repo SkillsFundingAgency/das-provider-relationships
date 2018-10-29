@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent>
     {
         public CreatedAccountEventHandlerTestsFixture()
-            : base(ldb => new CreatedAccountEventHandler(ldb))
+            : base(db => new CreatedAccountEventHandler(db))
         {
             Message = new CreatedAccountEvent
             {

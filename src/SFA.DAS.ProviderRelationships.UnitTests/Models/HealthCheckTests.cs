@@ -52,11 +52,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.UnitOfWorkContext.GetEvents().Should().HaveCount(1)
                 .And.AllBeOfType<HealthCheckEvent>()
-                .And.AllBeEquivalentTo(new HealthCheckEvent
-                {
-                    Id = f.HealthCheck.Id,
-                    Created = f.HealthCheck.PublishedProviderRelationshipsEvent
-                }));
+                .And.AllBeEquivalentTo(new HealthCheckEvent(f.HealthCheck.Id, f.HealthCheck.PublishedProviderRelationshipsEvent)));
         }
 
         [Test]
@@ -100,7 +96,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             PreRun = DateTime.UtcNow;
 
-            HealthCheck.ReceiveProviderRelationshipsEvent(new HealthCheckEvent());
+            HealthCheck.ReceiveProviderRelationshipsEvent(new HealthCheckEvent(1, DateTime.UtcNow));
 
             PostRun = DateTime.UtcNow;
         }

@@ -18,14 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Provider = provider;
             Created = DateTime.UtcNow;
             
-            Publish(() => new AddedAccountProviderEvent
-            {
-                AccountProviderId = Id,
-                AccountId = Account.Id,
-                ProviderUkprn = Provider.Ukprn,
-                UserRef = user.Ref,
-                Created = Created
-            });
+            Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created));
         }
         
         protected AccountProvider()

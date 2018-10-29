@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -26,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public List<HealthCheck> HealthChecks { get; set; }
 
         public HealthCheckEventHandlerTestsFixture()
-            : base(ldb => new HealthCheckEventHandler(ldb))
+            : base(db => new HealthCheckEventHandler(db))
         {
             HealthChecks = new List<HealthCheck>
             {
@@ -40,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
         public override Task Handle()
         {
-            return Handler.Handle(new HealthCheckEvent { Id = HealthChecks[1].Id }, null);
+            return Handler.Handle(new HealthCheckEvent(HealthChecks[1].Id, DateTime.MinValue), null);
         }
     }
 }

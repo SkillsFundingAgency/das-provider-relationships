@@ -5,9 +5,18 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
     public class AddedAccountProviderEvent : Event
     {
-        public int AccountProviderId { get; set; }
-        public long AccountId { get; set; }
-        public long ProviderUkprn { get; set; }
-        public Guid UserRef { get; set; }
+        public int AccountProviderId { get; }
+        public long AccountId { get; }
+        public long ProviderUkprn { get; }
+        public Guid UserRef { get; }
+
+        public AddedAccountProviderEvent(int accountProviderId, long accountId, long providerUkprn, Guid userRef, DateTime created)
+        {
+            AccountProviderId = accountProviderId;
+            AccountId = accountId;
+            ProviderUkprn = providerUkprn;
+            UserRef = userRef;
+            Created = created;
+        }
     }
 }

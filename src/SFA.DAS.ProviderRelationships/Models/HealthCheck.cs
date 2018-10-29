@@ -52,11 +52,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             PublishedProviderRelationshipsEvent = DateTime.UtcNow;
 
-            Publish(() => new HealthCheckEvent
-            {
-                Id = Id,
-                Created = PublishedProviderRelationshipsEvent
-            });
+            Publish(() => new HealthCheckEvent(Id, PublishedProviderRelationshipsEvent));
         }
     }
 }
