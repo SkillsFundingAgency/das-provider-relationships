@@ -43,9 +43,6 @@
         },
         "webJobStorageAccountName" : {
             "type": "string"
-        },
-        "webJobsStorageConnectionString" :{
-            "type" : "string"
         }
     },
     "variables": {},
@@ -205,12 +202,12 @@
                         "value": [
                             {
                                 "name": "AzureWebJobsDashboard",
-                                "connectionString": "[parameters('webJobsStorageConnectionString')]",
+                                "connectionString": " [reference('StorageAccount').outputs.storageConnectionString.value]",
                                 "type": "Custom"
                               },
                               {
                                 "name": "AzureWebJobsStorage",
-                                "connectionString": "[parameters('webJobsStorageConnectionString')]",
+                                "connectionString": " [reference('StorageAccount').outputs.storageConnectionString.value]",
                                 "type": "Custom"
                               }
                         ]
@@ -218,7 +215,8 @@
                 }
             },
             "dependsOn": [
-                "worker-app-service-plan-deployment"
+                "worker-app-service-plan-deployment",
+                "StorageAccount"
             ]
         },
         {
