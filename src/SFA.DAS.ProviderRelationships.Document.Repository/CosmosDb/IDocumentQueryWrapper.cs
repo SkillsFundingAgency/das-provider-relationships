@@ -7,8 +7,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
     public interface IDocumentQueryWrapper<T> : IDisposable
     {
-        Task<IEnumerable<TResult>> ExecuteNextAsync<TResult>(CancellationToken token);
-        Task<IEnumerable<TResult>> ExecuteAsync<TResult>(CancellationToken token);
         bool HasMoreResults { get; }
+        Task<IEnumerable<T>> ExecuteAsync(CancellationToken token);
+        Task<IEnumerable<T>> ExecuteNextAsync(CancellationToken token);
     }
 }

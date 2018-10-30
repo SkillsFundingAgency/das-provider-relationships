@@ -12,24 +12,21 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
     internal class FakeCosmosQueryWrapper<T> : IDocumentQueryWrapper<T>
     {
         public IEnumerable<T> Data { get; set; }
-
         public IDocumentQuery<T> DocumentQuery { get; set; }
-
-        public async Task<IEnumerable<T>> ExecuteNextAsync<T>(CancellationToken token = new CancellationToken())
-        {
-            return (IEnumerable<T>) await Task.Run(() => Data.ToList().AsEnumerable()); 
-        }
-
-        public Task<IEnumerable<T>> ExecuteAsync<T>(CancellationToken token)
-        {
-            return ExecuteNextAsync<T>(token);
-        }
-
         public bool HasMoreResults => false;
+
+        public Task<IEnumerable<T>> ExecuteAsync(CancellationToken token)
+        {
+            return ExecuteNextAsync(token);
+        }
+
+        public Task<IEnumerable<T>> ExecuteNextAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() => Data.ToList().AsEnumerable(), cancellationToken); 
+        }
 
         public void Dispose()
         {
         }
-
     }
 }

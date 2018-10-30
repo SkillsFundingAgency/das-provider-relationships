@@ -47,7 +47,7 @@ namespace TestConsoleApp
 
                 var q = rep.CreateQuery();
                 var wrapper = q.Where(m => m.Ukprn == 100024 && m.MetaData.SchemaType == "ProviderPermissions").AsDocumentQueryWrapper();
-                var docs = await wrapper.ExecuteNextAsync<ProviderPermissions>(CancellationToken.None);
+                var docs = await wrapper.ExecuteNextAsync(CancellationToken.None);
                 docs = docs.Where(m => m.GrantPermissions != null && m.GrantPermissions.Any(x => x?.Permission == PermissionEnumDto.CreateCohort));
                 var items = docs.ToList();
 

@@ -136,7 +136,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
 
         public void ArrangeDocumentDbClientToReturnOneSetOfMatchingObjects(List<Dummy> list)
         {
-            CosmosQueryWrapper.Setup(x => x.ExecuteAsync<Dummy>(It.IsAny<CancellationToken>()))
+            CosmosQueryWrapper.Setup(x => x.ExecuteAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(list.AsEnumerable);
 
             //MockedDocumentQuery.SetupSequence(x => x.HasMoreResults).Returns(true).Returns(false);
