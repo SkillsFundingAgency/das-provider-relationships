@@ -14,12 +14,17 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             _service = service;
         }
 
-        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default) =>
-            _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, cancellationToken);
-
         public Task<ProviderRelationshipsResponse> GetRelationshipsWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<bool> HasPermission(ProviderPermissionRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default) =>
+            _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, cancellationToken);
     }
 }
