@@ -202,12 +202,16 @@
                         "value": [
                             {
                                 "name": "AzureWebJobsDashboard",
-                                "connectionString": " [reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "connectionString": {
+                                    "value" : "[reference('StorageAccount').outputs.storageConnectionString.value]"
+                                },
                                 "type": "Custom"
                               },
                               {
                                 "name": "AzureWebJobsStorage",
-                                "connectionString": " [reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "connectionString": {
+                                    "value" :"[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                },
                                 "type": "Custom"
                               }
                         ]
