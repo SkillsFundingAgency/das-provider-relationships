@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         public Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request, CancellationToken cancellationToken = default) =>
             _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, cancellationToken);
 
-        public Task<ProviderRelationshipResponse> ListRelationshipsWithPermission(ProviderRelationshipRequest request)
+        public Task<ProviderRelationshipResponse> GetRelationshipsWithPermission(ProviderRelationshipRequest request)
         {
             throw new System.NotImplementedException();
         }
