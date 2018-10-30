@@ -36,12 +36,12 @@
             "type": "string"
         },
         "workerAppServicePlanName": {
-            "type" : "string"
+            "type": "string"
         },
         "cosmosDbName": {
-            "type": "string" 
+            "type": "string"
         },
-        "webJobStorageAccountName" : {
+        "webJobStorageAccountName": {
             "type": "string"
         }
     },
@@ -76,19 +76,19 @@
                 },
                 "parameters": {
                     "appServicePlanName": {
-                        "value":  "[parameters('workerAppServicePlanName')]"
+                        "value": "[parameters('workerAppServicePlanName')]"
                     },
-                    "aspLocation":{
+                    "aspLocation": {
                         "value": "West Europe"
                     },
                     "aspSize": {
-                        "value" : "1"
+                        "value": "1"
                     },
                     "aspInstances": {
-                        "value": 1 
+                        "value": 1
                     }
                 }
-             }
+            }
         },
         {
             "apiVersion": "2017-05-10",
@@ -202,18 +202,14 @@
                         "value": [
                             {
                                 "name": "AzureWebJobsDashboard",
-                                "connectionString": {
-                                    "value" : "[reference('StorageAccount').outputs.storageConnectionString.value]"
-                                },
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
                                 "type": "Custom"
-                              },
-                              {
+                            },
+                            {
                                 "name": "AzureWebJobsStorage",
-                                "connectionString": {
-                                    "value" :"[reference('StorageAccount').outputs.storageConnectionString.value]"
-                                },
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
                                 "type": "Custom"
-                              }
+                            }
                         ]
                     }
                 }
