@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Api.Client;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
@@ -10,7 +9,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types;
 using StructureMap;
 
-namespace TestConsoleApp
+namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
 {
     class Program
     {
