@@ -36,14 +36,34 @@
             "type": "string"
         },
         "workerAppServicePlanName": {
-            "type" : "string"
+            "type": "string"
         },
         "cosmosDbName": {
-            "type": "string" 
+            "type": "string"
+        },
+        "webJobStorageAccountName": {
+            "type": "string"
         }
     },
     "variables": {},
     "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "StorageAccount",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/storage-account-arm.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('webJobStorageAccountName')]"
+                    }
+                }
+            }
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "worker-app-service-plan-deployment",
@@ -56,19 +76,19 @@
                 },
                 "parameters": {
                     "appServicePlanName": {
-                        "value":  "[parameters('workerAppServicePlanName')]"
+                        "value": "[parameters('workerAppServicePlanName')]"
                     },
-                    "aspLocation":{
+                    "aspLocation": {
                         "value": "West Europe"
                     },
                     "aspSize": {
-                        "value" : "1"
+                        "value": "1"
                     },
                     "aspInstances": {
-                        "value": 1 
+                        "value": 1
                     }
                 }
-             }
+            }
         },
         {
             "apiVersion": "2017-05-10",
@@ -177,11 +197,26 @@
                                 "value": "[reference('worker-app-insights-deployment').outputs.InstrumentationKey.value]"
                             }
                         ]
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "AzureWebJobsDashboard",
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "type": "Custom"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "type": "Custom"
+                            }
+                        ]
                     }
                 }
             },
             "dependsOn": [
-                "worker-app-service-plan-deployment"
+                "worker-app-service-plan-deployment",
+                "StorageAccount"
             ]
         },
         {
