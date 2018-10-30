@@ -7,7 +7,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     public class GrantPermission
     {
         [JsonProperty("permission")]
-        public PermissionEnumDto Permission { get; set; }
+        public Operation Permission { get; set; }
 
         [JsonProperty("createdOn")]
         public DateTime CreatedOn { get; set; }

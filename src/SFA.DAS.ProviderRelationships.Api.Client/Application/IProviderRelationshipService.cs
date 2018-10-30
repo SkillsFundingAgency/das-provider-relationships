@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Application
 {
     public interface IProviderRelationshipService
     {
-        Task<bool> HasRelationshipWithPermission(long ukPrn, PermissionEnumDto permission, CancellationToken cancellationToken);
-        Task<IEnumerable<ProviderPermissions>> ListRelationshipsWithPermission(long ukPrn, PermissionEnumDto permission, CancellationToken cancellationToken);
+        Task<bool> HasRelationshipWithPermission(long ukPrn, Operation permission, CancellationToken cancellationToken);
+        Task<IEnumerable<ProviderPermissions>> ListRelationshipsWithPermission(long ukPrn, Operation permission, CancellationToken cancellationToken);
     }
 }

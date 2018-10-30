@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Application
             _repository = repository;
         }
 
-        public async Task<bool> HasRelationshipWithPermission(long ukprn, PermissionEnumDto permission, CancellationToken cancellationToken)
+        public async Task<bool> HasRelationshipWithPermission(long ukprn, Operation permission, CancellationToken cancellationToken)
         {
             var query = _repository.CreateQuery().Where(x => x.Ukprn == ukprn);
             var all = await query.AsDocumentQueryWrapper().ExecuteAsync(cancellationToken);
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Application
             return all.Any(x => x.GrantPermissions != null && x.GrantPermissions.Any(y => y.Permission == permission));
         }
 
-        Task<IEnumerable<ProviderPermissions>> IProviderRelationshipService.ListRelationshipsWithPermission(long ukPrn, PermissionEnumDto permission, CancellationToken cancellationToken)
+        Task<IEnumerable<ProviderPermissions>> IProviderRelationshipService.ListRelationshipsWithPermission(long ukPrn, Operation permission, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

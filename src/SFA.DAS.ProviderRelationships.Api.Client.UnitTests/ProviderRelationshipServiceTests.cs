@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [TestCase(3, false)]
         public Task WhenCheckingForAnyProviderRelationshipsWithPermission_ThenShouldReturnCorrectResult(long ukprn, bool result)
         {
-            return RunAsync(f => f.Service.HasRelationshipWithPermission(ukprn, PermissionEnumDto.CreateCohort, CancellationToken.None), 
+            return RunAsync(f => f.Service.HasRelationshipWithPermission(ukprn, Operation.CreateCohort, CancellationToken.None), 
             (f, r) => r.Should().Be(result));
         }
     }
@@ -35,10 +35,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
             ProviderRelationships = new List<ProviderPermissions>
             {
-                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = Operation.CreateCohort }}) },
                 new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
-                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = PermissionEnumDto.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = Operation.CreateCohort }}) },
+                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> {new GrantPermission { Permission = Operation.CreateCohort }}) },
                 new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
                 new ProviderPermissions { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
             };

@@ -4,6 +4,6 @@ namespace SFA.DAS.ProviderRelationships.Types
     {
         public long EmployerAccountLegalEntityId { get; set; }
         public long Ukprn { get; set; }
-        public PermissionEnumDto Permission { get; set; }
+        public Operation Operation { get; set; }
     }
 }

@@ -25,6 +25,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         }
 
         public Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default) =>
-            _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, cancellationToken);
+            _service.HasRelationshipWithPermission(request.Ukprn, request.Operation, cancellationToken);
     }
 }
