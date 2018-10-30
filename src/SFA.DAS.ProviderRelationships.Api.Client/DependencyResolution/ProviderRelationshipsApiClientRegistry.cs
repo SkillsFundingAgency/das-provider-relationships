@@ -25,6 +25,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 
             For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>()
                 .Is("provider-relationships");
+            For(typeof(IDocumentReadOnlyRepository<>)).Use(typeof(DocumentReadOnlyRepository<>)).Ctor<string>()
+                .Is("provider-relationships");
         }
     }
 }
