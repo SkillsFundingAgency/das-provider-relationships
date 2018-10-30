@@ -14,11 +14,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             _service = service;
         }
 
-        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request) =>
-            HasRelationshipWithPermission(request, CancellationToken.None);
-
-        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request, CancellationToken token) =>
-            _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, token);
+        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request, CancellationToken cancellationToken = default) =>
+            _service.HasRelationshipWithPermission(request.Ukprn, request.Permission, cancellationToken);
 
         public Task<ProviderRelationshipResponse> ListRelationshipsWithPermission(ProviderRelationshipRequest request)
         {
