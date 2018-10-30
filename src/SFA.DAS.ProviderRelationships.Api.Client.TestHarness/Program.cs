@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             var apiClient = ioc.GetInstance<IProviderRelationshipsApiClient>();
 
             var result = await apiClient.HasRelationshipWithPermission(
-                new ProviderRelationshipRequest {Ukprn = 100025, Permission = PermissionEnumDto.CreateCohort});
+                new ProviderRelationshipsRequest {Ukprn = 100025, Permission = PermissionEnumDto.CreateCohort});
 
             if (result == true)
             {

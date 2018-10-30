@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public interface IProviderRelationshipsApiClient
     {
-        Task<bool> HasRelationshipWithPermission(ProviderRelationshipRequest request, CancellationToken cancellationToken = default);
-        Task<ProviderRelationshipResponse> GetRelationshipsWithPermission(ProviderRelationshipRequest request);
+        Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default);
+        Task<ProviderRelationshipsResponse> GetRelationshipsWithPermission(ProviderRelationshipsRequest request);
     }
 }

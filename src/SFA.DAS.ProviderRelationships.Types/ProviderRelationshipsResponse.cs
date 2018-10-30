@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Types
 {
-    public class ProviderRelationshipResponse
+    public class ProviderRelationshipsResponse
     {
         public IEnumerable<ProviderRelationship> ProviderRelationships { get; set; }
 
