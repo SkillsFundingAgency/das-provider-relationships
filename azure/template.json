@@ -210,7 +210,7 @@
                               {
                                 "name": "AzureWebJobsStorage",
                                 "connectionString": {
-                                    "value" :"[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                    "value" :"[reference('StorageAccount').outputs.storageConnectionString.value]"
                                 },
                                 "type": "Custom"
                               }
