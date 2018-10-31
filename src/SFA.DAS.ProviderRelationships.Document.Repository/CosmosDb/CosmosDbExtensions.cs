@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Azure.Documents.Linq;
 
-[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
     public static class CosmosDbExtensions

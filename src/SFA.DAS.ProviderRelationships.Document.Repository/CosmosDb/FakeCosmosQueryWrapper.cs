@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 
-[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
-
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
     internal class FakeCosmosQueryWrapper<T> : IDocumentQueryWrapper<T>

@@ -1,17 +1,19 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Api.Client.Application;
+using SFA.DAS.ProviderRelationships.ReadStore.Application;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
+using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
-        private readonly IProviderRelationshipService _service;
+        private readonly IMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IProviderRelationshipService service)
+        public ProviderRelationshipsApiClient(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         public Task<ProviderRelationshipsResponse> GetRelationshipsWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default)
@@ -25,6 +27,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         }
 
         public Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default) =>
-            _service.HasRelationshipWithPermission(request.Ukprn, request.Operation, cancellationToken);
+            _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
     }
 }

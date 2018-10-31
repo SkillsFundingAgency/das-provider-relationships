@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
@@ -10,7 +9,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 
-[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
 namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
 {
     internal class CosmosDbClient<TEntity> : IDocumentDbClient<TEntity> where TEntity : class

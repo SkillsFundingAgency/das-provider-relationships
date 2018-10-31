@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
 using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
-[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class FakeReadOnlyRepository<T> : IDocumentReadOnlyRepository<T> where T : class
