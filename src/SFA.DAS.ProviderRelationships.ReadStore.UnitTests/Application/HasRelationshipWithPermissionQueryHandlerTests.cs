@@ -30,22 +30,22 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
     {
         internal HasRelationshipWithPermissionQuery HasRelationshipWithPermissionQuery { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        public IReadOnlyDocumentRepository<ProviderPermissions> DocumentReadOnlyRepository { get; set; }
-        public List<ProviderPermissions> ProviderPermissions { get; set; }
+        public IReadOnlyDocumentRepository<ProviderPermission> DocumentReadOnlyRepository { get; set; }
+        public List<ProviderPermission> ProviderPermissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
         {
-            ProviderPermissions = new List<ProviderPermissions>
+            ProviderPermissions = new List<ProviderPermission>
             {
-                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermissions { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermissions { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderPermissions { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
+                new ProviderPermission { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
+                new ProviderPermission { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
+                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
+                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
+                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
+                new ProviderPermission { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
             };
             
-            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<ProviderPermissions>(ProviderPermissions, null);
+            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<ProviderPermission>(ProviderPermissions, null);
             Handler = new HasRelationshipWithPermissionQueryHandler(DocumentReadOnlyRepository);
         }
 

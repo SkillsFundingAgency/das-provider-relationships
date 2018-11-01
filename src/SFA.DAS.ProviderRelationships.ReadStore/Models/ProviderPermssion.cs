@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class ProviderPermissions : Document
+    public class ProviderPermission : Document
     {
-        public ProviderPermissions() : base(1, "ProviderPermissions")
+        public ProviderPermission() : base(1, "ProviderPermission")
         {   
         }
 

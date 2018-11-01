@@ -13,6 +13,6 @@
     ],
     "metadata": {
         "schemaVersion": 1,
-        "schemaType": "ProviderPermissions"
+        "schemaType": "ProviderPermission"
     }
 }
