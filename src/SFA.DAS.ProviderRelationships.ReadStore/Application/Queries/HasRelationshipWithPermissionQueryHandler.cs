@@ -9,9 +9,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
     internal class HasRelationshipWithPermissionQueryHandler : IRequestHandler<HasRelationshipWithPermissionQuery, bool>
     {
-        private readonly IDocumentReadOnlyRepository<ProviderPermissions> _repository;
+        private readonly IReadOnlyDocumentRepository<ProviderPermissions> _repository;
 
-        public HasRelationshipWithPermissionQueryHandler(IDocumentReadOnlyRepository<ProviderPermissions> repository)
+        public HasRelationshipWithPermissionQueryHandler(IReadOnlyDocumentRepository<ProviderPermissions> repository)
         {
             _repository = repository;
         }

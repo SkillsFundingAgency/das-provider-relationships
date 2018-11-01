@@ -7,12 +7,12 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public class FakeReadOnlyRepository<T> : IDocumentReadOnlyRepository<T> where T : class
+    public class FakeReadOnlyDocumentRepository<T> : IReadOnlyDocumentRepository<T> where T : class
     {
         private readonly List<T> _list;
         private readonly T _singleItem;
 
-        public FakeReadOnlyRepository(List<T> list, T singleItem)
+        public FakeReadOnlyDocumentRepository(List<T> list, T singleItem)
         {
             _list = list;
             _singleItem = singleItem;

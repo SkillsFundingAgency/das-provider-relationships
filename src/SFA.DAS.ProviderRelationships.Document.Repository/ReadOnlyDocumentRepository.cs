@@ -7,12 +7,12 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public class DocumentReadOnlyRepository<TEntity> : IDocumentReadOnlyRepository<TEntity> where TEntity : class
+    public class ReadOnlyDocumentRepository<TEntity> : IReadOnlyDocumentRepository<TEntity> where TEntity : class
     {
         protected readonly IDocumentDbClient<TEntity> DbClient;
         protected readonly string Collection;
 
-        public DocumentReadOnlyRepository(IDocumentDbClient<TEntity> dbClient, string collection)
+        public ReadOnlyDocumentRepository(IDocumentDbClient<TEntity> dbClient, string collection)
         {
             DbClient = dbClient;
             Collection = collection;

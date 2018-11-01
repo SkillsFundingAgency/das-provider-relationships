@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public class DocumentRepository<TEntity> : DocumentReadOnlyRepository<TEntity>, IDocumentRepository<TEntity> where TEntity : class
+    public class DocumentRepository<TEntity> : ReadOnlyDocumentRepository<TEntity>, IDocumentRepository<TEntity> where TEntity : class
     {
         public DocumentRepository(IDocumentDbClient<TEntity> dbClient, string collection) : base(dbClient, collection)
         {

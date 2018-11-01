@@ -5,7 +5,7 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public interface IDocumentReadOnlyRepository<TEntity> where TEntity : class
+    public interface IReadOnlyDocumentRepository<TEntity> where TEntity : class
     {
         Task<TEntity> GetById(Guid id);
         IQueryable<TEntity> CreateQuery();

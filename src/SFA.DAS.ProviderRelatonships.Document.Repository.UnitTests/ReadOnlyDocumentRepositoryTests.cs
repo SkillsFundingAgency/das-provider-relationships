@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
 {
     [TestFixture]
     [Parallelizable]
-    public class DocumentReadOnlyRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
+    public class ReadOnlyDocumentRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
     {
         [Test]
         public Task DocumentReadOnlyRepository_WhenGettingASingleDocment_ThenShouldReturnObject()
@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             var id = Guid.NewGuid();
             return RunAsync(
                 f => f.ArrangeDocumentDbClientToReturnASingleDocumentForSpecificGuid(id),
-                f => f.DocumentReadOnlyRepository.GetById(id),
+                f => f.ReadOnlyDocumentRepository.GetById(id),
                 (f, r) => r.Should().IsSameOrEqualTo(f.ListOfItems[0])
             );
         }
@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         {
             Run(
                 f =>  f.ArrangeDocumentDbClientToReturnIQueryableObject(),
-                f => f.DocumentReadOnlyRepository.CreateQuery(),
+                f => f.ReadOnlyDocumentRepository.CreateQuery(),
                 (f, r) => r.Should().NotBeNull()
             );
         }
@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         {
             Run(
                 f => f.ArrangeDocumentDbClientToReturnIQueryableObject(new FeedOptions()),
-                f => f.DocumentReadOnlyRepository.CreateQuery(),
+                f => f.ReadOnlyDocumentRepository.CreateQuery(),
                 (f, r) => r.Should().NotBeNull()
             );
         }
@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         //{
         //    return RunAsync(
         //        f => f.ArrangeDocumentDbClientToReturnOneSetOfMatchingObjects(f.ListOfItems),
-        //        f => f.DocumentReadOnlyRepository.ExecuteQuery(f.ListOfItems.AsQueryable(), CancellationToken.None),
+        //        f => f.ReadOnlyDocumentRepository.ExecuteQuery(f.ListOfItems.AsQueryable(), CancellationToken.None),
         //        (f, r) => r.Should().BeEquivalentTo(f.ListOfItems)
         //    );
         //}
@@ -86,7 +86,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
         public Mock<IDocumentDbClient<Dummy>> DocumentDbClient { get; set; }
         public Mock<IDocumentQueryWrapper<Dummy>> CosmosQueryWrapper { get; set; }
         //public Mock<IDocumentQuery<Dummy>> MockedDocumentQuery { get; set; }
-        public DocumentReadOnlyRepository<Dummy> DocumentReadOnlyRepository { get; set; }
+        public ReadOnlyDocumentRepository<Dummy> ReadOnlyDocumentRepository { get; set; }
         public List<Dummy> ListOfItems;
 
         public DocumentReadOnlyRepositoryTestsFixture()
@@ -110,7 +110,7 @@ namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
             };
 
 
-            DocumentReadOnlyRepository = new DocumentReadOnlyRepository<Dummy>(DocumentDbClient.Object, Collection);
+            ReadOnlyDocumentRepository = new ReadOnlyDocumentRepository<Dummy>(DocumentDbClient.Object, Collection);
 
         }
 

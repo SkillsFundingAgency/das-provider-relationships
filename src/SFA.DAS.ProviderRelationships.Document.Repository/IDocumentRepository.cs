@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public interface IDocumentRepository<TEntity> : IDocumentReadOnlyRepository<TEntity> where TEntity : class
+    public interface IDocumentRepository<TEntity> : IReadOnlyDocumentRepository<TEntity> where TEntity : class
     {
         Task Update(TEntity entity);
         Task Remove(Guid id);

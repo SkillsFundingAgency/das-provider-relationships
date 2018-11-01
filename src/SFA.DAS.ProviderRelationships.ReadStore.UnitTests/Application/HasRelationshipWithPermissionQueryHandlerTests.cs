@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
     {
         internal HasRelationshipWithPermissionQuery HasRelationshipWithPermissionQuery { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        public IDocumentReadOnlyRepository<ProviderPermissions> DocumentReadOnlyRepository { get; set; }
+        public IReadOnlyDocumentRepository<ProviderPermissions> DocumentReadOnlyRepository { get; set; }
         public List<ProviderPermissions> ProviderPermissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                 new ProviderPermissions { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
             };
             
-            DocumentReadOnlyRepository = new FakeReadOnlyRepository<ProviderPermissions>(ProviderPermissions, null);
+            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<ProviderPermissions>(ProviderPermissions, null);
             Handler = new HasRelationshipWithPermissionQueryHandler(DocumentReadOnlyRepository);
         }
 
