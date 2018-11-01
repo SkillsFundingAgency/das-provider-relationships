@@ -4,13 +4,7 @@
     "employerName": "employer name 2234",
     "employerAccountLegalEntityPublicHashedId": "hashedIdC",
     "employerAccountLegalEntityName": "nameC",
-    "grantPermissions": [
-        {
-            "permission": "CreateCohort",
-            "createdOn": "2018-04-23T18:25:43.511Z",
-            "messageId": "1234"
-        }
-    ],
+    "operations": [0],
     "metadata" : {
         "schemaVersion": 1,
         "schemaType" :  "ProviderPermission" 

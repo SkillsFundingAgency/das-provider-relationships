@@ -37,12 +37,12 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         {
             ProviderPermissions = new List<ProviderPermission>
             {
-                new ProviderPermission { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermission { Ukprn = 1, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission> { new GrantPermission { Permission = Operation.CreateCohort } }) },
-                new ProviderPermission { Ukprn = 2, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) },
-                new ProviderPermission { Ukprn = 3, GrantPermissions = new List<GrantPermission>( new List<GrantPermission>()) }
+                new ProviderPermission { Ukprn = 1, Operations = new List<Operation> { Operation.CreateCohort } },
+                new ProviderPermission { Ukprn = 1, Operations = new List<Operation>() },
+                new ProviderPermission { Ukprn = 2, Operations = new List<Operation> { Operation.CreateCohort } },
+                new ProviderPermission { Ukprn = 2, Operations = new List<Operation> { Operation.CreateCohort } },
+                new ProviderPermission { Ukprn = 2, Operations = new List<Operation>() },
+                new ProviderPermission { Ukprn = 3, Operations = new List<Operation>() }
             };
             
             DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<ProviderPermission>(ProviderPermissions, null);

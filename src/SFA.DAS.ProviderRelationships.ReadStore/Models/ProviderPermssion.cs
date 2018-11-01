@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using SFA.DAS.ProviderRelationships.Types;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
@@ -21,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("employerAccountLegalEntityName")]
         public string EmployerAccountLegalEntityName { get; set; }
 
-        [JsonProperty("grantPermissions")]
-        public IEnumerable<GrantPermission> GrantPermissions { get; set; }
+        [JsonProperty("operations")]
+        public IEnumerable<Operation> Operations { get; set; }
     }
 }
