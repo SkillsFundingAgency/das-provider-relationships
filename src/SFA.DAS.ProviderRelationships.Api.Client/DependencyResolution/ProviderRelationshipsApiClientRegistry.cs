@@ -18,8 +18,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
                 SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
             });
 
-            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>().Is("provider-relationships");
-            For(typeof(IReadOnlyDocumentRepository<>)).Use(typeof(ReadOnlyDocumentRepository<>)).Ctor<string>().Is("provider-relationships");
+            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>().Is("permissions");
+            For(typeof(IReadOnlyDocumentRepository<>)).Use(typeof(ReadOnlyDocumentRepository<>)).Ctor<string>().Is("permissions");
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
         }
     }

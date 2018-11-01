@@ -6,16 +6,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     public abstract class Document
     {
         [JsonProperty("id")]
-        public Guid Id { get; set; }
-
-        [JsonProperty("metadata")]
-        public DocumentMetadata Metadata { get; set; }
+        public virtual Guid Id { get; protected set; }
 
         [JsonIgnore]
-        public string ETag { get; set; }
+        public virtual string ETag { get; protected set; }
 
         [JsonProperty("_etag")]
         private string ReadOnlyETag { set => ETag = value; }
+
+        [JsonProperty("metadata")]
+        public virtual DocumentMetadata Metadata { get; protected set;}
 
         protected Document(short schemaVersion, string schemaType)
         {

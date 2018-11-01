@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Types
 {
-    public class ProviderPermissionRequest
+    public class PermissionRequest
     {
         public long EmployerAccountLegalEntityId { get; set; }
         public long Ukprn { get; set; }

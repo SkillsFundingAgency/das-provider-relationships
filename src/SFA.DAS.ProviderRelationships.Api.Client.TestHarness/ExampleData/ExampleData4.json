@@ -1,12 +1,14 @@
 ﻿{
-    "ukprn": 100025,
-    "employerAccountId": 1236,
-    "employerName": "employer name 1236",
-    "employerAccountLegalEntityPublicHashedId": "hashedIdB",
-    "employerAccountLegalEntityName": "nameB",
+    "employerAccountId": 4,
+    "employerAccountPublicHashedId": "AAA444",
+    "employerAccountName": "employer name 4",
+    "employerAccountLegalEntityId": 4,
+    "employerAccountLegalEntityPublicHashedId": "ALE444",
+    "employerAccountLegalEntityName": "legal entity name ALE444",
+    "ukprn": 22222222,
     "operations": [0],
     "metadata": {
         "schemaVersion": 1,
-        "schemaType": "ProviderPermission"
+        "schemaType": "permission"
     }
 }

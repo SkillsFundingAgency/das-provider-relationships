@@ -16,17 +16,17 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             _mediator = mediator;
         }
 
-        public Task<ProviderRelationshipsResponse> GetRelationshipsWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default)
+        public Task<RelationshipsResponse> GetRelationshipsWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> HasPermission(ProviderPermissionRequest request, CancellationToken cancellationToken = default)
+        public Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> HasRelationshipWithPermission(ProviderRelationshipsRequest request, CancellationToken cancellationToken = default) =>
+        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default) =>
             _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
     }
 }

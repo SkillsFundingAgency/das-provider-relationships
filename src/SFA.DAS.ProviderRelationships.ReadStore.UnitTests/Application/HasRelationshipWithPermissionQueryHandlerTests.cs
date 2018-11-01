@@ -30,22 +30,22 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
     {
         internal HasRelationshipWithPermissionQuery HasRelationshipWithPermissionQuery { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        public IReadOnlyDocumentRepository<ProviderPermission> DocumentReadOnlyRepository { get; set; }
-        public List<ProviderPermission> ProviderPermissions { get; set; }
+        public IReadOnlyDocumentRepository<Permission> DocumentReadOnlyRepository { get; set; }
+        public List<Permission> Permissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
         {
-            ProviderPermissions = new List<ProviderPermission>
+            Permissions = new List<Permission>
             {
-                new ProviderPermission { Ukprn = 1, Operations = new List<Operation> { Operation.CreateCohort } },
-                new ProviderPermission { Ukprn = 1, Operations = new List<Operation>() },
-                new ProviderPermission { Ukprn = 2, Operations = new List<Operation> { Operation.CreateCohort } },
-                new ProviderPermission { Ukprn = 2, Operations = new List<Operation> { Operation.CreateCohort } },
-                new ProviderPermission { Ukprn = 2, Operations = new List<Operation>() },
-                new ProviderPermission { Ukprn = 3, Operations = new List<Operation>() }
+                new PermissionBuilder().WithUkprn(1).WithOperation(Operation.CreateCohort).Build(),
+                new PermissionBuilder().WithUkprn(1).Build(),
+                new PermissionBuilder().WithUkprn(2).WithOperation(Operation.CreateCohort).Build(),
+                new PermissionBuilder().WithUkprn(2).WithOperation(Operation.CreateCohort).Build(),
+                new PermissionBuilder().WithUkprn(2).Build(),
+                new PermissionBuilder().WithUkprn(3).Build(),
             };
             
-            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<ProviderPermission>(ProviderPermissions, null);
+            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<Permission>(Permissions, null);
             Handler = new HasRelationshipWithPermissionQueryHandler(DocumentReadOnlyRepository);
         }
 

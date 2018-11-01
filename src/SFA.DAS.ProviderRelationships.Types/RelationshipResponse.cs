@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Types
 {
-    public class ProviderRelationshipResponse
+    public class RelationshipResponse
     {
         public long EmployerAccountId { get; set; }
         public string EmployerAccountPublicHashedId { get; set; }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types;
@@ -29,26 +30,26 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
 
             //var rep = ioc.GetInstance<IReadOnlyDocumentRepository<ProviderPermissions>>();
             var apiClient = ioc.GetInstance<IProviderRelationshipsApiClient>();
-            var result = await apiClient.HasRelationshipWithPermission(new ProviderRelationshipsRequest { Ukprn = 100025, Operation = Operation.CreateCohort });
+            var result = await apiClient.HasRelationshipWithPermission(new RelationshipsRequest { Ukprn = 100025, Operation = Operation.CreateCohort });
 
             if (result == true)
             {
                 Console.WriteLine("Yes");
             }
 
-            var rep = ioc.GetInstance<IReadOnlyDocumentRepository<ProviderPermission>>();
+            var rep = ioc.GetInstance<IReadOnlyDocumentRepository<Permission>>();
             try
             {
 
                 var q = rep.CreateQuery();
-                var wrapper = q.Where(m => m.Ukprn == 100024 && m.Metadata.SchemaType == "ProviderPermission").AsDocumentQueryWrapper();
+                var wrapper = q.Where(m => m.Ukprn == 100024 && m.Metadata.SchemaType == "Permission").AsDocumentQueryWrapper();
                 var docs = await wrapper.ExecuteNextAsync(CancellationToken.None);
                 docs = docs.Where(m => m.Operations != null && m.Operations.Any(x => x == Operation.CreateCohort));
                 var items = docs.ToList();
 
 
                 //var q = rep.CreateQuery();
-                //var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100024 && m.Metadata.SchemaType == "ProviderPermission"), CancellationToken.None);
+                //var docs = await rep.ExecuteQuery(q.Where(m => m.Ukprn == 100024 && m.Metadata.SchemaType == "Permission"), CancellationToken.None);
                 //docs = docs.Where(m=>m.GrantPermissions != null && m.GrantPermissions.Any(x=>x?.Permission == Operation.CreateCohort));
                 //var items = docs.ToList();
 
@@ -95,10 +96,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                 MaxRetryAttemptsOnThrottledRequests = 3,
                 MaxRetryWaitTimeInSeconds = 2
             });
-            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>()
-                .Is("provider-relationships");
-            For(typeof(IReadOnlyDocumentRepository<>)).Use(typeof(ReadOnlyDocumentRepository<>)).Ctor<string>()
-                .Is("provider-relationships");
+            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>().Is("permissions");
+            For(typeof(IReadOnlyDocumentRepository<>)).Use(typeof(ReadOnlyDocumentRepository<>)).Ctor<string>().Is("permissions");
 
         }
     }
