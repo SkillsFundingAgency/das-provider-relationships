@@ -1,7 +1,6 @@
-﻿using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
-using StructureMap;
+﻿using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class DocumentRegistry : Registry
     {

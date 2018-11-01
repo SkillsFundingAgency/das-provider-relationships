@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+﻿namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class CosmosDbConfiguration : IDocumentConfiguration
     {

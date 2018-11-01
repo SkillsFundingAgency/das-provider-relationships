@@ -1,6 +1,4 @@
 ﻿using SFA.DAS.ProviderRelationships.Document.Repository;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
-using SFA.DAS.ProviderRelationships.Document.Repository.DependencyResolution;
 using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using StructureMap;
 

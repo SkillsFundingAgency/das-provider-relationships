@@ -2,7 +2,7 @@
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class CosmosClientFactory : IDocumentClientFactory
     {

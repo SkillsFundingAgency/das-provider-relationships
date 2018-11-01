@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     internal class FakeCosmosQueryWrapper<T> : IDocumentQueryWrapper<T>
     {

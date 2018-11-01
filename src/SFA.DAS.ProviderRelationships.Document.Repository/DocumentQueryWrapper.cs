@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class DocumentQueryWrapper<T> : IDocumentQueryWrapper<T>
     {

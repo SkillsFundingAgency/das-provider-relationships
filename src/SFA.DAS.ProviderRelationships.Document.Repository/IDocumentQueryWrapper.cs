@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public interface IDocumentQueryWrapper<T> : IDisposable
     {

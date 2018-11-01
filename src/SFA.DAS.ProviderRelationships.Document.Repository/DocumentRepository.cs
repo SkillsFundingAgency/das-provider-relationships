@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {

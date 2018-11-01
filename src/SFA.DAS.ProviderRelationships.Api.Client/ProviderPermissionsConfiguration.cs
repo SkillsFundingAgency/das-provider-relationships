@@ -1,5 +1,4 @@
 ﻿using SFA.DAS.ProviderRelationships.Document.Repository;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {

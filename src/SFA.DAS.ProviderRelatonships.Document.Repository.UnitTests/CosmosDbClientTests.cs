@@ -10,10 +10,9 @@ using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Document.Repository;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests.Tests
+namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
 {
     [TestFixture]
     [Parallelizable]

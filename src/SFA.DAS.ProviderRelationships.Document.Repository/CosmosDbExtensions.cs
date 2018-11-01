@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Runtime.CompilerServices;
 using Microsoft.Azure.Documents.Linq;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb
+namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public static class CosmosDbExtensions
     {

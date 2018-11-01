@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
-using SFA.DAS.ProviderRelationships.Document.Repository.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
