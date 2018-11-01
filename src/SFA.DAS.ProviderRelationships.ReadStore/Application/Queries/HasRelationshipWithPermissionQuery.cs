@@ -6,12 +6,12 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
     internal class HasRelationshipWithPermissionQuery : IRequest<bool>
     {
         public long Ukprn { get; }
-        public Operation Permission { get; }
+        public Operation Operation { get; }
 
-        public HasRelationshipWithPermissionQuery(long ukprn, Operation permission)
+        public HasRelationshipWithPermissionQuery(long ukprn, Operation operation)
         {
             Ukprn = ukprn;
-            Permission = permission;
+            Operation = operation;
         }
     }
 }

@@ -13,12 +13,13 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     internal class CosmosDbClient<TEntity> : IDocumentDbClient<TEntity> where TEntity : class
     {
+        private Uri DocumentCollectionUri(string collectionName) => UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, collectionName);
+        private Uri DocumentUri(string collectionName, string id) => UriFactory.CreateDocumentUri(_configuration.DatabaseName, collectionName, id);
+        
         private readonly IDocumentClient _dbClient;
         private readonly IDocumentConfiguration _configuration;
 
-        public CosmosDbClient(
-            IDocumentClientFactory dbClientFactory,
-            IDocumentConfiguration configuration)
+        public CosmosDbClient(IDocumentClientFactory dbClientFactory, IDocumentConfiguration configuration)
         {
             _dbClient = dbClientFactory.Create(configuration);
             _configuration = configuration;
@@ -43,7 +44,12 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 
         public IQueryable<TEntity> CreateQuery(string collectionName)
         {
-            var defaultFeedOptions = new FeedOptions {MaxItemCount = -1, EnableCrossPartitionQuery = false};
+            var defaultFeedOptions = new FeedOptions
+            {
+                MaxItemCount = -1,
+                EnableCrossPartitionQuery = false
+            };
+            
             return CreateQuery(collectionName, defaultFeedOptions);
         }
 
@@ -51,18 +57,5 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         {
             return _dbClient.CreateDocumentQuery<TEntity>(DocumentCollectionUri(collectionName), feedOptions);
         }
-
-        public IDocumentQuery<TEntity> ConvertToDocumentQuery(IQueryable<TEntity> query) => query.AsDocumentQuery();
-
-        public async Task<IEnumerable<TEntity>> GetEntities(IDocumentQuery<TEntity> docQuery, CancellationToken cancellationToken)
-        {
-            return await docQuery.ExecuteNextAsync<TEntity>(cancellationToken);
-        }
-
-        protected Uri DocumentCollectionUri(string collectionName) =>
-            UriFactory.CreateDocumentCollectionUri(_configuration.DatabaseName, collectionName);
-
-        protected Uri DocumentUri(string collectionName, string id) =>
-            UriFactory.CreateDocumentUri(_configuration.DatabaseName, collectionName, id);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ProviderRelationships.Document.Repository;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client
+namespace SFA.DAS.ProviderRelationships.Api.Client.Configuration
 {
     public class ProviderPermissionsConfiguration
     {

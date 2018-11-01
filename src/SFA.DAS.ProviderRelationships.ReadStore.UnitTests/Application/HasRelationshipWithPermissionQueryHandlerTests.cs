@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Document.Repository;
-using SFA.DAS.ProviderRelationships.ReadStore.Application;
+using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Testing;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
@@ -28,9 +30,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
 
     public class HasRelationshipWithPermissionQueryHandlerTestsFixture
     {
-        internal HasRelationshipWithPermissionQuery HasRelationshipWithPermissionQuery { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        public IReadOnlyDocumentRepository<Permission> DocumentReadOnlyRepository { get; set; }
+        public Mock<IReadOnlyDocumentRepository<Permission>> ReadOnlyDocumentRepository { get; set; }
+        public IOrderedQueryable<Permission> DocumentQuery { get; set; }
         public List<Permission> Permissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
@@ -44,9 +46,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                 new PermissionBuilder().WithUkprn(2).Build(),
                 new PermissionBuilder().WithUkprn(3).Build(),
             };
-            
-            DocumentReadOnlyRepository = new FakeReadOnlyDocumentRepository<Permission>(Permissions, null);
-            Handler = new HasRelationshipWithPermissionQueryHandler(DocumentReadOnlyRepository);
+
+            ReadOnlyDocumentRepository = new Mock<IReadOnlyDocumentRepository<Permission>>();
+            DocumentQuery = new DocumentQueryBuilder<Permission>().WithDocuments(Permissions).Build();
+
+            ReadOnlyDocumentRepository.Setup(r => r.CreateQuery()).Returns(DocumentQuery);
+
+            Handler = new HasRelationshipWithPermissionQueryHandler(ReadOnlyDocumentRepository.Object);
         }
 
         public Task<bool> Handle(long ukprn)

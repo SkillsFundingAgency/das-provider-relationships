@@ -9,8 +9,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public class ReadOnlyDocumentRepository<TEntity> : IReadOnlyDocumentRepository<TEntity> where TEntity : class
     {
-        protected readonly IDocumentDbClient<TEntity> DbClient;
-        protected readonly string Collection;
+        protected IDocumentDbClient<TEntity> DbClient { get; }
+        protected string Collection { get; }
 
         public ReadOnlyDocumentRepository(IDocumentDbClient<TEntity> dbClient, string collection)
         {
@@ -32,17 +32,5 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         {
             return DbClient.CreateQuery(Collection, options);
         }
-
-        //public async Task<IEnumerable<TEntity>> ExecuteQuery(IQueryable<TEntity> query, CancellationToken cancellationToken)
-        //{
-        //    var docQuery = DbClient.ConvertToDocumentQuery(query);
-
-        //    var results = new List<TEntity>();
-        //    while (docQuery.HasMoreResults)
-        //    {
-        //        results.AddRange(await DbClient.GetEntities(docQuery, cancellationToken));
-        //    }
-        //    return results;
-        //}
     }
 }

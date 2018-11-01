@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
     public class CosmosDbClientTests : FluentTest<CosmosDbClientTestsFixture>
     {
         [Test]
-        public Task CosmosDbClient_WhenGettingASingleDocmentWhichExists_ThenShouldReturnObject()
+        public Task CosmosDbClient_WhenGettingASingleDocumentWhichExists_ThenShouldReturnObject()
         {
             return RunAsync(
                 f => f.ArrangeDocumentClientToReturnASingleDocument(),
@@ -28,9 +28,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             );
         }
 
-        //[Ignore("Creatng the exception DocumentClientException via reflection requires System.Net.Http 4.1.0 and fails")]
         [Test]
-        public Task CosmosDbClient_WhenGettingASingleDocmentWhichDoesNotExists_ThenShouldReturnNull()
+        public Task CosmosDbClient_WhenGettingASingleDocumentWhichDoesNotExists_ThenShouldReturnNull()
         {
             return RunAsync(
                 f => f.ArrangeDocumentClientToThrowNotFoundException(),
