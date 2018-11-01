@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class CosmosDocument
+    public class Document
     {
-        public CosmosDocument()
+        public Document()
         {
         }
         
-        public CosmosDocument(short? schemaVersion, string schemaType)
+        public Document(short? schemaVersion, string schemaType)
         {
-            MetaData = new CosmosMetaData
+            MetaData = new DocumentMetaData
             {
                 SchemaVersion = schemaVersion,
                 SchemaType = schemaType
@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public Guid Id { get; set; }
 
         [JsonProperty("metaData")]
-        public CosmosMetaData MetaData { get; set; }
+        public DocumentMetaData MetaData { get; set; }
 
         [JsonIgnore]
         public string ETag { get; set; }

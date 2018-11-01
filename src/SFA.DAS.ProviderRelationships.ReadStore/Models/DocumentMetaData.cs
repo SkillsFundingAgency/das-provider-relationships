@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class CosmosMetaData
+    public class DocumentMetaData
     {
         [JsonProperty("schemaVersion")]
         public short? SchemaVersion { get; set; }
