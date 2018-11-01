@@ -14,13 +14,13 @@ using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class StartupEndpoint : IStartupTask
+    public class EndpointStartup : IStartup
     {
         private readonly IContainer _container;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public StartupEndpoint(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public EndpointStartup(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;

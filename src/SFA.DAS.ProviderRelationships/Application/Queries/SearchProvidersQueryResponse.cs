@@ -2,6 +2,13 @@
 {
     public class SearchProvidersQueryResponse
     {
-        public int Ukprn { get; set; }
+        public long Ukprn { get; }
+        public bool ProviderExists { get; }
+
+        public SearchProvidersQueryResponse(long ukprn, bool providerExists)
+        {
+            Ukprn = ukprn;
+            ProviderExists = providerExists;
+        }
     }
 }

@@ -1,8 +1,8 @@
-﻿CREATE TABLE [dbo].[Accounts]               -- Employer_Account Data Type
+﻿CREATE TABLE [dbo].[Accounts]
 (                                           
-    [Id] BIGINT NOT NULL,                   -- bigint
-    [Name] NVARCHAR(100) NOT NULL,          -- nvarchar(100)
+    [Id] BIGINT NOT NULL,
+    [Name] NVARCHAR(100) NOT NULL,
     [Created] DATETIME2 NOT NULL,
     [Updated] DATETIME2 NULL,
-    CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([Id] ASC)
 )

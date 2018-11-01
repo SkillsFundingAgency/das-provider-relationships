@@ -8,14 +8,14 @@ using Z.EntityFramework.Plus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
-    public class EventHandlerTestsFixture<TEvent> where TEvent : Event, new()
+    public abstract class EventHandlerTestsFixture<TEvent> where TEvent : Event
     {
         public DateTime Now { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
-        public TEvent Message { get; set; }
         public IHandleMessages<TEvent> Handler { get; set; }
+        public TEvent Message { get; set; }
 
-        public EventHandlerTestsFixture(Func<Lazy<ProviderRelationshipsDbContext>, IHandleMessages<TEvent>> createEventHandler)
+        protected EventHandlerTestsFixture(Func<Lazy<ProviderRelationshipsDbContext>, IHandleMessages<TEvent>> createEventHandler)
         {
             Now = DateTime.UtcNow;
 
@@ -26,8 +26,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             
             BatchDeleteManager.InMemoryDbContextFactory = () => Db;
             
-            var lazyDbContext = new Lazy<ProviderRelationshipsDbContext>(() => Db);
-            Handler = createEventHandler(lazyDbContext);
+            var lazyDb = new Lazy<ProviderRelationshipsDbContext>(() => Db);
+            
+            Handler = createEventHandler(lazyDb);
         }
 
         public virtual async Task Handle()

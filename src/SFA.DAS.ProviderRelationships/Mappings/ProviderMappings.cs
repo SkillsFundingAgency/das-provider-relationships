@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Mappings
 {
@@ -8,8 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public ProviderMappings()
         {
-            CreateMap<Provider, ProviderDto>()
-                .ForMember(d => d.Name, o => o.MapFrom(s => s.ProviderName));
+            CreateMap<Provider, ProviderDto>();
         }
     }
 }

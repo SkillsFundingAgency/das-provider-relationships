@@ -2,7 +2,7 @@
 {
     public class ProviderDto
     {
-        public int Ukprn { get; set; }
+        public long Ukprn { get; set; }
         public string Name { get; set; }
     }
 }

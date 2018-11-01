@@ -29,10 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .ProjectTo<HealthCheckDto>(_configurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            return new GetHealthCheckQueryResponse
-            {
-                HealthCheck = healthCheck
-            };
+            return new GetHealthCheckQueryResponse(healthCheck);
         }
     }
 }

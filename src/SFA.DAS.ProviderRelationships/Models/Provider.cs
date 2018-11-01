@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -12,14 +10,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
         public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
+        public virtual ICollection<AccountProvider> AccountProviders { get; protected set; } = new List<AccountProvider>();
         
-        public Provider(long ukprn, string name, DateTime created)
-        {
-            Ukprn = ukprn;
-            Name = name;
-            Created = created;
-        }
-
         protected Provider()
         {
         }

@@ -73,21 +73,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new GrantedPermissionEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                Type = (int)PermissionType.CreateCohort,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
-
-            await _messageSession.Publish(new RevokedPermissionEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                Type = (int)PermissionType.CreateCohort,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
+            await _messageSession.Publish(new GrantedPermissionEvent(1, accountLegalEntityId, 0, (int)PermissionType.CreateCohort, "", userRef, DateTime.UtcNow));
+            await _messageSession.Publish(new RevokedPermissionEvent(1, accountLegalEntityId, 0, (int)PermissionType.CreateCohort, "", userRef, DateTime.UtcNow));
             
             await _messageSession.Publish(new RemovedLegalEntityEvent
             {

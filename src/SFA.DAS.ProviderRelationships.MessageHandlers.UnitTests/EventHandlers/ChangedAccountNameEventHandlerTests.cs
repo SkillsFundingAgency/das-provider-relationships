@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public Account Account { get; set; }
 
         public ChangedAccountNameEventHandlerTestsFixture()
-            : base(ldb => new ChangedAccountNameEventHandler(ldb))
+            : base(db => new ChangedAccountNameEventHandler(db))
         {
             Message = new ChangedAccountNameEvent
             {

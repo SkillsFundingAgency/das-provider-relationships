@@ -23,7 +23,7 @@
         <![endif]-->
         <link href="/Content/css/application.css" rel="stylesheet" />
     </head>
-    <body class="govuk-template__body ">
+    <body class="govuk-template__body">
         <script>
             document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
         </script>
@@ -85,7 +85,7 @@
             <div class="header-organisation" role="navigation">
                 <nav class="header-inner">
                     <ul role="menubar" id="global-nav-links">
-                        <li><a href="@Url.EmployerPortalAction()" class="selected" role="menuitem">Home</a></li>
+                        <li><a href="@Url.EmployerPortalAccountAction("teams")" class="selected" role="menuitem">Home</a></li>
                         <li><a href="@Url.EmployerPortalAccountAction("finance")" role="menuitem">Finance</a></li>
                         @*<li><a href="@Url.EmployerRecruitAccountAction()" role="menuitem">Recruit</a></li>*@
                         <li><a href="@Url.EmployerCommitmentsAccountAction("apprentices/home")" role="menuitem">Apprentices</a></li>

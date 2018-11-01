@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             return RunAsync(f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.AddOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
-                    u.Ref == f.AddOrUpdateUserCommand.Ref.Value &&
+                    u.Ref == f.AddOrUpdateUserCommand.Ref &&
                     u.Email == f.AddOrUpdateUserCommand.Email &&
                     u.FirstName == f.AddOrUpdateUserCommand.FirstName &&
                     u.LastName == f.AddOrUpdateUserCommand.LastName &&
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             return RunAsync(f => f.SetUser().SetCommandWithChangedProperties(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.AddOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
-                    u.Ref == f.AddOrUpdateUserCommand.Ref.Value &&
+                    u.Ref == f.AddOrUpdateUserCommand.Ref &&
                     u.Email == f.AddOrUpdateUserCommand.Email &&
                     u.FirstName == f.AddOrUpdateUserCommand.FirstName &&
                     u.LastName == f.AddOrUpdateUserCommand.LastName &&
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             return RunAsync(f => f.SetUser(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.AddOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
-                    u.Ref == f.AddOrUpdateUserCommand.Ref.Value &&
+                    u.Ref == f.AddOrUpdateUserCommand.Ref &&
                     u.Email == f.AddOrUpdateUserCommand.Email &&
                     u.FirstName == f.AddOrUpdateUserCommand.FirstName &&
                     u.LastName == f.AddOrUpdateUserCommand.LastName &&
@@ -67,14 +67,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddOrUpdateUserCommandHandlerTestsFixture()
         {
-            AddOrUpdateUserCommand = new AddOrUpdateUserCommand
-            {
-                Ref = Guid.NewGuid(),
-                Email = "foo@bar.com",
-                FirstName = "Foo",
-                LastName = "Bar"
-            };
-            
+            AddOrUpdateUserCommand = new AddOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Handler = new AddOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
             Now = DateTime.UtcNow;
@@ -89,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AddOrUpdateUserCommandHandlerTestsFixture SetUser()
         {
             User = new UserBuilder()
-                .WithRef(AddOrUpdateUserCommand.Ref.Value)
+                .WithRef(AddOrUpdateUserCommand.Ref)
                 .WithEmail(AddOrUpdateUserCommand.Email)
                 .WithFirstName(AddOrUpdateUserCommand.FirstName)
                 .WithLastName(AddOrUpdateUserCommand.LastName)
@@ -104,13 +97,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddOrUpdateUserCommandHandlerTestsFixture SetCommandWithChangedProperties()
         {
-            AddOrUpdateUserCommand = new AddOrUpdateUserCommand
-            {
-                Ref = User.Ref,
-                Email = "_" + User.Email,
-                FirstName = "_" + User.FirstName,
-                LastName = "_" + User.LastName
-            };
+            AddOrUpdateUserCommand = new AddOrUpdateUserCommand(User.Ref, "_" + User.Email, "_" + User.FirstName, "_" + User.LastName);
             
             return this;
         }

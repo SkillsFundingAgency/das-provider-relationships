@@ -55,25 +55,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             }
             
             var grantedEventTasks = permissionsByGranted[true].Select(p => _messageSession.Publish(
-                new GrantedPermissionEvent
-                {
-                    AccountLegalEntityId = request.AccountLegalEntityId,
-                    Ukprn = request.Ukprn,
-                    Type = (short)p.Type,
-                    UserRef = request.UserRef,
-                    UserName = request.UserName,
-                    Created = DateTime.UtcNow
-                }));
+                new GrantedPermissionEvent(1, request.AccountLegalEntityId, request.Ukprn, (short)p.Type, request.UserName, request.UserRef, DateTime.UtcNow)));
 
-            var revokedEventTasks = permissionsByGranted[false].Select(p => _messageSession.Publish(new RevokedPermissionEvent
-            {
-                AccountLegalEntityId = request.AccountLegalEntityId,
-                Ukprn = request.Ukprn,
-                Type = (short)p.Type,
-                UserRef = request.UserRef,
-                UserName = request.UserName,
-                Created = DateTime.UtcNow
-            }));
+            var revokedEventTasks = permissionsByGranted[false].Select(p => _messageSession.Publish(
+                new RevokedPermissionEvent(1, request.AccountLegalEntityId, request.Ukprn, (short)p.Type, request.UserName, request.UserRef, DateTime.UtcNow)));
 
             await Task.WhenAll(grantedEventTasks.Concat(revokedEventTasks));
             //Parallel.ForEach()?

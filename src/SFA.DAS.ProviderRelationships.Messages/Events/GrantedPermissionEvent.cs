@@ -5,11 +5,22 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
     public class GrantedPermissionEvent : Event
     {
-        public long Id { get; set; }
-        public long AccountLegalEntityId { get; set; }
-        public long Ukprn { get; set; }
-        public short Type { get; set; }
-        public string UserName { get; set; }
-        public Guid UserRef { get; set; }
+        public long Id { get; }
+        public long AccountLegalEntityId { get; }
+        public long Ukprn { get; }
+        public short Type { get; }
+        public string UserName { get; }
+        public Guid UserRef { get; }
+
+        public GrantedPermissionEvent(long id, long accountLegalEntityId, long ukprn, short type, string userName, Guid userRef, DateTime created)
+        {
+            Id = id;
+            AccountLegalEntityId = accountLegalEntityId;
+            Ukprn = ukprn;
+            Type = type;
+            UserName = userName;
+            UserRef = userRef;
+            Created = created;
+        }
     }
 }

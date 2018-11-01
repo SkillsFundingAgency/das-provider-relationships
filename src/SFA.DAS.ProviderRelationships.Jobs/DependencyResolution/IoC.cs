@@ -9,9 +9,10 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
         {
             return new Container(c =>
             {
+                c.AddRegistry<ApprenticeshipInfoServiceApiConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DataRegistry>();
+                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }
