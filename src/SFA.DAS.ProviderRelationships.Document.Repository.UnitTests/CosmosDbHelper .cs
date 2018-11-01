@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using Microsoft.Azure.Documents;
 
-namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
+namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 {
     public static class CosmosDbHelper
     {

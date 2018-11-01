@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests")]
+[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Document.Repository.UnitTests")]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFA.DAS.ProviderRelatonships.Document.Repository.UnitTests
+namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 {
     public class Dummy
     {
