@@ -3,12 +3,13 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class BaseCosmosDocument
+    public class CosmosDocument
     {
-        public BaseCosmosDocument()
+        public CosmosDocument()
         {
         }
-        public BaseCosmosDocument(short? schemaVersion, string schemaType)
+        
+        public CosmosDocument(short? schemaVersion, string schemaType)
         {
             MetaData = new CosmosMetaData
             {

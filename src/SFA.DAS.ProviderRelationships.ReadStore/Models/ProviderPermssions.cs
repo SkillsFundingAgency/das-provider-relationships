@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class ProviderPermissions : BaseCosmosDocument
+    public class ProviderPermissions : CosmosDocument
     {
         public ProviderPermissions() : base(1, "ProviderPermissions")
         {
