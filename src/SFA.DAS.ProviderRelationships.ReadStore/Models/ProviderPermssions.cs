@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     public class ProviderPermissions : Document
     {
         public ProviderPermissions() : base(1, "ProviderPermissions")
-        {
+        {   
         }
 
         [JsonProperty("ukprn")]
