@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.Home.TrainingProviderPermissionsViewModel
+
+@{
     ViewBag.Title = "Training provider permissions";
 }
 
@@ -18,5 +20,13 @@
         <h1 class="govuk-heading-xl">Training provider permissions</h1>
         <p class="govuk-body">Set permissions for what you want training providers to do on your behalf. You can select from those you've previously worked with, or find a new one.</p>
         <a class="govuk-button govuk-button--start" href="@Url.Action("Search", "Providers")" role="button">Add a new training provider</a>
+        <h2>Your training providers</h2>
+        @if (!Model.AccountProviders.Any())
+        {
+            <p>No training provider permissions set</p>
+        }
+        else
+        {
+        }
     </div>
 </div>

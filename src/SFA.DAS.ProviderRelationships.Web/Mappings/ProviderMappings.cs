@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 
 namespace SFA.DAS.ProviderRelationships.Web.Mappings
 {
@@ -19,6 +19,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
+
+            //required?
+            //CreateMap<GetAddedProvidersQueryResponse, TrainingProviderPermissionsViewModel>();
         }
     }
 }

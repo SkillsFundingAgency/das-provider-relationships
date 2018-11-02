@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Dtos;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels
+namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
     public class AddProviderViewModel : IAuthorizationContextModel
     {

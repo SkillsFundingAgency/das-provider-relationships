@@ -2,7 +2,7 @@
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels
+namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
     public class SearchProvidersViewModel : IAuthorizationContextModel 
     {

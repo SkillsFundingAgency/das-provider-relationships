@@ -12,7 +12,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels
+namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
     public class AlreadyAddedProviderRouteValues : IAuthorizationContextModel
     {

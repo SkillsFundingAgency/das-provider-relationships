@@ -1,14 +1,28 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
+using AutoMapper;
+using MediatR;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Home;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerRoles.Any)]
     public class HomeController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+
+        public HomeController(IMediator mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
+
         [Route]
         public ActionResult Local()
         {
@@ -20,10 +34,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return Redirect(Url.EmployerPortalAction());
         }
         
+        //todo: rename TrainingProviderPermissions prefix?
         [Route("accounts/{accountHashedId}")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index(TrainingProviderPermissionsRouteValues routeValues)
         {
-            return View();
+            var query = new GetAddedProvidersQuery(routeValues.AccountId.Value);
+            var response = await _mediator.Send(query);
+
+            var model = _mapper.Map<TrainingProviderPermissionsViewModel>(response);
+            
+            return View(model);
         }
     }
 }
