@@ -27,6 +27,25 @@
         }
         else
         {
+            <table class="govuk-table govuk-!-font-size-16">
+                <thead>
+                    <tr>
+                        <th class="govuk-table__header">Training providers</th>
+                        <th class="govuk-table__header">Permissions</th>
+                        <th class="govuk-table__header"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var accountProvider in Model.AccountProviders)
+                {
+                    <tr>
+                        <td class="govuk-table__cell">@accountProvider.Provider.Name</td>
+                        <td class="govuk-table__cell">No permissions set</td>
+                        <td class="govuk-table__cell"><a href="@Url.Action("Index", "Permissions")">Set permissions</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         }
     </div>
 </div>
