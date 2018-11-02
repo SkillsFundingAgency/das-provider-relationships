@@ -131,9 +131,9 @@ nav ul {
     font-size: 14px
 }
 
-    .header-organisation ul {
-        margin: 0 -15px
-    }
+.header-organisation ul {
+    margin: 0 -15px
+}
 
 @media(min-width: 641px) {
     .header-organisation ul li {
@@ -155,11 +155,27 @@ nav ul {
     }
 }
 
-.header-organisation ul li a {
-    display: block;
-    padding: 12px 15px 10px;
-    position: relative
-}
+    .header-organisation ul li a {
+        display: block;
+        padding: 12px 15px 10px;
+        position: relative
+    }
+
+    .header-organisation ul li a:link {
+        color: #005ea5;
+    }
+
+    .header-organisation ul li a:visited {
+        color: #4c2c92;
+    }
+
+    .header-organisation ul li a:hover {
+        color: #2e8aca;
+    }
+
+    .header-organisation ul li a:active {
+        color: #2e8aca;
+    }
 
     .header-organisation ul li a.selected {
         color: #0b0c0c;
@@ -167,17 +183,17 @@ nav ul {
         text-decoration: none
     }
 
-        .header-organisation ul li a.selected:after {
-            background: #005ea5;
-            bottom: -1px;
-            content: "";
-            display: block;
-            left: 0;
-            position: absolute;
-            top: 0;
-            width: 5px;
-            z-index: 0
-        }
+    .header-organisation ul li a.selected:after {
+        background: #005ea5;
+        bottom: -1px;
+        content: "";
+        display: block;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 5px;
+        z-index: 0
+    }
 
 @media(min-width: 769px) {
     .header-organisation ul li a.selected:after {
@@ -450,6 +466,11 @@ li.menu-link.sub-menu-open ul {
 .js-enabled #user-nav .js-hidden {
     display: none;
     visibility: hidden;
+}
+
+/*** Additional error style for inputs ***/
+.input-validation-error {
+    border: 4px solid #b10e1e
 }
 
 /*** Healthcheck Styles ***/
