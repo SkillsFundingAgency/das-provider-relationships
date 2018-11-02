@@ -12,9 +12,9 @@
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">Confirm training provider</h1>
         <p class="govuk-body govuk-!-margin-bottom-7">UK Provider Reference Number <span class="govuk-!-font-weight-bold">'@Model.Provider.Ukprn'</span> matches:</p>
-        <h2 class="govuk-heading-xl">
+        <h2 class="govuk-heading-l">
             @Model.Provider.Name
-            <span class="govuk-caption-l">UKPRN @Model.Provider.Ukprn</span>
+            <span class="govuk-caption-m govuk-!-font-weight-bold">UKPRN @Model.Provider.Ukprn</span>
         </h2>
         @using (Html.BeginForm())
         {
