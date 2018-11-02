@@ -5,6 +5,7 @@
     "employerAccountLegalEntityId": 2,
     "employerAccountLegalEntityPublicHashedId": "ALE222",
     "employerAccountLegalEntityName": "legal entity name ALE222",
+    "employerAccountProviderId": 2,
     "ukprn": 11111111,
     "operations": [0],
     "metadata": {

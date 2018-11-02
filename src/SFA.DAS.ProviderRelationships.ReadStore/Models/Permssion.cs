@@ -24,13 +24,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("employerAccountLegalEntityName")]
         public virtual string EmployerAccountLegalEntityName { get; protected set; }
 
+        [JsonProperty("employerAccountProviderId")]
+        public virtual int EmployerAccountProviderId { get; protected set; }
+
         [JsonProperty("ukprn")]
         public virtual long Ukprn { get; protected set; }
 
         [JsonProperty("operations")]
         public virtual IEnumerable<Operation> Operations { get; protected set; } = new List<Operation>();
         
-        public Permission(long employerAccountId, string employerAccountPublicHashedId, string employerAccountName, long employerAccountLegalEntityId, string employerAccountLegalEntityPublicHashedId, string employerAccountLegalEntityName, long ukprn)
+        public Permission(long employerAccountId, string employerAccountPublicHashedId, string employerAccountName, long employerAccountLegalEntityId, string employerAccountLegalEntityPublicHashedId, string employerAccountLegalEntityName, int employerAccountProviderId, long ukprn)
             : this()
         {
             EmployerAccountId = employerAccountId;
@@ -39,6 +42,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             EmployerAccountLegalEntityId = employerAccountLegalEntityId;
             EmployerAccountLegalEntityPublicHashedId = employerAccountLegalEntityPublicHashedId;
             EmployerAccountLegalEntityName = employerAccountLegalEntityName;
+            EmployerAccountProviderId = employerAccountProviderId;
             Ukprn = ukprn;
         }
 
