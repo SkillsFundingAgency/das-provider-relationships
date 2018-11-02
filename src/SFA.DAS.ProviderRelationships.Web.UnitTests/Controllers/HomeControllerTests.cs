@@ -34,8 +34,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.SetEnvironment(DasEnv.AT), f => f.Index(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                //todo:
-                //r.As<ViewResult>().Model.Should().NotBeNull().And.Match<TrainingProviderPermissionsViewModel>(m => m.AccountProviders == f.GetAddedProvidersQueryResponse.AccountProviders);
+                r.As<ViewResult>().Model.As<TrainingProviderPermissionsViewModel>().Should().NotBeNull();
+                r.As<ViewResult>().Model.As<TrainingProviderPermissionsViewModel>().AccountProviders.Should().BeEquivalentTo(f.GetAddedProvidersQueryResponse.AccountProviders);
             });
         }
     }
