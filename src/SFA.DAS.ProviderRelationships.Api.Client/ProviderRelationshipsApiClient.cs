@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Api.Client.Models;
+using SFA.DAS.ProviderRelationships.Api.Client.Dtos;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
@@ -8,24 +8,31 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
-        private readonly IMediator _mediator;
+        private readonly IApiMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IMediator mediator)
+        public ProviderRelationshipsApiClient(IApiMediator mediator)
         {
             _mediator = mediator;
         }
 
-        public Task<RelationshipsResponse> GetRelationshipsWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
+        public async Task<RelationshipsResponse> GetRelationshipsWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            var result = await _mediator.Send(new GetRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken).ConfigureAwait(false);
+            
+            return new RelationshipsResponse
+            {
+                Relationships = result.Relationships
+            };
         }
 
         public Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.EmployerAccountLegalEntityId, request.Operation), cancellationToken);
         }
 
-        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default) =>
-            _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
+        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
+        {
+            return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
+        }
     }
 }

@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
-using SFA.DAS.Validation;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {

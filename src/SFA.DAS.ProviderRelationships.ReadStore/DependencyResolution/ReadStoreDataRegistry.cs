@@ -3,7 +3,7 @@ using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
 {
-    public class ReadStoreDataRegistry : Registry
+    internal class ReadStoreDataRegistry : Registry
     {
         public ReadStoreDataRegistry()
         {

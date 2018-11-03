@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SFA.DAS.ProviderRelationships.Types;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class Permission : Document
+    internal class Permission : Document
     {
         [JsonProperty("employerAccountId")]
         public virtual long EmployerAccountId { get; protected set; }

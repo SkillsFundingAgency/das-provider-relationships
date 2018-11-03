@@ -3,7 +3,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.Testing;
-using ProcessClientOutboxMessagesJob = SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs.ProcessClientOutboxMessagesJob;
+using ProcessClientOutboxMessagesJob = SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs.ProcessClientOutboxMessagesJob;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests
 {

@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Api.Client.Models;
-using SFA.DAS.ProviderRelationships.Types;
+using SFA.DAS.ProviderRelationships.Api.Client.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {

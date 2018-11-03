@@ -9,7 +9,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Jobs.TriggeredJobs;
+using SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 

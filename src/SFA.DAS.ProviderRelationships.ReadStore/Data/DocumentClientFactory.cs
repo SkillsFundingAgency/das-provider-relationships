@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
-    public class DocumentClientFactory : IDocumentClientFactory
+    internal class DocumentClientFactory : IDocumentClientFactory
     {
         private readonly DocumentClient _documentClient;
 
@@ -17,8 +17,8 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
             {
                 RetryOptions =
                 {
-                    MaxRetryAttemptsOnThrottledRequests = configuration.MaxRetryAttemptsOnThrottledRequests,
-                    MaxRetryWaitTimeInSeconds = configuration.MaxRetryWaitTimeInSeconds
+                    MaxRetryAttemptsOnThrottledRequests = 3,
+                    MaxRetryWaitTimeInSeconds = 2
                 }
             };
 

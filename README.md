@@ -42,7 +42,7 @@
 
 Execute DevInstall.ps1 as an admin to import required certificates into their appropriate store locations.
 
-##### Create deadletters queue (optional)
+##### Create Azure Service Bus dead letter queue (optional)
 
 If you intend on using your own development service bus (LearningTransport is used by default), create a queue named `deadletters`.
 

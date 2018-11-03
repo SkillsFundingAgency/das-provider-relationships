@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public abstract class Document
+    internal abstract class Document
     {
         [JsonProperty("id")]
         public virtual Guid Id { get; protected set; }

@@ -1,6 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
-
-namespace SFA.DAS.ProviderRelationships.Authentication
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public sealed class AuthenticationUrls : IAuthenticationUrls
     {

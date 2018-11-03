@@ -1,9 +1,9 @@
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
-using SFA.DAS.ProviderRelationships.Types;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class HasRelationshipWithPermissionQuery : IRequest<bool>
+    internal class HasRelationshipWithPermissionQuery : IApiRequest<bool>
     {
         public long Ukprn { get; }
         public Operation Operation { get; }

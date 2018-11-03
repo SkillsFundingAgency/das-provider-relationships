@@ -15,8 +15,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             var items = await source
                 .Where(predicate)
                 .Take(1)
+                .Select(p => 1)
                 .AsDocumentQuery()
-                .ExecuteNextAsync<T>(cancellationToken)
+                .ExecuteNextAsync<int>(cancellationToken)
                 .ConfigureAwait(false);
 
             return items.Any();

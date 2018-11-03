@@ -10,6 +10,8 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Builders;
+using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Stubs;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests

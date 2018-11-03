@@ -8,9 +8,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
     {
         public ReadStoreMediatorRegistry()
         {
-            For<IMediator>().Use<Mediator.Mediator>();
-            For<IRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
-            For<ServiceFactory>().Use<ServiceFactory>(c => c.GetInstance);
+            For<IApiMediator>().Use<ApiMediator>();
+            For<IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>>().Use<GetRelationshipWithPermissionQueryHandler>();
+            For<IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
+            For<IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
+            For<ApiServiceFactory>().Use<ApiServiceFactory>(c => c.GetInstance);
         }
     }
 }
