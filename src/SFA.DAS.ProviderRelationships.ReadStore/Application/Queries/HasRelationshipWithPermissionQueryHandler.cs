@@ -2,23 +2,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
-using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
     internal class HasRelationshipWithPermissionQueryHandler : IRequestHandler<HasRelationshipWithPermissionQuery, bool>
     {
-        private readonly IReadOnlyDocumentRepository<Permission> _repository;
+        private readonly IPermissionsRepository _permissionsRepository;
 
-        public HasRelationshipWithPermissionQueryHandler(IReadOnlyDocumentRepository<Permission> repository)
+        public HasRelationshipWithPermissionQueryHandler(IPermissionsRepository permissionsRepository)
         {
-            _repository = repository;
+            _permissionsRepository = permissionsRepository;
         }
         
         public async Task<bool> Handle(HasRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
-            var hasRelationshipWithPermission = await _repository.CreateQuery()
+            var hasRelationshipWithPermission = await _permissionsRepository.CreateQuery()
                 .AnyAsync(p => p.Ukprn == request.Ukprn && p.Operations.Contains(request.Operation), cancellationToken)
                 .ConfigureAwait(false);
 

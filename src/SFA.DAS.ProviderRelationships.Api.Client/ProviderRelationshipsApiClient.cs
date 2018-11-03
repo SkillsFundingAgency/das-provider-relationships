@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.ReadStore.Application;
+using SFA.DAS.ProviderRelationships.Api.Client.Models;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
-using SFA.DAS.ProviderRelationships.Types;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {

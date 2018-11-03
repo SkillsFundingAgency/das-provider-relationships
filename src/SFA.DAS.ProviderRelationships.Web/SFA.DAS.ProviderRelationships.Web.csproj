@@ -180,6 +180,10 @@
     <Folder Include="Content\img\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj">
+      <Project>{9e04ae68-5753-49e7-ac56-a0cf005d19d6}</Project>
+      <Name>SFA.DAS.ProviderRelationships.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>

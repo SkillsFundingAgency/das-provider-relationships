@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SFA.DAS.ProviderRelationships.Api.Client.Models;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Types;
 

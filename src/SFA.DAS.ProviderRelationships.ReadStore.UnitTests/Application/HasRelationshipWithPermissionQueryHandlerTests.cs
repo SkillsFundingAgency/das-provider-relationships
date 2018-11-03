@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Testing;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types;
@@ -31,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
     public class HasRelationshipWithPermissionQueryHandlerTestsFixture
     {
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        public Mock<IReadOnlyDocumentRepository<Permission>> ReadOnlyDocumentRepository { get; set; }
+        public Mock<IPermissionsRepository> PermissionsRepository { get; set; }
         public IOrderedQueryable<Permission> DocumentQuery { get; set; }
         public List<Permission> Permissions { get; set; }
 
@@ -47,12 +48,12 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                 new PermissionBuilder().WithUkprn(3).Build(),
             };
 
-            ReadOnlyDocumentRepository = new Mock<IReadOnlyDocumentRepository<Permission>>();
+            PermissionsRepository = new Mock<IPermissionsRepository>();
             DocumentQuery = new DocumentQueryBuilder<Permission>().WithDocuments(Permissions).Build();
 
-            ReadOnlyDocumentRepository.Setup(r => r.CreateQuery()).Returns(DocumentQuery);
+            PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
-            Handler = new HasRelationshipWithPermissionQueryHandler(ReadOnlyDocumentRepository.Object);
+            Handler = new HasRelationshipWithPermissionQueryHandler(PermissionsRepository.Object);
         }
 
         public Task<bool> Handle(long ukprn)

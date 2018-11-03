@@ -1,4 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Document.Repository;
+﻿using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution
@@ -7,17 +7,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
     {
         public DefaultRegistry()
         {
-            For<IDocumentConfiguration>().Use(new CosmosDbConfiguration
+            For<ProviderRelationshipsReadStoreConfiguration>().Use(() => new ProviderRelationshipsReadStoreConfiguration
             {
-                DatabaseName = "SFA",
                 Uri = "https://localhost:8081",
                 SecurityKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
                 MaxRetryAttemptsOnThrottledRequests = 3,
                 MaxRetryWaitTimeInSeconds = 2
             });
-            
-            For(typeof(IDocumentRepository<>)).Use(typeof(DocumentRepository<>)).Ctor<string>().Is("permissions");
-            For(typeof(IReadOnlyDocumentRepository<>)).Use(typeof(ReadOnlyDocumentRepository<>)).Ctor<string>().Is("permissions");
         }
     }
 }

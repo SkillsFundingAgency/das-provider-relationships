@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Types
+namespace SFA.DAS.ProviderRelationships.Api.Client.Models
 {
     public class RelationshipResponse
     {
