@@ -17,7 +17,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
@@ -27,6 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<MediatorRegistry>();
                 c.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
+                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }

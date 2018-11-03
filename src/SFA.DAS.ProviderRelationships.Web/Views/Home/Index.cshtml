@@ -6,7 +6,7 @@
     <div class="govuk-breadcrumbs">
         <ol class="govuk-breadcrumbs__list">
             <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="@Url.EmployerPortalAccountAction()">Home</a>
+                <a class="govuk-breadcrumbs__link" href="@Url.EmployerPortalAccountAction("teams")">Home</a>
             </li>
             <li aria-current="page" class="govuk-breadcrumbs__list-item">Training provider permissions</li>
         </ol>
@@ -14,9 +14,9 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">Training provider permissions</h1>
         <p class="govuk-body">Set permissions for what you want training providers to do on your behalf. You can select from those you've previously worked with, or find a new one.</p>
-        <a class="govuk-button govuk-button--start" href="@Url.Action("SearchProviders", "Permissions")" role="button">Add a new training provider</a>
+        <a class="govuk-button govuk-button--start" href="@Url.Action("Search", "Providers")" role="button">Add a new training provider</a>
     </div>
 </div>

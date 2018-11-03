@@ -14,7 +14,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<LoggerRegistry>();
@@ -22,6 +21,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
                 c.AddRegistry<MediatorRegistry>();
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
+                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }

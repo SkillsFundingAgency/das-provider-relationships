@@ -35,15 +35,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             });
         }
     }
-
-    //base class?
+    
     public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedLegalEntityEvent>
     {
         public const string PreviouslyUpdatedName = "Previously Updated Name";
         public AccountLegalEntity AccountLegalEntity { get; set; }
 
         public UpdatedLegalEntityEventHandlerTestsFixture()
-            : base(ldb => new UpdatedLegalEntityEventHandler(ldb))
+            : base(db => new UpdatedLegalEntityEventHandler(db))
         {
             Message = new UpdatedLegalEntityEvent
             {

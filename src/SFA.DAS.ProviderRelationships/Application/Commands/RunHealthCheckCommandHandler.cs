@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override async Task Handle(RunHealthCheckCommand request, CancellationToken cancellationToken)
         {
-            var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef.Value, cancellationToken);
+            var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var healthCheck = user.CreateHealthCheck();
 
             await healthCheck.Run(_providerApiClient.FindAllAsync);

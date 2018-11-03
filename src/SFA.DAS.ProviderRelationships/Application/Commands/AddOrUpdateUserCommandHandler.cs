@@ -17,11 +17,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(AddOrUpdateUserCommand request)
         {
-            var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref.Value);
+            var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref);
 
             if (user == null)
             {
-                _db.Value.Users.Add(new User(request.Ref.Value, request.Email, request.FirstName, request.LastName));
+                _db.Value.Users.Add(new User(request.Ref, request.Email, request.FirstName, request.LastName));
             }
             else
             {

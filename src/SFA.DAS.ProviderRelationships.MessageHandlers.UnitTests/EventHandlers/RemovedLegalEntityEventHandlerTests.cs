@@ -11,7 +11,6 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
-    //todo: seems the use of BatchDeleteManager kills the ability to run this in parallel
     [NonParallelizable]
     public class RemovedLegalEntityEventHandlerTests : FluentTest<RemovedLegalEntityEventHandlerTestsFixture>
     {
@@ -27,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountLegalEntity AccountLegalEntity { get; set; }
 
         public RemovedLegalEntityEventHandlerTestsFixture()
-            : base(ldb => new RemovedLegalEntityEventHandler(ldb))
+            : base(db => new RemovedLegalEntityEventHandler(db))
         {
             Message = new RemovedLegalEntityEvent
             {

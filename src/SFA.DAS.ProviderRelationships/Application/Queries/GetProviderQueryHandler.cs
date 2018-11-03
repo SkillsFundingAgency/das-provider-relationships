@@ -1,39 +1,35 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Dtos;
-using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.Providers.Api.Client;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderQueryResponse>
     {
-        private readonly IProviderApiClient _providerApiClient;
-        private readonly IMapper _mapper;
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly IConfigurationProvider _configurationProvider;
 
-        public GetProviderQueryHandler(IProviderApiClient providerApiClient, IMapper mapper)
+        public GetProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
         {
-            _providerApiClient = providerApiClient;
-            _mapper = mapper;
+            _db = db;
+            _configurationProvider = configurationProvider;
         }
 
         public async Task<GetProviderQueryResponse> Handle(GetProviderQuery request, CancellationToken cancellationToken)
         {
-            var providerResponse = await _providerApiClient.TryGetAsync(request.Ukprn);
+            var provider = await _db.Value.Providers
+                .Where(p => p.Ukprn == request.Ukprn)
+                .ProjectTo<ProviderDto>(_configurationProvider)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            if (providerResponse == null)
-            {
-                return null;
-            }
-
-            var provider = _mapper.Map<ProviderDto>(providerResponse);
-
-            return new GetProviderQueryResponse
-            {
-                Provider = provider
-            };
+            return provider == null ? null : new GetProviderQueryResponse(provider);
         }
     }
 }

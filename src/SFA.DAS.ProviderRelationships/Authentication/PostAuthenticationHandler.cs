@@ -18,13 +18,11 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 
         public void Handle(ClaimsIdentity claimsIdentity)
         {
-            var command = new AddOrUpdateUserCommand
-            {
-                Ref = Guid.Parse(claimsIdentity.FindFirst(DasClaimTypes.Id).Value),
-                Email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value,
-                FirstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value,
-                LastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value
-            };
+            var @ref = Guid.Parse(claimsIdentity.FindFirst(DasClaimTypes.Id).Value);
+            var email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value;
+            var firstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value;
+            var lastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value;
+            var command = new AddOrUpdateUserCommand(@ref, email, firstName, lastName);
             
             _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(command)).GetAwaiter().GetResult();
         }

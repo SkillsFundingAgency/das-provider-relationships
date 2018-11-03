@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class AddedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<AddedLegalEntityEvent>
     {
         public AddedLegalEntityEventHandlerTestsFixture()
-            : base(ldb => new AddedLegalEntityEventHandler(ldb))
+            : base(db => new AddedLegalEntityEventHandler(db))
         {
             Message = new AddedLegalEntityEvent
             {

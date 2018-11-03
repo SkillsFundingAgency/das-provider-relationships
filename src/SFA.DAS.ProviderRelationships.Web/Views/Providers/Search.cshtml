@@ -13,16 +13,16 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Search for a training provider</h1>
-        <p class="govuk-body">Add a new training provider via a UKPRN.</p>
+        <p class="govuk-body">Search for a training provider via a UKPRN.</p>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="govuk-form-group @(Html.IsValid(m => m.SearchProvidersQuery.Ukprn) ? "" : " govuk-form-group--error")">
+            <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
                 <span class="govuk-error-message">
-                    @Html.ValidationMessageFor(m => m.SearchProvidersQuery.Ukprn)
+                    @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
-                <label class="govuk-label govuk-!-font-weight-bold" for="@Html.IdFor(m => m.SearchProvidersQuery.Ukprn)">UK Provider Reference Number</label>
-                @Html.TextBoxFor(m => m.SearchProvidersQuery.Ukprn, new { @class = "govuk-input" })
+                <label class="govuk-label govuk-!-font-weight-bold" for="@Html.IdFor(m => m.Ukprn)">UK Provider Reference Number</label>
+                @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input" })
             </div>
             <details class="govuk-details">
                 <summary class="govuk-details__summary">
