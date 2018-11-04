@@ -7,16 +7,13 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public class DocumentRepository<TDocument> : IDocumentRepository<TDocument> where TDocument : class
+    public abstract class DocumentRepository<TDocument> : IDocumentRepository<TDocument> where TDocument : class
     {
-        private Uri DocumentCollectionUri(string collectionName) => UriFactory.CreateDocumentCollectionUri(_databaseName, collectionName);
-        private Uri DocumentUri(string collectionName, string id) => UriFactory.CreateDocumentUri(_databaseName, collectionName, id);
-
         private readonly IDocumentClient _documentClient;
         private readonly string _databaseName;
         private readonly string _collectionName;
 
-        public DocumentRepository(IDocumentClient documentClient, string databaseName, string collectionName)
+        protected DocumentRepository(IDocumentClient documentClient, string databaseName, string collectionName)
         {
             _documentClient = documentClient;
             _databaseName = databaseName;
@@ -27,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         {
             try
             {
-                var documentUri = DocumentUri(_collectionName, id.ToString());
+                var documentUri = UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString());
                 var response = await _documentClient.ReadDocumentAsync<TDocument>(documentUri).ConfigureAwait(false);
                 
                 return response.Document;
@@ -45,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 
         public IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
         {
-            var documentCollectionUri = DocumentCollectionUri(_collectionName);
+            var documentCollectionUri = UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName);
             var query = _documentClient.CreateDocumentQuery<TDocument>(documentCollectionUri, feedOptions);
 
             return query;

@@ -51,7 +51,9 @@ If you intend on using your own development service bus (LearningTransport is us
 
 * Right click `SFA.DAS.ProviderRelationships.Jobs`.
 * Click Debug > Start new instance.
-* Wait until you see "Executed 'ImportProvidersJob.Run'" in the console window. 
+* Wait until you see the following in the console window:
+  * Executed 'CreateReadStoreDatabaseJob.Run'
+  * Executed 'ImportProvidersJob.Run'"
 * Close the console window.
 
 ##### Run the website

@@ -33,14 +33,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 var host = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.Call(typeof(Program).GetMethod(nameof(BlockAsync)));
+                host.Call(typeof(Program).GetMethod(nameof(Block)));
                 host.RunAndBlock();
                 await startup.StopAsync();
             }
         }
         
         [NoAutomaticTrigger]
-        public static async Task BlockAsync(CancellationToken cancellationToken)
+        public static async Task Block(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {

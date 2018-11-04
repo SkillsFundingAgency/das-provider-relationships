@@ -7,12 +7,15 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     internal class DocumentClientFactory : IDocumentClientFactory
     {
-        private readonly DocumentClient _documentClient;
+        private readonly ProviderRelationshipsReadStoreConfiguration _configuration;
 
         public DocumentClientFactory(ProviderRelationshipsReadStoreConfiguration configuration)
         {
-            var serviceEndpoint = new Uri(configuration.Uri);
-            
+            _configuration = configuration;
+        }
+
+        public IDocumentClient CreateDocumentClient()
+        {
             var connectionPolicy = new ConnectionPolicy
             {
                 RetryOptions =
@@ -22,12 +25,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
                 }
             };
 
-            _documentClient = new DocumentClient(serviceEndpoint, configuration.SecurityKey, connectionPolicy);
-        }
-
-        public IDocumentClient CreateDocumentClient()
-        {
-            return _documentClient;
+            return new DocumentClient(new Uri(_configuration.Uri), _configuration.SecurityKey, connectionPolicy);
         }
     }
 }

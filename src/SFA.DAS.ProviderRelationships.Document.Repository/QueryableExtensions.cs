@@ -10,10 +10,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public static class QueryableExtensions
     {
-        public static async Task<bool> AnyAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        public static async Task<bool> AnyAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
         {
             var items = await source
-                .Where(predicate)
                 .Take(1)
                 .Select(p => 1)
                 .AsDocumentQuery()
@@ -21,6 +20,27 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
                 .ConfigureAwait(false);
 
             return items.Any();
+        }
+        
+        public static Task<bool> AnyAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return source.Where(predicate).AnyAsync(cancellationToken);
+        }
+        
+        public static async Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
+        {
+            var items = await source
+                .Take(2)
+                .AsDocumentQuery()
+                .ExecuteNextAsync<T>(cancellationToken)
+                .ConfigureAwait(false);
+
+            return items.SingleOrDefault();
+        }
+        
+        public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return source.Where(predicate).SingleOrDefaultAsync(cancellationToken);
         }
         
         public static async Task<List<T>> ToListAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)

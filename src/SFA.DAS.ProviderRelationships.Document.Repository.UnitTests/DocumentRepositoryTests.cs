@@ -21,13 +21,13 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
     public class DocumentRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
     {
         [Test]
-        public Task GetById_WhenGettingDocumentById_ThenShouldReturnDocument()
+        public Task GetById_WhenDocumentExists_ThenShouldReturnDocument()
         {
             return RunAsync(f => f.SetDocument(), f => f.DocumentRepository.GetById(f.Document.Id), (f, r) => r.Should().IsSameOrEqualTo(f.Documents[0]));
         }
 
         [Test]
-        public Task GetById_WhenGettingDocumentByIdAndDocumentDoesNotExist_ThenShouldReturnNull()
+        public Task GetById_WhenDocumentDoesNotExist_ThenShouldReturnNull()
         {
             return RunAsync(f => f.SetDocumentNotFound(), f => f.DocumentRepository.GetById(f.Document.Id), (f, r) => r.Should().BeNull());
         }
@@ -60,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             DocumentClient = new Mock<IDocumentClient>();
             DatabaseName = "test";
             CollectionName = "stubs";
-            DocumentRepository = new DocumentRepository<DocumentStub>(DocumentClient.Object, DatabaseName, CollectionName);
+            DocumentRepository = new DocumentRepositoryStub(DocumentClient.Object, DatabaseName, CollectionName);
             
             Document = new DocumentStub
             {
