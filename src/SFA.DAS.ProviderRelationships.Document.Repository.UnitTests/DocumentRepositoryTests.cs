@@ -21,27 +21,51 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
     public class DocumentRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
     {
         [Test]
-        public Task GetById_WhenDocumentExists_ThenShouldReturnDocument()
+        public void Add_WhenAddingDocument_ThenShouldAddDocument()
         {
-            return RunAsync(f => f.SetDocument(), f => f.DocumentRepository.GetById(f.Document.Id), (f, r) => r.Should().IsSameOrEqualTo(f.Documents[0]));
+            Run(f => f.Add(), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.Document, f.RequestOptions, false, CancellationToken.None), Times.Once));
         }
-
-        [Test]
-        public Task GetById_WhenDocumentDoesNotExist_ThenShouldReturnNull()
-        {
-            return RunAsync(f => f.SetDocumentNotFound(), f => f.DocumentRepository.GetById(f.Document.Id), (f, r) => r.Should().BeNull());
-        }
-
+        
         [Test]
         public void CreateQuery_WhenCreatingQuery_ThenShouldReturnIQueryable()
         {
-            Run(f =>  f.SetDocuments(), f => f.DocumentRepository.CreateQuery(), (f, r) => r.Should().NotBeNull());
+            Run(f => f.SetDocuments(), f => f.CreateQuery(), (f, r) => r.Should().NotBeNull().And.BeSameAs(f.DocumentsQuery));
         }
 
         [Test]
         public void CreateQuery_WhenCreatingQueryWithFeedOptions_ThenShouldReturnIQueryableWithFeedOptions()
         {
-            Run(f => f.SetDocuments(new FeedOptions()), f => f.DocumentRepository.CreateQuery(f.FeedOptions), (f, r) => r.Should().NotBeNull());
+            Run(f => f.SetDocuments(), f => f.CreateQueryWithFeedOptions(), (f, r) => r.Should().NotBeNull().And.BeSameAs(f.DocumentsQuery));
+        }
+        
+        [Test]
+        public Task GetById_WhenDocumentExists_ThenShouldReturnDocument()
+        {
+            return RunAsync(f => f.SetDocument(), f => f.GetById(), (f, r) => r.Should().IsSameOrEqualTo(f.Document));
+        }
+        
+        [Test]
+        public Task GetById_WhenDocumentExistsWithRequestOptions_ThenShouldReturnDocument()
+        {
+            return RunAsync(f => f.SetDocument(), f => f.GetByIdWithRequestOptions(), (f, r) => r.Should().IsSameOrEqualTo(f.Document));
+        }
+
+        [Test]
+        public Task GetById_WhenDocumentDoesNotExist_ThenShouldReturnNull()
+        {
+            return RunAsync(f => f.SetDocumentNotFound(), f => f.GetById(), (f, r) => r.Should().BeNull());
+        }
+
+        [Test]
+        public void Remove_WhenRemovingDocument_ThenShouldRemoveDocument()
+        {
+            Run(f => f.Remove(), f => f.DocumentClient.Verify(c => c.DeleteDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.RequestOptions, CancellationToken.None), Times.Once));
+        }
+
+        [Test]
+        public void Update_WhenUpdatingDocument_ThenShouldUpdateDocument()
+        {
+            Run(f => f.Update(), f => f.DocumentClient.Verify(c => c.ReplaceDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.Document, f.RequestOptions, CancellationToken.None), Times.Once));
         }
     }
 
@@ -53,7 +77,9 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         public string CollectionName { get; set; }
         public DocumentStub Document { get; set; }
         public List<DocumentStub> Documents { get; set; }
+        public IOrderedQueryable<DocumentStub> DocumentsQuery { get; set; }
         public FeedOptions FeedOptions { get; set; }
+        public RequestOptions RequestOptions { get; set; }
 
         public DocumentReadOnlyRepositoryTestsFixture()
         {
@@ -81,11 +107,52 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
                     Name = "TestB"
                 }
             };
+
+            DocumentsQuery = Documents.AsQueryable().OrderBy(d => d.Id);
+        }
+
+        public IQueryable<DocumentStub> CreateQuery()
+        {
+            return DocumentRepository.CreateQuery();
+        }
+
+        public IQueryable<DocumentStub> CreateQueryWithFeedOptions()
+        {
+            FeedOptions = new FeedOptions();
+            
+            return DocumentRepository.CreateQuery(FeedOptions);
+        }
+
+        public Task<DocumentStub> GetById()
+        {
+            return DocumentRepository.GetById(Document.Id);
+        }
+
+        public Task<DocumentStub> GetByIdWithRequestOptions()
+        {
+            RequestOptions = new RequestOptions();
+            
+            return DocumentRepository.GetById(Document.Id, RequestOptions);
+        }
+
+        public Task Add()
+        {
+            return DocumentRepository.Add(Document, RequestOptions);
+        }
+
+        public Task Remove()
+        {
+            return DocumentRepository.Remove(Document.Id, RequestOptions);
+        }
+
+        public Task Update()
+        {
+            return DocumentRepository.Update(Document, RequestOptions);
         }
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocument()
         {
-            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), null, CancellationToken.None))
+            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
                 .ReturnsAsync(new DocumentResponse<DocumentStub>(Document));
             
             return this;
@@ -93,18 +160,16 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocumentNotFound()
         {
-            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), null, CancellationToken.None))
+            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
                 .ThrowsAsync(DocumentClientExceptionBuilder.Build(new Error(), HttpStatusCode.NotFound));
 
             return this;
         }
 
-        public DocumentReadOnlyRepositoryTestsFixture SetDocuments(FeedOptions feedOptions = null)
+        public DocumentReadOnlyRepositoryTestsFixture SetDocuments()
         {
-            FeedOptions = feedOptions;
-            
-            DocumentClient.Setup(c => c.CreateDocumentQuery<DocumentStub>(UriFactory.CreateDocumentCollectionUri(DatabaseName, CollectionName), FeedOptions))
-                .Returns(Documents.AsQueryable().OrderBy(d => d.Id));
+            DocumentClient.Setup(c => c.CreateDocumentQuery<DocumentStub>(UriFactory.CreateDocumentCollectionUri(DatabaseName, CollectionName), It.Is<FeedOptions>(f => f == FeedOptions)))
+                .Returns(DocumentsQuery);
             
             return this;
         }

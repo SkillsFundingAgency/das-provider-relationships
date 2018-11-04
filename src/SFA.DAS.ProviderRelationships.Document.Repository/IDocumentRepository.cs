@@ -7,9 +7,10 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
     public interface IDocumentRepository<TDocument> where TDocument : class
     {
-        Task<TDocument> GetById(Guid id);
-        IQueryable<TDocument> CreateQuery(FeedOptions options = null);
-        Task Update(TDocument document);
-        Task Remove(Guid id);
+        Task Add(TDocument document, RequestOptions requestOptions = null);
+        IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null);
+        Task<TDocument> GetById(Guid id, RequestOptions requestOptions = null);
+        Task Remove(Guid id, RequestOptions requestOptions = null);
+        Task Update(TDocument document, RequestOptions requestOptions = null);
     }
 }

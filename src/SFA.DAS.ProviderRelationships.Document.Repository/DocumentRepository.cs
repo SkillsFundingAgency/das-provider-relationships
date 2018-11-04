@@ -20,12 +20,21 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             _collectionName = collectionName;
         }
 
-        public async Task<TDocument> GetById(Guid id)
+        public Task Add(TDocument document, RequestOptions requestOptions = null)
+        {
+            return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions);
+        }
+
+        public IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
+        {
+            return _documentClient.CreateDocumentQuery<TDocument>(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), feedOptions);
+        }
+
+        public async Task<TDocument> GetById(Guid id, RequestOptions requestOptions = null)
         {
             try
             {
-                var documentUri = UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString());
-                var response = await _documentClient.ReadDocumentAsync<TDocument>(documentUri).ConfigureAwait(false);
+                var response = await _documentClient.ReadDocumentAsync<TDocument>(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), requestOptions).ConfigureAwait(false);
                 
                 return response.Document;
             }
@@ -40,22 +49,14 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             }
         }
 
-        public IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
+        public Task Remove(Guid id, RequestOptions requestOptions = null)
         {
-            var documentCollectionUri = UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName);
-            var query = _documentClient.CreateDocumentQuery<TDocument>(documentCollectionUri, feedOptions);
-
-            return query;
+            return _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), requestOptions);
         }
 
-        public Task Update(TDocument entity)
+        public Task Update(TDocument document, RequestOptions requestOptions = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Remove(Guid id)
-        {
-            throw new NotImplementedException();
+            return _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions);
         }
     }
 }
