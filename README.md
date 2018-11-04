@@ -11,6 +11,7 @@
     * .NET Core cross-platform development 
     * .NET desktop development
 2. Install [Azure Storage Explorer]
+3. Install [Cosmos DB Emulator]
 
 #### Setup
 
