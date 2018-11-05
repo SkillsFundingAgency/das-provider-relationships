@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Data.SqlClient;
+using Microsoft.Azure.Documents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -9,6 +10,7 @@ using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.UnitOfWork;
 using StructureMap;
 
@@ -19,6 +21,9 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public DataRegistry()
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
+            For<IDocumentClient>().Use(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Singleton();
+            For<IDocumentClientFactory>().Use<DocumentClientFactory>();
+            For<IPermissionsRepository>().Use<PermissionsRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 

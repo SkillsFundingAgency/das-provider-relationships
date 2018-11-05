@@ -5,7 +5,6 @@ using NServiceBus;
 using Z.EntityFramework.Plus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Jobs.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
 using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
@@ -31,10 +32,13 @@ namespace SFA.DAS.ProviderRelationships.Jobs
 
                 config.UseTimers();
 
-                var host = new JobHost(config);
+                var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.RunAndBlock();
+                await jobHost.CallAsync(typeof(CreateReadStoreDatabaseJob).GetMethod(nameof(CreateReadStoreDatabaseJob.Run)));
+                
+                jobHost.RunAndBlock();
+                
                 await startup.StopAsync();
             }
         }

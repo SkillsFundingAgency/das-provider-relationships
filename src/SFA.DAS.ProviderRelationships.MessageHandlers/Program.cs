@@ -30,17 +30,19 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                     .AddApplicationInsights(instrumentationKey, null)
                     .AddNLog();
 
-                var host = new JobHost(config);
+                var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.Call(typeof(Program).GetMethod(nameof(BlockAsync)));
-                host.RunAndBlock();
+                await jobHost.CallAsync(typeof(Program).GetMethod(nameof(Block)));
+                
+                jobHost.RunAndBlock();
+                
                 await startup.StopAsync();
             }
         }
         
         [NoAutomaticTrigger]
-        public static async Task BlockAsync(CancellationToken cancellationToken)
+        public static async Task Block(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
