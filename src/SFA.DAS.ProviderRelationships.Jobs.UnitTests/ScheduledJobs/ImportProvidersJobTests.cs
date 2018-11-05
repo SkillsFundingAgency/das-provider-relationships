@@ -13,7 +13,7 @@ using SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests
+namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
 {
     [TestFixture]
     public class ImportProvidersJobTests : FluentTest<ImportProvidersJobTestsFixture>

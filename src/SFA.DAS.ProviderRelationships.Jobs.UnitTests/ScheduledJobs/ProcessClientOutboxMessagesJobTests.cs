@@ -5,7 +5,7 @@ using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.Testing;
 using ProcessClientOutboxMessagesJob = SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs.ProcessClientOutboxMessagesJob;
 
-namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests
+namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
 {
     [TestFixture]
     public class ProcessClientOutboxMessagesJobTests : FluentTest<ProcessClientOutboxMessagesJobTestsFixture>

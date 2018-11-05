@@ -30,11 +30,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                     .AddApplicationInsights(instrumentationKey, null)
                     .AddNLog();
 
-                var host = new JobHost(config);
+                var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.Call(typeof(Program).GetMethod(nameof(Block)));
-                host.RunAndBlock();
+                await jobHost.CallAsync(typeof(Program).GetMethod(nameof(Block)));
+                
+                jobHost.RunAndBlock();
+                
                 await startup.StopAsync();
             }
         }

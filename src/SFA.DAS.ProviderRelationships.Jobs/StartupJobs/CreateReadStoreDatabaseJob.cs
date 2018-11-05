@@ -5,7 +5,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs
+namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
 {
     public class CreateReadStoreDatabaseJob
     {
@@ -15,8 +15,9 @@ namespace SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs
         {
             _documentClient = documentClient;
         }
-
-        public async Task Run([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo timer, ILogger logger)
+        
+        [NoAutomaticTrigger]
+        public async Task Run(ILogger logger)
         {
             var database = new Database
             {
