@@ -29,14 +29,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .ToList();
 
-//                .ProjectTo<AccountProviderDto>(_configurationProvider)
-                //.SingleOrDefaultAsync(cancellationToken);
-            
-//            if (accountProvider == null)
-//            {
-//                return null;
-//            }
-            
             return Task.FromResult(new GetAddedProvidersQueryResponse(accountProviders));
         }
     }
