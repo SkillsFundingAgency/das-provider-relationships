@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
             CancellationToken = CancellationToken.None;
             PermissionsRepository = new Mock<IPermissionsRepository>();
             Permissions = new List<Permission>();
-            DocumentQuery = new DocumentQueryFake<Permission>(Permissions);
+            DocumentQuery = new FakeDocumentQuery<Permission>(Permissions);
 
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 

@@ -10,18 +10,18 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes
 {
-    public class DocumentQueryFake<T> : IDocumentQuery<T>, IOrderedQueryable<T>
+    public class FakeDocumentQuery<T> : IDocumentQuery<T>, IOrderedQueryable<T>
     {
         public Expression Expression => _query.Expression;
         public Type ElementType => _query.ElementType;
         public bool HasMoreResults => ++_page <= _pages;
-        public IQueryProvider Provider => new DocumentQueryProviderFake<T>(_query.Provider);
+        public IQueryProvider Provider => new FakeDocumentQueryProvider<T>(_query.Provider);
 
         private readonly IQueryable<T> _query;
         private readonly int _pages = 1;
         private int _page = 0;
 
-        public DocumentQueryFake(IEnumerable<T> data)
+        public FakeDocumentQuery(IEnumerable<T> data)
         {
             _query = data.AsQueryable();
         }

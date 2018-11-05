@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Stubs
+namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes
 {
-    public class DocumentStub
+    public class Dummy
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

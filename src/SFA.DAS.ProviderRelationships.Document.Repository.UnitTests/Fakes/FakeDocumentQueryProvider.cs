@@ -3,23 +3,23 @@ using System.Linq.Expressions;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes
 {
-    public class DocumentQueryProviderFake<T> : IQueryProvider
+    public class FakeDocumentQueryProvider<T> : IQueryProvider
     {
         private readonly IQueryProvider _queryProvider;
 
-        public DocumentQueryProviderFake(IQueryProvider queryProvider)
+        public FakeDocumentQueryProvider(IQueryProvider queryProvider)
         {
             _queryProvider = queryProvider;
         }
 
         public IQueryable CreateQuery(Expression expression)
         {
-            return new DocumentQueryFake<T>(_queryProvider.CreateQuery<T>(expression));
+            return new FakeDocumentQuery<T>(_queryProvider.CreateQuery<T>(expression));
         }
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            return new DocumentQueryFake<TElement>(_queryProvider.CreateQuery<TElement>(expression));
+            return new FakeDocumentQuery<TElement>(_queryProvider.CreateQuery<TElement>(expression));
         }
 
         public object Execute(Expression expression)

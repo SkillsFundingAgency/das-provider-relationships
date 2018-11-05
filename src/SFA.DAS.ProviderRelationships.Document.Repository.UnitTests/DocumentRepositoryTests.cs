@@ -11,7 +11,7 @@ using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Builders;
-using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Stubs;
+using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
@@ -71,13 +71,13 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
     public class DocumentReadOnlyRepositoryTestsFixture
     {
-        public DocumentRepository<DocumentStub> DocumentRepository { get; set; }
+        public DocumentRepository<Dummy> DocumentRepository { get; set; }
         public Mock<IDocumentClient> DocumentClient { get; set; }
         public string DatabaseName { get; set; }
         public string CollectionName { get; set; }
-        public DocumentStub Document { get; set; }
-        public List<DocumentStub> Documents { get; set; }
-        public IOrderedQueryable<DocumentStub> DocumentsQuery { get; set; }
+        public Dummy Document { get; set; }
+        public List<Dummy> Documents { get; set; }
+        public IOrderedQueryable<Dummy> DocumentsQuery { get; set; }
         public FeedOptions FeedOptions { get; set; }
         public RequestOptions RequestOptions { get; set; }
 
@@ -86,22 +86,22 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             DocumentClient = new Mock<IDocumentClient>();
             DatabaseName = "test";
             CollectionName = "stubs";
-            DocumentRepository = new DocumentRepositoryStub(DocumentClient.Object, DatabaseName, CollectionName);
+            DocumentRepository = new DummyRepository(DocumentClient.Object, DatabaseName, CollectionName);
             
-            Document = new DocumentStub
+            Document = new Dummy
             {
                 Id = Guid.NewGuid(),
                 Name = "Test"
             };
             
-            Documents = new List<DocumentStub>
+            Documents = new List<Dummy>
             {
-                new DocumentStub
+                new Dummy
                 {
                     Id = Guid.NewGuid(),
                     Name = "TestA"
                 },
-                new DocumentStub
+                new Dummy
                 {
                     Id = Guid.NewGuid(),
                     Name = "TestB"
@@ -111,24 +111,24 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             DocumentsQuery = Documents.AsQueryable().OrderBy(d => d.Id);
         }
 
-        public IQueryable<DocumentStub> CreateQuery()
+        public IQueryable<Dummy> CreateQuery()
         {
             return DocumentRepository.CreateQuery();
         }
 
-        public IQueryable<DocumentStub> CreateQueryWithFeedOptions()
+        public IQueryable<Dummy> CreateQueryWithFeedOptions()
         {
             FeedOptions = new FeedOptions();
             
             return DocumentRepository.CreateQuery(FeedOptions);
         }
 
-        public Task<DocumentStub> GetById()
+        public Task<Dummy> GetById()
         {
             return DocumentRepository.GetById(Document.Id);
         }
 
-        public Task<DocumentStub> GetByIdWithRequestOptions()
+        public Task<Dummy> GetByIdWithRequestOptions()
         {
             RequestOptions = new RequestOptions();
             
@@ -152,15 +152,15 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocument()
         {
-            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
-                .ReturnsAsync(new DocumentResponse<DocumentStub>(Document));
+            DocumentClient.Setup(c => c.ReadDocumentAsync<Dummy>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
+                .ReturnsAsync(new DocumentResponse<Dummy>(Document));
             
             return this;
         }
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocumentNotFound()
         {
-            DocumentClient.Setup(c => c.ReadDocumentAsync<DocumentStub>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
+            DocumentClient.Setup(c => c.ReadDocumentAsync<Dummy>(UriFactory.CreateDocumentUri(DatabaseName, CollectionName, Document.Id.ToString()), It.Is<RequestOptions>(r => r == RequestOptions), CancellationToken.None))
                 .ThrowsAsync(DocumentClientExceptionBuilder.Build(new Error(), HttpStatusCode.NotFound));
 
             return this;
@@ -168,7 +168,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocuments()
         {
-            DocumentClient.Setup(c => c.CreateDocumentQuery<DocumentStub>(UriFactory.CreateDocumentCollectionUri(DatabaseName, CollectionName), It.Is<FeedOptions>(f => f == FeedOptions)))
+            DocumentClient.Setup(c => c.CreateDocumentQuery<Dummy>(UriFactory.CreateDocumentCollectionUri(DatabaseName, CollectionName), It.Is<FeedOptions>(f => f == FeedOptions)))
                 .Returns(DocumentsQuery);
             
             return this;
