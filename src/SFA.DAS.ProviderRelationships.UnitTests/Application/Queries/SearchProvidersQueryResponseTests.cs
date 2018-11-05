@@ -6,7 +6,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
-    public class SearchProvidersQueryResponseTests : FluentTest<SearchProvidersQueryResponseTestsFixture>
+    public class SearchProvidersQueryResponseTests : FluentTest<object>
     {
         [Test]
         public void ProviderFound_WhenAProviderIdIsNotNull_ThenShouldReturnTrue()
@@ -31,9 +31,5 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Run(f => new SearchProvidersQueryResponse(null, null), (f, r) => r.ProviderAlreadyAdded.Should().BeFalse());
         }
-    }
-
-    public class SearchProvidersQueryResponseTestsFixture
-    {
     }
 }

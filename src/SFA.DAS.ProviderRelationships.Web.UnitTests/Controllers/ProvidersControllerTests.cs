@@ -221,7 +221,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             var accountId = 1;
             var ukprn = 12345678;
-            var accountProviderId = 1;
+            var accountProviderId = 2;
             
             SearchViewModel = new SearchProvidersViewModel
             {

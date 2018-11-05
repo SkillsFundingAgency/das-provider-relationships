@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class SearchProvidersQueryHandlerTests : FluentTest<SearchProvidersQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderExists_ThenShouldReturnUkprnInSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingSearchProvidersQueryAndProviderExists_ThenShouldReturnUkprnInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesNotExist_ThenShouldReturnNullUkprnInSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingSearchProvidersQueryAndProviderDoesNotExist_ThenShouldReturnNullUkprnInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.Handle(), (f, r) =>
             {
@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
         
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndPProvidersDoesExistAndroviderAlreadyAdded_ThenShouldReturnUkprnAndAccountProviderIdInSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingSearchProvidersQueryAndProvidersExistsAndProviderAlreadyAdded_ThenShouldReturnUkprnAndAccountProviderIdInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.SetProvider().SetAccountProvider(), f => f.Handle(), (f, r) =>
             {
@@ -47,7 +47,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
         
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesExistAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingSearchProvidersQueryAndProviderExistsAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
         
         [Test]
-        public Task Handle_WhenHandlingASearchProvidersQueryAndProviderDoesNotExistAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
+        public Task Handle_WhenHandlingSearchProvidersQueryAndProviderDoesNotExistAndProviderNotAlreadyAdded_ThenShouldReturnNullUkprnAndNullAccountProviderIdInSearchProvidersQueryResponse()
         {
             return RunAsync(f => f.Handle(), (f, r) =>
             {
