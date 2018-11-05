@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using Fix = SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.UpdatedLegalEntityEventHandlerTestsFixture;
 

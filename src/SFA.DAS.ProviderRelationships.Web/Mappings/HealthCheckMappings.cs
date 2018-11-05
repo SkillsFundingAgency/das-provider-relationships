@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Web.ViewModels;
 
