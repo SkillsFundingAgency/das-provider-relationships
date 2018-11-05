@@ -76,5 +76,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
         {
             return _permission.Object;
         }
+
+        public static implicit operator Permission(PermissionBuilder builder)
+        {
+            return builder.Build();
+        }
     }
 }

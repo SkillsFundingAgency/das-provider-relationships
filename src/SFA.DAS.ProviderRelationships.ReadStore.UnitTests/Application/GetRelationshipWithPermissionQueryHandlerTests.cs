@@ -104,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
 
         public GetRelationshipWithPermissionQueryHandlerTestsFixture AddRelationships()
         {
-            Permissions.AddRange(new []
+            Permissions.AddRange(new Permission[]
             {
                 new PermissionBuilder()
                     .WithEmployerAccountId(1)
@@ -115,8 +115,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithEmployerAccountLegalEntityName("legal entity name ALE111")
                     .WithEmployerAccountProviderId(1)
                     .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
+                    .WithOperation(Operation.CreateCohort),
                 new PermissionBuilder()
                     .WithEmployerAccountId(1)
                     .WithEmployerAccountPublicHashedId("AAA111")
@@ -126,8 +125,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithEmployerAccountLegalEntityName("legal entity name ALE222")
                     .WithEmployerAccountProviderId(1)
                     .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
+                    .WithOperation(Operation.CreateCohort),
                 new PermissionBuilder()
                     .WithEmployerAccountId(2)
                     .WithEmployerAccountPublicHashedId("AAA222")
@@ -137,8 +135,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithEmployerAccountLegalEntityName("legal entity name ALE333")
                     .WithEmployerAccountProviderId(2)
                     .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
+                    .WithOperation(Operation.CreateCohort),
                 new PermissionBuilder()
                     .WithEmployerAccountId(3)
                     .WithEmployerAccountPublicHashedId("AAA333")
@@ -148,8 +145,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithEmployerAccountLegalEntityName("legal entity name ALE444")
                     .WithEmployerAccountProviderId(3)
                     .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
+                    .WithOperation(Operation.CreateCohort),
                 new PermissionBuilder()
                     .WithEmployerAccountId(4)
                     .WithEmployerAccountPublicHashedId("AAA444")
@@ -160,7 +156,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithEmployerAccountProviderId(4)
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
-                    .Build(),
             });
             
             return this;
