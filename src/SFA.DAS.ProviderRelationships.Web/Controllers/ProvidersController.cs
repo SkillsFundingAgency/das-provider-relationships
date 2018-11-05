@@ -41,16 +41,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new SearchProvidersQuery(model.AccountId.Value, ukprn);
             var response = await _mediator.Send(query);
 
-            if (response.ProviderFound)
+            if (response.ProviderNotFound)
             {
-                return response.ProviderAlreadyAdded
-                    ? RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value })
-                    : RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
-            }
-            
-            ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
 
-            return RedirectToAction("Search");
+                return RedirectToAction("Search");
+            }
+
+            if (response.ProviderAlreadyAdded)
+            {
+                return RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value });
+            }
+
+            return RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
 
         }
 
