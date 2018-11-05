@@ -53,8 +53,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
-                .WithName(Message.Name)
-                .Build();
+                .WithName(Message.Name);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
@@ -65,8 +64,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
                 .WithName(PreviouslyUpdatedName)
-                .WithUpdated(Message.Created.AddHours(-1))
-                .Build();
+                .WithUpdated(Message.Created.AddHours(-1));
             
             return this;
         }

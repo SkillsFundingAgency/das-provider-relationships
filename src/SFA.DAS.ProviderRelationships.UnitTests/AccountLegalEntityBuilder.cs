@@ -35,5 +35,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
         {
             return _accountLegalEntity.Object;
         }
+        
+        public static implicit operator AccountLegalEntity(AccountLegalEntityBuilder builder)
+        {
+            return builder.Build();
+        }
     }
 }

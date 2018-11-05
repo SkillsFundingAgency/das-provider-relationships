@@ -52,8 +52,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
             Account = new AccountBuilder()
                 .WithId(Message.AccountId)
-                .WithName(Message.PreviousName)
-                .Build();
+                .WithName(Message.PreviousName);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();
@@ -64,8 +63,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             Account = new AccountBuilder()
                 .WithId(Message.AccountId)
                 .WithName(Message.PreviousName)
-                .WithUpdated(DateTime.UtcNow.AddHours(-1))
-                .Build();
+                .WithUpdated(DateTime.UtcNow.AddHours(-1));
             
             return this;
         }

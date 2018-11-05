@@ -41,6 +41,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
             return _user.Object;
         }
 
+        public static implicit operator User(UserBuilder builder)
+        {
+            return builder.Build();
+        }
+        
         public UserBuilder WithCreated(DateTime created)
         {
             _user.SetupProperty(u => u.Created, created);

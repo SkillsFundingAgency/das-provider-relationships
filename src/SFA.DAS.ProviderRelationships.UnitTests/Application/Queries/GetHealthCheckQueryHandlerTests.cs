@@ -47,8 +47,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
             HealthChecks = new List<HealthCheck>
             {
-                new HealthCheckBuilder().WithId(1).Build(),
-                new HealthCheckBuilder().WithId(2).Build()
+                new HealthCheckBuilder().WithId(1),
+                new HealthCheckBuilder().WithId(2)
             };
             
             Db.HealthChecks.AddRange(HealthChecks);

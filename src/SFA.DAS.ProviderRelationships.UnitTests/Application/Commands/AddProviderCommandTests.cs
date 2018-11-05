@@ -61,9 +61,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
-            Account = new AccountBuilder().WithId(1).Build();
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
-            Provider = new ProviderBuilder().WithUkprn(12345678).Build();
+            Account = new AccountBuilder().WithId(1);
+            User = new UserBuilder().WithRef(Guid.NewGuid());
+            Provider = new ProviderBuilder().WithUkprn(12345678);
 
             Db.Accounts.Add(Account);
             Db.Users.Add(User);
@@ -83,7 +83,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandTestsFixture SetAccountProvider()
         {
-            Db.AccountProviders.Add(new AccountProviderBuilder().WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn).Build());
+            Db.AccountProviders.Add(new AccountProviderBuilder().WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn));
             Db.SaveChanges();
             
             return this;

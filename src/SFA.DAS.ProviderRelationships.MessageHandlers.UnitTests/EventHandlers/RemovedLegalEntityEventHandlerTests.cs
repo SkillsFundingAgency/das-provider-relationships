@@ -35,8 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             };
             
             AccountLegalEntity = new AccountLegalEntityBuilder()
-                .WithId(Message.AccountLegalEntityId)
-                .Build();
+                .WithId(Message.AccountLegalEntityId);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();

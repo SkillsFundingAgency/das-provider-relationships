@@ -18,5 +18,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
         {
             return _healthCheck.Object;
         }
+        
+        public static implicit operator HealthCheck(HealthCheckBuilder builder)
+        {
+            return builder.Build();
+        }
     }
 }

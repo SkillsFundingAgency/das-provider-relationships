@@ -56,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetProviderQueryHandlerTestsFixture SetProvider()
         {
-            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn).WithName("Foo").Build();
+            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn).WithName("Foo");
             
             Db.Providers.Add(Provider);
             Db.SaveChanges();
