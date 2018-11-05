@@ -27,6 +27,54 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             return source.Where(predicate).AnyAsync(cancellationToken);
         }
         
+        public static async Task<T> FirstAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
+        {
+            var items = await source
+                .Take(1)
+                .AsDocumentQuery()
+                .ExecuteNextAsync<T>(cancellationToken)
+                .ConfigureAwait(false);
+
+            return items.First();
+        }
+        
+        public static Task<T> FirstAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return source.Where(predicate).FirstAsync(cancellationToken);
+        }
+        
+        public static async Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
+        {
+            var items = await source
+                .Take(1)
+                .AsDocumentQuery()
+                .ExecuteNextAsync<T>(cancellationToken)
+                .ConfigureAwait(false);
+
+            return items.FirstOrDefault();
+        }
+        
+        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return source.Where(predicate).FirstOrDefaultAsync(cancellationToken);
+        }
+        
+        public static async Task<T> SingleAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
+        {
+            var items = await source
+                .Take(2)
+                .AsDocumentQuery()
+                .ExecuteNextAsync<T>(cancellationToken)
+                .ConfigureAwait(false);
+
+            return items.Single();
+        }
+        
+        public static Task<T> SingleAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return source.Where(predicate).SingleAsync(cancellationToken);
+        }
+        
         public static async Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken = default)
         {
             var items = await source
