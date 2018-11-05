@@ -83,7 +83,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
 
@@ -112,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "GoToHomepage":
                     return RedirectToAction("Index", "Home");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
 
@@ -139,7 +139,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
     }
