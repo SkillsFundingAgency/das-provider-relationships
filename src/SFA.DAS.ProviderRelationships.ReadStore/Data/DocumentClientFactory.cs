@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
                 }
             };
 
-            return new DocumentClient(new Uri(_configuration.Uri), _configuration.SecurityKey, connectionPolicy);
+            return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
         }
     }
 }

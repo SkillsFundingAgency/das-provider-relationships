@@ -3,6 +3,6 @@
     public interface ICosmosDbConfiguration
     {
         string Uri { get; set; }
-        string SecurityKey { get; set; }
+        string AuthKey { get; set; }
     }
 }
