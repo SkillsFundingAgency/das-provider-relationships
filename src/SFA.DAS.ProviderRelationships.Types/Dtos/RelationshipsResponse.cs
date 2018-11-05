@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Types.Dtos;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.Dtos
+namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class RelationshipsResponse
     {

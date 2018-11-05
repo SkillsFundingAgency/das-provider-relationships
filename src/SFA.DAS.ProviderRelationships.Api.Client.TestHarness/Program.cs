@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Api.Client.Dtos;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness

@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.Dtos
+namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class RelationshipsRequest
     {
