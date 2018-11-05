@@ -81,14 +81,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedProvidersQueryHandlerTestsFixture SetProviders()
         {
-            Account = new AccountBuilder().WithId(Query.AccountId).Build();
-            Provider = new ProviderBuilder().WithUkprn(12345678).WithName("ProviderName").Build();
+            Account = new AccountBuilder().WithId(Query.AccountId);
+            Provider = new ProviderBuilder().WithUkprn(12345678).WithName("ProviderName");
             
             AccountProvider = new AccountProviderBuilder()
                 .WithId(999)
                 .WithAccountId(Account.Id)
-                .WithProviderUkprn(Provider.Ukprn)
-                .Build();
+                .WithProviderUkprn(Provider.Ukprn);
 
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

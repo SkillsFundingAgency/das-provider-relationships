@@ -25,5 +25,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests
         {
             return _provider.Object;
         }
+        
+        public static implicit operator Provider(ProviderBuilder builder)
+        {
+            return builder.Build();
+        }
     }
 }
