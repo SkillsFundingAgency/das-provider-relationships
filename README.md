@@ -11,6 +11,7 @@
     * .NET Core cross-platform development 
     * .NET desktop development
 2. Install [Azure Storage Explorer]
+3. Install [Cosmos DB Emulator]
 
 #### Setup
 
@@ -42,7 +43,7 @@
 
 Execute DevInstall.ps1 as an admin to import required certificates into their appropriate store locations.
 
-##### Create deadletters queue (optional)
+##### Create Azure Service Bus dead letter queue (optional)
 
 If you intend on using your own development service bus (LearningTransport is used by default), create a queue named `deadletters`.
 
@@ -50,7 +51,9 @@ If you intend on using your own development service bus (LearningTransport is us
 
 * Right click `SFA.DAS.ProviderRelationships.Jobs`.
 * Click Debug > Start new instance.
-* Wait until you see "Executed 'ImportProvidersJob.Run'" in the console window. 
+* Wait until you see the following in the console window:
+  * Executed 'CreateReadStoreDatabaseJob.Run'
+  * Executed 'ImportProvidersJob.Run'"
 * Close the console window.
 
 ##### Run the website
@@ -60,6 +63,7 @@ If you intend on using your own development service bus (LearningTransport is us
 
 [Azure Storage Explorer]: http://storageexplorer.com
 [Choclatey]: https://chocolatey.org
+[Cosmos DB Emulator]: https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
 [Docker]: https://www.docker.com
 [Elastic Search]: https://www.elastic.co/products/elasticsearch
 [SQL Server Management Studio]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms

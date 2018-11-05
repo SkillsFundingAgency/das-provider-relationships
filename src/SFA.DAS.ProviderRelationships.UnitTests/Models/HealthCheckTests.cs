@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 

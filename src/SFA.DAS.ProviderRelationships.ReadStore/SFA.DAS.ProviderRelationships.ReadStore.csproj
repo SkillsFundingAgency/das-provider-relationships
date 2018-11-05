@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <Authors>DAS</Authors>
+        <Description>SFA.DAS.ProviderRelationships.ReadStore library</Description>
+        <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-provider-relationships</PackageProjectUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StructureMap" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj" />
+    </ItemGroup>
+
+</Project>

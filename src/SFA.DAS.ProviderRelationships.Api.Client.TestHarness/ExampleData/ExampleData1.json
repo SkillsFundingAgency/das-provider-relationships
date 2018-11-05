@@ -1,0 +1,15 @@
+﻿{
+    "employerAccountId": 1,
+    "employerAccountPublicHashedId": "AAA111",
+    "employerAccountName": "employer name 1",
+    "employerAccountLegalEntityId": 1,
+    "employerAccountLegalEntityPublicHashedId": "ALE111",
+    "employerAccountLegalEntityName": "legal entity name ALE111",
+    "employerAccountProviderId": 1,
+    "ukprn": 11111111,
+    "operations": [0],
+    "metadata": {
+        "schemaVersion": 1,
+        "schemaType": "permission" 
+    } 
+}
