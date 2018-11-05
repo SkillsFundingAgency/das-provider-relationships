@@ -22,12 +22,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAddedProvidersQuery_ThenShouldReturnGetAddedProvidersQueryResponse()
         {
-//            return RunAsync(f => f.SetProviders(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
-//                .And.Match<GetAddedProvidersQueryResponse>(r2 =>
-//                    r2.AccountProviders.Id == f.AccountProvider.Id &&
-//                    r2.AccountProvider.Provider.Ukprn == f.Provider.Ukprn &&
-//                    r2.AccountProvider.Provider.Name == f.Provider.Name));
-            
             return RunAsync(f => f.SetProviders(), f => f.Handle(), (f, r) =>
                 {
                     r.Should().NotBeNull();
