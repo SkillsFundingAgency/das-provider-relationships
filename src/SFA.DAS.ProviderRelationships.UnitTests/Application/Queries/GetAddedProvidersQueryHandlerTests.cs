@@ -26,14 +26,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 {
                     r.Should().NotBeNull();
                     r.AccountProviders.Should().NotBeNull();
-                    r.AccountProviders.Should().BeEquivalentTo(new AccountProviderDto
+                    r.AccountProviders.Should().BeEquivalentTo(new GetAddedProvidersQueryResponse.AccountProvider
                     {
                         Id = f.AccountProvider.Id,
-                        Provider = new ProviderDto
-                        {
-                            Ukprn = f.Provider.Ukprn,
-                            Name = f.Provider.Name
-                        }
+                        ProviderName = f.Provider.Name
                     });
                 });
         }

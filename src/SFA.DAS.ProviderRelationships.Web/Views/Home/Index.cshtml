@@ -43,9 +43,10 @@
                     @foreach (var accountProvider in Model.AccountProviders)
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@accountProvider.Provider.Name</td>
+                            <td class="govuk-table__cell">@accountProvider.ProviderName</td>
                             <td class="govuk-table__cell">No permissions set</td>
-                            <td class="govuk-table__cell"><a href="@Url.Action("Index", "Permissions")">Set permissions</a></td>
+                            @* <td class="govuk-table__cell"><a href="@Url.Action("Index", "Permissions", new {AccountProviderId = accountProvider.Id})">Set permissions</a></td> *@
+                            <td class="govuk-table__cell"><a href="javascript:alert('Coming soon!')">Set permissions</a></td>
                         </tr>
                     }
                 </tbody>

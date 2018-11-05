@@ -9,7 +9,6 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Home;
@@ -78,14 +77,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAddedProvidersQueryResponse = new GetAddedProvidersQueryResponse(new[]
             {
-                new AccountProviderDto
+                new GetAddedProvidersQueryResponse.AccountProvider
                 {
                     Id = 666666,
-                    Provider = new ProviderDto
-                    {
-                        Ukprn = 2468,
-                        Name = "ProviderName"
-                    }
+                    ProviderName = "ProviderName"
                 }
             });
 
