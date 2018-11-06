@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Routing;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -9,9 +10,11 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
+using SFA.DAS.ProviderRelationships.Web.Routing;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Testing;
 
@@ -143,9 +146,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Added_WhenPostingTheAddedActionAndTheGoToHomepageOptionIsSelected_ThenShouldRedirectToTheHomeIndexAction()
         {
-            Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Index") &&
-                a.RouteValues["Controller"].Equals("Home")));
+            Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+                a.Url == $"https://localhost/accounts/{f.RouteData.Values[RouteDataKeys.AccountHashedId]}"));
         }
 
         [Test]
@@ -194,6 +196,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public SearchProvidersViewModel SearchViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
+        public UrlHelper UrlHelper { get; set; }
+        public RequestContext RequestContext { get; set; }
+        public RouteData RouteData { get; set; }
+        public Mock<IDependencyResolver> Resolver { get; set; }
         public SearchProvidersQueryResponse SearchProvidersQueryResponse { get; set; }
         public AddProviderRouteValues AddProviderRouteValues { get; set; }
         public GetProviderQueryResponse GetProviderQueryResponse { get; set; }
@@ -209,7 +215,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
-            ProvidersController = new ProvidersController(Mediator.Object, Mapper);
+            RouteData = new RouteData();
+            RequestContext = new RequestContext { RouteData = RouteData };
+            UrlHelper = new UrlHelper(RequestContext);
+            Resolver = new Mock<IDependencyResolver>();
+            DependencyResolver.SetResolver(Resolver.Object);
+            ProvidersController = new ProvidersController(Mediator.Object, Mapper) { Url = UrlHelper };
         }
 
         public ActionResult Search()
@@ -221,7 +232,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             var accountId = 1;
             var ukprn = 12345678;
-            var accountProviderId = 1;
+            var accountProviderId = 2;
             
             SearchViewModel = new SearchProvidersViewModel
             {
@@ -296,6 +307,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public ActionResult PostAdded(string choice = null)
         {
+            RouteData.Values[RouteDataKeys.AccountHashedId] = "ABC123";
+            
+            Resolver.Setup(r => r.GetService(typeof(ProviderRelationshipsConfiguration))).Returns(new ProviderRelationshipsConfiguration
+            {
+                EmployerPortalBaseUrl = "https://localhost"
+            });
+            
             AddedProviderViewModel = new AddedProviderViewModel
             {
                 AccountProviderId = 2,

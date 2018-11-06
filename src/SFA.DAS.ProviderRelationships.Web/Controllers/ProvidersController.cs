@@ -8,6 +8,7 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Validation.Mvc;
 
@@ -41,16 +42,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new SearchProvidersQuery(model.AccountId.Value, ukprn);
             var response = await _mediator.Send(query);
 
-            if (response.ProviderFound)
+            if (response.ProviderNotFound)
             {
-                return response.ProviderAlreadyAdded
-                    ? RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value })
-                    : RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
-            }
-            
-            ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
 
-            return RedirectToAction("Search");
+                return RedirectToAction("Search");
+            }
+
+            if (response.ProviderAlreadyAdded)
+            {
+                return RedirectToAction("AlreadyAdded", new AlreadyAddedProviderRouteValues { AccountProviderId = response.AccountProviderId.Value });
+            }
+
+            return RedirectToAction("Add", new AddProviderRouteValues { Ukprn = response.Ukprn });
 
         }
 
@@ -80,7 +84,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "ReEnterUkprn":
                     return RedirectToAction("Search");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
 
@@ -107,9 +111,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 case "GoToHomepage":
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(Url.EmployerPortalAccountAction());
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
 
@@ -136,7 +140,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice));
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
         }
     }
