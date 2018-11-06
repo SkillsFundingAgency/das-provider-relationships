@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -18,10 +19,19 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 
         public async Task<SearchProvidersQueryResponse> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
         {
-            var ukprn = long.Parse(request.Ukprn);
-            var providerExists = await _db.Value.Providers.AnyAsync(p => p.Ukprn == ukprn, cancellationToken);
-
-            return new SearchProvidersQueryResponse(ukprn, providerExists);
+            var data = await _db.Value.Providers
+                .Where(p => p.Ukprn == request.Ukprn)
+                .Select(p => new
+                {
+                    p.Ukprn,
+                    AccountProviderId = p.AccountProviders
+                        .Where(ap => ap.AccountId == request.AccountId)
+                        .Select(ap => (int?)ap.Id)
+                        .FirstOrDefault()
+                })
+                .SingleOrDefaultAsync(cancellationToken);
+            
+            return new SearchProvidersQueryResponse(data?.Ukprn, data?.AccountProviderId);
         }
     }
 }
