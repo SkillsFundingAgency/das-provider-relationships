@@ -4,10 +4,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class SearchProvidersQuery : IRequest<SearchProvidersQueryResponse>
     {
-        public string Ukprn { get; }
+        public long AccountId { get; }
+        public long Ukprn { get; }
 
-        public SearchProvidersQuery(string ukprn)
+        public SearchProvidersQuery(long accountId, long ukprn)
         {
+            AccountId = accountId;
             Ukprn = ukprn;
         }
     }
