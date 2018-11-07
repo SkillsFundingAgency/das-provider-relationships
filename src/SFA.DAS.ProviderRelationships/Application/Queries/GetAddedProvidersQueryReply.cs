@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProvidersQueryResponse
+    public class GetAddedProvidersQueryReply
     {
         public class AccountProvider
         {
@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         
         public IEnumerable<AccountProvider> AccountProviders { get; }
 
-        public GetAddedProvidersQueryResponse(IEnumerable<AccountProvider> accountProviders)
+        public GetAddedProvidersQueryReply(IEnumerable<AccountProvider> accountProviders)
         {
             AccountProviders = accountProviders;
         }

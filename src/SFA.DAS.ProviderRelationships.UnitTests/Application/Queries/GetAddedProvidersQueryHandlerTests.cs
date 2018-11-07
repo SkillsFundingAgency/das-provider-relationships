@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 {
                     r.Should().NotBeNull();
                     r.AccountProviders.Should().NotBeNull();
-                    r.AccountProviders.Should().BeEquivalentTo(new GetAddedProvidersQueryResponse.AccountProvider
+                    r.AccountProviders.Should().BeEquivalentTo(new GetAddedProvidersQueryReply.AccountProvider
                     {
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name
@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetAddedProvidersQueryHandlerTestsFixture
     {
         public GetAddedProvidersQuery Query { get; set; }
-        public IRequestHandler<GetAddedProvidersQuery, GetAddedProvidersQueryResponse> Handler { get; set; }
+        public IRequestHandler<GetAddedProvidersQuery, GetAddedProvidersQueryReply> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Handler = new GetAddedProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetAddedProvidersQueryResponse> Handle()
+        public Task<GetAddedProvidersQueryReply> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }

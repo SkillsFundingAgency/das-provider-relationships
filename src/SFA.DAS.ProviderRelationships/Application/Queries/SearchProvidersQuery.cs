@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class SearchProvidersQuery : IRequest<SearchProvidersQueryResponse>
+    public class SearchProvidersQuery : IRequest<SearchProvidersQueryReply>
     {
         public long AccountId { get; }
         public long Ukprn { get; }

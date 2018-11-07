@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Task Handle_WhenHandlingAGetProviderQueryAndAProviderIsFound_ThenShouldReturnAGetProviderQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
-                .And.Match<GetProviderQueryResponse>(r2 =>
+                .And.Match<GetProviderQueryReply>(r2 =>
                     r2.Provider.Ukprn == f.Provider.Ukprn &&
                     r2.Provider.Name == f.Provider.Name));
         }
@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Handler = new GetProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetProviderQueryResponse> Handle()
+        public Task<GetProviderQueryReply> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }

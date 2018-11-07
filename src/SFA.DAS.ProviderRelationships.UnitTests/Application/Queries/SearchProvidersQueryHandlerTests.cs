@@ -86,7 +86,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Query = new SearchProvidersQuery(1, 12345678);
         }
 
-        public Task<SearchProvidersQueryResponse> Handle()
+        public Task<SearchProvidersQueryReply> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }

@@ -2,11 +2,11 @@
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetHealthCheckQueryResponse
+    public class GetHealthCheckQueryReply
     {
         public HealthCheckDto HealthCheck { get; }
 
-        public GetHealthCheckQueryResponse(HealthCheckDto healthCheck)
+        public GetHealthCheckQueryReply(HealthCheckDto healthCheck)
         {
             HealthCheck = healthCheck;
         }

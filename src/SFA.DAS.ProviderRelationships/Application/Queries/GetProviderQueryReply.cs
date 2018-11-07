@@ -2,11 +2,11 @@
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetProviderQueryResponse
+    public class GetProviderQueryReply
     {
         public ProviderDto Provider { get; }
 
-        public GetProviderQueryResponse(ProviderDto provider)
+        public GetProviderQueryReply(ProviderDto provider)
         {
             Provider = provider;
         }

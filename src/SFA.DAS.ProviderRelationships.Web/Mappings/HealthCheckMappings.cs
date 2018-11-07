@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public HealthCheckMappings()
         {
-            CreateMap<GetHealthCheckQueryResponse, HealthCheckViewModel>();
+            CreateMap<GetHealthCheckQueryReply, HealthCheckViewModel>();
         }
     }
 }

@@ -8,7 +8,7 @@ using SFA.DAS.ProviderRelationships.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class SearchProvidersQueryHandler : IRequestHandler<SearchProvidersQuery, SearchProvidersQueryResponse>
+    public class SearchProvidersQueryHandler : IRequestHandler<SearchProvidersQuery, SearchProvidersQueryReply>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             _db = db;
         }
 
-        public async Task<SearchProvidersQueryResponse> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
+        public async Task<SearchProvidersQueryReply> Handle(SearchProvidersQuery request, CancellationToken cancellationToken)
         {
             var data = await _db.Value.Providers
                 .Where(p => p.Ukprn == request.Ukprn)
@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 })
                 .SingleOrDefaultAsync(cancellationToken);
             
-            return new SearchProvidersQueryResponse(data?.Ukprn, data?.AccountProviderId);
+            return new SearchProvidersQueryReply(data?.Ukprn, data?.AccountProviderId);
         }
     }
 }

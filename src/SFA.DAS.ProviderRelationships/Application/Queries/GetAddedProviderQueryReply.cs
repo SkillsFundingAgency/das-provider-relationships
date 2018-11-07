@@ -2,11 +2,11 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProviderQueryResponse
+    public class GetAddedProviderQueryReply
     {
         public AccountProviderDto AccountProvider { get; }
 
-        public GetAddedProviderQueryResponse(AccountProviderDto accountProvider)
+        public GetAddedProviderQueryReply(AccountProviderDto accountProvider)
         {
             AccountProvider = accountProvider;
         }

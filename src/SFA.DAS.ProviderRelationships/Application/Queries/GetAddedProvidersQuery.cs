@@ -2,7 +2,7 @@ using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProvidersQuery : IRequest<GetAddedProvidersQueryResponse>
+    public class GetAddedProvidersQuery : IRequest<GetAddedProvidersQueryReply>
     {
         public long AccountId { get; }
 

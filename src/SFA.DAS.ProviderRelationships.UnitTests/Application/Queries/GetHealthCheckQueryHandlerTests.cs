@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetHealthCheckQueryHandlerTestsFixture
     {
         public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
-        public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse> Handler { get; set; }
+        public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryReply> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Handler = new GetHealthCheckQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetHealthCheckQueryResponse> Handle()
+        public Task<GetHealthCheckQueryReply> Handle()
         {
             return Handler.Handle(GetHealthCheckQuery, CancellationToken.None);
         }

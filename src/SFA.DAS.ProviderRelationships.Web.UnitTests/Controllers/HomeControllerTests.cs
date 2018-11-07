@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull()
                     .And.BeOfType<AccountProvidersViewModel>()
-                    .Which.AccountProviders.Should().BeEquivalentTo(f.GetAddedProvidersQueryResponse.AccountProviders);
+                    .Which.AccountProviders.Should().BeEquivalentTo(f.GetAddedProvidersQueryReply.AccountProviders);
             });
         }
     }
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
-        public GetAddedProvidersQueryResponse GetAddedProvidersQueryResponse { get; set; }
+        public GetAddedProvidersQueryReply GetAddedProvidersQueryReply { get; set; }
 
         public HomeControllerTestsFixture()
         {
@@ -76,9 +76,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountId = 7777777
             };
             
-            GetAddedProvidersQueryResponse = new GetAddedProvidersQueryResponse(new[]
+            GetAddedProvidersQueryReply = new GetAddedProvidersQueryReply(new[]
             {
-                new GetAddedProvidersQueryResponse.AccountProvider
+                new GetAddedProvidersQueryReply.AccountProvider
                 {
                     Id = 666666,
                     ProviderName = "ProviderName"
@@ -86,7 +86,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             });
 
             Mediator.Setup(m => m.Send(It.Is<GetAddedProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
-                .ReturnsAsync(GetAddedProvidersQueryResponse);
+                .ReturnsAsync(GetAddedProvidersQueryReply);
             
             return HomeController.Index(AccountProvidersRouteValues);
         }

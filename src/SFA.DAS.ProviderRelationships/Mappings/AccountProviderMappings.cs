@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
         {
             CreateMap<AccountProvider, AccountProviderDto>();
 
-            CreateMap<AccountProvider, GetAddedProvidersQueryResponse.AccountProvider>();
+            CreateMap<AccountProvider, GetAddedProvidersQueryReply.AccountProvider>();
         }
     }
 }
