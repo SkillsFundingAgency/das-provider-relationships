@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         public async Task StartAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.MessageHandlers")
-                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString, _environment.IsCurrentEnvironment(DasEnv.LOCAL))
+                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
                 .UseErrorQueue()
                 .UseInstallers()
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)

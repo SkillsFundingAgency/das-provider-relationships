@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
         public async Task StartAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
-                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environment.IsCurrentEnvironment(DasEnv.LOCAL))
+                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()

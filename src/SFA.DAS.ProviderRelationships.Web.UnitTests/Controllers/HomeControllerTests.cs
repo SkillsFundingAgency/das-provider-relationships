@@ -106,7 +106,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HomeControllerTestsFixture SetCurrentEnvironmentIsLocal(bool local)
         {
             //Environment.Setup(e => e.IsCurrentEnvironment(It.Is<DasEnv[]>(ep => ep == new[] {DasEnv.LOCAL}))).Returns(local);
-            Environment.Setup(e => e.IsCurrentEnvironment(It.IsAny<DasEnv[]>())).Returns(local);
+            Environment.Setup(e => e.IsCurrent(It.IsAny<DasEnv[]>())).Returns(local);
 
             return this;
         }

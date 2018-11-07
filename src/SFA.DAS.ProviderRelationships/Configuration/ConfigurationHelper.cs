@@ -10,8 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
     public interface IEnvironment //(Service?)
     {
         DasEnv Current { get; }
-        // rename to IsCurrent
-        bool IsCurrentEnvironment(params DasEnv[] environment);
+        bool IsCurrent(params DasEnv[] environment);
     }
 
     // should we pass individual setting to ctors here or appsettings?
@@ -46,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
             }
         }
 
-        public bool IsCurrentEnvironment(params DasEnv[] environment)
+        public bool IsCurrent(params DasEnv[] environment)
         {
             return environment.Contains(Current);
         }

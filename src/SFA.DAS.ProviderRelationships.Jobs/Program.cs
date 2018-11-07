@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
                 var instrumentationKey = ConfigurationManager.AppSettings["InstrumentationKey"];
 
                 var environment = container.GetInstance<IEnvironment>();
-                if (environment.IsCurrentEnvironment(DasEnv.LOCAL))
+                if (environment.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }
