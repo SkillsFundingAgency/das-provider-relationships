@@ -30,17 +30,28 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         {
             Run(f => f.SetFirstThenGetThenSetSecondCurrent(first, second), f => f.Current(), (f, r) => r.Should().Be(first));
         }        
+        
         #endregion Current
 
-        #region Get
-        #endregion Get
+        #region IsCurrent
+
+        [TestCase(false, DasEnv.PROD, new DasEnv[] {})]
+        [TestCase(true, DasEnv.MO, new[] {DasEnv.MO})]
+        [TestCase(false, DasEnv.MO, new[] {DasEnv.PROD})]
+        [TestCase(true, DasEnv.DEMO, new[] {DasEnv.MO, DasEnv.DEMO})]
+        [TestCase(false, DasEnv.DEMO, new[] {DasEnv.MO, DasEnv.PROD})]
+        public void WhenSuppliedEnvironmentsAreCheckedIfAnyIsTheCurrentEnvironment_TheShouldReturnCorrectIfCurrentStatus(bool expected, DasEnv current, DasEnv[] toCheck)
+        {
+            Run(f => f.SetCurrent(current), f => f.IsCurrent(toCheck), (f, r) => r.Should().Be(expected));
+        }
+        
+        #endregion IsCurrent
     }
 
     public class EnvironmentTestsFixture
     {
         public ProviderRelationships.Environment.Environment Environment { get; set; }
         public NameValueCollection AppSettings { get; set; }
-        public DasEnv[] EnvironmentsToCheckIfCurrent { get; set; }
 
         #region Arrange
         
@@ -71,9 +82,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
             return Environment.Current;
         }
 
-        public bool IsCurrent()
+        public bool IsCurrent(params DasEnv[] environment)
         {
-            return Environment.IsCurrent(EnvironmentsToCheckIfCurrent);
+            return Environment.IsCurrent(environment);
         }
         
         #endregion Act        
