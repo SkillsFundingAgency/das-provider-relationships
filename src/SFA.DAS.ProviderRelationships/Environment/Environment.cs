@@ -6,7 +6,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 namespace SFA.DAS.ProviderRelationships.Environment
 {
     //todo: should we pass individual setting to ctors here or appsettings?
-
     public class Environment : IEnvironment
     {
         private readonly NameValueCollection _appSettings;
