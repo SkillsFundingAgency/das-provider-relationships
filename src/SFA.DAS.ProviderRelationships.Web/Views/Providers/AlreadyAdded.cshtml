@@ -15,7 +15,7 @@
                 Training provider already added
             </h1>
             <div class="govuk-info-summary__body">
-                <p>You've already added @Model.AccountProvider.Provider.Name - UKPRN @Model.AccountProvider.Provider.Ukprn to your list of training providers.</p>
+                <p>You've already added @Model.AddedAccountProvider.Provider.Name - UKPRN @Model.AddedAccountProvider.Provider.Ukprn to your list of training providers.</p>
             </div>
         </div>
         @using (Html.BeginForm())
@@ -36,7 +36,7 @@
                         <div class="govuk-radios__item">
                             @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-1">
-                                Edit permissions for @Model.AccountProvider.Provider.Name
+                                Edit permissions for @Model.AddedAccountProvider.Provider.Name
                             </label>
                         </div>
                         <div class="govuk-radios__item">

@@ -122,7 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.Added(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedProviderViewModel>(m => m.AccountProvider == f.GetAddedProviderQueryResult.AccountProvider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedProviderViewModel>(m => m.AddedAccountProvider == f.GetAddedAccountProviderQueryResult.AddedAccountProvider);
             });
         }
 
@@ -162,7 +162,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.AlreadyAdded(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedProviderViewModel>(m => m.AccountProvider == f.GetAddedProviderQueryResult.AccountProvider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedProviderViewModel>(m => m.AddedAccountProvider == f.GetAddedAccountProviderQueryResult.AddedAccountProvider);
             });
         }
 
@@ -205,7 +205,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetProviderQueryResult GetProviderQueryResult { get; set; }
         public AddProviderViewModel AddProviderViewModel { get; set; }
         public int AccountProviderId { get; set; }
-        public GetAddedProviderQueryResult GetAddedProviderQueryResult { get; set; }
+        public GetAddedAccountProviderQueryResult GetAddedAccountProviderQueryResult { get; set; }
         public AddedProviderRouteValues AddedProviderRouteValues { get; set; }
         public AddedProviderViewModel AddedProviderViewModel { get; set; }
         public AlreadyAddedProviderRouteValues AlreadyAddedProviderRouteValues { get; set; }
@@ -290,7 +290,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedProviderQueryResult = new GetAddedProviderQueryResult(new AccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
             {
                 Id = 2,
                 Provider = new ProviderDto
@@ -300,7 +300,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedProviderQuery>(q => q.AccountId == AddedProviderRouteValues.AccountId && q.AccountProviderId == AddedProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResult);
+            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AddedProviderRouteValues.AccountId && q.AccountProviderId == AddedProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
             
             return ProvidersController.Added(AddedProviderRouteValues);
         }
@@ -331,7 +331,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedProviderQueryResult = new GetAddedProviderQueryResult(new AccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
             {
                 Id = 2,
                 Provider = new ProviderDto
@@ -341,7 +341,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedProviderQuery>(q => q.AccountId == AlreadyAddedProviderRouteValues.AccountId && q.AccountProviderId == AlreadyAddedProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedProviderQueryResult);
+            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AlreadyAddedProviderRouteValues.AccountId && q.AccountProviderId == AlreadyAddedProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
             
             return ProvidersController.AlreadyAdded(AlreadyAddedProviderRouteValues);
         }

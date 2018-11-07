@@ -11,22 +11,22 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProviderQueryHandler : IRequestHandler<GetAddedProviderQuery, GetAddedProviderQueryResult>
+    public class GetAddedAccountProviderQueryHandler : IRequestHandler<GetAddedAccountProviderQuery, GetAddedAccountProviderQueryResult>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
 
-        public GetAddedProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
+        public GetAddedAccountProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
         {
             _db = db;
             _configurationProvider = configurationProvider;
         }
 
-        public async Task<GetAddedProviderQueryResult> Handle(GetAddedProviderQuery request, CancellationToken cancellationToken)
+        public async Task<GetAddedAccountProviderQueryResult> Handle(GetAddedAccountProviderQuery request, CancellationToken cancellationToken)
         {
             var accountProvider = await _db.Value.AccountProviders
                 .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
-                .ProjectTo<AccountProviderDto>(_configurationProvider)
+                .ProjectTo<AddedAccountProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
             
             if (accountProvider == null)
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 return null;
             }
             
-            return new GetAddedProviderQueryResult(accountProvider);
+            return new GetAddedAccountProviderQueryResult(accountProvider);
         }
     }
 }

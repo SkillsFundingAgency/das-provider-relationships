@@ -2,12 +2,12 @@ using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProviderQuery : IRequest<GetAddedProviderQueryResult>
+    public class GetAddedAccountProviderQuery : IRequest<GetAddedAccountProviderQueryResult>
     {
         public long AccountId { get;  }
         public int AccountProviderId { get; }
 
-        public GetAddedProviderQuery(long accountId, int accountProviderId)
+        public GetAddedAccountProviderQuery(long accountId, int accountProviderId)
         {
             AccountId = accountId;
             AccountProviderId = accountProviderId;

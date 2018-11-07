@@ -92,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("{accountProviderId}/added")]
         public async Task<ActionResult> Added(AddedProviderRouteValues routeValues)
         {
-            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddedProviderViewModel>(response);
             
@@ -121,7 +121,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("{accountProviderId}/alreadyadded")]
         public async Task<ActionResult> AlreadyAdded(AlreadyAddedProviderRouteValues routeValues)
         {
-            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AlreadyAddedProviderViewModel>(response);
             
