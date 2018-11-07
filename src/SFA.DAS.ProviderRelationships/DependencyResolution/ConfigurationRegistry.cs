@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using StructureMap;
 
@@ -11,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public ConfigurationRegistry()
         {
             // belongs here, or in EnvironmentRegistry?
-            For<IEnvironment>().Use<Environment>()
+            For<IEnvironment>().Use<Environment.Environment>()
                 .Ctor<NameValueCollection>().Is(ConfigurationManager.AppSettings).Singleton();
 
             For<IEnvironmentConfiguration>().Use<EnvironmentConfiguration>()

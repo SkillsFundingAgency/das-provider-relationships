@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.Providers.Api.Client;
 using StructureMap;
 
