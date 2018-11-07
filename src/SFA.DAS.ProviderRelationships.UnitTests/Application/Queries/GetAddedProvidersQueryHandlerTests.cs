@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
@@ -26,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 {
                     r.Should().NotBeNull();
                     r.AccountProviders.Should().NotBeNull();
-                    r.AccountProviders.Should().BeEquivalentTo(new GetAccountProvidersQueryResult.AccountProvider
+                    r.AccountProviders.Should().BeEquivalentTo(new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name

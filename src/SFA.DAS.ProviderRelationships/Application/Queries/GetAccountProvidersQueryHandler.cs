@@ -7,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
@@ -25,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         {
             var accountProviders = await _db.Value.AccountProviders
                 .Where(ap => ap.Account.Id == request.AccountId)
-                .ProjectTo<GetAccountProvidersQueryResult.AccountProvider>(_configurationProvider)
+                .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
             return new GetAccountProvidersQueryResult(accountProviders);

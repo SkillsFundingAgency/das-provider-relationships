@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Home
 {
     public class AccountProvidersViewModel
     {
-        public List<GetAccountProvidersQueryResult.AccountProvider> AccountProviders { get; set; }
+        public List<AccountProviderDto> AccountProviders { get; set; }
     }
 }
