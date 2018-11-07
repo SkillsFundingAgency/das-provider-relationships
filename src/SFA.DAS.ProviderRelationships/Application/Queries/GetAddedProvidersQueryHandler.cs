@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
@@ -20,14 +21,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             _configurationProvider = configurationProvider;
         }
 
-        public Task<GetAddedProvidersQueryResponse> Handle(GetAddedProvidersQuery request, CancellationToken cancellationToken)
+        public async Task<GetAddedProvidersQueryResponse> Handle(GetAddedProvidersQuery request, CancellationToken cancellationToken)
         {
-            var accountProviders = _db.Value.AccountProviders
+            var accountProviders = await _db.Value.AccountProviders
                 .Where(ap => ap.Account.Id == request.AccountId)
                 .ProjectTo<GetAddedProvidersQueryResponse.AccountProvider>(_configurationProvider)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return Task.FromResult(new GetAddedProvidersQueryResponse(accountProviders));
+            return new GetAddedProvidersQueryResponse(accountProviders);
         }
     }
 }
