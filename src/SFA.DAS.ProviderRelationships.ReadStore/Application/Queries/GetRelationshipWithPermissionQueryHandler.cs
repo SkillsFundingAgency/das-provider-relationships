@@ -23,13 +23,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
                 .Where(p => p.Ukprn == request.Ukprn && p.Operations.Contains(request.Operation))
                 .Select(p => new RelationshipDto
                 {
-                    EmployerAccountId = p.EmployerAccountId,
-                    EmployerAccountPublicHashedId = p.EmployerAccountPublicHashedId,
-                    EmployerAccountName = p.EmployerAccountName,
-                    EmployerAccountLegalEntityId = p.EmployerAccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.EmployerAccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.EmployerAccountLegalEntityName,
-                    EmployerAccountProviderId = p.EmployerAccountProviderId,
+                    EmployerAccountId = p.AccountId,
+                    EmployerAccountPublicHashedId = p.AccountPublicHashedId,
+                    EmployerAccountName = p.AccountName,
+                    EmployerAccountLegalEntityId = p.AccountLegalEntityId,
+                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntityPublicHashedId,
+                    EmployerAccountLegalEntityName = p.AccountLegalEntityName,
+                    EmployerAccountProviderId = p.AccountProviderId,
                     Ukprn = p.Ukprn
                 })
                 .ToListAsync(cancellationToken);
