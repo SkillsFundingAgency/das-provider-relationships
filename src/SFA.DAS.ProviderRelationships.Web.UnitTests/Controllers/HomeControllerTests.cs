@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull()
-                    .And.BeOfType<TrainingProviderPermissionsViewModel>()
+                    .And.BeOfType<AccountProvidersViewModel>()
                     .Which.AccountProviders.Should().BeEquivalentTo(f.GetAddedProvidersQueryResponse.AccountProviders);
             });
         }
@@ -47,7 +47,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HomeController HomeController { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
-        public TrainingProviderPermissionsRouteValues TrainingProviderPermissionsRouteValues { get; set; }
+        public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
         public GetAddedProvidersQueryResponse GetAddedProvidersQueryResponse { get; set; }
 
         public HomeControllerTestsFixture()
@@ -71,7 +71,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Index()
         {
-            TrainingProviderPermissionsRouteValues = new TrainingProviderPermissionsRouteValues
+            AccountProvidersRouteValues = new AccountProvidersRouteValues
             {
                 AccountId = 7777777
             };
@@ -85,10 +85,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedProvidersQuery>(q => q.AccountId == TrainingProviderPermissionsRouteValues.AccountId), CancellationToken.None))
+            Mediator.Setup(m => m.Send(It.Is<GetAddedProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
                 .ReturnsAsync(GetAddedProvidersQueryResponse);
             
-            return HomeController.Index(TrainingProviderPermissionsRouteValues);
+            return HomeController.Index(AccountProvidersRouteValues);
         }
 
         public ActionResult Local()

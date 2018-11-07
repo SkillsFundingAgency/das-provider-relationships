@@ -34,14 +34,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return Redirect(Url.EmployerPortalAction());
         }
         
-        //todo: rename TrainingProviderPermissions prefix?
         [Route("accounts/{accountHashedId}")]
-        public async Task<ActionResult> Index(TrainingProviderPermissionsRouteValues routeValues)
+        public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
             var query = new GetAddedProvidersQuery(routeValues.AccountId.Value);
             var response = await _mediator.Send(query);
 
-            var model = _mapper.Map<TrainingProviderPermissionsViewModel>(response);
+            var model = _mapper.Map<AccountProvidersViewModel>(response);
             
             return View(model);
         }

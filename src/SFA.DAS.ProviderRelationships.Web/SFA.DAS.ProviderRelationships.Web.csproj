@@ -135,8 +135,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
-    <Compile Include="ViewModels\Home\TrainingProviderPermissionsRouteValues.cs" />
-    <Compile Include="ViewModels\Home\TrainingProviderPermissionsViewModel.cs" />
+    <Compile Include="ViewModels\Home\AccountProvidersRouteValues.cs" />
+    <Compile Include="ViewModels\Home\AccountProvidersViewModel.cs" />
     <Compile Include="ViewModels\Providers\AddedProviderRouteValues.cs" />
     <Compile Include="ViewModels\Providers\AddedProviderViewModel.cs" />
     <Compile Include="ViewModels\Providers\AddProviderRouteValues.cs" />
