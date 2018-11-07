@@ -4,11 +4,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetAddedAccountProviderQueryResult
     {
-        public AddedAccountProviderDto AddedAccountProvider { get; }
+        public AddedAccountProviderDto AccountProvider { get; }
 
-        public GetAddedAccountProviderQueryResult(AddedAccountProviderDto addedAccountProvider)
+        public GetAddedAccountProviderQueryResult(AddedAccountProviderDto accountProvider)
         {
-            AddedAccountProvider = addedAccountProvider;
+            AccountProvider = accountProvider;
         }
     }
 }

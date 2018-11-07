@@ -26,12 +26,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return RunAsync(f => f.SetProviders(), f => f.Handle(), (f, r) =>
                 {
                     r.Should().NotBeNull();
-                    r.AccountProviders.Should().NotBeNull();
-                    r.AccountProviders.Should().BeEquivalentTo(new AccountProviderDto
-                    {
-                        Id = f.AccountProvider.Id,
-                        ProviderName = f.Provider.Name
-                    });
+                    r.AccountProviders.Should().NotBeNull().And.BeEquivalentTo(
+                        new AccountProviderDto
+                        {
+                            Id = f.AccountProvider.Id,
+                            ProviderName = f.Provider.Name
+                        });
                 });
         }
 
@@ -41,8 +41,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return RunAsync(f => f.Handle(), (f, r) => 
             {
                 r.Should().NotBeNull();
-                r.AccountProviders.Should().NotBeNull();
-                r.AccountProviders.Should().BeEmpty();
+                r.AccountProviders.Should().NotBeNull().And.BeEmpty();
             });
         }
     }

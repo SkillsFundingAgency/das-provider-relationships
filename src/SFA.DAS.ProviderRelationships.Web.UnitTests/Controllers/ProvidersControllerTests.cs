@@ -122,7 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.Added(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedProviderViewModel>(m => m.AddedAccountProvider == f.GetAddedAccountProviderQueryResult.AddedAccountProvider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
             });
         }
 
@@ -162,7 +162,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.AlreadyAdded(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedProviderViewModel>(m => m.AddedAccountProvider == f.GetAddedAccountProviderQueryResult.AddedAccountProvider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
             });
         }
 

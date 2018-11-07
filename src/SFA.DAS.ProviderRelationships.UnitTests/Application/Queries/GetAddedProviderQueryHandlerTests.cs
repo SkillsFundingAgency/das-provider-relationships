@@ -24,9 +24,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetAddedAccountProviderQueryResult>(r2 =>
-                    r2.AddedAccountProvider.Id == f.AccountProvider.Id &&
-                    r2.AddedAccountProvider.Provider.Ukprn == f.Provider.Ukprn &&
-                    r2.AddedAccountProvider.Provider.Name == f.Provider.Name));
+                    r2.AccountProvider.Id == f.AccountProvider.Id &&
+                    r2.AccountProvider.Provider.Ukprn == f.Provider.Ukprn &&
+                    r2.AccountProvider.Provider.Name == f.Provider.Name));
         }
 
         [Test]
