@@ -16,20 +16,20 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IEnvironment _environment;
 
-        public HomeController(IMediator mediator, IMapper mapper)
+        public HomeController(IMediator mediator, IMapper mapper, IEnvironment environment)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _environment = environment;
         }
 
         [Route]
         public ActionResult Local()
         {
-            if (ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL))
-            {
+            if (_environment.IsCurrentEnvironment(DasEnv.LOCAL))
                 return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
-            }
 
             return Redirect(Url.EmployerPortalAction());
         }

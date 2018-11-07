@@ -17,19 +17,21 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
     public class EndpointStartup : IStartup
     {
         private readonly IContainer _container;
+        private readonly IEnvironment _environment;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public EndpointStartup(IContainer container, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public EndpointStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
+            _environment = environment;
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
         }
         
         public async Task StartAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.MessageHandlers")
-                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString)
+                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString, _environment.IsCurrentEnvironment(DasEnv.LOCAL))
                 .UseErrorQueue()
                 .UseInstallers()
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)

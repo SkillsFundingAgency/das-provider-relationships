@@ -18,10 +18,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             {
                 var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-                var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
                 var instrumentationKey = ConfigurationManager.AppSettings["InstrumentationKey"];
 
-                if (isDevelopment)
+                var environment = container.GetInstance<IEnvironment>();
+                if (environment.IsCurrentEnvironment(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }

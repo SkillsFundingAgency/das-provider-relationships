@@ -21,17 +21,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     [Parallelizable]
     public class HomeControllerTests : FluentTest<HomeControllerTestsFixture>
     {
+        //todo: this has parallizable issues
+        // rename some view models to match new query/dto names?
         [Test]
         public void Index_WhenGettingLocalAction_ThenShouldRedirectToEmployerPortal()
         {
-            Run(f => f.SetEnvironment(DasEnv.AT), f => f.Local(), (f, r) => r.Should().NotBeNull()
+            Run(f => f.SetCurrentEnvironmentIsLocal(false), f => f.Local(), (f, r) => r.Should().NotBeNull()
                 .And.Match<RedirectResult>(a => a.Url == f.Configuration.EmployerPortalBaseUrl));
         }
         
         [Test]
         public Task Index_WhenGettingIndexAction_ThenShouldReturnView()
         {
-            return RunAsync(f => f.SetEnvironment(DasEnv.AT), f => f.Index(), (f, r) =>
+            return RunAsync(f => f.SetCurrentEnvironmentIsLocal(false), f => f.Index(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull()
@@ -48,6 +50,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HomeController HomeController { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
+        public Mock<IEnvironment> Environment { get; set; }
+
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
         public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
 
@@ -62,12 +66,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             Resolver.Setup(r => r.GetService(typeof(ProviderRelationshipsConfiguration))).Returns(Configuration);
 
+            //todo: another static killing parallizable
             DependencyResolver.SetResolver(Resolver.Object);
 
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
-
-            HomeController = new HomeController(Mediator.Object, Mapper);
+            Environment = new Mock<IEnvironment>();
+            
+            HomeController = new HomeController(Mediator.Object, Mapper, Environment.Object);
         }
 
         public Task<ActionResult> Index()
@@ -97,9 +103,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return HomeController.Local();
         }
 
-        public HomeControllerTestsFixture SetEnvironment(DasEnv environment)
+        public HomeControllerTestsFixture SetCurrentEnvironmentIsLocal(bool local)
         {
-            ConfigurationManager.AppSettings["EnvironmentName"] = environment.ToString();
+            //Environment.Setup(e => e.IsCurrentEnvironment(It.Is<DasEnv[]>(ep => ep == new[] {DasEnv.LOCAL}))).Returns(local);
+            Environment.Setup(e => e.IsCurrentEnvironment(It.IsAny<DasEnv[]>())).Returns(local);
 
             return this;
         }

@@ -1,4 +1,6 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
+﻿using System.Collections.Specialized;
+using System.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using StructureMap;
 
@@ -8,8 +10,15 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public ConfigurationRegistry()
         {
-            For<ProviderRelationshipsConfiguration>().Use(() => ConfigurationHelper.GetConfiguration<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
-            For<ProviderRelationshipsReadStoreConfiguration>().Use(() => ConfigurationHelper.GetConfiguration<ProviderRelationshipsReadStoreConfiguration>("SFA.DAS.ProviderRelationships.ReadStore")).Singleton();
+            // belongs here, or in EnvironmentRegistry?
+            For<IEnvironment>().Use<Environment>()
+                .Ctor<NameValueCollection>().Is(ConfigurationManager.AppSettings).Singleton();
+
+            For<IEnvironmentConfiguration>().Use<EnvironmentConfiguration>()
+                .Ctor<NameValueCollection>().Is(ConfigurationManager.AppSettings);
+
+            For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<IEnvironmentConfiguration>().Get<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
+            For<ProviderRelationshipsReadStoreConfiguration>().Use(c => c.GetInstance<IEnvironmentConfiguration>().Get<ProviderRelationshipsReadStoreConfiguration>("SFA.DAS.ProviderRelationships.ReadStore")).Singleton();
         }
     }
 }
