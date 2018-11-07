@@ -6,4 +6,5 @@
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Api.Client.UnitTests")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Jobs")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.MessageHandlers")]
+[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.ReadStore.UnitTests")]
