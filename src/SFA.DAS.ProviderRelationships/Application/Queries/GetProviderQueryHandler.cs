@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderQueryReply>
+    public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderQueryResult>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
@@ -22,14 +22,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             _configurationProvider = configurationProvider;
         }
 
-        public async Task<GetProviderQueryReply> Handle(GetProviderQuery request, CancellationToken cancellationToken)
+        public async Task<GetProviderQueryResult> Handle(GetProviderQuery request, CancellationToken cancellationToken)
         {
             var provider = await _db.Value.Providers
                 .Where(p => p.Ukprn == request.Ukprn)
                 .ProjectTo<ProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            return provider == null ? null : new GetProviderQueryReply(provider);
+            return provider == null ? null : new GetProviderQueryResult(provider);
         }
     }
 }

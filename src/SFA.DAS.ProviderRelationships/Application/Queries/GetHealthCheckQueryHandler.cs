@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetHealthCheckQueryHandler : IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryReply>
+    public class GetHealthCheckQueryHandler : IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResult>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
@@ -22,14 +22,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             _configurationProvider = configurationProvider;
         }
 
-        public async Task<GetHealthCheckQueryReply> Handle(GetHealthCheckQuery request, CancellationToken cancellationToken)
+        public async Task<GetHealthCheckQueryResult> Handle(GetHealthCheckQuery request, CancellationToken cancellationToken)
         {
             var healthCheck = await _db.Value.HealthChecks
                 .OrderByDescending(h => h.Id)
                 .ProjectTo<HealthCheckDto>(_configurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            return new GetHealthCheckQueryReply(healthCheck);
+            return new GetHealthCheckQueryResult(healthCheck);
         }
     }
 }

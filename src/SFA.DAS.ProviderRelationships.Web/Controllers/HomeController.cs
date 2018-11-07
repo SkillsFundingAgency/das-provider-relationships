@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("accounts/{accountHashedId}")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
-            var query = new GetAddedProvidersQuery(routeValues.AccountId.Value);
+            var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var response = await _mediator.Send(query);
 
             var model = _mapper.Map<AccountProvidersViewModel>(response);

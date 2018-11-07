@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 {
                     r.Should().NotBeNull();
                     r.AccountProviders.Should().NotBeNull();
-                    r.AccountProviders.Should().BeEquivalentTo(new GetAddedProvidersQueryReply.AccountProvider
+                    r.AccountProviders.Should().BeEquivalentTo(new GetAccountProvidersQueryResult.AccountProvider
                     {
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name
@@ -48,8 +48,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
     public class GetAddedProvidersQueryHandlerTestsFixture
     {
-        public GetAddedProvidersQuery Query { get; set; }
-        public IRequestHandler<GetAddedProvidersQuery, GetAddedProvidersQueryReply> Handler { get; set; }
+        public GetAccountProvidersQuery Query { get; set; }
+        public IRequestHandler<GetAccountProvidersQuery, GetAccountProvidersQueryResult> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedProvidersQueryHandlerTestsFixture()
         {
-            Query = new GetAddedProvidersQuery(5555);
+            Query = new GetAccountProvidersQuery(5555);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             ConfigurationProvider = new MapperConfiguration(c =>
@@ -67,10 +67,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 c.AddProfile<ProviderMappings>();
             });
             
-            Handler = new GetAddedProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
+            Handler = new GetAccountProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetAddedProvidersQueryReply> Handle()
+        public Task<GetAccountProvidersQueryResult> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }

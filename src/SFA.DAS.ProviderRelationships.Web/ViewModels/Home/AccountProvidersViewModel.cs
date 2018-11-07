@@ -5,6 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Home
 {
     public class AccountProvidersViewModel
     {
-        public List<GetAddedProvidersQueryReply.AccountProvider> AccountProviders { get; set; }
+        public List<GetAccountProvidersQueryResult.AccountProvider> AccountProviders { get; set; }
     }
 }

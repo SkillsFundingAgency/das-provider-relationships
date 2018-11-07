@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull()
                     .And.BeOfType<AccountProvidersViewModel>()
-                    .Which.AccountProviders.Should().BeEquivalentTo(f.GetAddedProvidersQueryReply.AccountProviders);
+                    .Which.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
             });
         }
     }
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
-        public GetAddedProvidersQueryReply GetAddedProvidersQueryReply { get; set; }
+        public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
 
         public HomeControllerTestsFixture()
         {
@@ -76,17 +76,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountId = 7777777
             };
             
-            GetAddedProvidersQueryReply = new GetAddedProvidersQueryReply(new[]
+            GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(new[]
             {
-                new GetAddedProvidersQueryReply.AccountProvider
+                new GetAccountProvidersQueryResult.AccountProvider
                 {
                     Id = 666666,
                     ProviderName = "ProviderName"
                 }
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
-                .ReturnsAsync(GetAddedProvidersQueryReply);
+            Mediator.Setup(m => m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
+                .ReturnsAsync(GetAccountProvidersQueryResult);
             
             return HomeController.Index(AccountProvidersRouteValues);
         }

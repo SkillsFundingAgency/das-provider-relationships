@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.Index(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryReply.HealthCheck);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryResult.HealthCheck);
             });
         }
 
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HealthCheckController HealthCheckController { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
-        public GetHealthCheckQueryReply GetHealthCheckQueryReply { get; set; }
+        public GetHealthCheckQueryResult GetHealthCheckQueryResult { get; set; }
         public HealthCheckRouteValues HealthCheckRouteValues { get; set; }
 
         public HealthCheckControllerTestsFixture()
@@ -57,9 +57,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Index()
         {
-            GetHealthCheckQueryReply = new GetHealthCheckQueryReply(new HealthCheckDto());
+            GetHealthCheckQueryResult = new GetHealthCheckQueryResult(new HealthCheckDto());
 
-            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryReply);
+            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResult);
 
             return HealthCheckController.Index();
         }

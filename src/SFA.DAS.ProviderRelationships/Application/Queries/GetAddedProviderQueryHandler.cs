@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAddedProviderQueryHandler : IRequestHandler<GetAddedProviderQuery, GetAddedProviderQueryReply>
+    public class GetAddedProviderQueryHandler : IRequestHandler<GetAddedProviderQuery, GetAddedProviderQueryResult>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             _configurationProvider = configurationProvider;
         }
 
-        public async Task<GetAddedProviderQueryReply> Handle(GetAddedProviderQuery request, CancellationToken cancellationToken)
+        public async Task<GetAddedProviderQueryResult> Handle(GetAddedProviderQuery request, CancellationToken cancellationToken)
         {
             var accountProvider = await _db.Value.AccountProviders
                 .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 return null;
             }
             
-            return new GetAddedProviderQueryReply(accountProvider);
+            return new GetAddedProviderQueryResult(accountProvider);
         }
     }
 }

@@ -8,13 +8,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public ProviderMappings()
         {
-            CreateMap<GetAddedProviderQueryReply, AddedProviderViewModel>()
+            CreateMap<GetAddedProviderQueryResult, AddedProviderViewModel>()
                 .ForMember(d => d.Choice, o => o.Ignore());
             
-            CreateMap<GetAddedProviderQueryReply, AlreadyAddedProviderViewModel>()
+            CreateMap<GetAddedProviderQueryResult, AlreadyAddedProviderViewModel>()
                 .ForMember(d => d.Choice, o => o.Ignore());
             
-            CreateMap<GetProviderQueryReply, AddProviderViewModel>()
+            CreateMap<GetProviderQueryResult, AddProviderViewModel>()
                 .ForMember(d => d.Ukprn, o => o.MapFrom(s => s.Provider.Ukprn))
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())

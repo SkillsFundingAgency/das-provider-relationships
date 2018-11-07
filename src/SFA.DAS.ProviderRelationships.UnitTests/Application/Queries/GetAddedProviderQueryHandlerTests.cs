@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Task Handle_WhenHandlingGetAddedProviderQuery_ThenShouldReturnGetAddedProviderQueryResponse()
         {
             return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
-                .And.Match<GetAddedProviderQueryReply>(r2 =>
+                .And.Match<GetAddedProviderQueryResult>(r2 =>
                     r2.AccountProvider.Id == f.AccountProvider.Id &&
                     r2.AccountProvider.Provider.Ukprn == f.Provider.Ukprn &&
                     r2.AccountProvider.Provider.Name == f.Provider.Name));
@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetAddedProviderQueryHandlerTestsFixture
     {
         public GetAddedProviderQuery Query { get; set; }
-        public IRequestHandler<GetAddedProviderQuery, GetAddedProviderQueryReply> Handler { get; set; }
+        public IRequestHandler<GetAddedProviderQuery, GetAddedProviderQueryResult> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
@@ -60,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Handler = new GetAddedProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetAddedProviderQueryReply> Handle()
+        public Task<GetAddedProviderQueryResult> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }

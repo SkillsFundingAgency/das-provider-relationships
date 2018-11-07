@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetProviderQuery : IRequest<GetProviderQueryReply>
+    public class GetProviderQuery : IRequest<GetProviderQueryResult>
     {
         public long Ukprn { get;  }
 
