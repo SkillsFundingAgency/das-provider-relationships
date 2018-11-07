@@ -12,6 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null);
         Task<TDocument> GetById(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default);
         Task Remove(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default);
+        Task Update(TDocument document, Guid id, RequestOptions requestOptions = null,  CancellationToken cancellationToken = default);
         Task Update(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default);
     }
 }

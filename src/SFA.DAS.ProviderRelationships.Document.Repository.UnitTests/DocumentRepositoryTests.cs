@@ -65,7 +65,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         [Test]
         public void Update_WhenUpdatingDocument_ThenShouldUpdateDocument()
         {
-            Run(f => f.Update(), f => f.DocumentClient.Verify(c => c.ReplaceDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.Document, f.RequestOptions, CancellationToken.None), Times.Once));
+            Run(f => f.Update(), f => f.DocumentClient.Verify(c => c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.Document, f.RequestOptions, CancellationToken.None), Times.Once));
         }
     }
 
@@ -147,7 +147,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public Task Update()
         {
-            return DocumentRepository.Update(Document, RequestOptions);
+            return DocumentRepository.Update(Document, Document.Id, RequestOptions);
         }
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocument()

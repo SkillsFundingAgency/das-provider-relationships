@@ -21,17 +21,18 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             _collectionName = collectionName;
         }
 
-        public Task Add(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task Add(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, false, cancellationToken);
+            var documentContainsAnId = (document as IDocumentEntity)?.Id != null;
+            return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, documentContainsAnId, cancellationToken);
         }
 
-        public IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
+        public virtual IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
         {
             return _documentClient.CreateDocumentQuery<TDocument>(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), feedOptions);
         }
 
-        public async Task<TDocument> GetById(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TDocument> GetById(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -50,14 +51,41 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             }
         }
 
-        public Task Remove(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task Remove(Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
             return _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), requestOptions, cancellationToken);
         }
 
-        public Task Update(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task Update(TDocument document, Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, cancellationToken);
+            return _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), document, requestOptions, cancellationToken);
         }
+
+        public virtual Task Update(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            var documentEntity = (document as IDocumentEntity);
+            if (documentEntity?.Id == null) throw new Exception("Document expected to implement an IDocumentEntity and must have a valid Id");
+
+            requestOptions = AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(documentEntity, requestOptions);
+
+            return Update(document, documentEntity.Id.Value, requestOptions, cancellationToken);
+        }
+
+        private RequestOptions AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(IDocumentEntity documentEntity, RequestOptions requestOptions)
+        {
+            var options = requestOptions ?? new RequestOptions();
+            if (options.AccessCondition == null)
+            {
+                if (!string.IsNullOrWhiteSpace(documentEntity.ETag))
+                {
+                    options.AccessCondition = new AccessCondition {
+                        Condition = documentEntity.ETag,
+                        Type = AccessConditionType.IfMatch
+                    };
+                }
+            }
+            return options;
+        }
+
     }
 }
