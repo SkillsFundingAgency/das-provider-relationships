@@ -103,7 +103,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             return this;
         }
 
-        public PermissionBuilder WithDeleted(DateTime deleted)
+        public PermissionBuilder WithDeleted(DateTime? deleted)
         {
             _permission.SetupProperty(p => p.Deleted, deleted);
 
@@ -117,7 +117,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
             return this;
         }
 
+        public PermissionBuilder WithUpdated(DateTime? updated)
+        {
+            _permission.SetupProperty(p => p.Updated, updated);
 
+            return this;
+        }
 
         public Permission Build()
         {

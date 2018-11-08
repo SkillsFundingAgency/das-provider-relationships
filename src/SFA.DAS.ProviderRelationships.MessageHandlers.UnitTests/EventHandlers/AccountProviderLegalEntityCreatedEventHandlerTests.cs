@@ -103,12 +103,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             return this;
         }
 
-        public AccountProviderLegalEntityCreatedEventHandlerTestsFixture SetMessageIdInContext(string messageId)
-        {
-            MessageHandlerContext.Setup(x => x.MessageId).Returns(messageId);
-            return this;
-        }
-
     }
 
 

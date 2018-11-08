@@ -5,19 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using Moq;
 using NServiceBus;
-using NUnit.Framework;
 using SFA.DAS.NServiceBus;
-using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
-using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.ReadStore.Models;
-using SFA.DAS.Testing;
 using Permission = SFA.DAS.ProviderRelationships.ReadStore.Models.Permission;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
@@ -49,10 +42,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             await Handler.Handle(Message, MessageHandlerContext.Object);
         }
+        public DocumentEventHandlerTestsFixture<TEvent> SetMessageIdInContext(string messageId)
+        {
+            MessageHandlerContext.Setup(x => x.MessageId).Returns(messageId);
+            return this;
+        }
+
+
     }
-
-
-
 
 
 

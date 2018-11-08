@@ -50,6 +50,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("deleted")]
         public virtual DateTime? Deleted { get; protected set; }
 
+        [JsonProperty("updated")]
+        public virtual DateTime? Updated { get; protected set; }
+
         public static Permission Create(long ukprn, long accountProviderLegalEntityId,
                 long accountId, string accountPublicHashedId, string accountName,
                 long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
@@ -93,14 +96,14 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
-            if (MessageAlreadyPrcessed(messageId))
+            if (MessageAlreadyProcessed(messageId))
                 return;
 
             if (Deleted == null)
                 throw new Exception($"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
 
             if (Deleted > reactivated)
-                throw new Exception($"Message {messageId} is trying to recreate a relationship which was deleted afterwards");
+                throw new Exception($"Message {messageId} is trying to recreate a relationship which was deleted after the re-activate request");
 
             Ukprn = ukprn;
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
@@ -120,26 +123,50 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             AddMessageToOutbox(messageId, reactivated);
         }
 
-        public void UpdatePermissions(HashSet<Operation> grants, HashSet<Operation> revokes, DateTime created, string messageId)
+        public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
         {
-            if (MessageAlreadyPrcessed(messageId))
+            if (MessageAlreadyProcessed(messageId))
                 return;
 
-            var permissionsWhichExistInBothSets = grants.Join(revokes, g => g, r => r, (g, r) => g);
+            if (Deleted != null)
+                throw new Exception($"Message {messageId} is trying to update a Permission has been deleted");
 
-            if (permissionsWhichExistInBothSets.Any())
-                throw new Exception("Permissions cannot both be granted and revoked in the same request");
+            if (Created > updated)
+                throw new Exception($"Message {messageId} is trying to update a Permission was been created/re-activated after this update message");
 
-            var grantsWhichAreAlreadyPresent = Operations.Join(grants, o => o, g => g, (o, g) => o);
-            if (grantsWhichAreAlreadyPresent.Any())
-                throw new Exception("Permissions have already been granted");
+            // Swallow old updates 
+            if (Updated > updated)
+            {
+                AddMessageToOutbox(messageId, updated);
+                return;
+            }
 
             Operations = grants;
 
-            AddMessageToOutbox(messageId, created);
+            AddMessageToOutbox(messageId, updated);
         }
 
-        private bool MessageAlreadyPrcessed(string messageId)
+        public void DeleteRelationship(DateTime deleted, string messageId)
+        {
+            if (MessageAlreadyProcessed(messageId))
+                return;
+
+            if (Deleted != null)
+                throw new Exception($"Message {messageId} is trying to delete a Permission has already been deleted");
+
+            if (Created > deleted)
+                throw new Exception($"Message {messageId} is trying to delete a Permission has been created/re-activated after this delete request");
+
+            if (Updated > deleted)
+                throw new Exception($"Message {messageId} is trying to delete a Permission has been updated after this delete request");
+
+            Operations = new HashSet<Operation>();
+            Deleted = deleted;
+
+            AddMessageToOutbox(messageId, deleted);
+        }
+
+        private bool MessageAlreadyProcessed(string messageId)
         {
             return OutboxData.Any(x => x.MessageId == messageId);
         }
