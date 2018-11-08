@@ -124,7 +124,6 @@
     <Compile Include="Routing\RouteDataKeys.cs" />
     <Compile Include="EndpointStartup.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Extensions\UrlHelperExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -133,6 +132,8 @@
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Urls\ApprenticeshipUrls.cs" />
+    <Compile Include="Urls\IApprenticeshipUrls.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\Home\AccountProvidersRouteValues.cs" />

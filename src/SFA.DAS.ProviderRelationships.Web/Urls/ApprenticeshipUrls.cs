@@ -1,26 +1,9 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Routing;
 
-namespace SFA.DAS.ProviderRelationships.Web.Extensions
+namespace SFA.DAS.ProviderRelationships.Web.Urls
 {
-    public interface IApprenticeshipUrls
-    {
-        string EmployerAccountsAction(string path = null);
-
-        string EmployerAccountsAccountAction(UrlHelper urlHelper, string path = null);
-
-        string EmployerCommitmentsAccountAction(UrlHelper urlHelper, string path = null);
-
-        string EmployerFinanceAccountAction(UrlHelper urlHelper, string path = null);
-
-        string EmployerPortalAccountAction(UrlHelper urlHelper, string path = null);
-
-        string EmployerPortalAction(string path = null);
-
-        string EmployerRecruitAccountAction(UrlHelper urlHelper, string path = null);
-    }
-
     public class ApprenticeshipUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;
