@@ -20,11 +20,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IApprenticeshipUrls _apprenticeshipUrls;
 
-        public ProvidersController(IMediator mediator, IMapper mapper)
+        public ProvidersController(IMediator mediator, IMapper mapper, IApprenticeshipUrls apprenticeshipUrls)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _apprenticeshipUrls = apprenticeshipUrls;
         }
 
         [Route("search")]
@@ -111,7 +113,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 case "GoToHomepage":
-                    return Redirect(Url.EmployerPortalAccountAction());
+                    return Redirect(_apprenticeshipUrls.EmployerPortalAccountAction(Url));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }

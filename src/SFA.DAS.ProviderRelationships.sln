@@ -33,8 +33,8 @@ ProjectSection(SolutionItems) = preProject
 	..\.gitignore = ..\.gitignore
 	..\LICENSE = ..\LICENSE
 	..\README.md = ..\README.md
-	..\Possible Improvements.txt = ..\Possible Improvements.txt
 	DevInstall.ps1 = DevInstall.ps1
+	..\Possible Improvements.md = ..\Possible Improvements.md
 EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client", "SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj", "{7F2F7041-07E0-48C0-A65A-E7FF06C65532}"
