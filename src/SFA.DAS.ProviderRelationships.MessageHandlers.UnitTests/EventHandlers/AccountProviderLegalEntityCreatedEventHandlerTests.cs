@@ -102,13 +102,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
             return this;
         }
-
     }
-
-
-
-
-
-
-
 }
