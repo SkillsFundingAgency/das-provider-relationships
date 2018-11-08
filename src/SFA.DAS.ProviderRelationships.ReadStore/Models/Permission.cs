@@ -176,6 +176,5 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             if (messageId is null) throw new ArgumentNullException(nameof(messageId));
             OutboxData = OutboxData.Append(new OutboxDataItem(messageId, created));
         }
-
     }
 }
