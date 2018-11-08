@@ -3,6 +3,7 @@ using SFA.DAS.Authorization;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.Logging;
+using SFA.DAS.ProviderRelationships.Web.Urls;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
@@ -14,6 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
+            For<IApprenticeshipUrls>().Use<ApprenticeshipUrls>();
             
             Scan(s =>
             {

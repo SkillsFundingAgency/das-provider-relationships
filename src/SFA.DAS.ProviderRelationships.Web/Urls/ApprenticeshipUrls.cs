@@ -4,7 +4,7 @@ using SFA.DAS.ProviderRelationships.Web.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Urls
 {
-    public class ApprenticeshipUrls
+    public class ApprenticeshipUrls : IApprenticeshipUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;
         
