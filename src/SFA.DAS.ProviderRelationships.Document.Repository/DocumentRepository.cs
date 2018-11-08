@@ -8,7 +8,7 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public abstract class DocumentRepository<TDocument> : IDocumentRepository<TDocument> where TDocument : class
+    public abstract class DocumentRepository<TDocument> : IDocumentRepository<TDocument> where TDocument : class, IDocument
     {
         private readonly IDocumentClient _documentClient;
         private readonly string _databaseName;
@@ -23,7 +23,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
 
         public virtual Task Add(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var documentContainsAnId = (document as IDocumentEntity)?.Id != null;
+            if (document == null) throw new ArgumentNullException(nameof(document));
+            var documentContainsAnId = document.Id != Guid.Empty;
             return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, documentContainsAnId, cancellationToken);
         }
 
@@ -56,30 +57,25 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
             return _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), requestOptions, cancellationToken);
         }
 
-        public virtual Task Update(TDocument document, Guid id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, id.ToString()), document, requestOptions, cancellationToken);
-        }
-
         public virtual Task Update(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var documentEntity = (document as IDocumentEntity);
-            if (documentEntity?.Id == null) throw new Exception("Document expected to implement an IDocumentEntity and must have a valid Id");
+            if (document == null) throw new ArgumentNullException(nameof(document));
+            if (document.Id == Guid.Empty) throw new Exception("Document expected to implement an IDocument and must have a valid Id");
 
-            requestOptions = AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(documentEntity, requestOptions);
+            requestOptions = AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(document, requestOptions);
 
-            return Update(document, documentEntity.Id.Value, requestOptions, cancellationToken);
+            return _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseName, _collectionName, document.Id.ToString()), document, requestOptions, cancellationToken);
         }
 
-        private RequestOptions AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(IDocumentEntity documentEntity, RequestOptions requestOptions)
+        private RequestOptions AddOptimisticLockingIfETagSetAndNoAccessConditionDefined(IDocument document, RequestOptions requestOptions)
         {
             var options = requestOptions ?? new RequestOptions();
             if (options.AccessCondition == null)
             {
-                if (!string.IsNullOrWhiteSpace(documentEntity.ETag))
+                if (!string.IsNullOrWhiteSpace(document.ETag))
                 {
                     options.AccessCondition = new AccessCondition {
-                        Condition = documentEntity.ETag,
+                        Condition = document.ETag,
                         Type = AccessConditionType.IfMatch
                     };
                 }

@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.ReactivatedMessageId)
                     )
-                    , It.IsAny<CancellationToken>())));
+                    , null, It.IsAny<CancellationToken>())));
         }
     }
 

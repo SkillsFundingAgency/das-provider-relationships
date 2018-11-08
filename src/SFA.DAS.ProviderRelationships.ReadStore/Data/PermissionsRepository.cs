@@ -25,27 +25,5 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 
             return base.CreateQuery(options);
         }
-
-        public Task Update(Permission permission, CancellationToken token = default)
-        {
-            return Update(permission, null, token);
-        }
-
-        public Task UpdateOld(Permission permission, CancellationToken token = default)
-        {
-            if (permission == null) throw new ArgumentNullException(nameof(permission));
-            if (permission.Id == null) throw new Exception("Entity's Id must contain a Guid when replacing a document");
-
-            var requestOptions = new RequestOptions();
-
-            if (string.IsNullOrEmpty(permission.ETag))
-            {
-                requestOptions.AccessCondition = new AccessCondition {
-                    Condition = permission.ETag,
-                    Type = AccessConditionType.IfMatch
-                };
-            }
-            return Update(permission, permission.Id.Value, requestOptions, token);
-        }
     }
 }

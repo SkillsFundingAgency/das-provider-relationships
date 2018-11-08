@@ -4,10 +4,10 @@ using SFA.DAS.ProviderRelationships.Document.Repository;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    internal abstract class Document : IDocumentEntity
+    internal abstract class Document : IDocument
     {
         [JsonProperty("id")]
-        public virtual Guid? Id { get; protected set; }
+        public virtual Guid Id { get; protected set; }
 
         [JsonIgnore]
         public virtual string ETag { get; protected set; }

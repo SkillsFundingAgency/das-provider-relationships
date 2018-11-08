@@ -8,7 +8,6 @@ using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application;
 using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
@@ -29,14 +28,14 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Data
         [Test]
         public Task Update_WhenPermissionIsNull_ThenShouldThrowException()
         {
-            return RunAsync(f => f.PermissionsRepository.Update(null, CancellationToken.None), (f, r) => r.Should().Throw<Exception>());
+            return RunAsync(f => f.PermissionsRepository.Update(null, null, CancellationToken.None), (f, r) => r.Should().Throw<Exception>());
         }
 
         [Test]
         public Task Update_WhenPermissionsIdIsNull_ThenShouldThrowException()
         {
             return RunAsync(f => f.CreateSinglePermissionWithIdAndETag(null, null), 
-                f => f.PermissionsRepository.Update(f.SinglePermission, CancellationToken.None), 
+                f => f.PermissionsRepository.Update(f.SinglePermission, null, CancellationToken.None), 
                 (f, r) => r.Should().Throw<Exception>());
         }
 

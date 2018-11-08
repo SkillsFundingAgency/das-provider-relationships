@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SFA.DAS.ProviderRelationships.Document.Repository
 {
-    public interface IDocumentEntity
+    public interface IDocument
     {
-        Guid? Id { get; }
+        Guid Id { get; }
         string ETag { get; }
     }
 }

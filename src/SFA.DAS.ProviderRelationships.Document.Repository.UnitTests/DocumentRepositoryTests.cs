@@ -21,11 +21,17 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
     public class DocumentRepositoryTests : FluentTest<DocumentReadOnlyRepositoryTestsFixture>
     {
         [Test]
-        public void Add_WhenAddingDocument_ThenShouldAddDocument()
+        public Task Add_WhenAddingDocument_ThenShouldAddDocumentAndGenerateId()
         {
-            Run(f => f.Add(), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.Document, f.RequestOptions, false, CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Add(), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.Document, f.RequestOptions, true, CancellationToken.None), Times.Once));
         }
-        
+
+        [Test]
+        public Task Add_WhenAddingDocumentWithAnEmptyId_ThenShouldAddDocumentAndAskCosmsToGenerateId()
+        {
+            return RunAsync(f => f.Add(f.DocumentWithoutId), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.DocumentWithoutId, f.RequestOptions, false, CancellationToken.None), Times.Once));
+        }
+
         [Test]
         public void CreateQuery_WhenCreatingQuery_ThenShouldReturnIQueryable()
         {
@@ -57,15 +63,29 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         }
 
         [Test]
-        public void Remove_WhenRemovingDocument_ThenShouldRemoveDocument()
+        public Task Remove_WhenRemovingDocument_ThenShouldRemoveDocument()
         {
-            Run(f => f.Remove(), f => f.DocumentClient.Verify(c => c.DeleteDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.RequestOptions, CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Remove(), f => f.DocumentClient.Verify(c => c.DeleteDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.RequestOptions, CancellationToken.None), Times.Once));
         }
 
         [Test]
-        public void Update_WhenUpdatingDocument_ThenShouldUpdateDocument()
+        public Task Update_WhenUpdatingDocument_ThenShouldUpdateDocumentWithoutCheckingETag()
         {
-            Run(f => f.Update(), f => f.DocumentClient.Verify(c => c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.Document, f.RequestOptions, CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Update(), f => f.DocumentClient.Verify(c => 
+                c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.Document, It.Is<RequestOptions>(o=>o.AccessCondition == null), CancellationToken.None), Times.Once));
+        }
+        [Test]
+        public Task Update_WhenUpdatingDocumentWithEmptyId_ThenShouldThrowExcepton()
+        {
+            return RunAsync(f => f.Update(f.DocumentWithoutId), (f, r) => r.Should().Throw<Exception>());
+        }
+        [Test]
+        public Task Update_WhenUpdatingDocumentWithAnETag_ThenShouldUpdateDocumentCheckingETag()
+        {
+            return RunAsync(f => f.Update(f.DocumentWithETag), f => f.DocumentClient.Verify(c =>
+                c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.Document, 
+                    It.Is<RequestOptions>(o => o.AccessCondition.Type == AccessConditionType.IfMatch && o.AccessCondition.Condition == f.Document.ETag), 
+                    CancellationToken.None), Times.Once));
         }
     }
 
@@ -76,6 +96,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         public string DatabaseName { get; set; }
         public string CollectionName { get; set; }
         public Dummy Document { get; set; }
+        public Dummy DocumentWithoutId { get; set; }
+        public Dummy DocumentWithETag { get; set; }
         public List<Dummy> Documents { get; set; }
         public IOrderedQueryable<Dummy> DocumentsQuery { get; set; }
         public FeedOptions FeedOptions { get; set; }
@@ -93,7 +115,17 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
                 Id = Guid.NewGuid(),
                 Name = "Test"
             };
-            
+
+            DocumentWithoutId = new Dummy {
+                Name = "NoIdTest"
+            };
+
+            Document = new Dummy {
+                Id = Guid.NewGuid(),
+                Name = "Test",
+                ETag = "ETag"
+            };
+
             Documents = new List<Dummy>
             {
                 new Dummy
@@ -109,6 +141,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             };
 
             DocumentsQuery = Documents.AsQueryable().OrderBy(d => d.Id);
+            //RequestOptions = new RequestOptions();
         }
 
         public IQueryable<Dummy> CreateQuery()
@@ -130,14 +163,13 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public Task<Dummy> GetByIdWithRequestOptions()
         {
-            RequestOptions = new RequestOptions();
-            
             return DocumentRepository.GetById(Document.Id, RequestOptions);
         }
 
-        public Task Add()
+        public Task Add(Dummy document = null)
         {
-            return DocumentRepository.Add(Document, RequestOptions);
+            document = document ?? Document;
+            return DocumentRepository.Add(document, RequestOptions);
         }
 
         public Task Remove()
@@ -145,9 +177,10 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             return DocumentRepository.Remove(Document.Id, RequestOptions);
         }
 
-        public Task Update()
+        public Task Update(Dummy document = null)
         {
-            return DocumentRepository.Update(Document, Document.Id, RequestOptions);
+            document = document ?? Document;
+            return DocumentRepository.Update(document, RequestOptions);
         }
 
         public DocumentReadOnlyRepositoryTestsFixture SetDocument()
