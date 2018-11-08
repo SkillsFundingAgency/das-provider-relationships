@@ -1,12 +1,14 @@
 using System.Web.Mvc;
 
-namespace SFA.DAS.ProviderRelationships.Web.Urls
+namespace SFA.DAS.ProviderRelationships.Urls
 {
     //todo: ignored test
     //todo: url use in views
     //todo: password urls
     public interface IApprenticeshipUrls
     {
+//        UrlHelper UrlHelper { get; set; }
+        
         string EmployerAccountsAction(string path = null);
 
         string EmployerAccountsAccountAction(UrlHelper urlHelper, string path = null);

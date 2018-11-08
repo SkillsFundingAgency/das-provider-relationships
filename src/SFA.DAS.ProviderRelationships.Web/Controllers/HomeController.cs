@@ -7,7 +7,7 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Environment;
-using SFA.DAS.ProviderRelationships.Web.Urls;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Home;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers

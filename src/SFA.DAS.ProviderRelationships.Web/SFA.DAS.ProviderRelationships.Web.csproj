@@ -133,7 +133,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Urls\ApprenticeshipUrls.cs" />
-    <Compile Include="Urls\IApprenticeshipUrls.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\Home\AccountProvidersRouteValues.cs" />
@@ -149,6 +148,7 @@
   <ItemGroup>
     <Content Include="403.html" />
     <Content Include="404.html" />
+    <Content Include="App_Code\Urls.cshtml" />
     <Content Include="Error.html" />
     <Content Include="Content\css\application.css" />
     <Content Include="Content\js\application.js" />
@@ -226,7 +226,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\HealthCheck\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,5 +1,7 @@
 using System.Web.Mvc;
+//using System.Web.UI.WebControls;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Urls
@@ -12,6 +14,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
         {
             _config = config;
         }
+
+        //public UrlHelper UrlHelper { get; set; }
         
         public string EmployerAccountsAction(string path = null)
         {
@@ -48,15 +52,18 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
             return AccountAction(urlHelper, _config.EmployerRecruitBaseUrl, path);
         }
         
-        private static string AccountAction(UrlHelper helper, string baseUrl, string path)
+        private string AccountAction(UrlHelper helper, string baseUrl, string path)
         {
+//            if (helper == null)
+//                helper = UrlHelper;
+            
             var accountHashedId = helper.RequestContext.RouteData.Values[RouteDataKeys.AccountHashedId];
             var accountPath = accountHashedId == null ? $"accounts/{path}" : $"accounts/{accountHashedId}/{path}";
 
             return Action(baseUrl, accountPath);
         }
 
-        private static string Action(string baseUrl, string path)
+        public string Action(string baseUrl, string path)
         {
             return $"{baseUrl.TrimEnd('/')}/{path}".TrimEnd('/');
         }

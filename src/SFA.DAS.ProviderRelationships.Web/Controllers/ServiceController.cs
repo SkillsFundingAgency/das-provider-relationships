@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Urls;
+using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
