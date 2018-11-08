@@ -142,7 +142,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             }
 
             Operations = grants;
-
+            Updated = updated;
             AddMessageToOutbox(messageId, updated);
         }
 
