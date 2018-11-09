@@ -196,7 +196,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public SearchProvidersViewModel SearchViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
-        public Mock<IApprenticeshipUrls> ApprenticeshipUrls { get; set; }
+        public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public RequestContext RequestContext { get; set; }
         public SearchProvidersQueryResult SearchProvidersQueryResult { get; set; }
         public AddProviderRouteValues AddProviderRouteValues { get; set; }
@@ -213,10 +213,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
-            ApprenticeshipUrls = new Mock<IApprenticeshipUrls>();
+            EmployerUrls = new Mock<IEmployerUrls>();
             RequestContext = new RequestContext();
 
-            ProvidersController = new ProvidersController(Mediator.Object, Mapper, ApprenticeshipUrls.Object);
+            ProvidersController = new ProvidersController(Mediator.Object, Mapper, EmployerUrls.Object);
         }
 
         public ActionResult Search()
@@ -310,7 +310,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Choice = choice
             };
 
-            ApprenticeshipUrls.Setup(au => au.EmployerPortalAccountAction(null, AddedProviderViewModel.AccountHashedId))
+            EmployerUrls.Setup(au => au.PortalHomepage(AddedProviderViewModel.AccountHashedId))
                 .Returns("https://localhost");
 
             return ProvidersController.Added(AddedProviderViewModel);

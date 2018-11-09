@@ -7,9 +7,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
     public class AccountUrlsViewBagFilter : ActionFilterAttribute
     {
         private readonly AccountUrls _accountUrls;
-        private readonly Func<IApprenticeshipUrls> _getApprenticeshipUrls;
+        private readonly Func<IEmployerUrls> _getApprenticeshipUrls;
 
-        public AccountUrlsViewBagFilter(AccountUrls accountUrls, Func<IApprenticeshipUrls> getApprenticeshipUrls)
+        public AccountUrlsViewBagFilter(AccountUrls accountUrls, Func<IEmployerUrls> getApprenticeshipUrls)
         {
             //these will be combined into authenticationUrls
             //todo: there is also already an AuthenticationUrls in prorel. combine all into 1?

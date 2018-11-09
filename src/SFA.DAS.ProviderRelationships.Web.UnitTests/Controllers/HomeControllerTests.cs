@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEnvironment> Environment { get; set; }
-        public Mock<IApprenticeshipUrls> ApprenticeshipUrls { get; set; }
+        public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public const string EmployerPortalUrl = "https://foo.bar";
         
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
@@ -61,11 +61,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<ProviderMappings>()).CreateMapper();
             Environment = new Mock<IEnvironment>();
-            ApprenticeshipUrls = new Mock<IApprenticeshipUrls>();
+            EmployerUrls = new Mock<IEmployerUrls>();
 
-            ApprenticeshipUrls.Setup(au => au.EmployerPortalAction(null)).Returns(EmployerPortalUrl);
+            EmployerUrls.Setup(au => au.PortalHomepage(null)).Returns(EmployerPortalUrl);
             
-            HomeController = new HomeController(Mediator.Object, Mapper, Environment.Object, ApprenticeshipUrls.Object);
+            HomeController = new HomeController(Mediator.Object, Mapper, Environment.Object, EmployerUrls.Object);
         }
 
         public Task<ActionResult> Index()

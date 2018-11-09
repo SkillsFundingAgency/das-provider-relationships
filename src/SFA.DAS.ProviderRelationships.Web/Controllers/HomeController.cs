@@ -18,14 +18,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly IEnvironment _environment;
-        private readonly IApprenticeshipUrls _apprenticeshipUrls;
+        private readonly IEmployerUrls _employerUrls;
 
-        public HomeController(IMediator mediator, IMapper mapper, IEnvironment environment, IApprenticeshipUrls apprenticeshipUrls)
+        public HomeController(IMediator mediator, IMapper mapper, IEnvironment environment, IEmployerUrls employerUrls)
         {
             _mediator = mediator;
             _mapper = mapper;
             _environment = environment;
-            _apprenticeshipUrls = apprenticeshipUrls;
+            _employerUrls = employerUrls;
         }
 
         [Route]
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (_environment.IsCurrent(DasEnv.LOCAL))
                 return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
 
-            return Redirect(_apprenticeshipUrls.EmployerPortalAction());
+            return Redirect(_employerUrls.PortalHomepage());
         }
         
         [Route("accounts/{accountHashedId}")]

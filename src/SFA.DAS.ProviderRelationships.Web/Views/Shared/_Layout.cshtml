@@ -58,24 +58,24 @@
                     <p class="floating-head-text">Your employer account</p>
                     <nav id="user-nav">
                         <ul role="menubar">
-                            <li><a href="@ViewBag.Urls.EmployerPortalAction("service/help")" class="menu-main">Help</a></li>
+                            <li><a href="@ViewBag.Urls.Help()" class="menu-main">Help</a></li>
                             @if (Context.User.Identity.IsAuthenticated)
                             {
                                 <li class="has-sub-menu">
                                     <a href="/" role="menuitem" class="menu-main">Settings</a>
                                     <ul role="menu" id="settings-menu" class="js-hidden">
-                                        <li><a href="@ViewBag.Urls.EmployerAccountsAction("service/accounts")" role="menuitem" class="sub-menu-item">Your accounts</a></li>
-                                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("rename")" class="sub-menu-item">Rename account</a></li>
+                                        <li><a href="@ViewBag.Urls.YourAccounts()" role="menuitem" class="sub-menu-item">Your accounts</a></li>
+                                        <li><a href="@ViewBag.Urls.RenameAccount()" class="sub-menu-item">Rename account</a></li>
                                         <li><a href="@ViewBag.ChangePasswordUrl" class="sub-menu-item">Change your password</a></li>
                                         <li><a href="@ViewBag.ChangeEmailUrl" class="sub-menu-item">Change your email address</a></li>
-                                        <li><a href="@ViewBag.Urls.EmployerAccountsAction("settings/notifications")" class="sub-menu-item">Notifications settings</a></li>
+                                        <li><a href="@ViewBag.Urls.NotificationSettings()" class="sub-menu-item">Notifications settings</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="@ViewBag.Urls.Action("SignOut", "Service")" role="menuitem" class="menu-main">Sign out</a></li>
+                                <li><a href="@Url.Action("SignOut", "Service")" role="menuitem" class="menu-main">Sign out</a></li>
                             }
                             else
                             {
-                                <li><a href="@ViewBag.Urls.EmployerPortalAction("service/signin")" role="menuitem">Sign in / Register</a></li>
+                                <li><a href="@ViewBag.Urls.SignIn()" role="menuitem">Sign in / Register</a></li>
                             }
                         </ul>
                     </nav>
@@ -87,13 +87,13 @@
             <div class="header-organisation" role="navigation">
                 <nav class="header-inner">
                     <ul role="menubar" id="global-nav-links">
-                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction("teams")" class="selected" role="menuitem">Home</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction("finance")" role="menuitem">Finance</a></li>
+                        <li><a href="@ViewBag.Urls.PortalHomepage()" class="selected" role="menuitem">Home</a></li>
+                        <li><a href="@ViewBag.Urls.FinanceHomepage()" role="menuitem">Finance</a></li>
                         @*<li><a href="@ViewBag.Urls.EmployerRecruitAccountAction()" role="menuitem">Recruit</a></li>*@
-                        <li><a href="@ViewBag.Urls.EmployerCommitmentsAccountAction("apprentices/home")" role="menuitem">Apprentices</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("teams/view")" role="menuitem">Your team</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("agreements")" role="menuitem">Your organisations and agreements</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("schemes")" role="menuitem">PAYE schemes</a></li>
+                        <li><a href="@ViewBag.Urls.Apprentices()" role="menuitem">Apprentices</a></li>
+                        <li><a href="@ViewBag.Urls.YourTeam()" role="menuitem">Your team</a></li>
+                        <li><a href="@ViewBag.Urls.YourOrganisationsAndAgreements()" role="menuitem">Your organisations and agreements</a></li>
+                        <li><a href="@ViewBag.Urls.PayeSchemes()" role="menuitem">PAYE schemes</a></li>
                     </ul>
                 </nav>
             </div>
@@ -111,7 +111,7 @@
                         <h2 class="govuk-visually-hidden">Support links</h2>
                         <ul class="govuk-footer__inline-list">
                             <li class="govuk-footer__inline-list-item">
-                                <a class="govuk-footer__link" href="@ViewBag.Urls.EmployerPortalAction("service/help")">
+                                <a class="govuk-footer__link" href="@ViewBag.Urls.Help()">
                                     Help
                                 </a>
                             </li>
@@ -121,7 +121,7 @@
                                 </a>
                             </li>
                             <li class="govuk-footer__inline-list-item">
-                                <a class="govuk-footer__link" href="@ViewBag.Urls.EmployerPortalAction("service/privacy")">
+                                <a class="govuk-footer__link" href="@ViewBag.Urls.Privacy()">
                                     Privacy and cookies
                                 </a>
                             </li>

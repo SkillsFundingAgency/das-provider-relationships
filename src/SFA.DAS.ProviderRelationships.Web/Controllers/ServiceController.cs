@@ -8,12 +8,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     public class ServiceController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IApprenticeshipUrls _apprenticeshipUrls;
+        private readonly IEmployerUrls _employerUrls;
 
-        public ServiceController(IAuthenticationService authenticationService, IApprenticeshipUrls apprenticeshipUrls)
+        public ServiceController(IAuthenticationService authenticationService, IEmployerUrls employerUrls)
         {
             _authenticationService = authenticationService;
-            _apprenticeshipUrls = apprenticeshipUrls;
+            _employerUrls = employerUrls;
         }
 
         [Route("signout")]
@@ -21,9 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             _authenticationService.SignOutUser();
 
-            var url = _apprenticeshipUrls.EmployerPortalAction("service/signout");
-
-            return new RedirectResult(url);
+            return new RedirectResult(_employerUrls.SignOut());
         }
     }
 }
