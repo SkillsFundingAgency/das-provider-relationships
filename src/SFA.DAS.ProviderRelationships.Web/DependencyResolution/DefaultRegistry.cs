@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IApprenticeshipUrls>().Use<ApprenticeshipUrls>();
-            
+
             Scan(s =>
             {
                 s.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));

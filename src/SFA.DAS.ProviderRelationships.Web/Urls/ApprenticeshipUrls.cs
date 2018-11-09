@@ -6,6 +6,7 @@ using SFA.DAS.ProviderRelationships.Web.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Urls
 {
+    //todo: tests
     public class ApprenticeshipUrls : IApprenticeshipUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;
@@ -16,30 +17,31 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
         }
 
         //public UrlHelper UrlHelper { get; set; }
+        public string AccountHashedId { get; set; }
         
         public string EmployerAccountsAction(string path = null)
         {
             return Action(_config.EmployerAccountsBaseUrl, path);
         }
 
-        public string EmployerAccountsAccountAction(UrlHelper urlHelper, string path = null)
+        public string EmployerAccountsAccountAction(string path = null, string hashedAccountId = null)
         {
-            return AccountAction(urlHelper, _config.EmployerAccountsBaseUrl, path);
+            return AccountAction(hashedAccountId, _config.EmployerAccountsBaseUrl, path);
         }
 
-        public string EmployerCommitmentsAccountAction(UrlHelper urlHelper, string path = null)
+        public string EmployerCommitmentsAccountAction(string path = null, string hashedAccountId = null)
         {
-            return AccountAction(urlHelper, _config.EmployerCommitmentsBaseUrl, path);
+            return AccountAction(hashedAccountId, _config.EmployerCommitmentsBaseUrl, path);
         }
 
-        public string EmployerFinanceAccountAction(UrlHelper urlHelper, string path = null)
+        public string EmployerFinanceAccountAction(string path = null, string hashedAccountId = null)
         {
-            return AccountAction(urlHelper, _config.EmployerFinanceBaseUrl, path);
+            return AccountAction(hashedAccountId, _config.EmployerFinanceBaseUrl, path);
         }
 
-        public string EmployerPortalAccountAction(UrlHelper urlHelper, string path = null)
+        public string EmployerPortalAccountAction(string path = null, string hashedAccountId = null)
         {
-            return AccountAction(urlHelper, _config.EmployerPortalBaseUrl, path);
+            return AccountAction(hashedAccountId, _config.EmployerPortalBaseUrl, path);
         }
 
         public string EmployerPortalAction(string path = null)
@@ -47,17 +49,21 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
             return Action(_config.EmployerPortalBaseUrl, path);
         }
 
-        public string EmployerRecruitAccountAction(UrlHelper urlHelper, string path = null)
+        public string EmployerRecruitAccountAction(string path = null, string hashedAccountId = null)
         {
-            return AccountAction(urlHelper, _config.EmployerRecruitBaseUrl, path);
+            return AccountAction(hashedAccountId, _config.EmployerRecruitBaseUrl, path);
         }
         
-        private string AccountAction(UrlHelper helper, string baseUrl, string path)
+        private string AccountAction(string accountHashedId, string baseUrl, string path)
         {
 //            if (helper == null)
 //                helper = UrlHelper;
+
+            if (accountHashedId == null)
+                accountHashedId = AccountHashedId;
             
-            var accountHashedId = helper.RequestContext.RouteData.Values[RouteDataKeys.AccountHashedId];
+            //var accountHashedId = helper.RequestContext.RouteData.Values[RouteDataKeys.AccountHashedId];
+            //todo: if we need the accountHashedId, then won't excluding it create an incorrect url?
             var accountPath = accountHashedId == null ? $"accounts/{path}" : $"accounts/{accountHashedId}/{path}";
 
             return Action(baseUrl, accountPath);

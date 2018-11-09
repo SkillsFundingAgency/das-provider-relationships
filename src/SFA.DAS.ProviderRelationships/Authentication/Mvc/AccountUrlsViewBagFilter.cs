@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
@@ -6,14 +7,14 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
     public class AccountUrlsViewBagFilter : ActionFilterAttribute
     {
         private readonly AccountUrls _accountUrls;
-        private readonly IApprenticeshipUrls _apprenticeshipUrls;
+        private readonly Func<IApprenticeshipUrls> _getApprenticeshipUrls;
 
-        public AccountUrlsViewBagFilter(AccountUrls accountUrls, IApprenticeshipUrls apprenticeshipUrls)
+        public AccountUrlsViewBagFilter(AccountUrls accountUrls, Func<IApprenticeshipUrls> getApprenticeshipUrls)
         {
             //these will be combined into authenticationUrls
             //todo: there is also already an AuthenticationUrls in prorel. combine all into 1?
             _accountUrls = accountUrls;
-            _apprenticeshipUrls = apprenticeshipUrls;
+            _getApprenticeshipUrls = getApprenticeshipUrls;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -21,11 +22,16 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
             filterContext.Controller.ViewBag.ChangePasswordUrl = _accountUrls.ChangePasswordUrl;
             filterContext.Controller.ViewBag.ChangeEmailUrl = _accountUrls.ChangeEmailUrl;
 
-            //_apprenticeshipUrls.UrlHelper = new UrlHelper(filterContext.RequestContext);
+            var apprenticeshipUrls = _getApprenticeshipUrls();
+
+            //todo: move RouteDataKeys.AccountHashedId down??
+            var accountHashedId = (string)filterContext.RouteData.Values["accountHashedId"];
+
+            apprenticeshipUrls.AccountHashedId = accountHashedId;
             // not gonna have intellisense support when calling off urls!?
             // could get intellisense by viewmodels having a base containing the urls!?
             // helper Urls => (ApprenticeshipUrls)ViewBag.Urls
-            filterContext.Controller.ViewBag.Urls = _apprenticeshipUrls;
+            filterContext.Controller.ViewBag.Urls = apprenticeshipUrls;
         }
     }
 }

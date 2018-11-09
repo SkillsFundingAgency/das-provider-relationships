@@ -113,7 +113,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 case "GoToHomepage":
-                    return Redirect(_apprenticeshipUrls.EmployerPortalAccountAction(Url));
+                    return Redirect(_apprenticeshipUrls.EmployerPortalAccountAction(null, model.AccountHashedId));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }

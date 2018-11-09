@@ -65,7 +65,7 @@
                                     <a href="/" role="menuitem" class="menu-main">Settings</a>
                                     <ul role="menu" id="settings-menu" class="js-hidden">
                                         <li><a href="@ViewBag.Urls.EmployerAccountsAction("service/accounts")" role="menuitem" class="sub-menu-item">Your accounts</a></li>
-                                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction(Url, "rename")" class="sub-menu-item">Rename account</a></li>
+                                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("rename")" class="sub-menu-item">Rename account</a></li>
                                         <li><a href="@ViewBag.ChangePasswordUrl" class="sub-menu-item">Change your password</a></li>
                                         <li><a href="@ViewBag.ChangeEmailUrl" class="sub-menu-item">Change your email address</a></li>
                                         <li><a href="@ViewBag.Urls.EmployerAccountsAction("settings/notifications")" class="sub-menu-item">Notifications settings</a></li>
@@ -87,13 +87,13 @@
             <div class="header-organisation" role="navigation">
                 <nav class="header-inner">
                     <ul role="menubar" id="global-nav-links">
-                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction(Url, "teams")" class="selected" role="menuitem">Home</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction(Url, "finance")" role="menuitem">Finance</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction("teams")" class="selected" role="menuitem">Home</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerPortalAccountAction("finance")" role="menuitem">Finance</a></li>
                         @*<li><a href="@ViewBag.Urls.EmployerRecruitAccountAction()" role="menuitem">Recruit</a></li>*@
-                        <li><a href="@ViewBag.Urls.EmployerCommitmentsAccountAction(Url, "apprentices/home")" role="menuitem">Apprentices</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction(Url, "teams/view")" role="menuitem">Your team</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction(Url, "agreements")" role="menuitem">Your organisations and agreements</a></li>
-                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction(Url, "schemes")" role="menuitem">PAYE schemes</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerCommitmentsAccountAction("apprentices/home")" role="menuitem">Apprentices</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("teams/view")" role="menuitem">Your team</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("agreements")" role="menuitem">Your organisations and agreements</a></li>
+                        <li><a href="@ViewBag.Urls.EmployerAccountsAccountAction("schemes")" role="menuitem">PAYE schemes</a></li>
                     </ul>
                 </nav>
             </div>

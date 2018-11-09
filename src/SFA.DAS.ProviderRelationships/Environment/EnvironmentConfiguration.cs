@@ -27,5 +27,4 @@ namespace SFA.DAS.ProviderRelationships.Environment
             return configurationService.Get<T>();
         }
     }
-
 }
