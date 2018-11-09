@@ -7,20 +7,19 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 {
-    public class PublshAccountProviderLegalEntityCreatedEvent
+    public class PublishAccountProviderLegalEvents
     {
         private readonly IMessageSession _messageSession;
 
-        public PublshAccountProviderLegalEntityCreatedEvent(IMessageSession messageSession)
+        public PublishAccountProviderLegalEvents(IMessageSession messageSession)
         {
             _messageSession = messageSession;
         }
 
         public async Task Run()
         {
-            long ukprn = 1001277;
-            long accountId = 123;
-
+            long ukprn = 2001277;
+            long accountId = 2123;
 
             var createEvent = new AccountProviderLegalEntityCreatedEvent(ukprn, accountId, 22222, "HASHED123", "AccountName",
                 3333, "HASH333", "LEName", 1234, "ProvderName", DateTime.Now); 

@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 
                 //var scenario = container.GetInstance<PublishAllEvents>();
                 //var scenario = container.GetInstance<DeleteAccountLegalEntityWithPermissions>();
-                var scenario = container.GetInstance<PublshAccountProviderLegalEntityCreatedEvent>();
+                var scenario = container.GetInstance<PublishAccountProviderLegalEvents>();
 
                 try
                 {
