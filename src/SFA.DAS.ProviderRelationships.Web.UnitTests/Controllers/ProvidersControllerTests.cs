@@ -143,11 +143,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 a.RouteValues["Controller"] == null));
         }
 
-        [Test, Ignore("remove ignore before pr finished")]
+        [Test]
         public void Added_WhenPostingTheAddedActionAndTheGoToHomepageOptionIsSelected_ThenShouldRedirectToTheHomeIndexAction()
         {
             Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
-                a.Url == $"https://localhost/accounts/{f.AddedProviderViewModel.AccountHashedId}"));
+                a.Url == $"https://localhost/accounts/{f.AddedProviderViewModel.AccountHashedId}/teams"));
         }
 
         [Test]
@@ -311,7 +311,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
 
             EmployerUrls.Setup(au => au.PortalHomepage(AddedProviderViewModel.AccountHashedId))
-                .Returns("https://localhost");
+                .Returns($"https://localhost/accounts/{AddedProviderViewModel.AccountHashedId}/teams");
 
             return ProvidersController.Added(AddedProviderViewModel);
         }

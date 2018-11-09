@@ -1,9 +1,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
-    //todo: ignored test
     //todo: url use in views
-    //todo: password urls
     public interface IEmployerUrls
     {
         string AccountHashedId { get; set; }
