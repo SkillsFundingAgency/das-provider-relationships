@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Web.Routing
+﻿namespace SFA.DAS.ProviderRelationships.Routing
 {
     public static class RouteDataKeys
     {

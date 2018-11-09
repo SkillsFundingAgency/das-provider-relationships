@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Web.Mvc;
+using SFA.DAS.ProviderRelationships.Routing;
 using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 {
+    //todo: this was authentication only - do we want to move this filter out of authentication
+    // or split into 2 - 1 for authentication and 1 for employer urls?
     public class AccountUrlsViewBagFilter : ActionFilterAttribute
     {
         private readonly AccountUrls _accountUrls;
@@ -11,8 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 
         public AccountUrlsViewBagFilter(AccountUrls accountUrls, Func<IEmployerUrls> getApprenticeshipUrls)
         {
-            //these will be combined into authenticationUrls
-            //todo: there is also already an AuthenticationUrls in prorel. combine all into 1?
+            // do we want to combine these into 1, or keep authentication (account)) urls separate for easier reuse of authentication code?
             _accountUrls = accountUrls;
             _getApprenticeshipUrls = getApprenticeshipUrls;
         }
@@ -24,13 +26,9 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 
             var apprenticeshipUrls = _getApprenticeshipUrls();
 
-            //todo: move RouteDataKeys.AccountHashedId down??
-            var accountHashedId = (string)filterContext.RouteData.Values["accountHashedId"];
+            var accountHashedId = (string)filterContext.RouteData.Values[RouteDataKeys.AccountHashedId];
 
             apprenticeshipUrls.AccountHashedId = accountHashedId;
-            // not gonna have intellisense support when calling off urls!?
-            // could get intellisense by viewmodels having a base containing the urls!?
-            // helper Urls => (ApprenticeshipUrls)ViewBag.Urls
             filterContext.Controller.ViewBag.Urls = apprenticeshipUrls;
         }
     }
