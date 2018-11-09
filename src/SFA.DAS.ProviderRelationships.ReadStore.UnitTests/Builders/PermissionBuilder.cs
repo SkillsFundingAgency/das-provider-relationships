@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
     {
         private readonly Mock<Permission> _permission = new Mock<Permission> { CallBase = true };
 
-        public PermissionBuilder WithId(Guid? id)
+        public PermissionBuilder WithId(Guid id)
         {
             _permission.SetupProperty(p => p.Id, id);
 

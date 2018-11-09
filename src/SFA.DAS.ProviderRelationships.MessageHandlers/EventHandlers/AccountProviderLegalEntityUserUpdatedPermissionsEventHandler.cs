@@ -7,16 +7,16 @@ using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
-    internal class AccountProviderLegalEntityUpdatedEventHandler : IHandleMessages<AccountProviderLegalEntityUpdatedEvent>
+    internal class AccountProviderLegalEntityUserUpdatedPermissionsEventHandler : IHandleMessages<AccountProviderLegalEntityUserUpdatedPermissionsEvent>
     {
         private readonly IPermissionsRepository _permissionsRepository;
 
-        public AccountProviderLegalEntityUpdatedEventHandler(IPermissionsRepository permissionsRepository)
+        public AccountProviderLegalEntityUserUpdatedPermissionsEventHandler(IPermissionsRepository permissionsRepository)
         {
             _permissionsRepository = permissionsRepository;
         }
 
-        public async Task Handle(AccountProviderLegalEntityUpdatedEvent message, IMessageHandlerContext context)
+        public async Task Handle(AccountProviderLegalEntityUserUpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
             var permission = await _permissionsRepository.CreateQuery().FirstOrDefaultAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
 

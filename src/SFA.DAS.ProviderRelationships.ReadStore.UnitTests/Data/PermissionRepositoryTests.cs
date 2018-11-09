@@ -34,23 +34,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Data
         [Test]
         public Task Update_WhenPermissionsIdIsNull_ThenShouldThrowException()
         {
-            return RunAsync(f => f.CreateSinglePermissionWithIdAndETag(null, null), 
+            return RunAsync(f => f.CreateSinglePermissionWithIdAndETag(Guid.Empty, null), 
                 f => f.PermissionsRepository.Update(f.SinglePermission, null, CancellationToken.None), 
                 (f, r) => r.Should().Throw<Exception>());
         }
-
-        //[Test]
-        //public Task Update_WhenPermissionsIdIsAGuidAndNoETag_ThenShouldCreateADocumentWithNoFeedOptions()
-        //{
-        //    return RunAsync(f => f.CreateSinglePermissionWithIdAndETag(Guid.NewGuid(), null),
-        //        f => f.PermissionsRepository.Update(f.SinglePermission, CancellationToken.None),
-        //        (f, r) =>
-        //        {
-        //            f.DocumentClient.Verify(x=>x.ReplaceDocumentAsync(It.IsAny<Uri>(), It.Is<Permission>(p=>p == f.SinglePermission), 
-        //                It.Is<RequestOptions>(p=>p.AccessCondition == null), It.IsAny<CancellationToken>()));
-        //            return r;
-        //        });
-        //}
 
     }
 
@@ -76,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Data
             //return this;
         }
 
-        public PermissionRepositoryTestsFixture CreateSinglePermissionWithIdAndETag(Guid? id, string eTag)
+        public PermissionRepositoryTestsFixture CreateSinglePermissionWithIdAndETag(Guid id, string eTag)
         {
             SinglePermission = new PermissionBuilder()
                 .WithId(id)

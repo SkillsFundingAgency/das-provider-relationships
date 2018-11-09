@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests
     {
         private readonly Mock<Permission> _permission = new Mock<Permission> { CallBase = true };
 
-        public PermissionBuilder WithId(Guid? id)
+        public PermissionBuilder WithId(Guid id)
         {
             _permission.SetupProperty(p => p.Id, id);
 

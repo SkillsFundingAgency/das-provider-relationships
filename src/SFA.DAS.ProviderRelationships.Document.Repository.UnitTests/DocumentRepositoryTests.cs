@@ -29,7 +29,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         [Test]
         public Task Add_WhenAddingDocumentWithAnEmptyId_ThenShouldAddDocumentAndAskCosmsToGenerateId()
         {
-            return RunAsync(f => f.Add(f.DocumentWithoutId), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), f.DocumentWithoutId, f.RequestOptions, false, CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Add(f.DocumentWithoutId), f => f.DocumentClient.Verify(c => c.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(f.DatabaseName, f.CollectionName), 
+                It.Is<Dummy>(m=> m.Id != Guid.Empty), f.RequestOptions, true, CancellationToken.None), Times.Once));
         }
 
         [Test]
@@ -83,8 +84,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
         public Task Update_WhenUpdatingDocumentWithAnETag_ThenShouldUpdateDocumentCheckingETag()
         {
             return RunAsync(f => f.Update(f.DocumentWithETag), f => f.DocumentClient.Verify(c =>
-                c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.Document.Id.ToString()), f.Document, 
-                    It.Is<RequestOptions>(o => o.AccessCondition.Type == AccessConditionType.IfMatch && o.AccessCondition.Condition == f.Document.ETag), 
+                c.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(f.DatabaseName, f.CollectionName, f.DocumentWithETag.Id.ToString()), f.DocumentWithETag, 
+                    It.Is<RequestOptions>(o => o.AccessCondition.Type == AccessConditionType.IfMatch && o.AccessCondition.Condition == f.DocumentWithETag.ETag), 
                     CancellationToken.None), Times.Once));
         }
     }
@@ -120,7 +121,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
                 Name = "NoIdTest"
             };
 
-            Document = new Dummy {
+            DocumentWithETag = new Dummy {
                 Id = Guid.NewGuid(),
                 Name = "Test",
                 ETag = "ETag"

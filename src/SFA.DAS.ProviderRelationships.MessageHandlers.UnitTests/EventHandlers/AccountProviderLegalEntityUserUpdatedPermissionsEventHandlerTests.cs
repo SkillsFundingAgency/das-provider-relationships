@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
     [Parallelizable]
-    internal class AccountProviderLegalEntityUpdatedEventHandlerTests : FluentTest<AccountProviderLegalEntityUpdatedEventHandlerTestsFixture>
+    internal class AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTests : FluentTest<AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture>
     {
         [Test]
         public Task Handle_WhenNoRelationshipIsFound_ThenThrowException()
@@ -82,8 +82,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
     }
 
-    internal class AccountProviderLegalEntityUpdatedEventHandlerTestsFixture : 
-        DocumentEventHandlerTestsFixture<AccountProviderLegalEntityUpdatedEvent>
+    internal class AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture : 
+        DocumentEventHandlerTestsFixture<AccountProviderLegalEntityUserUpdatedPermissionsEvent>
     {
         internal long Ukprn = 11111;
         internal long AccountProviderLegalEntityId = 222222;
@@ -93,14 +93,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         internal DateTime Deleted = DateTime.Now.AddMinutes(-10);
         internal DateTime Updated = DateTime.Now.AddMinutes(-8);
 
-        public AccountProviderLegalEntityUpdatedEventHandlerTestsFixture()
-            : base((repo) => new AccountProviderLegalEntityUpdatedEventHandler(repo))
+        public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture()
+            : base((repo) => new AccountProviderLegalEntityUserUpdatedPermissionsEventHandler(repo))
         {
             var operations = new HashSet<Operation> { Operation.CreateCohort};
-            Message = new AccountProviderLegalEntityUpdatedEvent(Ukprn, AccountProviderLegalEntityId, Guid.NewGuid(), operations, Created);
+            Message = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(Ukprn, AccountProviderLegalEntityId, Guid.NewGuid(), operations, Created);
         }
 
-        public AccountProviderLegalEntityUpdatedEventHandlerTestsFixture AddMatchingPermission()
+        public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingPermission()
         {
             var permission = new PermissionBuilder()
                 .WithUkprn(Ukprn)
@@ -113,7 +113,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             return this;
         }
 
-        public AccountProviderLegalEntityUpdatedEventHandlerTestsFixture AddMatchingUpdatedPermission()
+        public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingUpdatedPermission()
         {
             var permission = new PermissionBuilder()
                 .WithUkprn(Ukprn)
@@ -127,7 +127,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             return this;
         }
 
-        public AccountProviderLegalEntityUpdatedEventHandlerTestsFixture AddMatchingDeletedPermission()
+        public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingDeletedPermission()
         {
             var permission = new PermissionBuilder()
                 .WithUkprn(Ukprn)

@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class AccountProviderLegalEntityUpdatedEvent : Event
+    public class AccountProviderLegalEntityUserUpdatedPermissionsEvent : Event
     {
         public long Ukprn { get; }
         public long AccountProviderLegalEntityId { get; }
@@ -13,7 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public Guid UserRef { get; }
 
 
-        public AccountProviderLegalEntityUpdatedEvent(long ukprn, long accountProviderLegalEntityId, Guid userRef, HashSet<Operation> operations, DateTime created)
+        public AccountProviderLegalEntityUserUpdatedPermissionsEvent(long ukprn, long accountProviderLegalEntityId, Guid userRef, HashSet<Operation> operations, DateTime created)
         {
             Ukprn = ukprn;
             AccountProviderLegalEntityId = accountProviderLegalEntityId;

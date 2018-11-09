@@ -24,8 +24,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         public virtual Task Add(TDocument document, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
             if (document == null) throw new ArgumentNullException(nameof(document));
-            var documentContainsAnId = document.Id != Guid.Empty;
-            return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, documentContainsAnId, cancellationToken);
+            document.Id = document.Id != Guid.Empty ? document.Id : Guid.NewGuid();
+            return _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), document, requestOptions, true, cancellationToken);
         }
 
         public virtual IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null)
