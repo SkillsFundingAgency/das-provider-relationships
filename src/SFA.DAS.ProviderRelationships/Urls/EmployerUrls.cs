@@ -1,10 +1,8 @@
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Urls;
 
-namespace SFA.DAS.ProviderRelationships.Web.Urls
+namespace SFA.DAS.ProviderRelationships.Urls
 {
     //todo: tests
-    //todo: move to base project
     public class EmployerUrls : IEmployerUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;

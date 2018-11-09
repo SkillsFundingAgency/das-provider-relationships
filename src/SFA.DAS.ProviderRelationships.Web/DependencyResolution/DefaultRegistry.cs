@@ -4,7 +4,6 @@ using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.Logging;
-using SFA.DAS.ProviderRelationships.Web.Urls;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
