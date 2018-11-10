@@ -14,10 +14,10 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository
         private readonly string _databaseName;
         private readonly string _collectionName;
 
-        protected DocumentRepository(IDocumentClient documentClient, string databaseName, string collectionName)
+        protected DocumentRepository(IDocumentDbClient documentDbClient, string collectionName)
         {
-            _documentClient = documentClient;
-            _databaseName = databaseName;
+            _documentClient = documentDbClient.DocumentClient;
+            _databaseName = documentDbClient.DatabaseName;
             _collectionName = collectionName;
         }
 

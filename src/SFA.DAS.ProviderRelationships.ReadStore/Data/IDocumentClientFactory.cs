@@ -1,9 +1,9 @@
-using Microsoft.Azure.Documents;
+using SFA.DAS.ProviderRelationships.Document.Repository;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     internal interface IDocumentClientFactory
     {
-        IDocumentClient CreateDocumentClient();
+        IDocumentDbClient CreateDocumentDbClient();
     }
 }

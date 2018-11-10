@@ -7,6 +7,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -46,16 +47,21 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Data
         internal Permission SinglePermission;
         internal Mock<IOrderedQueryable<Permission>> OrderedQueryable;
         internal PermissionsRepository PermissionsRepository { get; set; }
+        internal Mock<IDocumentDbClient> DocumentDbClient { get; set; }
         internal Mock<IDocumentClient> DocumentClient { get; set; }
 
         public PermissionRepositoryTestsFixture()
         {
             OrderedQueryable = new Mock<IOrderedQueryable<Permission>>();
             DocumentClient = new Mock<IDocumentClient>();
+            DocumentDbClient = new Mock<IDocumentDbClient>();
+            DocumentDbClient.Setup(x => x.DocumentClient).Returns(DocumentClient.Object);
+            DocumentDbClient.Setup(x => x.DatabaseName).Returns("DatabaseName");
+
             DocumentClient.Setup(x => x.CreateDocumentQuery<Permission>(It.IsAny<Uri>(),
                     It.Is<FeedOptions>(p => p.EnableCrossPartitionQuery == false && p.MaxItemCount == -1)))
                 .Returns(OrderedQueryable.Object);
-            PermissionsRepository = new PermissionsRepository(DocumentClient.Object);
+            PermissionsRepository = new PermissionsRepository(DocumentDbClient.Object);
         }
 
         public void Test()
