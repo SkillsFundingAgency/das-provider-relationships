@@ -72,13 +72,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     internal class AccountProviderLegalEntityDeletedEventHandlerTestsFixture : 
         DocumentEventHandlerTestsFixture<AccountProviderLegalEntityDeletedEvent>
     {
-        internal long Ukprn = 11111;
-        internal long AccountProviderLegalEntityId = 222222;
-        internal string MessageId = "messageId";
-        internal string DeletedMessageId = "deletedMessageId";
-        internal DateTime Created = DateTime.Now.AddMinutes(-12);
-        internal DateTime Deleted = DateTime.Now.AddMinutes(-10);
-        internal DateTime Updated = DateTime.Now.AddMinutes(-8);
+        public long Ukprn = 11111;
+        public long AccountProviderLegalEntityId = 222222;
+        public string MessageId = "messageId";
+        public string DeletedMessageId = "deletedMessageId";
+        public DateTime Created = DateTime.Now.AddMinutes(-12);
+        public DateTime Deleted = DateTime.Now.AddMinutes(-10);
+        public DateTime Updated = DateTime.Now.AddMinutes(-8);
 
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture()
             : base((repo) => new AccountProviderLegalEntityDeletedEventHandler(repo))

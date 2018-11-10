@@ -64,21 +64,21 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     internal class AccountProviderLegalEntityCreatedEventHandlerTestsFixture : 
         DocumentEventHandlerTestsFixture<AccountProviderLegalEntityCreatedEvent>
     {
-        internal long Ukprn = 11111;
-        internal long AccountProviderLegalEntityId = 222222;
-        internal long AccountId = 333333;
-        internal string AccountPublicHashedId = "HASHED33";
-        internal string AccountName = "AccountName";
-        internal string ReActivatedAccountName = "ReActivatedAccountName";
-        internal long AccountLegalEntityId = 44444;
-        internal string AccountLegalEntityPublicHashedId = "HASHED4444";
-        internal string AccountLegalEntityName = "LegalEntityName";
-        internal int AccountProviderId = 55555;
-        internal string ProviderName = "Provider 55555";
-        internal string MessageId = "messageId";
-        internal string ReactivatedMessageId = "reactivatedMessageId";
-        internal DateTime Created = DateTime.Now.AddMinutes(-1);
-        internal DateTime Deleted = DateTime.Now.AddMinutes(-10);
+        public long Ukprn = 11111;
+        public long AccountProviderLegalEntityId = 222222;
+        public long AccountId = 333333;
+        public string AccountPublicHashedId = "HASHED33";
+        public string AccountName = "AccountName";
+        public string ReActivatedAccountName = "ReActivatedAccountName";
+        public long AccountLegalEntityId = 44444;
+        public string AccountLegalEntityPublicHashedId = "HASHED4444";
+        public string AccountLegalEntityName = "LegalEntityName";
+        public int AccountProviderId = 55555;
+        public string ProviderName = "Provider 55555";
+        public string MessageId = "messageId";
+        public string ReactivatedMessageId = "reactivatedMessageId";
+        public DateTime Created = DateTime.Now.AddMinutes(-1);
+        public DateTime Deleted = DateTime.Now.AddMinutes(-10);
 
         public AccountProviderLegalEntityCreatedEventHandlerTestsFixture()
             : base((repo) => new AccountProviderLegalEntityCreatedEventHandler(repo))

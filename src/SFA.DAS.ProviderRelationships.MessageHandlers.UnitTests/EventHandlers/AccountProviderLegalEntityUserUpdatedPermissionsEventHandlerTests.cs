@@ -85,13 +85,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     internal class AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture : 
         DocumentEventHandlerTestsFixture<AccountProviderLegalEntityUserUpdatedPermissionsEvent>
     {
-        internal long Ukprn = 11111;
-        internal long AccountProviderLegalEntityId = 222222;
-        internal string MessageId = "messageId";
-        internal string UpdatedMessageId = "updatedMessageId";
-        internal DateTime Created = DateTime.Now.AddMinutes(-12);
-        internal DateTime Deleted = DateTime.Now.AddMinutes(-10);
-        internal DateTime Updated = DateTime.Now.AddMinutes(-8);
+        public long Ukprn = 11111;
+        public long AccountProviderLegalEntityId = 222222;
+        public string MessageId = "messageId";
+        public string UpdatedMessageId = "updatedMessageId";
+        public DateTime Created = DateTime.Now.AddMinutes(-12);
+        public DateTime Deleted = DateTime.Now.AddMinutes(-10);
+        public DateTime Updated = DateTime.Now.AddMinutes(-8);
 
         public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture()
             : base((repo) => new AccountProviderLegalEntityUserUpdatedPermissionsEventHandler(repo))
