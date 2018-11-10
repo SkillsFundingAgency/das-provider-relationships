@@ -175,6 +175,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HealthCheck\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Providers\Add.cshtml" />
     <Content Include="Views\Providers\Added.cshtml" />
