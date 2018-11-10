@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class HomeControllerTests : FluentTest<HomeControllerTestsFixture>
     {
         [Test]
-        public void Index_WhenGettingLocalAction_ThenShouldRedirectToEmployerPortal()
+        public void Index_WhenGettingIndexAction_ThenShouldRedirectToEmployerPortal()
         {
             Run(f => f.SetCurrentEnvironmentIsLocal(false), f => f.Local(), (f, r) => r.Should().NotBeNull()
                 .And.Match<RedirectResult>(a => a.Url == HomeControllerTestsFixture.EmployerPortalUrl));

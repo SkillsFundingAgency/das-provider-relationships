@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public AddAccountProviderCommand Command { get; set; }
-        public IRequestHandler<AddAccountProviderCommand, int> Handler { get; set; }
+        public IRequestHandler<AddAccountProviderCommand, long> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public User User { get; set; }
@@ -77,7 +77,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
-        public Task<int> Handle()
+        public Task<long> Handle()
         {
             return Handler.Handle(Command, CancellationToken.None);
         }

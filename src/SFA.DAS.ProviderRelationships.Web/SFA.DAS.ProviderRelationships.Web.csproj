@@ -114,7 +114,7 @@
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
-    <Compile Include="Controllers\ProvidersController.cs" />
+    <Compile Include="Controllers\AccountProvidersController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
@@ -122,26 +122,29 @@
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="EndpointStartup.cs" />
+    <Compile Include="Extensions\OperationExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Mappings\HealthCheckMappings.cs" />
-    <Compile Include="Mappings\ProviderMappings.cs" />
+    <Compile Include="Mappings\AccountProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
-    <Compile Include="ViewModels\Providers\ProvidersRouteValues.cs" />
-    <Compile Include="ViewModels\Providers\ProvidersViewModel.cs" />
-    <Compile Include="ViewModels\Providers\AddedProviderRouteValues.cs" />
-    <Compile Include="ViewModels\Providers\AddedProviderViewModel.cs" />
-    <Compile Include="ViewModels\Providers\AddProviderRouteValues.cs" />
-    <Compile Include="ViewModels\Providers\AddProviderViewModel.cs" />
-    <Compile Include="ViewModels\Providers\AlreadyAddedProviderRouteValues.cs" />
-    <Compile Include="ViewModels\Providers\AlreadyAddedProviderViewModel.cs" />
-    <Compile Include="ViewModels\Providers\SearchProvidersViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AccountProvidersRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddedAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\GetAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="403.html" />
@@ -176,11 +179,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\HealthCheck\Index.cshtml" />
-    <Content Include="Views\Providers\Add.cshtml" />
-    <Content Include="Views\Providers\Added.cshtml" />
-    <Content Include="Views\Providers\AlreadyAdded.cshtml" />
-    <Content Include="Views\Providers\Index.cshtml" />
-    <Content Include="Views\Providers\Search.cshtml" />
+    <Content Include="Views\AccountProviders\Add.cshtml" />
+    <Content Include="Views\AccountProviders\Added.cshtml" />
+    <Content Include="Views\AccountProviders\AlreadyAdded.cshtml" />
+    <Content Include="Views\AccountProviders\Index.cshtml" />
+    <Content Include="Views\AccountProviders\Find.cshtml" />
+    <Content Include="Views\AccountProviders\Get.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -194,8 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
-    <Folder Include="Views\Home" />
-    <Folder Include="Views\Permissions\" />
+    <Folder Include="ViewModels\Providers" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj">

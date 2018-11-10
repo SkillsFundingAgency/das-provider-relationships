@@ -10,4 +10,3 @@
     CONSTRAINT [FK_AccountLegalEntities_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]) ON DELETE CASCADE,
     INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId])
 )
-

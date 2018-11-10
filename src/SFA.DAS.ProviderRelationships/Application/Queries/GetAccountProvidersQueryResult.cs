@@ -5,9 +5,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetAccountProvidersQueryResult
     {
-        public IEnumerable<AccountProviderDto> AccountProviders { get; }
+        public IEnumerable<AccountProviderSummaryDto> AccountProviders { get; }
 
-        public GetAccountProvidersQueryResult(IEnumerable<AccountProviderDto> accountProviders)
+        public GetAccountProvidersQueryResult(IEnumerable<AccountProviderSummaryDto> accountProviders)
         {
             AccountProviders = accountProviders;
         }
