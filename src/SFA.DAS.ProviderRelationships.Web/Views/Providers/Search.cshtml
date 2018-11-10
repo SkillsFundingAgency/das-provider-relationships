@@ -4,8 +4,9 @@
     ViewBag.Title = "Search for a training provider";
 }
 
-@section breadcrumb {
-    <a class="govuk-back-link" href="@Url.Action("Index", "Home" )">Back</a>
+@section breadcrumb
+{
+    <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -13,7 +14,6 @@
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
 </div>
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Search for a training provider</h1>
@@ -21,13 +21,13 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-        <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-            <label class="govuk-label govuk-!-font-weight-bold govuk-!-margin-bottom-0" for="@Html.IdFor(m => m.Ukprn)">UK Provider Reference Number</label>
-            <span class="govuk-error-message govuk-!-margin-bottom-0">
-                @Html.ValidationMessageFor(m => m.Ukprn)
-            </span>
-            @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })
-        </div>
+            <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+                <label class="govuk-label govuk-!-font-weight-bold govuk-!-margin-bottom-0" for="@Html.IdFor(m => m.Ukprn)">UK Provider Reference Number</label>
+                <span class="govuk-error-message govuk-!-margin-bottom-0">
+                    @Html.ValidationMessageFor(m => m.Ukprn)
+                </span>
+                @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })
+            </div>
             <details class="govuk-details">
                 <summary class="govuk-details__summary">
                     <span class="govuk-details__summary-text">

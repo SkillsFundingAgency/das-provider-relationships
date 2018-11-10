@@ -28,6 +28,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
+        
+        [Route]
+        public async Task<ActionResult> Index(ProvidersRouteValues routeValues)
+        {
+            var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
+            var response = await _mediator.Send(query);
+            var model = _mapper.Map<ProvidersViewModel>(response);
+            
+            return View(model);
+        }
 
         [Route("search")]
         public ActionResult Search()

@@ -1,10 +1,11 @@
-﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.Home.AccountProvidersViewModel
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.Providers.ProvidersViewModel
 
 @{
     ViewBag.Title = "Training provider permissions";
 }
 
-@section breadcrumb {
+@section breadcrumb
+{
     <div class="govuk-breadcrumbs">
         <ol class="govuk-breadcrumbs__list">
             <li class="govuk-breadcrumbs__list-item">
@@ -20,14 +21,12 @@
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Training provider permissions</h1>
     </div>
 </div>
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">  
         <p class="govuk-body">Set permissions for what you want training providers to do on your behalf. You can select from those you've previously worked with, or find a new one.</p>
         <a class="govuk-button" href="@Url.Action("Search", "Providers")" role="button">Add a new training provider</a>
     </div>
 </div>
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <h2 class="govuk-heading-m govuk-!-margin-top-9">Your training providers</h2>
