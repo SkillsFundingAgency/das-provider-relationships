@@ -65,7 +65,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingUpdatedPermission().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                (f,r) => r.Should().Throw<Exception>());
+                (f,r) => r.Should().Throw<InvalidOperationException>());
         }
     }
 

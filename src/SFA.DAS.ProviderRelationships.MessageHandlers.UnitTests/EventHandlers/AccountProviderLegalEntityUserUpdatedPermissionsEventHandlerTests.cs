@@ -67,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingDeletedPermission().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                (f,r) => r.Should().Throw<Exception>());
+                (f,r) => r.Should().Throw<InvalidOperationException>());
         }
         [Test]
         public Task Handle_WhenAnOldUpdateIsCalledOnAPermissionWithAMoreRecentUpdate_ThenSwallowMessage()

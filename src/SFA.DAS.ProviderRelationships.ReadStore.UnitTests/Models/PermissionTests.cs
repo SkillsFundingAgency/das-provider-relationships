@@ -57,13 +57,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         [Test]
         public void ReActivateRelationship_WhenCalledOnActivePermission_ThenShouldThrowException()
         {
-            Run(f => f.SetPermissionToActive(), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<Exception>());
+            Run(f => f.SetPermissionToActive(), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
 
         [Test]
         public void ReActivateRelationship_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldThrowException()
         {
-            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<Exception>());
+            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
 
         [Test]
