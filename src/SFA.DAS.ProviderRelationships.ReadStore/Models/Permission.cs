@@ -171,6 +171,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
                 if (Updated > deleted)
                     throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission that has been updated after this delete request");
             }
+
             if (MessageAlreadyProcessed(messageId))
                 return;
 
