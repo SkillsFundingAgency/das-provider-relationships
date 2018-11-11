@@ -18,10 +18,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
         public async Task Handle(AccountProviderLegalEntityUserUpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
-            var permission = await _permissionsRepository.CreateQuery().FirstOrDefaultAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
-
-            if (permission == null)
-                throw new Exception("No Permission Found");
+            var permission = await _permissionsRepository.CreateQuery().SingleAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
 
             permission.UpdatePermissions(message.Operations, message.Created, context.MessageId);
             await _permissionsRepository.Update(permission);
