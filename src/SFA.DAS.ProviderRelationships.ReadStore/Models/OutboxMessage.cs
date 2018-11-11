@@ -16,7 +16,5 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             MessageId = messageId;
             Created = created;
         }
-
-
     }
 }

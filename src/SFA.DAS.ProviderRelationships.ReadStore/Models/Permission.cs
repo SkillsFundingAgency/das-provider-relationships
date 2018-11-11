@@ -8,7 +8,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class Permission : Document
     {
-
         [JsonProperty("ukprn")]
         public virtual long Ukprn { get; protected set; }
 
@@ -96,14 +95,21 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
+            void VerifyPermissionCanBeReActivated()
+            {
+                if (Deleted == null)
+                    throw new InvalidOperationException(
+                        $"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
+
+                if (Deleted > reactivated)
+                    throw new InvalidOperationException(
+                        $"Message {messageId} is trying to recreate a relationship which was deleted after the re-activate request");
+            }
+
             if (MessageAlreadyProcessed(messageId))
                 return;
 
-            if (Deleted == null)
-                throw new InvalidOperationException($"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
-
-            if (Deleted > reactivated)
-                throw new InvalidOperationException($"Message {messageId} is trying to recreate a relationship which was deleted after the re-activate request");
+            VerifyPermissionCanBeReActivated();
 
             Ukprn = ukprn;
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
@@ -125,16 +131,22 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
         {
+            void VerifyPermissionCanBeUpdated()
+            {
+                if (Deleted != null)
+                    throw new InvalidOperationException(
+                        $"Message {messageId} is trying to update a Permission which has already been deleted");
+
+                if (Created > updated)
+                    throw new InvalidOperationException(
+                        $"Message {messageId} is trying to update a Permission that was created/re-activated after this update message");
+            }
+
             if (MessageAlreadyProcessed(messageId))
                 return;
 
-            if (Deleted != null)
-                throw new InvalidOperationException($"Message {messageId} is trying to update a Permission has been deleted");
+            VerifyPermissionCanBeUpdated();
 
-            if (Created > updated)
-                throw new InvalidOperationException($"Message {messageId} is trying to update a Permission was been created/re-activated after this update message");
-
-            // Swallow old updates 
             if (Updated > updated)
             {
                 AddMessageToOutbox(messageId, updated);
@@ -148,17 +160,21 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         public void DeleteRelationship(DateTime deleted, string messageId)
         {
+            void VerifyPermissionCanBeDeleted()
+            {
+                if (Deleted != null)
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission which has already been deleted");
+
+                if (Created > deleted)
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission that has been created/re-activated after this delete request");
+
+                if (Updated > deleted)
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission that has been updated after this delete request");
+            }
             if (MessageAlreadyProcessed(messageId))
                 return;
 
-            if (Deleted != null)
-                throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission has already been deleted");
-
-            if (Created > deleted)
-                throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission has been created/re-activated after this delete request");
-
-            if (Updated > deleted)
-                throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission has been updated after this delete request");
+            VerifyPermissionCanBeDeleted();
 
             Operations = new HashSet<Operation>();
             Deleted = deleted;
