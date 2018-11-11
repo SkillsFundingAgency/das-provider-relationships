@@ -93,7 +93,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
-                .WithOutboxMessage(new OutboxDataItem(MessageId, Created))
+                .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .WithOperation(Operation.CreateCohort)
                 .Build();
             Permissions.Add(permission);

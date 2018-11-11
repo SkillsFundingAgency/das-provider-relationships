@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         [Test]
         public void Create_WhenCalled_ThenAddsAMessageToTheOutboxData()
         {
-            Run(f => f.Create(), (f, r) => r.OutboxData.First().Should().Match<OutboxDataItem>(i=>i.MessageId == f.MessageId && i.Created == f.Created));
+            Run(f => f.Create(), (f, r) => r.OutboxData.First().Should().Match<OutboxMessage>(i=>i.MessageId == f.MessageId && i.Created == f.Created));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         public void ReActivateRelationship_WhenCalledOnSoftDeletedPermission_ThenAddsAMessageToTheOutboxData()
         {
             Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.ReactivateRelation(), (f, r) => r.OutboxData.First().Should()
-                .Match<OutboxDataItem>(i => i.MessageId == f.ReActivateMessageId && i.Created == f.ReActivateDate));
+                .Match<OutboxMessage>(i => i.MessageId == f.ReActivateMessageId && i.Created == f.ReActivateDate));
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
 
         internal PermissionTestsFixture SetPermissionToBeSoftDeletedAndWithMessageInOutbox()
         {
-            Permission = CreateBasicPermission().WithDeleted(Deleted).WithOutboxMessage(new OutboxDataItem(ReActivateMessageId, ReActivateDate)).Build();
+            Permission = CreateBasicPermission().WithDeleted(Deleted).WithOutboxMessage(new OutboxMessage(ReActivateMessageId, ReActivateDate)).Build();
             return this;
         }
 

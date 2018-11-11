@@ -96,7 +96,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithDeleted(Deleted)
-                .WithOutboxMessage(new OutboxDataItem(MessageId, Created))
+                .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .Build();
             Permissions.Add(permission);
 

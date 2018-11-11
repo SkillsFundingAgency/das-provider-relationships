@@ -106,7 +106,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
-                .WithOutboxMessage(new OutboxDataItem(MessageId, Created))
+                .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .Build();
             Permissions.Add(permission);
 
@@ -119,7 +119,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
-                .WithOutboxMessage(new OutboxDataItem(MessageId, Created))
+                .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .WithUpdated(Updated)
                 .Build();
             Permissions.Add(permission);

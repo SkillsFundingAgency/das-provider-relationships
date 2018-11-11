@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public virtual IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
 
         [JsonProperty("outboxData")]
-        public virtual IEnumerable<OutboxDataItem> OutboxData { get; set; } = new List<OutboxDataItem>();
+        public virtual IEnumerable<OutboxMessage> OutboxData { get; set; } = new List<OutboxMessage>();
 
         [JsonProperty("created")]
         public virtual DateTime Created { get; protected set; }
@@ -174,7 +174,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         private void AddMessageToOutbox(string messageId, DateTime created)
         {
             if (messageId is null) throw new ArgumentNullException(nameof(messageId));
-            OutboxData = OutboxData.Append(new OutboxDataItem(messageId, created));
+            OutboxData = OutboxData.Append(new OutboxMessage(messageId, created));
         }
     }
 }

@@ -95,9 +95,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public PermissionBuilder WithOutboxMessage(OutboxDataItem item)
+        public PermissionBuilder WithOutboxMessage(OutboxMessage item)
         {
-            _permission.SetupProperty(p => p.OutboxData, new List<OutboxDataItem> { item });
+            _permission.SetupProperty(p => p.OutboxData, new List<OutboxMessage> { item });
 
             return this;
         }
