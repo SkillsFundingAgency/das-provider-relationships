@@ -146,7 +146,6 @@
   <ItemGroup>
     <Content Include="403.html" />
     <Content Include="404.html" />
-    <Content Include="App_Code\Urls.cshtml" />
     <Content Include="Error.html" />
     <Content Include="Content\css\application.css" />
     <Content Include="Content\js\application.js" />
