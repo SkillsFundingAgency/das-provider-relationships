@@ -27,6 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
                 c.AddRegistry<StartupRegistry>();
+                c.AddRegistry<UrlsRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }

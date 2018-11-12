@@ -1,11 +1,8 @@
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
-    //todo: url use in views
     public interface IEmployerUrls
     {
-        string AccountHashedId { get; set; }
-
         #region Accounts
 
         string YourAccounts();
@@ -28,14 +25,13 @@ namespace SFA.DAS.ProviderRelationships.Urls
 
         #region Portal
 
-        string PortalHomepage(string hashedAccountId = null);
+        string Homepage();
+        string AccountHomepage(string hashedAccountId = null);
         string FinanceHomepage(string hashedAccountId = null);
         string SignIn();
         string SignOut();
         string Help();
         string Privacy();
-
-        string EmployerPortalAction(string path = null);
 
         #endregion Portal
 

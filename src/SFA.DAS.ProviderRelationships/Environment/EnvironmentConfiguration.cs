@@ -4,13 +4,12 @@ using SFA.DAS.Configuration.AzureTableStorage;
 
 namespace SFA.DAS.ProviderRelationships.Environment
 {
-    //todo: should we pass individual setting to ctors here or appsettings?
     public class EnvironmentConfiguration : IEnvironmentConfiguration
     {
         private readonly NameValueCollection _appSettings;
         private readonly IEnvironment _environment;
         
-        //public EnvironmentConfiguration(Func<NameValueCollection> getAppSettings) // do we need this to pick up latest?
+        // we could pass individual settings to ctor rather than appsettings
         public EnvironmentConfiguration(NameValueCollection appSettings, IEnvironment environment)
         {
             _appSettings = appSettings;

@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 return RedirectToAction("Index", "AccountProviders", new { accountHashedId = "JRML7V" });
             }
 
-            return Redirect(_employerUrls.PortalHomepage());
+            return Redirect(_employerUrls.Homepage());
         }
     }
 }

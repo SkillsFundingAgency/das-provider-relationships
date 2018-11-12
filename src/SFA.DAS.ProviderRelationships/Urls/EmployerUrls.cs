@@ -2,7 +2,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
-    //todo: tests
     public class EmployerUrls : IEmployerUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;
@@ -11,8 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         {
             _config = config;
         }
-
-        public string AccountHashedId { get; set; }
         
         #region Accounts
         
@@ -47,8 +44,8 @@ namespace SFA.DAS.ProviderRelationships.Urls
 
         #region Portal
 
-        //todo: some use home with account & some without. separate pages?
-        public string PortalHomepage(string hashedAccountId = null) => Portal("teams", hashedAccountId);
+        public string Homepage() => Portal(null);
+        public string AccountHomepage(string hashedAccountId = null) => Portal("teams", hashedAccountId);
         public string FinanceHomepage(string hashedAccountId = null) => Portal("finance", hashedAccountId);
         public string SignIn() => Portal("service/signin");
         public string SignOut() => Portal("service/signout");
@@ -57,11 +54,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         
         private string Portal(string path) => Action(_config.EmployerPortalBaseUrl, path);
         private string Portal(string path, string hashedAccountId) => AccountAction(hashedAccountId, _config.EmployerPortalBaseUrl, path);
-
-        public string EmployerPortalAction(string path = null)
-        {
-            return Action(_config.EmployerPortalBaseUrl, path);
-        }
 
         #endregion Portal
         
@@ -73,9 +65,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         
         private string AccountAction(string accountHashedId, string baseUrl, string path)
         {
-            if (accountHashedId == null)
-                accountHashedId = AccountHashedId;
-            
             //todo: if we need the accountHashedId, then won't excluding it create an incorrect url?
             var accountPath = accountHashedId == null ? $"accounts/{path}" : $"accounts/{accountHashedId}/{path}";
 

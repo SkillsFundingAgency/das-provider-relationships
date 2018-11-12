@@ -13,13 +13,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
         [TestCaseSource(nameof(_noAccountHashedIdTestCases))]
         public void WhenBaseUrlsHaveTrailingSlashAndGettingUrlWithoutAccountHashedId_ThenCorrectUrlShouldBeReturned(Func<EmployerUrls, string> act, string expected)
         {
-            Run(f => f.SetBaseUrlsWithTrailingSlash(), f => act(f.EmployerUrls), (f, r) => r.Should().Be($"http://example.com:12345/{expected}"));
+            Run(f => f.SetBaseUrlsWithTrailingSlash(), f => act(f.EmployerUrls), (f, r) => r.Should().Be($"http://example.com:12345{(expected!=""?"/":"")}{expected}"));
         }
 
         [TestCaseSource(nameof(_noAccountHashedIdTestCases))]
         public void WhenBaseUrlsHaveNoTrailingSlashAndGettingUrlWithoutAccountHashedId_ThenCorrectUrlShouldBeReturned(Func<EmployerUrls, string> act, string expected)
         {
-            Run(f => f.SetBaseUrlsWithoutTrailingSlash(), f => act(f.EmployerUrls), (f, r) => r.Should().Be($"http://example.com:12345/{expected}"));
+            Run(f => f.SetBaseUrlsWithoutTrailingSlash(), f => act(f.EmployerUrls), (f, r) => r.Should().Be($"http://example.com:12345{(expected!=""?"/":"")}{expected}"));
         }
 
         [TestCaseSource(nameof(_accountHashedIdTestCases))]
@@ -48,6 +48,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
         
         private static object[] _noAccountHashedIdTestCases =
         {
+            new object[] { (Func<EmployerUrls, string>)(eu => eu.Homepage()), "" },
             new object[] { (Func<EmployerUrls, string>)(eu => eu.YourAccounts()), "service/accounts" },
             new object[] { (Func<EmployerUrls, string>)(eu => eu.NotificationSettings()), "settings/notifications" },
             new object[] { (Func<EmployerUrls, string>)(eu => eu.SignIn()), "service/signin" },
@@ -63,7 +64,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
             new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.YourOrganisationsAndAgreements(ahid)), "agreements" },
             new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.PayeSchemes(ahid)), "schemes" },
             new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.Apprentices(ahid)), "apprentices/home" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.PortalHomepage(ahid)), "teams" },
+            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.AccountHomepage(ahid)), "teams" },
             new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.FinanceHomepage(ahid)), "finance" }
         };
     }
