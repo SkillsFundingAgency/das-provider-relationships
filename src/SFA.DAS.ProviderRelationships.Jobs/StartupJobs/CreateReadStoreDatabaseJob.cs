@@ -4,6 +4,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
 {
@@ -21,12 +22,12 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
         {
             var database = new Database
             {
-                Id = "SFA.DAS.ProviderRelationships.ReadStore.Database"
+                Id = DocumentSettings.DatabaseName
             };
             
             var documentCollection = new DocumentCollection
             {
-                Id = "permissions",
+                Id = DocumentSettings.CollectionName,
                 PartitionKey = new PartitionKeyDefinition
                 {
                     Paths = new Collection<string>
@@ -40,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                     {
                         new UniqueKey
                         {
-                            Paths = new Collection<string> { "/employerAccountLegalEntityId", "/ukprn" }
+                            Paths = new Collection<string> { "/AccountProviderLegalEntityId", "/ukprn" }
                         }
                     }
                 }
