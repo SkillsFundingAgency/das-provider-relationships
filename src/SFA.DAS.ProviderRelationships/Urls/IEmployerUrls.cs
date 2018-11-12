@@ -36,8 +36,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         string Help();
         string Privacy();
 
-        string EmployerPortalAction(string path = null);
-
         #endregion Portal
 
         #region Recruit

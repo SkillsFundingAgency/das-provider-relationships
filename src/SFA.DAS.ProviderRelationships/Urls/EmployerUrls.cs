@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.Urls
         private string Portal(string path) => Action(_config.EmployerPortalBaseUrl, path);
         private string Portal(string path, string hashedAccountId) => AccountAction(hashedAccountId, _config.EmployerPortalBaseUrl, path);
 
-        public string EmployerPortalAction(string path = null)
+        private string EmployerPortalAction(string path = null)
         {
             return Action(_config.EmployerPortalBaseUrl, path);
         }
