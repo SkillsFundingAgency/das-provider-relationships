@@ -34,9 +34,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledOnSoftDeletedPermission_ThenResetsProperties()
+        public void Recreate_WhenCalledOnSoftDeletedPermission_ThenResetsProperties()
         {
-            Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.ReactivateRelation(), (f, r) => r.Should().NotBeNull().And
+            Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.Recreate(), (f, r) => r.Should().NotBeNull().And
                 .Match<Permission>(p =>
                     p.Ukprn == f.Ukprn && p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                     p.AccountId == f.AccountId && p.AccountPublicHashedId == f.AccountPublicHashedId &&
@@ -48,34 +48,34 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledOnSoftDeletedPermission_ThenAddsAMessageToTheOutboxData()
+        public void Recreate_WhenCalledOnSoftDeletedPermission_ThenAddsAMessageToTheOutboxData()
         {
-            Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.ReactivateRelation(), (f, r) => r.OutboxData.First().Should()
+            Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.Recreate(), (f, r) => r.OutboxData.First().Should()
                 .Match<OutboxMessage>(i => i.MessageId == f.ReActivateMessageId && i.Created == f.ReActivateDate));
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledOnActivePermission_ThenShouldThrowException()
+        public void Recreate_WhenCalledOnActivePermission_ThenShouldThrowException()
         {
-            Run(f => f.SetPermissionToActive(), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            Run(f => f.SetPermissionToActive(), f => f.Recreate(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldThrowException()
+        public void Recreate_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldThrowException()
         {
-            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.ReactivateRelation(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.Recreate(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledWithDuplicateMessageId_ThenShouldSwallowMessageAndNotExtendTheOutbox()
+        public void Recreate_WhenCalledWithDuplicateMessageId_ThenShouldSwallowMessageAndNotExtendTheOutbox()
         {
-            Run(f => f.SetPermissionToBeSoftDeletedAndWithMessageInOutbox(), f => f.ReactivateRelation(), (f, r) => r.OutboxData.Count().Should().Be(1));
+            Run(f => f.SetPermissionToBeSoftDeletedAndWithMessageInOutbox(), f => f.Recreate(), (f, r) => r.OutboxData.Count().Should().Be(1));
         }
 
         [Test]
-        public void ReActivateRelationship_WhenCalledWithDuplicateMessageId_ThenShouldSwallowMessageAndNotSetProperties()
+        public void Recreate_WhenCalledWithDuplicateMessageId_ThenShouldSwallowMessageAndNotSetProperties()
         {
-            Run(f => f.SetPermissionToBeSoftDeletedAndWithMessageInOutbox(), f => f.ReactivateRelation(), (f, r) => r.AccountName.Should().NotBe(f.ReActivatedAccountName));
+            Run(f => f.SetPermissionToBeSoftDeletedAndWithMessageInOutbox(), f => f.Recreate(), (f, r) => r.AccountName.Should().NotBe(f.ReActivatedAccountName));
         }
     }
 
@@ -107,9 +107,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
                 AccountProviderId, Created, MessageId);
         }
 
-        internal Permission ReactivateRelation()
+        internal Permission Recreate()
         {
-            Permission.ReActivateRelationship(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, ReActivatedAccountName,
+            Permission.Recreate(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, ReActivatedAccountName,
                 AccountLegalEntityId, AccountLegalEntityPublicHashedId, AccountLegalEntityName,
                 AccountProviderId, ReActivateDate, ReActivateMessageId);
             return Permission;

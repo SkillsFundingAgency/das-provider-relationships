@@ -80,7 +80,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public void ReActivateRelationship(long ukprn, long accountProviderLegalEntityId, 
+        public void Recreate(long ukprn, long accountProviderLegalEntityId, 
             long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)

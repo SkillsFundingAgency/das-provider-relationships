@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             }
             else
             {
-                permission.ReActivateRelationship(message.Ukprn, message.AccountProviderLegalEntityId,
+                permission.Recreate(message.Ukprn, message.AccountProviderLegalEntityId,
                     message.AccountId, message.AccountPublicHashedId, message.AccountName,
                     message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
                     message.AccountLegalEntityName,
