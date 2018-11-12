@@ -5,13 +5,12 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Environment
 {
-    //todo: should we pass individual setting to ctors here or appsettings?
     public class Environment : IEnvironment
     {
         private readonly NameValueCollection _appSettings;
         private DasEnv? _current;
         
-        //public Environment(Func<NameValueCollection> getAppSettings) // do we need this to pick up latest?
+        // we could pass individual settings to ctor rather than appsettings
         public Environment(NameValueCollection appSettings)
         {
             //todo: calc current here (to avoid possible multiple settings of _current)?
