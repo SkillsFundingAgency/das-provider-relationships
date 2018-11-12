@@ -102,7 +102,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
 
         internal Permission Create()
         {
-            return Permission.Create(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, AccountName,
+            return new Permission(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, AccountName,
                 AccountLegalEntityId, AccountLegalEntityPublicHashedId, AccountLegalEntityName,
                 AccountProviderId, Created, MessageId);
         }

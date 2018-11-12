@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -23,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
             if (permission == null)
             {
-                permission = Permission.Create(message.Ukprn, message.AccountProviderLegalEntityId,
+                permission = new Permission(message.Ukprn, message.AccountProviderLegalEntityId,
                     message.AccountId, message.AccountPublicHashedId, message.AccountName,
                     message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
                     message.AccountLegalEntityName,

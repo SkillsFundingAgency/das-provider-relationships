@@ -52,24 +52,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("updated")]
         public virtual DateTime? Updated { get; protected set; }
 
-        public static Permission Create(long ukprn, long accountProviderLegalEntityId,
-                long accountId, string accountPublicHashedId, string accountName,
-                long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
-                int accountProviderId, DateTime created, string messageId) 
-        {
-            var permission = new Permission(ukprn, accountProviderLegalEntityId,
-                accountId, accountPublicHashedId, accountName,
-                accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName,
-                accountProviderId) {Created = created};
-
-            permission.AddMessageToOutbox(messageId, created);
-            return permission;
-        }
-
-        protected Permission(long ukprn, long accountProviderLegalEntityId,
+        public Permission(long ukprn, long accountProviderLegalEntityId,
             long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
-            int accountProviderId)
+            int accountProviderId, DateTime created, string messageId)
             : base(1, "permission")
         {
             Ukprn = ukprn;
@@ -84,6 +70,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             AccountLegalEntityName = accountLegalEntityName;
 
             AccountProviderId = accountProviderId;
+            Created = created;
+
+            AddMessageToOutbox(messageId, created);
         }
 
         [JsonConstructor]
