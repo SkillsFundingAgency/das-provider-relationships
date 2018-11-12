@@ -106,7 +106,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         {
             Permissions.AddRange(new []
             {
-                new PermissionBuilder()
+                new RelationshipBuilder()
                     .WithAccountId(1)
                     .WithAccountPublicHashedId("AAA111")
                     .WithAccountName("account name 1")
@@ -117,7 +117,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
+                new RelationshipBuilder()
                     .WithAccountId(1)
                     .WithAccountPublicHashedId("AAA111")
                     .WithAccountName("account name 1")
@@ -128,7 +128,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
+                new RelationshipBuilder()
                     .WithAccountId(2)
                     .WithAccountPublicHashedId("AAA222")
                     .WithAccountName("account name 2")
@@ -139,7 +139,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithUkprn(22222222)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
+                new RelationshipBuilder()
                     .WithAccountId(3)
                     .WithAccountPublicHashedId("AAA333")
                     .WithAccountName("account name 3")
@@ -150,7 +150,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
                     .WithUkprn(22222222)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
+                new RelationshipBuilder()
                     .WithAccountId(4)
                     .WithAccountPublicHashedId("AAA444")
                     .WithAccountName("account name 4")

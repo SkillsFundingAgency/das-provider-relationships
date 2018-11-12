@@ -9,47 +9,54 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     internal class Relationship : Document
     {
         [JsonProperty("ukprn")]
-        public virtual long Ukprn { get; protected set; }
+        public long Ukprn { get; protected set; }
 
         [JsonProperty("accountProviderLegalEntityId")]
-        public virtual long AccountProviderLegalEntityId { get; protected set; }
+        public long AccountProviderLegalEntityId { get; protected set; }
 
         [JsonProperty("accountId")]
-        public virtual long AccountId { get; protected set; }
+        public long AccountId { get; protected set; }
 
         [JsonProperty("accountPublicHashedId")]
-        public virtual string AccountPublicHashedId { get; protected set; }
+        public string AccountPublicHashedId { get; protected set; }
 
         [JsonProperty("accountName")]
-        public virtual string AccountName { get; protected set; }
+        public string AccountName { get; protected set; }
 
 
         [JsonProperty("accountLegalEntityId")]
-        public virtual long AccountLegalEntityId { get; protected set; }
+        public long AccountLegalEntityId { get; protected set; }
 
         [JsonProperty("accountLegalEntityPublicHashedId")]
-        public virtual string AccountLegalEntityPublicHashedId { get; protected set; }
+        public string AccountLegalEntityPublicHashedId { get; protected set; }
 
         [JsonProperty("accountLegalEntityName")]
-        public virtual string AccountLegalEntityName { get; protected set; }
+        public string AccountLegalEntityName { get; protected set; }
 
 
         [JsonProperty("accountProviderId")]
-        public virtual int AccountProviderId { get; protected set; }
+        public int AccountProviderId { get; protected set; }
 
         [JsonProperty("operations")]
-        public virtual IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
+        public IEnumerable<Operation> Operations { get; protected set; }
 
-        [JsonProperty("outboxData")] public virtual IEnumerable<OutboxMessage> OutboxData { get; protected set; } = new List<OutboxMessage>();
+        [JsonProperty("outboxData")]
+        public IEnumerable<OutboxMessage> OutboxData {
+            get => _outboxData.AsEnumerable();
+            protected set => _outboxData = value.ToList();
+        }
 
         [JsonProperty("created")]
-        public virtual DateTime Created { get; protected set; }
+        public DateTime Created { get; protected set; }
 
         [JsonProperty("deleted")]
-        public virtual DateTime? Deleted { get; protected set; }
+        public DateTime? Deleted { get; protected set; }
 
         [JsonProperty("updated")]
-        public virtual DateTime? Updated { get; protected set; }
+        public DateTime? Updated { get; protected set; }
+
+        [JsonIgnore]
+        private List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
         public Relationship(long ukprn, long accountProviderLegalEntityId,
             long accountId, string accountPublicHashedId, string accountName, 
@@ -180,7 +187,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         private void AddMessageToOutbox(string messageId, DateTime created)
         {
             if (messageId is null) throw new ArgumentNullException(nameof(messageId));
-            OutboxData = OutboxData.Append(new OutboxMessage(messageId, created));
+            _outboxData.Add(new OutboxMessage(messageId, created));
         }
     }
 }

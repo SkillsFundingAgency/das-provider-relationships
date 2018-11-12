@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
+using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
@@ -88,7 +89,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingPermission()
         {
-            var permission = new PermissionBuilder()
+            var permission = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
@@ -102,7 +103,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingDeletedPermission()
         {
-            var permission = new PermissionBuilder()
+            var permission = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
@@ -115,7 +116,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingUpdatedPermission()
         {
-            var permission = new PermissionBuilder()
+            var permission = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)

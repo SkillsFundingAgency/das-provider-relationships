@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
 {
     [TestFixture]
     [Parallelizable]
-    public class PermissionTests : FluentTest<PermissionTestsFixture>
+    public class RelationshipTests : FluentTest<RelationshipTestsFixture>
     {
         [Test]
         public void Create_WhenCalled_ThenCorrectlySetsAllProperties()
@@ -78,7 +78,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         }
     }
 
-    public class PermissionTestsFixture
+    public class RelationshipTestsFixture
     {
         internal long Ukprn = 11111;
         internal long AccountProviderLegalEntityId = 222222;
@@ -114,27 +114,27 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
             return Relationship;
         }
 
-        internal PermissionTestsFixture SetPermissionToActive()
+        internal RelationshipTestsFixture SetPermissionToActive()
         {
             Relationship = CreateBasicPermission().Build();
             return this;
         }
 
-        internal PermissionTestsFixture SetPermissionToSoftDeleted(DateTime deleted)
+        internal RelationshipTestsFixture SetPermissionToSoftDeleted(DateTime deleted)
         {
             Relationship = CreateBasicPermission().WithDeleted(deleted).Build();
             return this;
         }
 
-        internal PermissionTestsFixture SetPermissionToBeSoftDeletedAndWithMessageInOutbox()
+        internal RelationshipTestsFixture SetPermissionToBeSoftDeletedAndWithMessageInOutbox()
         {
             Relationship = CreateBasicPermission().WithDeleted(Deleted).WithOutboxMessage(new OutboxMessage(ReActivateMessageId, ReActivateDate)).Build();
             return this;
         }
 
-        private PermissionBuilder CreateBasicPermission()
+        private RelationshipBuilder CreateBasicPermission()
         {
-            return new PermissionBuilder()
+            return new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithAccountId(AccountId)
