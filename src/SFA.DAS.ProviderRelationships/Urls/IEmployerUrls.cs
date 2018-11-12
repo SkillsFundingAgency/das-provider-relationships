@@ -1,11 +1,8 @@
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
-    //todo: url use in views
     public interface IEmployerUrls
     {
-        string AccountHashedId { get; set; }
-
         #region Accounts
 
         string YourAccounts();

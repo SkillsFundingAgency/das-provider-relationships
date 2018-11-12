@@ -10,8 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         {
             _config = config;
         }
-
-        public string AccountHashedId { get; set; }
         
         #region Accounts
         
@@ -57,11 +55,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         private string Portal(string path) => Action(_config.EmployerPortalBaseUrl, path);
         private string Portal(string path, string hashedAccountId) => AccountAction(hashedAccountId, _config.EmployerPortalBaseUrl, path);
 
-        private string EmployerPortalAction(string path = null)
-        {
-            return Action(_config.EmployerPortalBaseUrl, path);
-        }
-
         #endregion Portal
         
         #region Recruit
@@ -72,9 +65,6 @@ namespace SFA.DAS.ProviderRelationships.Urls
         
         private string AccountAction(string accountHashedId, string baseUrl, string path)
         {
-            if (accountHashedId == null)
-                accountHashedId = AccountHashedId;
-            
             //todo: if we need the accountHashedId, then won't excluding it create an incorrect url?
             var accountPath = accountHashedId == null ? $"accounts/{path}" : $"accounts/{accountHashedId}/{path}";
 
