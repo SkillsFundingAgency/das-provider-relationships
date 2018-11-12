@@ -5,14 +5,11 @@ namespace SFA.DAS.ProviderRelationships.Urls
     public class ViewUrls : IViewUrls
     {
         private readonly IEmployerUrls _employerUrls;
-        //private readonly string _accountHashedId;
         private readonly AccountUrls _accountUrls;
         
-        //public ViewUrls(IEmployerUrls employerUrls, string accountHashedId, AccountUrls accountUrls)
         public ViewUrls(IEmployerUrls employerUrls, AccountUrls accountUrls)
         {
             _employerUrls = employerUrls;
-            //_accountHashedId = accountHashedId;
             _accountUrls = accountUrls;
         }
         
