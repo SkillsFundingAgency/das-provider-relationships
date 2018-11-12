@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Documents;
-using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
@@ -16,9 +15,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>>().Use<GetRelationshipWithPermissionQueryHandler>();
             For<IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
             For<IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
-            For<IDocumentDbClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentDbClient()).Named(GetType().FullName).Singleton();
+            For<IDocumentClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Named(GetType().FullName).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
-            For<IPermissionsRepository>().Use<PermissionsRepository>().Ctor<IDocumentDbClient>().IsNamedInstance(GetType().FullName);
+            For<IPermissionsRepository>().Use<PermissionsRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -24,7 +25,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             {
                 permission = Permission.Create(message.Ukprn, message.AccountProviderLegalEntityId,
                     message.AccountId, message.AccountPublicHashedId, message.AccountName,
-                    message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.AccountLegalEntityName,
+                    message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
+                    message.AccountLegalEntityName,
                     message.AccountProviderId, message.Created, context.MessageId);
                 await _permissionsRepository.Add(permission);
             }
@@ -32,11 +34,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             {
                 permission.ReActivateRelationship(message.Ukprn, message.AccountProviderLegalEntityId,
                     message.AccountId, message.AccountPublicHashedId, message.AccountName,
-                    message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.AccountLegalEntityName,
+                    message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
+                    message.AccountLegalEntityName,
                     message.AccountProviderId, message.Created, context.MessageId);
                 await _permissionsRepository.Update(permission);
             }
-
         }
+
     }
 }

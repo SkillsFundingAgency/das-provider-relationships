@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 
         public async Task Run()
         {
-            long ukprn = 2001377;
+            long ukprn = 3001236;
             long accountId = 2123;
 
             var createEvent = new AccountProviderLegalEntityCreatedEvent(ukprn, accountId, 22222, "HASHED123", "AccountName",
@@ -41,7 +41,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             var deletedEvent = new AccountProviderLegalEntityDeletedEvent(ukprn, accountId, DateTime.Now);
 
             await _messageSession.Publish(deletedEvent);
-
         }
     }
 }

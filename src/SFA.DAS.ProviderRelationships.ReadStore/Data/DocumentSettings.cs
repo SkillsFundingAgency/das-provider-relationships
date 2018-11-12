@@ -3,6 +3,6 @@
     public static class DocumentSettings
     {
         public const string DatabaseName = "SFA.DAS.ProviderRelationships.ReadStore.Database";
-        public const string CollectionName = "Permssions";
+        public const string CollectionName = "Permissions";
     }
 }

@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                 try
                 {
                     var apiClient = container.GetInstance<IProviderRelationshipsApiClient>();
-                    var relationshipsRequest = new RelationshipsRequest { Ukprn = 11111111, Operation = Operation.CreateCohort };
+                    var relationshipsRequest = new RelationshipsRequest { Ukprn = 2001677, Operation = Operation.CreateCohort };
                     var response = await apiClient.HasRelationshipWithPermission(relationshipsRequest);
 
                     if (response)

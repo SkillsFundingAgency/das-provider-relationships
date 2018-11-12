@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
@@ -14,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
             _configuration = configuration;
         }
 
-        public IDocumentDbClient CreateDocumentDbClient()
+        public IDocumentClient CreateDocumentClient()
         {
             var connectionPolicy = new ConnectionPolicy
             {
@@ -25,10 +26,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
                 }
             };
 
-            var documentClient = new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
-            var databaseName = _configuration.DatabaseName ?? "SFA.DAS.ProviderRelationships.ReadStore.Database";
-
-            return new DocumentdbClient(documentClient, databaseName);
+            return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
         }
     }
 }

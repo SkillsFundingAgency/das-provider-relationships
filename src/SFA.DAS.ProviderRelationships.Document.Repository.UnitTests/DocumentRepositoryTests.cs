@@ -94,7 +94,6 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
     {
         public DocumentRepository<Dummy> DocumentRepository { get; set; }
         public Mock<IDocumentClient> DocumentClient { get; set; }
-        public Mock<IDocumentDbClient> DocumentDbClient { get; set; }
         public string DatabaseName { get; set; }
         public string CollectionName { get; set; }
         public Dummy Document { get; set; }
@@ -107,15 +106,11 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
 
         public DocumentRepositoryTestsFixture()
         {
-            DocumentDbClient = new Mock<IDocumentDbClient>();
             DocumentClient = new Mock<IDocumentClient>();
             DatabaseName = "test";
             CollectionName = "stubs";
 
-            DocumentDbClient.Setup(x => x.DocumentClient).Returns(DocumentClient.Object);
-            DocumentDbClient.Setup(x => x.DatabaseName).Returns(DatabaseName);
-
-            DocumentRepository = new DummyRepository(DocumentDbClient.Object, CollectionName);
+            DocumentRepository = new DummyRepository(DocumentClient.Object, DatabaseName, CollectionName);
             
             Document = new Dummy
             {
@@ -148,7 +143,6 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests
             };
 
             DocumentsQuery = Documents.AsQueryable().OrderBy(d => d.Id);
-            //RequestOptions = new RequestOptions();
         }
 
         public IQueryable<Dummy> CreateQuery()
