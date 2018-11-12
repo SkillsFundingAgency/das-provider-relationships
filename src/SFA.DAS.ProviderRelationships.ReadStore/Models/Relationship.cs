@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    internal class Permission : Document
+    internal class Relationship : Document
     {
         [JsonProperty("ukprn")]
         public virtual long Ukprn { get; protected set; }
@@ -40,8 +40,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("operations")]
         public virtual IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
 
-        [JsonProperty("outboxData")]
-        public virtual IEnumerable<OutboxMessage> OutboxData { get; set; } = new List<OutboxMessage>();
+        [JsonProperty("outboxData")] public virtual IEnumerable<OutboxMessage> OutboxData { get; protected set; } = new List<OutboxMessage>();
 
         [JsonProperty("created")]
         public virtual DateTime Created { get; protected set; }
@@ -52,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("updated")]
         public virtual DateTime? Updated { get; protected set; }
 
-        public Permission(long ukprn, long accountProviderLegalEntityId,
+        public Relationship(long ukprn, long accountProviderLegalEntityId,
             long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime created, string messageId)
@@ -76,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         }
 
         [JsonConstructor]
-        protected Permission()
+        protected Relationship()
         {
         }
 
@@ -125,11 +124,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             {
                 if (Deleted != null)
                     throw new InvalidOperationException(
-                        $"Message {messageId} is trying to update a Permission which has already been deleted");
+                        $"Message {messageId} is trying to update a Relationship which has already been deleted");
 
                 if (Created > updated)
                     throw new InvalidOperationException(
-                        $"Message {messageId} is trying to update a Permission that was created/re-activated after this update message");
+                        $"Message {messageId} is trying to update a Relationship that was created/re-activated after this update message");
             }
 
             if (MessageAlreadyProcessed(messageId))
@@ -153,13 +152,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             void VerifyPermissionCanBeDeleted()
             {
                 if (Deleted != null)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission which has already been deleted");
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship which has already been deleted");
 
                 if (Created > deleted)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission that has been created/re-activated after this delete request");
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship that has been created/re-activated after this delete request");
 
                 if (Updated > deleted)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Permission that has been updated after this delete request");
+                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship that has been updated after this delete request");
             }
 
             if (MessageAlreadyProcessed(messageId))

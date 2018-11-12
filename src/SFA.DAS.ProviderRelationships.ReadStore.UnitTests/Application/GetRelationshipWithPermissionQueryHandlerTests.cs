@@ -81,16 +81,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         public CancellationToken CancellationToken { get; set; }
         internal IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult> Handler { get; set; }
         internal Mock<IPermissionsRepository> PermissionsRepository { get; set; }
-        internal IOrderedQueryable<Permission> DocumentQuery { get; set; }
-        internal List<Permission> Permissions { get; set; }
+        internal IOrderedQueryable<Relationship> DocumentQuery { get; set; }
+        internal List<Relationship> Permissions { get; set; }
 
         public GetRelationshipWithPermissionQueryHandlerTestsFixture()
         {
             Query = new GetRelationshipWithPermissionQuery(11111111, Operation.CreateCohort);
             CancellationToken = CancellationToken.None;
             PermissionsRepository = new Mock<IPermissionsRepository>();
-            Permissions = new List<Permission>();
-            DocumentQuery = new FakeDocumentQuery<Permission>(Permissions);
+            Permissions = new List<Relationship>();
+            DocumentQuery = new FakeDocumentQuery<Relationship>(Permissions);
             
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
             

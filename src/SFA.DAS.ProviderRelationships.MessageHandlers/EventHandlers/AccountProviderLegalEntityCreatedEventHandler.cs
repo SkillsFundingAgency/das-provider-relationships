@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
             if (permission == null)
             {
-                permission = new Permission(message.Ukprn, message.AccountProviderLegalEntityId,
+                permission = new Relationship(message.Ukprn, message.AccountProviderLegalEntityId,
                     message.AccountId, message.AccountPublicHashedId, message.AccountName,
                     message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
                     message.AccountLegalEntityName,

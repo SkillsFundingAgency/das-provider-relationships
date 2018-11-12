@@ -5,7 +5,6 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.Testing;
-using Permission = SFA.DAS.ProviderRelationships.ReadStore.Models.Permission;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
 {
@@ -17,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         public void Create_WhenCalled_ThenCorrectlySetsAllProperties()
         {
             Run(f => f.Create(), (f, r) => r.Should().NotBeNull()
-                .And.Match<Permission>(p =>
+                .And.Match<Relationship>(p =>
                     p.Ukprn == f.Ukprn && p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                     p.AccountId == f.AccountId && p.AccountPublicHashedId == f.AccountPublicHashedId &&
                     p.AccountName == f.AccountName &&
@@ -37,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         public void Recreate_WhenCalledOnSoftDeletedPermission_ThenResetsProperties()
         {
             Run(f => f.SetPermissionToSoftDeleted(f.Deleted), f => f.Recreate(), (f, r) => r.Should().NotBeNull().And
-                .Match<Permission>(p =>
+                .Match<Relationship>(p =>
                     p.Ukprn == f.Ukprn && p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                     p.AccountId == f.AccountId && p.AccountPublicHashedId == f.AccountPublicHashedId &&
                     p.AccountName == f.ReActivatedAccountName &&
@@ -98,38 +97,38 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         internal string ReActivateMessageId = "reActivateMessageId";
         internal DateTime FutureDate = DateTime.Now.AddMinutes(60);
 
-        internal Permission Permission;
+        internal Relationship Relationship;
 
-        internal Permission Create()
+        internal Relationship Create()
         {
-            return new Permission(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, AccountName,
+            return new Relationship(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, AccountName,
                 AccountLegalEntityId, AccountLegalEntityPublicHashedId, AccountLegalEntityName,
                 AccountProviderId, Created, MessageId);
         }
 
-        internal Permission Recreate()
+        internal Relationship Recreate()
         {
-            Permission.Recreate(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, ReActivatedAccountName,
+            Relationship.Recreate(Ukprn, AccountProviderLegalEntityId, AccountId, AccountPublicHashedId, ReActivatedAccountName,
                 AccountLegalEntityId, AccountLegalEntityPublicHashedId, AccountLegalEntityName,
                 AccountProviderId, ReActivateDate, ReActivateMessageId);
-            return Permission;
+            return Relationship;
         }
 
         internal PermissionTestsFixture SetPermissionToActive()
         {
-            Permission = CreateBasicPermission().Build();
+            Relationship = CreateBasicPermission().Build();
             return this;
         }
 
         internal PermissionTestsFixture SetPermissionToSoftDeleted(DateTime deleted)
         {
-            Permission = CreateBasicPermission().WithDeleted(deleted).Build();
+            Relationship = CreateBasicPermission().WithDeleted(deleted).Build();
             return this;
         }
 
         internal PermissionTestsFixture SetPermissionToBeSoftDeletedAndWithMessageInOutbox()
         {
-            Permission = CreateBasicPermission().WithDeleted(Deleted).WithOutboxMessage(new OutboxMessage(ReActivateMessageId, ReActivateDate)).Build();
+            Relationship = CreateBasicPermission().WithDeleted(Deleted).WithOutboxMessage(new OutboxMessage(ReActivateMessageId, ReActivateDate)).Build();
             return this;
         }
 

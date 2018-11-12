@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
 {
     internal class PermissionBuilder
     {
-        private readonly Mock<Permission> _permission = new Mock<Permission> { CallBase = true };
+        private readonly Mock<Relationship> _permission = new Mock<Relationship> { CallBase = true };
 
         public PermissionBuilder WithId(Guid id)
         {
@@ -118,7 +118,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
 
 
 
-        public Permission Build()
+        public Relationship Build()
         {
             return _permission.Object;
         }

@@ -3,7 +3,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
-    internal interface IPermissionsRepository : IDocumentRepository<Permission>
+    internal interface IPermissionsRepository : IDocumentRepository<Relationship>
     {
     }
 }

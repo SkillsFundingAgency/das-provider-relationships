@@ -10,7 +10,6 @@ using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
-using Permission = SFA.DAS.ProviderRelationships.ReadStore.Models.Permission;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -31,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.DeletedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p =>
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.Deleted == f.Message.Created &&
                         p.Operations.Any() == false
                     )
@@ -42,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.DeletedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p =>
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.DeletedMessageId && o.Created == f.Message.Created)
                     )
@@ -54,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p => 
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p => 
                         p.OutboxData.Count() == 1
                     )
                     , null, It.IsAny<CancellationToken>())));

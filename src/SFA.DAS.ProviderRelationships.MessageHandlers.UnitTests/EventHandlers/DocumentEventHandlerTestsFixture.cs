@@ -11,7 +11,7 @@ using Moq;
 using NServiceBus;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
-using Permission = SFA.DAS.ProviderRelationships.ReadStore.Models.Permission;
+using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -20,8 +20,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         internal Mock<IPermissionsRepository> PermissionsRepository;
         internal Mock<IMessageHandlerContext> MessageHandlerContext;
 
-        internal List<Permission> Permissions;
-        internal FakeDocumentQuery<Permission> DocumentQuery;
+        internal List<Relationship> Permissions;
+        internal FakeDocumentQuery<Relationship> DocumentQuery;
 
         public IHandleMessages<TEvent> Handler { get; set; }
         public TEvent Message { get; set; }
@@ -31,8 +31,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
 
             PermissionsRepository = new Mock<IPermissionsRepository>();
-            Permissions = new List<Permission>();
-            DocumentQuery = new FakeDocumentQuery<Permission>(Permissions);
+            Permissions = new List<Relationship>();
+            DocumentQuery = new FakeDocumentQuery<Relationship>(Permissions);
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
             Handler = createEventHandler(PermissionsRepository.Object);

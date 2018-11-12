@@ -11,7 +11,6 @@ using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
-using Permission = SFA.DAS.ProviderRelationships.ReadStore.Models.Permission;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -32,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.UpdatedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p =>
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.Updated == f.Message.Created &&
                         p.Operations.FirstOrDefault() == Operation.CreateCohort
                     )
@@ -44,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.UpdatedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p =>
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.UpdatedMessageId && o.Created == f.Message.Created)
                     )
@@ -56,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p => 
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p => 
                         p.OutboxData.Count() == 1
                     )
                     , null, It.IsAny<CancellationToken>())));
@@ -74,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingUpdatedPermission().SetMessageIdInContext(f.UpdatedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Permission>(p =>
+                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.OutboxData.Count() == 2 &&
                         p.Operations.Any() == false
                     )
