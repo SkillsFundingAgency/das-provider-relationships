@@ -8,7 +8,6 @@ namespace SFA.DAS.ProviderRelationships.Authentication
         public string ChangePasswordUrl { get; }
         public string ChangeEmailUrl { get; }
 
-        //todo: move this functionality into AuthenticationUrls?
         public AccountUrls(ProviderRelationshipsConfiguration providerRelationshipsConfig, IAuthenticationUrls authenticationUrls)
         {
             var urlHelper = new UrlHelper();
