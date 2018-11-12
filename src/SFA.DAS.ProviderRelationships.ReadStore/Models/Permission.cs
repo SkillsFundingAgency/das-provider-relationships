@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId)
-            : this()
+            : base(1, "permission")
         {
             Ukprn = ukprn;
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
@@ -86,7 +86,8 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             AccountProviderId = accountProviderId;
         }
 
-        protected Permission() : base(1, "permission")
+        [JsonConstructor]
+        protected Permission()
         {
         }
 

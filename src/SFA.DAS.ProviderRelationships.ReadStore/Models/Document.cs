@@ -22,6 +22,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
             Metadata = new DocumentMetadata(schemaVersion, schemaType);
         }
+        protected Document()
+        {
+        }
 
     }
 }
