@@ -2,7 +2,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
-    //todo: tests
     public class EmployerUrls : IEmployerUrls
     {
         private readonly ProviderRelationshipsConfiguration _config;
@@ -47,8 +46,8 @@ namespace SFA.DAS.ProviderRelationships.Urls
 
         #region Portal
 
-        //todo: some use home with account & some without. separate pages?
-        public string PortalHomepage(string hashedAccountId = null) => Portal("teams", hashedAccountId);
+        public string Homepage() => Portal(null);
+        public string AccountHomepage(string hashedAccountId = null) => Portal("teams", hashedAccountId);
         public string FinanceHomepage(string hashedAccountId = null) => Portal("finance", hashedAccountId);
         public string SignIn() => Portal("service/signin");
         public string SignOut() => Portal("service/signout");

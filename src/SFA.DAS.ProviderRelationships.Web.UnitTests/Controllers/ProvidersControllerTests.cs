@@ -309,7 +309,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Choice = choice
             };
 
-            EmployerUrls.Setup(au => au.PortalHomepage(AddedProviderViewModel.AccountHashedId))
+            EmployerUrls.Setup(au => au.AccountHomepage(AddedProviderViewModel.AccountHashedId))
                 .Returns($"https://localhost/accounts/{AddedProviderViewModel.AccountHashedId}/teams");
 
             return ProvidersController.Added(AddedProviderViewModel);

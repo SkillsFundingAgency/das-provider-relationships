@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (_environment.IsCurrent(DasEnv.LOCAL))
                 return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
 
-            return Redirect(_employerUrls.PortalHomepage());
+            return Redirect(_employerUrls.Homepage());
         }
         
         [Route("accounts/{accountHashedId}")]

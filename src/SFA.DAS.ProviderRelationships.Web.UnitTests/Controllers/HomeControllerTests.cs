@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Environment = new Mock<IEnvironment>();
             EmployerUrls = new Mock<IEmployerUrls>();
 
-            EmployerUrls.Setup(au => au.PortalHomepage(null)).Returns(EmployerPortalUrl);
+            EmployerUrls.Setup(au => au.Homepage()).Returns(EmployerPortalUrl);
             
             HomeController = new HomeController(Mediator.Object, Mapper, Environment.Object, EmployerUrls.Object);
         }

@@ -28,7 +28,8 @@ namespace SFA.DAS.ProviderRelationships.Urls
 
         #region Portal
 
-        string PortalHomepage(string hashedAccountId = null);
+        string Homepage();
+        string AccountHomepage(string hashedAccountId = null);
         string FinanceHomepage(string hashedAccountId = null);
         string SignIn();
         string SignOut();
