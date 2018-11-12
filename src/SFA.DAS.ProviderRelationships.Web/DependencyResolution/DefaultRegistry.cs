@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
-            For<IEmployerUrls>().Use<EmployerUrls>();
 
             Scan(s =>
             {
