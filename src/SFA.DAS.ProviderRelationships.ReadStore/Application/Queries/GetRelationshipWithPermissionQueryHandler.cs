@@ -10,16 +10,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
     internal class GetRelationshipWithPermissionQueryHandler : IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
     {
-        private readonly IPermissionsRepository _permissionsRepository;
+        private readonly IRelationshipsRepository _relationshipsRepository;
 
-        public GetRelationshipWithPermissionQueryHandler(IPermissionsRepository permissionsRepository)
+        public GetRelationshipWithPermissionQueryHandler(IRelationshipsRepository relationshipsRepository)
         {
-            _permissionsRepository = permissionsRepository;
+            _relationshipsRepository = relationshipsRepository;
         }
 
         public async Task<GetRelationshipWithPermissionQueryResult> Handle(GetRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
-            var relationships = await _permissionsRepository.CreateQuery()
+            var relationships = await _relationshipsRepository.CreateQuery()
                 .Where(p => p.Ukprn == request.Ukprn && p.Operations.Contains(request.Operation))
                 .Select(p => new RelationshipDto
                 {

@@ -91,21 +91,15 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
-            void VerifyPermissionCanBeReActivated()
-            {
-                if (Deleted == null)
-                    throw new InvalidOperationException(
-                        $"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
+            //void EnsureRelationshipIsDeleted()
+            //{
+            //    if (Deleted == null)
+            //        throw new InvalidOperationException(
+            //            $"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
+            //}
 
-                if (Deleted > reactivated)
-                    throw new InvalidOperationException(
-                        $"Message {messageId} is trying to recreate a relationship which was deleted after the re-activate request");
-            }
-
-            if (MessageAlreadyProcessed(messageId))
+            if (!ProcessMessage(messageId, reactivated, EnsureRelationshipIsDeleted))
                 return;
-
-            VerifyPermissionCanBeReActivated();
 
             Ukprn = ukprn;
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
@@ -121,63 +115,61 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             AccountProviderId = accountProviderId;
             Created = reactivated;
             Deleted = null;
-
-            AddMessageToOutbox(messageId, reactivated);
         }
 
         public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
         {
-            void VerifyPermissionCanBeUpdated()
-            {
-                if (Deleted != null)
-                    throw new InvalidOperationException(
-                        $"Message {messageId} is trying to update a Relationship which has already been deleted");
-
-                if (Created > updated)
-                    throw new InvalidOperationException(
-                        $"Message {messageId} is trying to update a Relationship that was created/re-activated after this update message");
-            }
-
-            if (MessageAlreadyProcessed(messageId))
+            if (!ProcessMessage(messageId, updated, EnsureRelationshipIsNotDeleted))
                 return;
-
-            VerifyPermissionCanBeUpdated();
-
-            if (Updated > updated)
-            {
-                AddMessageToOutbox(messageId, updated);
-                return;
-            }
 
             Operations = grants;
             Updated = updated;
-            AddMessageToOutbox(messageId, updated);
         }
 
         public void DeleteRelationship(DateTime deleted, string messageId)
         {
-            void VerifyPermissionCanBeDeleted()
-            {
-                if (Deleted != null)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship which has already been deleted");
-
-                if (Created > deleted)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship that has been created/re-activated after this delete request");
-
-                if (Updated > deleted)
-                    throw new InvalidOperationException($"Message {messageId} is trying to delete a Relationship that has been updated after this delete request");
-            }
-
-            if (MessageAlreadyProcessed(messageId))
+            if (!ProcessMessage(messageId, deleted, EnsureRelationshipIsNotDeleted))
                 return;
-
-            VerifyPermissionCanBeDeleted();
 
             Operations = new HashSet<Operation>();
             Deleted = deleted;
-
-            AddMessageToOutbox(messageId, deleted);
         }
+
+        private bool ProcessMessage(string messageId, DateTime messageCreated, Action ensureAction)
+        {
+            if (MessageAlreadyProcessed(messageId))
+                return false;
+
+            AddMessageToOutbox(messageId, messageCreated);
+            if (!IsMessageChronological(messageCreated))
+            {
+                return false;
+            }
+
+            ensureAction();
+            return true;
+        }
+
+        private bool IsMessageChronological(DateTime messageDateTime)
+        {
+            var updated = Updated ?? DateTime.MinValue;
+            var deleted = Deleted ?? DateTime.MinValue;
+
+            return messageDateTime > Created && messageDateTime >  updated && messageDateTime > deleted;
+        }
+
+        private void EnsureRelationshipIsNotDeleted()
+        {
+            if (Deleted != null)
+                throw new InvalidOperationException("Relationship has been deleted");
+        }
+
+        private void EnsureRelationshipIsDeleted()
+        {
+            if (Deleted == null)
+                throw new InvalidOperationException("Relationship has not been deleted");
+        }
+
 
         private bool MessageAlreadyProcessed(string messageId)
         {

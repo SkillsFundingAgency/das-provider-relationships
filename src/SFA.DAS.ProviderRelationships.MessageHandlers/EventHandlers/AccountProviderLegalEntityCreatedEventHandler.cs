@@ -9,16 +9,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     internal class AccountProviderLegalEntityCreatedEventHandler : IHandleMessages<AccountProviderLegalEntityCreatedEvent>
     {
-        private readonly IPermissionsRepository _permissionsRepository;
+        private readonly IRelationshipsRepository _relationshipsRepository;
 
-        public AccountProviderLegalEntityCreatedEventHandler(IPermissionsRepository permissionsRepository)
+        public AccountProviderLegalEntityCreatedEventHandler(IRelationshipsRepository relationshipsRepository)
         {
-            _permissionsRepository = permissionsRepository;
+            _relationshipsRepository = relationshipsRepository;
         }
 
         public async Task Handle(AccountProviderLegalEntityCreatedEvent message, IMessageHandlerContext context)
         {
-            var permission = await _permissionsRepository.CreateQuery().FirstOrDefaultAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
+            var permission = await _relationshipsRepository.CreateQuery().FirstOrDefaultAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
 
             if (permission == null)
             {
@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
                     message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
                     message.AccountLegalEntityName,
                     message.AccountProviderId, message.Created, context.MessageId);
-                await _permissionsRepository.Add(permission);
+                await _relationshipsRepository.Add(permission);
             }
             else
             {
@@ -36,9 +36,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
                     message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId,
                     message.AccountLegalEntityName,
                     message.AccountProviderId, message.Created, context.MessageId);
-                await _permissionsRepository.Update(permission);
+                await _relationshipsRepository.Update(permission);
             }
         }
-
     }
 }

@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
             For<IDocumentClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Named(GetType().FullName).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
-            For<IPermissionsRepository>().Use<PermissionsRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
+            For<IRelationshipsRepository>().Use<RelationshipsRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
         }
     }

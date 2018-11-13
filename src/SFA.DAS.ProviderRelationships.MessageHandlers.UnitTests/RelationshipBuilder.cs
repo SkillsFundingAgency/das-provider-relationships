@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Moq;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -15,8 +14,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
         public RelationshipBuilder()
         {
             _relationship = (Relationship)Activator.CreateInstance(typeof(Relationship), true);
-            _relationship.SetPropertyTo(p => p.Operations, new List<Operation>());
-            _relationship.SetPropertyTo(p => p.OutboxData, new List<OutboxMessage>());
         }
         public RelationshipBuilder WithId(Guid id)
         {

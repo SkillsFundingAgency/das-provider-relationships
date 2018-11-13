@@ -27,22 +27,22 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
 
         [Test]
-        public Task Handle_WhenDeletes_ThenPermissionShouldHaveNoOperationsAndSetDeletedDate()
+        public Task Handle_WhenDeletes_ThenRelationshipShouldHaveNoOperationsAndSetDeletedDate()
         {
-            return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.DeletedMessageId),
+            return RunAsync(f => f.AddMatchingRelationship().SetMessageIdInContext(f.DeletedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.Deleted == f.Message.Created &&
                         p.Operations.Any() == false
                     )
                     , null, It.IsAny<CancellationToken>())));
         }
         [Test]
-        public Task Handle_WhenDeletes_ThenThePermissionShouldAddMessageToOutbox()
+        public Task Handle_WhenDeletes_ThenTheRelationshipShouldAddMessageToOutbox()
         {
-            return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.DeletedMessageId),
+            return RunAsync(f => f.AddMatchingRelationship().SetMessageIdInContext(f.DeletedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.DeletedMessageId && o.Created == f.Message.Created)
                     )
@@ -50,22 +50,25 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
 
         [Test]
-        public Task Handle_WhenDeleteIsCalledWithADuplicateMessage_ThenThePermissionShouldMakeNoChanges()
+        public Task Handle_WhenDeleteIsCalledWithADuplicateMessage_ThenTheRelationshipShouldMakeNoChanges()
         {
-            return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.MessageId),
+            return RunAsync(f => f.AddMatchingRelationship().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p => 
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p => 
                         p.OutboxData.Count() == 1
                     )
                     , null, It.IsAny<CancellationToken>())));
         }
 
         [Test]
-        public Task Handle_WhenDeleteOnPermissionAlreadyDeleted_ThenThrowError()
+        public Task Handle_WhenDeleteOnRelationshipAlreadyDeleted_ThenSwallowEvent()
         {
-            return RunAsync(f => f.AddMatchingUpdatedPermission().SetMessageIdInContext(f.MessageId),
+            return RunAsync(f => f.AddMatchingUpdatedRelationship().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                (f,r) => r.Should().Throw<InvalidOperationException>());
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                        p.OutboxData.Count(o => o.MessageId == f.MessageId) == 1
+                    )
+                    , null, It.IsAny<CancellationToken>())));
         }
     }
 
@@ -87,42 +90,42 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             Message = new AccountProviderLegalEntityDeletedEvent(Ukprn, AccountProviderLegalEntityId, Deleted);
         }
 
-        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingPermission()
+        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingRelationship()
         {
-            var permission = new RelationshipBuilder()
+            var relationship = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .WithOperation(Operation.CreateCohort)
                 .Build();
-            Permissions.Add(permission);
+            Relationships.Add(relationship);
 
             return this;
         }
 
-        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingDeletedPermission()
+        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingDeletedRelationship()
         {
-            var permission = new RelationshipBuilder()
+            var relationship = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
                 .WithDeleted(Deleted)
                 .Build();
-            Permissions.Add(permission);
+            Relationships.Add(relationship);
 
             return this;
         }
 
-        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingUpdatedPermission()
+        public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingUpdatedRelationship()
         {
-            var permission = new RelationshipBuilder()
+            var relationship = new RelationshipBuilder()
                 .WithUkprn(Ukprn)
                 .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithCreated(Created)
                 .WithUpdated(Updated)
                 .Build();
-            Permissions.Add(permission);
+            Relationships.Add(relationship);
 
             return this;
         }

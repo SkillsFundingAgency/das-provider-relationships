@@ -60,9 +60,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Models
         }
 
         [Test]
-        public void Recreate_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldThrowException()
+        public void Recreate_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldSwallowMessage()
         {
-            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.Recreate(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.Recreate(), 
+                (f,r) => r.OutboxData.Count(o=>o.MessageId == f.ReActivateMessageId).Should().Be(1));
+        }
+
+        [Test]
+        public void Recreate_WhenCalledOnPermissionDeletedInTheFuture_ThenShouldNotResetCreatedDate()
+        {
+            Run(f => f.SetPermissionToSoftDeleted(f.FutureDate), f => f.Recreate(),
+                (f, r) => r.Created.Should().NotBe(f.FutureDate));
         }
 
         [Test]

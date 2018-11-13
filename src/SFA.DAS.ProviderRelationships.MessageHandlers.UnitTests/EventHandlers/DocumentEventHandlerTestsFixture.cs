@@ -17,25 +17,25 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     internal abstract class DocumentEventHandlerTestsFixture<TEvent> where TEvent : Event
     {
-        internal Mock<IPermissionsRepository> PermissionsRepository;
+        internal Mock<IRelationshipsRepository> RelationshipsRepository;
         internal Mock<IMessageHandlerContext> MessageHandlerContext;
 
-        internal List<Relationship> Permissions;
+        internal List<Relationship> Relationships;
         internal FakeDocumentQuery<Relationship> DocumentQuery;
 
         public IHandleMessages<TEvent> Handler { get; set; }
         public TEvent Message { get; set; }
 
-        protected DocumentEventHandlerTestsFixture(Func<IPermissionsRepository, IHandleMessages<TEvent>> createEventHandler)
+        protected DocumentEventHandlerTestsFixture(Func<IRelationshipsRepository, IHandleMessages<TEvent>> createEventHandler)
         {
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
 
-            PermissionsRepository = new Mock<IPermissionsRepository>();
-            Permissions = new List<Relationship>();
-            DocumentQuery = new FakeDocumentQuery<Relationship>(Permissions);
-            PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
+            RelationshipsRepository = new Mock<IRelationshipsRepository>();
+            Relationships = new List<Relationship>();
+            DocumentQuery = new FakeDocumentQuery<Relationship>(Relationships);
+            RelationshipsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
-            Handler = createEventHandler(PermissionsRepository.Object);
+            Handler = createEventHandler(RelationshipsRepository.Object);
         }
 
         public virtual async Task Handle()
@@ -47,13 +47,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             MessageHandlerContext.Setup(x => x.MessageId).Returns(messageId);
             return this;
         }
-
-
     }
-
-
-
-
 
     /*
 
@@ -101,7 +95,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
         }
     }
-
 
     public class FakeDocumentQueryProvider<T> : IQueryProvider
     {

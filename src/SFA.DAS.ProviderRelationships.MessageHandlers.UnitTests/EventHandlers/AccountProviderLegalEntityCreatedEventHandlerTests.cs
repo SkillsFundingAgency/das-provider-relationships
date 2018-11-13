@@ -17,12 +17,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     internal class AccountProviderLegalEntityCreatedEventHandlerTests : FluentTest<AccountProviderLegalEntityCreatedEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenItsANewRelationship_ThenTheMessageShouldBeTransformedIntoThePermission()
+        public Task Handle_WhenItsANewRelationship_ThenTheRelationshipShouldBeCreated()
         {
             return RunAsync(
                 f => f.SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Add(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<Relationship>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                         p.AccountId == f.AccountId &&
@@ -39,11 +39,11 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
 
         [Test]
-        public Task Handle_WhenItsAReActivatedRelationship_ThenTheMessageShouldBeTransformedIntoThePermission()
+        public Task Handle_WhenItsAnExistingDeletedRelationship_ThenTheRelationshipShouldBeRecreated()
         {
             return RunAsync(f => f.AddMatchingPermission().SetMessageIdInContext(f.ReactivatedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.PermissionsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                         p.AccountId == f.AccountId &&
@@ -98,7 +98,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 .WithDeleted(Deleted)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .Build();
-            Permissions.Add(permission);
+            Relationships.Add(permission);
 
             return this;
         }

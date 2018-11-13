@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -9,19 +8,19 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     internal class AccountProviderLegalEntityDeletedEventHandler : IHandleMessages<AccountProviderLegalEntityDeletedEvent>
     {
-        private readonly IPermissionsRepository _permissionsRepository;
+        private readonly IRelationshipsRepository _relationshipsRepository;
 
-        public AccountProviderLegalEntityDeletedEventHandler(IPermissionsRepository permissionsRepository)
+        public AccountProviderLegalEntityDeletedEventHandler(IRelationshipsRepository relationshipsRepository)
         {
-            _permissionsRepository = permissionsRepository;
+            _relationshipsRepository = relationshipsRepository;
         }
 
         public async Task Handle(AccountProviderLegalEntityDeletedEvent message, IMessageHandlerContext context)
         {
-            var permission = await _permissionsRepository.CreateQuery().SingleAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
+            var permission = await _relationshipsRepository.CreateQuery().SingleAsync(p => p.Ukprn == message.Ukprn && p.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
 
             permission.DeleteRelationship(message.Created, context.MessageId);
-            await _permissionsRepository.Update(permission);
+            await _relationshipsRepository.Update(permission);
         }
     }
 }
