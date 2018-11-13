@@ -11,6 +11,15 @@
         "appServiceName": {
             "type": "string"
         },
+        
+        "aseHostingEnvironmentName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aseResourceGroup": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "customHostName": {
             "type": "string"
         },
@@ -108,6 +117,12 @@
                     },
                     "aspInstances": {
                         "value": 1
+                    },
+                    "aseHostingEnvironmentName": {
+                        "value": "[parameters('aseHostingEnvironmentName')]"
+                    },
+                    "aseResourceGroup": {
+                        "value": "[parameters('aseResourceGroup')]"
                     }
                 }
             }
