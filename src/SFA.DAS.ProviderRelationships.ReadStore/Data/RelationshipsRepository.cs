@@ -7,7 +7,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
     internal class RelationshipsRepository : DocumentRepository<Relationship>, IRelationshipsRepository
     {
         public RelationshipsRepository(IDocumentClient documentClient)
-            : base(documentClient, DocumentSettings.CollectionName, DocumentSettings.CollectionName)
+            : base(documentClient, DocumentSettings.DatabaseName, DocumentSettings.CollectionName)
         {
         }
     }
