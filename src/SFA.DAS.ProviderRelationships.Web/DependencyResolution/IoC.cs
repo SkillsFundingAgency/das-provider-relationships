@@ -22,7 +22,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EmployerFeaturesAuthorizationRegistry>();
-                c.AddRegistry<EmployerFeaturesRegistry>();
                 c.AddRegistry<EmployerRolesAuthorizationRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<HashingRegistry>();
