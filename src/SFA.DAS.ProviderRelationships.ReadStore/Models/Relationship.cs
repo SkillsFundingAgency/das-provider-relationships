@@ -91,13 +91,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
-            //void EnsureRelationshipIsDeleted()
-            //{
-            //    if (Deleted == null)
-            //        throw new InvalidOperationException(
-            //            $"Message {messageId} is trying to recreate a relationship which hasn't been deleted");
-            //}
-
             if (!ProcessMessage(messageId, reactivated, EnsureRelationshipIsDeleted))
                 return;
 
