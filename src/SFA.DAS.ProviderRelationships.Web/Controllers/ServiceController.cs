@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
@@ -8,10 +8,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     public class ServiceController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IEmployerUrls _employerUrls;
 
-        public ServiceController(IAuthenticationService authenticationService)
+        public ServiceController(IAuthenticationService authenticationService, IEmployerUrls employerUrls)
         {
             _authenticationService = authenticationService;
+            _employerUrls = employerUrls;
         }
 
         [Route("signout")]
@@ -19,9 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             _authenticationService.SignOutUser();
 
-            var url = Url.EmployerPortalAction("service/signout");
-
-            return new RedirectResult(url);
+            return new RedirectResult(_employerUrls.SignOut());
         }
     }
 }

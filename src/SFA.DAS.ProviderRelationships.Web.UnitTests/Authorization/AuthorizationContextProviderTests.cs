@@ -8,8 +8,8 @@ using SFA.DAS.Authorization;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Routing;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
-using SFA.DAS.ProviderRelationships.Web.Routing;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization

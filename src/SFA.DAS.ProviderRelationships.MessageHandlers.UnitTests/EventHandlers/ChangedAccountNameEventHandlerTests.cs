@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
@@ -52,8 +52,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
             Account = new AccountBuilder()
                 .WithId(Message.AccountId)
-                .WithName(Message.PreviousName)
-                .Build();
+                .WithName(Message.PreviousName);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();
@@ -64,8 +63,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             Account = new AccountBuilder()
                 .WithId(Message.AccountId)
                 .WithName(Message.PreviousName)
-                .WithUpdated(DateTime.UtcNow.AddHours(-1))
-                .Build();
+                .WithUpdated(DateTime.UtcNow.AddHours(-1));
             
             return this;
         }

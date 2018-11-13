@@ -2,28 +2,32 @@
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Environment;
+using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerRoles.Any)]
     public class HomeController : Controller
     {
-        [Route]
-        public ActionResult Local()
-        {
-            if (ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL))
-            {
-                return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
-            }
+        private readonly IEnvironment _environment;
+        private readonly IEmployerUrls _employerUrls;
 
-            return Redirect(Url.EmployerPortalAction());
+        public HomeController(IEnvironment environment, IEmployerUrls employerUrls)
+        {
+            _environment = environment;
+            _employerUrls = employerUrls;
         }
-        
-        [Route("accounts/{accountHashedId}")]
+
+        [Route]
         public ActionResult Index()
         {
-            return View();
+            if (_environment.IsCurrent(DasEnv.LOCAL))
+            {
+                return RedirectToAction("Index", "AccountProviders", new { accountHashedId = "JRML7V" });
+            }
+
+            return Redirect(_employerUrls.Homepage());
         }
     }
 }

@@ -10,6 +10,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 
@@ -50,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public AddAccountProviderCommand Command { get; set; }
-        public IRequestHandler<AddAccountProviderCommand, int> Handler { get; set; }
+        public IRequestHandler<AddAccountProviderCommand, long> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public User User { get; set; }
@@ -61,9 +62,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
-            Account = new AccountBuilder().WithId(1).Build();
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
-            Provider = new ProviderBuilder().WithUkprn(12345678).Build();
+            Account = new AccountBuilder().WithId(1);
+            User = new UserBuilder().WithRef(Guid.NewGuid());
+            Provider = new ProviderBuilder().WithUkprn(12345678);
 
             Db.Accounts.Add(Account);
             Db.Users.Add(User);
@@ -76,14 +77,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
-        public Task<int> Handle()
+        public Task<long> Handle()
         {
             return Handler.Handle(Command, CancellationToken.None);
         }
 
         public AddAccountProviderCommandTestsFixture SetAccountProvider()
         {
-            Db.AccountProviders.Add(new AccountProviderBuilder().WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn).Build());
+            Db.AccountProviders.Add(new AccountProviderBuilder().WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn));
             Db.SaveChanges();
             
             return this;

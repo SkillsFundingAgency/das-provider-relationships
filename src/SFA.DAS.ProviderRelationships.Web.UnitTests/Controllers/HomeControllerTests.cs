@@ -1,9 +1,10 @@
-﻿using System.Configuration;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Environment;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
 
@@ -14,56 +15,40 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class HomeControllerTests : FluentTest<HomeControllerTestsFixture>
     {
         [Test]
-        public void Index_WhenGettingLocalAction_ThenShouldRedirectToEmployerPortal()
+        public void Index_WhenGettingIndexAction_ThenShouldRedirectToEmployerPortal()
         {
-            Run(f => f.SetEnvironment(DasEnv.AT), f => f.Local(), (f, r) => r.Should().NotBeNull()
-                .And.Match<RedirectResult>(a => a.Url == f.Configuration.EmployerPortalBaseUrl));
-        }
-        
-        [Test]
-        public void Index_WhenGettingIndexAction_ThenShouldReturnView()
-        {
-            Run(f => f.SetEnvironment(DasEnv.AT), f => f.Index(), (f, r) => r.Should().NotBeNull()
-                .And.Match<ViewResult>(a => a.ViewName == "" && a.Model == null));
+            Run(f => f.SetCurrentEnvironmentIsLocal(false), f => f.Local(), (f, r) => r.Should().NotBeNull()
+                .And.Match<RedirectResult>(a => a.Url == HomeControllerTestsFixture.EmployerPortalUrl));
         }
     }
 
     public class HomeControllerTestsFixture
     {
-        public Mock<IDependencyResolver> Resolver { get; set; }
-        public ProviderRelationshipsConfiguration Configuration { get; set; }
         public HomeController HomeController { get; set; }
+        public Mock<IEnvironment> Environment { get; set; }
+        public Mock<IEmployerUrls> EmployerUrls { get; set; }
+        
+        public const string EmployerPortalUrl = "https://foo.bar";
 
         public HomeControllerTestsFixture()
         {
-            Resolver = new Mock<IDependencyResolver>();
+            Environment = new Mock<IEnvironment>();
+            EmployerUrls = new Mock<IEmployerUrls>();
 
-            Configuration = new ProviderRelationshipsConfiguration
-            {
-                EmployerPortalBaseUrl = "https://foo.bar"
-            };
-
-            Resolver.Setup(r => r.GetService(typeof(ProviderRelationshipsConfiguration))).Returns(Configuration);
-
-            DependencyResolver.SetResolver(Resolver.Object);
-
-            HomeController = new HomeController();
-        }
-
-        public ActionResult Index()
-        {
-            return HomeController.Index();
+            EmployerUrls.Setup(au => au.Homepage()).Returns(EmployerPortalUrl);
+            
+            HomeController = new HomeController(Environment.Object, EmployerUrls.Object);
         }
 
         public ActionResult Local()
         {
-            return HomeController.Local();
+            return HomeController.Index();
         }
 
-        public HomeControllerTestsFixture SetEnvironment(DasEnv environment)
+        public HomeControllerTestsFixture SetCurrentEnvironmentIsLocal(bool isLocal)
         {
-            ConfigurationManager.AppSettings["EnvironmentName"] = environment.ToString();
-
+            Environment.Setup(e => e.IsCurrent(DasEnv.LOCAL)).Returns(isLocal);
+            
             return this;
         }
     }

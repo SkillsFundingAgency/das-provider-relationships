@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 
@@ -73,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture()
         {
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
+            User = new UserBuilder().WithRef(Guid.NewGuid());
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
         }
@@ -103,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture SetHealthCheck()
         {
-            HealthCheck = new HealthCheckBuilder().WithId(1).Build();
+            HealthCheck = new HealthCheckBuilder().WithId(1);
 
             return this;
         }

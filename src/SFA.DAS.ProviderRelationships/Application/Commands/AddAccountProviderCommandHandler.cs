@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class AddAccountProviderCommandHandler : IRequestHandler<AddAccountProviderCommand, int>
+    public class AddAccountProviderCommandHandler : IRequestHandler<AddAccountProviderCommand, long>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             _db = db;
         }
         
-        public async Task<int> Handle(AddAccountProviderCommand request, CancellationToken cancellationToken)
+        public async Task<long> Handle(AddAccountProviderCommand request, CancellationToken cancellationToken)
         {
             var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var account = await _db.Value.Accounts.Include(a => a.AccountProviders).SingleAsync(a => a.Id == request.AccountId, cancellationToken);

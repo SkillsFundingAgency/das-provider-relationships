@@ -5,7 +5,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.ProviderRelationships.Web.Routing;
+using SFA.DAS.ProviderRelationships.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization
 {

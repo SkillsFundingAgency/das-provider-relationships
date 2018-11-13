@@ -7,10 +7,9 @@ namespace SFA.DAS.ProviderRelationships.Extensions
 {
     public static class EndpointConfigurationExtensions
     {
-        public static EndpointConfiguration UseAzureServiceBusTransport(this EndpointConfiguration config, Func<string> connectionStringBuilder)
+        public static EndpointConfiguration UseAzureServiceBusTransport(
+            this EndpointConfiguration config, Func<string> connectionStringBuilder, bool isDevelopment)
         {
-            var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
-
             config.UseAzureServiceBusTransport(isDevelopment, connectionStringBuilder, r => {});
 
             return config;

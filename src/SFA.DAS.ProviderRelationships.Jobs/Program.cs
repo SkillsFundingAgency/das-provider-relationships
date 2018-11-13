@@ -4,7 +4,9 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Jobs.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
 using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
@@ -17,10 +19,10 @@ namespace SFA.DAS.ProviderRelationships.Jobs
             {
                 var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-                var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
                 var instrumentationKey = ConfigurationManager.AppSettings["InstrumentationKey"];
 
-                if (isDevelopment)
+                var environment = container.GetInstance<IEnvironment>();
+                if (environment.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }
@@ -31,10 +33,13 @@ namespace SFA.DAS.ProviderRelationships.Jobs
 
                 config.UseTimers();
 
-                var host = new JobHost(config);
+                var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.RunAndBlock();
+                await jobHost.CallAsync(typeof(CreateReadStoreDatabaseJob).GetMethod(nameof(CreateReadStoreDatabaseJob.Run)));
+                
+                jobHost.RunAndBlock();
+                
                 await startup.StopAsync();
             }
         }

@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
@@ -31,8 +31,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             HealthChecks = new List<HealthCheck>
             {
-                new HealthCheckBuilder().WithId(1).Build(),
-                new HealthCheckBuilder().WithId(2).Build()
+                new HealthCheckBuilder().WithId(1),
+                new HealthCheckBuilder().WithId(2)
             };
             
             Db.HealthChecks.AddRange(HealthChecks);

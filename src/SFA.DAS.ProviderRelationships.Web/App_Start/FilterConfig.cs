@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Authentication.Mvc;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.UnitOfWork.Mvc;
 using SFA.DAS.Validation.Mvc;
 
@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             filters.AddUnauthorizedAccessExceptionFilter();
             filters.AddUnitOfWorkFilter();
             filters.AddValidationFilter();
-            filters.Add(DependencyResolver.Current.GetService<AccountUrlsViewBagFilter>());
+            filters.Add(DependencyResolver.Current.GetService<UrlsViewBagFilter>());
         }
     }
 }

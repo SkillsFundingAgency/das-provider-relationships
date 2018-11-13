@@ -9,6 +9,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
@@ -86,8 +87,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 .WithEmail(AddOrUpdateUserCommand.Email)
                 .WithFirstName(AddOrUpdateUserCommand.FirstName)
                 .WithLastName(AddOrUpdateUserCommand.LastName)
-                .WithCreated(Now)
-                .Build();
+                .WithCreated(Now);
             
             Db.Users.Add(User);
             Db.SaveChanges();

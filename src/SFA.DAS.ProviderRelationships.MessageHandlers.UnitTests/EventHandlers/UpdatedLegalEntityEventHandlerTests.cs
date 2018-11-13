@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using Fix = SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.UpdatedLegalEntityEventHandlerTestsFixture;
 
@@ -53,8 +53,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
-                .WithName(Message.Name)
-                .Build();
+                .WithName(Message.Name);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
@@ -65,8 +64,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
                 .WithName(PreviouslyUpdatedName)
-                .WithUpdated(Message.Created.AddHours(-1))
-                .Build();
+                .WithUpdated(Message.Created.AddHours(-1));
             
             return this;
         }

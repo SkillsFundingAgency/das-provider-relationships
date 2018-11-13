@@ -3,7 +3,7 @@ using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class AddAccountProviderCommand : IRequest<int>
+    public class AddAccountProviderCommand : IRequest<long>
     {
         public long AccountId { get;  }
         public Guid UserRef { get;  }

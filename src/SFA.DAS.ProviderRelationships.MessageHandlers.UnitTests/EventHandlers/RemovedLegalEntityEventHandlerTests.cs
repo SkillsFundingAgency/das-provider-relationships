@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
@@ -35,8 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             };
             
             AccountLegalEntity = new AccountLegalEntityBuilder()
-                .WithId(Message.AccountLegalEntityId)
-                .Build();
+                .WithId(Message.AccountLegalEntityId);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
