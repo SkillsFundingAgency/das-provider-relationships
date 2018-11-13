@@ -18,8 +18,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 
         public async Task Run()
         {
-            long ukprn = 3001236;
-            long accountId = 2123;
+            long ukprn = 5001236;
+            long accountId = 2134;
 
             var createEvent = new AccountProviderLegalEntityCreatedEvent(ukprn, accountId, 22222, "HASHED123", "AccountName",
                 3333, "HASH333", "LEName", 1234, "ProvderName", DateTime.Now); 
