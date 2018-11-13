@@ -56,6 +56,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     });
             });
         }
+
+        [Test]
+        public Task Handle_WhenAccountProviderIsNotFound_ThenShouldReturnNull()
+        {
+            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+        }
     }
 
     public class GetAccountProviderQueryHandlerTestsFixture
