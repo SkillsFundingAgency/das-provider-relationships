@@ -91,56 +91,59 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
-            if (!ProcessMessage(messageId, reactivated, EnsureRelationshipIsDeleted))
-                return;
+            ProcessMessage(messageId, reactivated, () =>
+            {
+                EnsureRelationshipIsDeleted();
+                Ukprn = ukprn;
+                AccountProviderLegalEntityId = accountProviderLegalEntityId;
 
-            Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+                AccountId = accountId;
+                AccountPublicHashedId = accountPublicHashedId;
+                AccountName = accountName;
 
-            AccountId = accountId;
-            AccountPublicHashedId = accountPublicHashedId;
-            AccountName = accountName;
+                AccountLegalEntityId = accountLegalEntityId;
+                AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
+                AccountLegalEntityName = accountLegalEntityName;
 
-            AccountLegalEntityId = accountLegalEntityId;
-            AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
-            AccountLegalEntityName = accountLegalEntityName;
-
-            AccountProviderId = accountProviderId;
-            Created = reactivated;
-            Deleted = null;
+                AccountProviderId = accountProviderId;
+                Created = reactivated;
+                Deleted = null;
+            });
         }
 
         public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
         {
-            if (!ProcessMessage(messageId, updated, EnsureRelationshipIsNotDeleted))
-                return;
-
-            Operations = grants;
-            Updated = updated;
+            ProcessMessage(messageId, updated,
+                () =>
+                {
+                    EnsureRelationshipIsNotDeleted();
+                    Operations = grants;
+                    Updated = updated;
+                }
+            );
         }
 
         public void DeleteRelationship(DateTime deleted, string messageId)
         {
-            if (!ProcessMessage(messageId, deleted, EnsureRelationshipIsNotDeleted))
-                return;
-
-            Operations = new HashSet<Operation>();
-            Deleted = deleted;
+            ProcessMessage(messageId, deleted, () =>
+            {
+                EnsureRelationshipIsNotDeleted();
+                Operations = new HashSet<Operation>();
+                Deleted = deleted;
+            });
         }
 
-        private bool ProcessMessage(string messageId, DateTime messageCreated, Action ensureAction)
+        private void ProcessMessage(string messageId, DateTime messageCreated, Action action)
         {
             if (MessageAlreadyProcessed(messageId))
-                return false;
+                return;
 
             AddMessageToOutbox(messageId, messageCreated);
             if (!IsMessageChronological(messageCreated))
             {
-                return false;
+                return;
             }
-
-            ensureAction();
-            return true;
+            action();
         }
 
         private bool IsMessageChronological(DateTime messageDateTime)
@@ -162,7 +165,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             if (Deleted == null)
                 throw new InvalidOperationException("Relationship has not been deleted");
         }
-
 
         private bool MessageAlreadyProcessed(string messageId)
         {
