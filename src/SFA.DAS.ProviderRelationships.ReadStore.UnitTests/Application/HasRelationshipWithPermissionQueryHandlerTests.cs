@@ -38,17 +38,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         internal HasRelationshipWithPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         internal IApiRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        internal Mock<IPermissionsRepository> PermissionsRepository { get; set; }
-        internal IOrderedQueryable<Permission> DocumentQuery { get; set; }
-        internal List<Permission> Permissions { get; set; }
+        internal Mock<IRelationshipsRepository> PermissionsRepository { get; set; }
+        internal IOrderedQueryable<Relationship> DocumentQuery { get; set; }
+        internal List<Relationship> Permissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
         {
             Query = new HasRelationshipWithPermissionQuery(11111111, Operation.CreateCohort);
             CancellationToken = CancellationToken.None;
-            PermissionsRepository = new Mock<IPermissionsRepository>();
-            Permissions = new List<Permission>();
-            DocumentQuery = new FakeDocumentQuery<Permission>(Permissions);
+            PermissionsRepository = new Mock<IRelationshipsRepository>();
+            Permissions = new List<Relationship>();
+            DocumentQuery = new FakeDocumentQuery<Relationship>(Permissions);
 
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
@@ -64,58 +64,58 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         {
             Permissions.AddRange(new []
             {
-                new PermissionBuilder()
-                    .WithEmployerAccountId(1)
-                    .WithEmployerAccountPublicHashedId("AAA111")
-                    .WithEmployerAccountName("account name 1")
-                    .WithEmployerAccountLegalEntityId(1)
-                    .WithEmployerAccountLegalEntityPublicHashedId("ALE111")
-                    .WithEmployerAccountLegalEntityName("legal entity name ALE111")
-                    .WithEmployerAccountProviderId(1)
+                new RelationshipBuilder()
+                    .WithAccountId(1)
+                    .WithAccountPublicHashedId("AAA111")
+                    .WithAccountName("account name 1")
+                    .WithAccountLegalEntityId(1)
+                    .WithAccountLegalEntityPublicHashedId("ALE111")
+                    .WithAccountLegalEntityName("legal entity name ALE111")
+                    .WithAccountProviderId(1)
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
-                    .WithEmployerAccountId(1)
-                    .WithEmployerAccountPublicHashedId("AAA111")
-                    .WithEmployerAccountName("account name 1")
-                    .WithEmployerAccountLegalEntityId(2)
-                    .WithEmployerAccountLegalEntityPublicHashedId("ALE222")
-                    .WithEmployerAccountLegalEntityName("legal entity name ALE222")
-                    .WithEmployerAccountProviderId(1)
+                new RelationshipBuilder()
+                    .WithAccountId(1)
+                    .WithAccountPublicHashedId("AAA111")
+                    .WithAccountName("account name 1")
+                    .WithAccountLegalEntityId(2)
+                    .WithAccountLegalEntityPublicHashedId("ALE222")
+                    .WithAccountLegalEntityName("legal entity name ALE222")
+                    .WithAccountProviderId(1)
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
-                    .WithEmployerAccountId(2)
-                    .WithEmployerAccountPublicHashedId("AAA222")
-                    .WithEmployerAccountName("account name 2")
-                    .WithEmployerAccountLegalEntityId(3)
-                    .WithEmployerAccountLegalEntityPublicHashedId("ALE333")
-                    .WithEmployerAccountLegalEntityName("legal entity name ALE333")
-                    .WithEmployerAccountProviderId(2)
+                new RelationshipBuilder()
+                    .WithAccountId(2)
+                    .WithAccountPublicHashedId("AAA222")
+                    .WithAccountName("account name 2")
+                    .WithAccountLegalEntityId(3)
+                    .WithAccountLegalEntityPublicHashedId("ALE333")
+                    .WithAccountLegalEntityName("legal entity name ALE333")
+                    .WithAccountProviderId(2)
                     .WithUkprn(22222222)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
-                    .WithEmployerAccountId(3)
-                    .WithEmployerAccountPublicHashedId("AAA333")
-                    .WithEmployerAccountName("account name 3")
-                    .WithEmployerAccountLegalEntityId(4)
-                    .WithEmployerAccountLegalEntityPublicHashedId("ALE444")
-                    .WithEmployerAccountLegalEntityName("legal entity name ALE444")
-                    .WithEmployerAccountProviderId(3)
+                new RelationshipBuilder()
+                    .WithAccountId(3)
+                    .WithAccountPublicHashedId("AAA333")
+                    .WithAccountName("account name 3")
+                    .WithAccountLegalEntityId(4)
+                    .WithAccountLegalEntityPublicHashedId("ALE444")
+                    .WithAccountLegalEntityName("legal entity name ALE444")
+                    .WithAccountProviderId(3)
                     .WithUkprn(22222222)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
-                new PermissionBuilder()
-                    .WithEmployerAccountId(4)
-                    .WithEmployerAccountPublicHashedId("AAA444")
-                    .WithEmployerAccountName("account name 4")
-                    .WithEmployerAccountLegalEntityId(5)
-                    .WithEmployerAccountLegalEntityPublicHashedId("ALE555")
-                    .WithEmployerAccountLegalEntityName("legal entity name ALE555")
-                    .WithEmployerAccountProviderId(4)
+                new RelationshipBuilder()
+                    .WithAccountId(4)
+                    .WithAccountPublicHashedId("AAA444")
+                    .WithAccountName("account name 4")
+                    .WithAccountLegalEntityId(5)
+                    .WithAccountLegalEntityPublicHashedId("ALE555")
+                    .WithAccountLegalEntityName("legal entity name ALE555")
+                    .WithAccountProviderId(4)
                     .WithUkprn(11111111)
                     .WithOperation(Operation.CreateCohort)
                     .Build(),
