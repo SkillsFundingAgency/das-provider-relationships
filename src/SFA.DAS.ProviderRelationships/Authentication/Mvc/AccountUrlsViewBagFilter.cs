@@ -13,8 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.ChangePasswordUrl = _accountUrls.ChangePasswordUrl;
             filterContext.Controller.ViewBag.ChangeEmailUrl = _accountUrls.ChangeEmailUrl;
+            filterContext.Controller.ViewBag.ChangePasswordUrl = _accountUrls.ChangePasswordUrl;
         }
     }
 }
