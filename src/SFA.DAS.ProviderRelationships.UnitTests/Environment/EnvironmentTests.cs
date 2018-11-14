@@ -24,13 +24,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
             Run(f => f.SetCurrent(env), f => f.Current(), (f, r) => r.Should().Be(env));
         }        
 
-        [TestCase(DasEnv.LOCAL, DasEnv.AT)]
-        [TestCase(DasEnv.AT, DasEnv.LOCAL)]
-        public void WhenGettingCurrentMoreThanOnce_ThenShouldReturnCurrentEnvironmentFromCache(DasEnv first, DasEnv second)
-        {
-            Run(f => f.SetFirstThenGetThenSetSecondCurrent(first, second), f => f.Current(), (f, r) => r.Should().Be(first));
-        }        
-        
         #endregion Current
 
         #region IsCurrent
@@ -58,19 +51,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         public EnvironmentTestsFixture()
         {
             AppSettings = new NameValueCollection();
-            Environment = new ProviderRelationships.Environment.Environment(AppSettings);
         }
 
         public void SetCurrent(DasEnv environment)
         {
             AppSettings["EnvironmentName"] = environment.ToString();
-        }
-
-        public void SetFirstThenGetThenSetSecondCurrent(DasEnv first, DasEnv second)
-        {
-            AppSettings["EnvironmentName"] = first.ToString();
-            Current();
-            AppSettings["EnvironmentName"] = second.ToString();
+            Environment = new ProviderRelationships.Environment.Environment(AppSettings);
         }
         
         #endregion Arrange
