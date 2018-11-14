@@ -1,8 +1,9 @@
 using System.Collections.Specialized;
 using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.ProviderRelationships.Environment;
 
-namespace SFA.DAS.ProviderRelationships.Environment
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class EnvironmentConfiguration : IEnvironmentConfiguration
     {
