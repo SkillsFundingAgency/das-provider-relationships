@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -6,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Web.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerRoles.Any)]
+    [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerRole.Any)]
     public class HomeController : Controller
     {
         [Route]
