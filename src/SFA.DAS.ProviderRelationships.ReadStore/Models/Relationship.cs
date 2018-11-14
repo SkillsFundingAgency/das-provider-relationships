@@ -41,10 +41,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public IEnumerable<Operation> Operations { get; protected set; }
 
         [JsonProperty("outboxData")]
-        public IEnumerable<OutboxMessage> OutboxData {
-            get => _outboxData.AsEnumerable();
-            protected set => _outboxData = value.ToList();
-        }
+        public IEnumerable<OutboxMessage> OutboxData  => _outboxData;
 
         [JsonProperty("created")]
         public DateTime Created { get; protected set; }
@@ -56,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public DateTime? Updated { get; protected set; }
 
         [JsonIgnore]
-        private List<OutboxMessage> _outboxData = new List<OutboxMessage>();
+        private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
         public Relationship(long ukprn, long accountProviderLegalEntityId,
             long accountId, string accountPublicHashedId, string accountName, 
