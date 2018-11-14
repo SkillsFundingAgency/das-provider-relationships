@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
     public class EntityFrameworkSchemaCheckTests
     {
         [Test]
-        //[Ignore("To be run adhoc (but could live in an integration test)")]
+        [Ignore("To be run adhoc (but could live in an integration test)")]
         public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
         {
             using (var container = new Container(c => c.AddRegistry<ConfigurationRegistry>()))

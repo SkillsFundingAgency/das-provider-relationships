@@ -29,13 +29,18 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
+            if (accountProvider == null)
+            {
+                return null;
+            }
+            
             var accountLegalEntities = await _db.Value.AccountLegalEntities
                 .Where(ale => ale.Account.Id == request.AccountId)
                 .OrderBy(ale => ale.Name)
                 .ProjectTo<AccountLegalEntityDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return accountProvider == null ? null : new GetAccountProviderQueryResult(accountProvider, accountLegalEntities);
+            return new GetAccountProviderQueryResult(accountProvider, accountLegalEntities);
         }
     }
 }
