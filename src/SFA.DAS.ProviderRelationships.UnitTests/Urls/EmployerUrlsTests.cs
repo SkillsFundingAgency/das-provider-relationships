@@ -35,17 +35,31 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
         }
 
         [TestCaseSource(nameof(_accountHashedIdTestCases))]
-        public void WhenBaseUrlsHaveTrailingSlashAndGettingUrlWithANullAccountHashedId_ThenCorrectUrlShouldBeReturned(Func<EmployerUrls, string, string> act, string expected)
+        public void WhenBaseUrlsHaveTrailingSlashAndGettingUrlWithANullAccountHashedId_ThenAnExceptionShouldBeThrown(Func<EmployerUrls, string, string> act, string expected)
         {
-            Run(f => f.SetBaseUrlsWithTrailingSlash(), f => act(f.EmployerUrls, null), (f, r) => r.Should().Be($"http://example.com:12345/accounts/{expected}"));
+            Run(f => f.SetBaseUrlsWithTrailingSlash(), f => act(f.EmployerUrls, null),
+                (f, r) => r.Should().Throw<ArgumentException>());
         }
 
         [TestCaseSource(nameof(_accountHashedIdTestCases))]
-        public void WhenBaseUrlsHaveNoTrailingSlashAndGettingUrlWithANullAccountHashedId_ThenCorrectUrlShouldBeReturned(Func<EmployerUrls, string, string> act, string expected)
+        public void WhenBaseUrlsHaveNoTrailingSlashAndGettingUrlWithANullAccountHashedId_ThenAnExceptionShouldBeThrown(Func<EmployerUrls, string, string> act, string expected)
         {
-            Run(f => f.SetBaseUrlsWithoutTrailingSlash(), f => act(f.EmployerUrls, null), (f, r) => r.Should().Be($"http://example.com:12345/accounts/{expected}"));
+            Run(f => f.SetBaseUrlsWithoutTrailingSlash(), f => act(f.EmployerUrls, null),
+                (f, r) => r.Should().Throw<ArgumentException>());
         }
         
+        [TestCaseSource(nameof(_noAccountHashedIdTestCases))]
+        public void WhenBaseUrlsAreMissingAndGettingUrlsThatDontIncludeAccountHashedId_ThenAnExceptionShouldBeThrown(Func<EmployerUrls, string> act, string expected)
+        {
+            Run(f => act(f.EmployerUrls), (f, r) => r.Should().Throw<ArgumentException>());
+        }
+
+        [TestCaseSource(nameof(_accountHashedIdTestCases))]
+        public void WhenBaseUrlsAreMissingAndGettingUrlsThatIncludeAccountHashedId_ThenAnExceptionShouldBeThrown(Func<EmployerUrls, string, string> act, string expected)
+        {
+            Run(f => act(f.EmployerUrls, "123456"), (f, r) => r.Should().Throw<ArgumentException>());
+        }
+
         private static object[] _noAccountHashedIdTestCases =
         {
             new object[] { (Func<EmployerUrls, string>)(eu => eu.Homepage()), "" },

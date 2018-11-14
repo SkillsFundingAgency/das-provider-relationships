@@ -7,16 +7,16 @@ namespace SFA.DAS.ProviderRelationships.Urls
 
         string YourAccounts();
         string NotificationSettings();
-        string RenameAccount(string hashedAccountId = null);
-        string YourTeam(string hashedAccountId = null);
-        string YourOrganisationsAndAgreements(string hashedAccountId = null);
-        string PayeSchemes(string hashedAccountId = null);
+        string RenameAccount(string hashedAccountId);
+        string YourTeam(string hashedAccountId);
+        string YourOrganisationsAndAgreements(string hashedAccountId);
+        string PayeSchemes(string hashedAccountId);
 
         #endregion Accounts
 
         #region Commitments
 
-        string Apprentices(string hashedAccountId = null);
+        string Apprentices(string hashedAccountId);
 
         #endregion Commitments
 
@@ -26,8 +26,8 @@ namespace SFA.DAS.ProviderRelationships.Urls
         #region Portal
 
         string Homepage();
-        string AccountHomepage(string hashedAccountId = null);
-        string FinanceHomepage(string hashedAccountId = null);
+        string AccountHomepage(string hashedAccountId);
+        string FinanceHomepage(string hashedAccountId);
         string SignIn();
         string SignOut();
         string Help();
