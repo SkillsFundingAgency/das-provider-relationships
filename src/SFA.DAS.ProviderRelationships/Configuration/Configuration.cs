@@ -5,13 +5,13 @@ using SFA.DAS.ProviderRelationships.Environment;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class EnvironmentConfiguration : IEnvironmentConfiguration
+    public class Configuration : IConfiguration
     {
         private readonly NameValueCollection _appSettings;
         private readonly IEnvironment _environment;
         
         // we could pass individual settings to ctor rather than appsettings
-        public EnvironmentConfiguration(NameValueCollection appSettings, IEnvironment environment)
+        public Configuration(NameValueCollection appSettings, IEnvironment environment)
         {
             _appSettings = appSettings;
             _environment = environment;

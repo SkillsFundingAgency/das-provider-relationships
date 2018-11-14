@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public interface IEnvironmentConfiguration
+    public interface IConfiguration
     {
         T Get<T>(string serviceName);
     }
