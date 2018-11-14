@@ -102,8 +102,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
 
         public RelationshipBuilder WithOutboxMessage(OutboxMessage item)
         {
-            _relationship.SetPropertyTo(p => p.OutboxData, new List<OutboxMessage> { item });
-
+            var outboxData = (List<OutboxMessage>)_relationship.OutboxData;
+            
+            outboxData.Clear();
+            outboxData.Add(item);
+            
             return this;
         }
 

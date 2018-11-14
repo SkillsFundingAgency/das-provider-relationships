@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         public async Task<GetRelationshipWithPermissionQueryResult> Handle(GetRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
             var relationships = await _relationshipsRepository.CreateQuery()
-                .Where(p => p.Ukprn == request.Ukprn && p.Operations.Contains(request.Operation))
+                .Where(p => p.Ukprn == request.Ukprn && p.Deleted == null && p.Operations.Contains(request.Operation))
                 .Select(p => new RelationshipDto
                 {
                     EmployerAccountId = p.AccountId,

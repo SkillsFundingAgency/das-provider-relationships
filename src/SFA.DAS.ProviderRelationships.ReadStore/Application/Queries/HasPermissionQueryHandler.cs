@@ -19,7 +19,8 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         public async Task<bool> Handle(HasPermissionQuery request, CancellationToken cancellationToken)
         {
             var hasPermission = await _relationshipsRepository.CreateQuery()
-                .AnyAsync(p => p.Ukprn == request.Ukprn && p.AccountLegalEntityId == request.EmployerAccountLegalEntityId 
+                .AnyAsync(p => p.Ukprn == request.Ukprn && p.Deleted == null 
+                                                        && p.AccountLegalEntityId == request.EmployerAccountLegalEntityId 
                                                         && p.Operations.Contains(request.Operation), cancellationToken)
                 .ConfigureAwait(false);
 

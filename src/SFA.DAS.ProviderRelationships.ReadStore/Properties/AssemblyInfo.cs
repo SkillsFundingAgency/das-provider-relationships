@@ -3,6 +3,7 @@
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Api.Client")]
+[assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Api.Client.TestHarness")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Api.Client.UnitTests")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.Jobs")]
 [assembly: InternalsVisibleTo("SFA.DAS.ProviderRelationships.MessageHandlers")]
