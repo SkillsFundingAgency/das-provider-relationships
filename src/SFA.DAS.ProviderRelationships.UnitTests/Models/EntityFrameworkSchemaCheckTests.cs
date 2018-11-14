@@ -2,7 +2,10 @@ using System.Data.SqlClient;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.DependencyResolution;
+using StructureMap;
 using TestSupport.EfSchemeCompare;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Models
@@ -17,21 +20,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         //[Ignore("To be run adhoc (but could live in an integration test)")]
         public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
         {
-            //load connection string from config?
-            //const string databaseConnectionString = "Server=tcp:phils.database.windows.net,1433;Initial Catalog=SFA.DAS.ProviderRelationships.Database;Persist Security Info=False;User ID=phil;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            const string databaseConnectionString = "Data Source=(localDB)\\MSSQLLocalDB;Database=SFA.DAS.ProviderRelationships.Database;Integrated Security = true;Trusted_Connection=True;Pooling=False;Connect Timeout=30;MultipleActiveResultSets=True";
-
-            var connection = new SqlConnection(databaseConnectionString);
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
-
-            using (var context = new ProviderRelationshipsDbContext(optionsBuilder.Options))
+            using (var container = new Container(c => c.AddRegistry<ConfigurationRegistry>()))
             {
-                var comparer = new CompareEfSql();
- 
-                var hasErrors = comparer.CompareEfWithDb(context);
+                var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
+                
+                using (var connection = new SqlConnection(configuration.DatabaseConnectionString))
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
 
-                hasErrors.Should().BeFalse(comparer.GetAllErrors);
-            }        
+                    using (var context = new ProviderRelationshipsDbContext(optionsBuilder.Options))
+                    {
+                        var comparer = new CompareEfSql();
+                        var hasErrors = comparer.CompareEfWithDb(context);
+
+                        hasErrors.Should().BeFalse(comparer.GetAllErrors);
+                    }
+                }
+            }
         }
     }
 }
