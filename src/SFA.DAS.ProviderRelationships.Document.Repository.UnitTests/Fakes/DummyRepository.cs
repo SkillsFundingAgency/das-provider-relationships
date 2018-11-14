@@ -4,8 +4,8 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes
 {
     public class DummyRepository : DocumentRepository<Dummy>
     {
-        public DummyRepository(IDocumentClient documentClient, string databaseName, string collectionName)
-            : base(documentClient, databaseName, collectionName)
+        public DummyRepository(IDocumentClient documentDbClient, string databaseName, string collectionName)
+            : base(documentDbClient, databaseName, collectionName)
         {
         }
     }
