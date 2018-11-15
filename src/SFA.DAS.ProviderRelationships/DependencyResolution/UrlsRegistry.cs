@@ -8,7 +8,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public UrlsRegistry()
         {
             For<IEmployerUrls>().Use<EmployerUrls>();
-            For<IViewUrls>().Use<ViewUrls>();
         }
     }
 }

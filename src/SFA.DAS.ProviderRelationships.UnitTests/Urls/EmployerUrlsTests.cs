@@ -86,36 +86,36 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
     public class EmployerUrlsTestsFixture
     {
         public EmployerUrls EmployerUrls { get; set; }
-        public ProviderRelationshipsConfiguration Config { get; set; }
+        public ProviderRelationshipsConfiguration Configuration { get; set; }
         
         public EmployerUrlsTestsFixture()
         {
-            Config = new ProviderRelationshipsConfiguration();
-            EmployerUrls = new EmployerUrls(Config);
+            Configuration = new ProviderRelationshipsConfiguration();
+            EmployerUrls = new EmployerUrls(Configuration);
         }
 
         public void SetBaseUrlsWithTrailingSlash()
         {
             const string baseUrl = "http://example.com:12345/";
 
-            Config.EmployerAccountsBaseUrl = baseUrl;
-            Config.EmployerCommitmentsBaseUrl = baseUrl;
-            Config.EmployerFinanceBaseUrl = baseUrl;
-            Config.EmployerPortalBaseUrl = baseUrl;
-            Config.EmployerProjectionsBaseUrl = baseUrl;
-            Config.EmployerRecruitBaseUrl = baseUrl;
+            Configuration.EmployerAccountsBaseUrl = baseUrl;
+            Configuration.EmployerCommitmentsBaseUrl = baseUrl;
+            Configuration.EmployerFinanceBaseUrl = baseUrl;
+            Configuration.EmployerPortalBaseUrl = baseUrl;
+            Configuration.EmployerProjectionsBaseUrl = baseUrl;
+            Configuration.EmployerRecruitBaseUrl = baseUrl;
         }
         
         public void SetBaseUrlsWithoutTrailingSlash()
         {
             const string baseUrl = "http://example.com:12345";
 
-            Config.EmployerAccountsBaseUrl = baseUrl;
-            Config.EmployerCommitmentsBaseUrl = baseUrl;
-            Config.EmployerFinanceBaseUrl = baseUrl;
-            Config.EmployerPortalBaseUrl = baseUrl;
-            Config.EmployerProjectionsBaseUrl = baseUrl;
-            Config.EmployerRecruitBaseUrl = baseUrl;
+            Configuration.EmployerAccountsBaseUrl = baseUrl;
+            Configuration.EmployerCommitmentsBaseUrl = baseUrl;
+            Configuration.EmployerFinanceBaseUrl = baseUrl;
+            Configuration.EmployerPortalBaseUrl = baseUrl;
+            Configuration.EmployerProjectionsBaseUrl = baseUrl;
+            Configuration.EmployerRecruitBaseUrl = baseUrl;
         }
     }
 }

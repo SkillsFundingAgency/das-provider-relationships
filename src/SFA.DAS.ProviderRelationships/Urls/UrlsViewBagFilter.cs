@@ -1,25 +1,20 @@
 using System;
 using System.Web.Mvc;
-using SFA.DAS.ProviderRelationships.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
     public class UrlsViewBagFilter : ActionFilterAttribute
     {
-        private readonly Func<IViewUrls> _getViewUrls;
+        private readonly Func<IEmployerUrls> _urls;
 
-        public UrlsViewBagFilter(Func<IViewUrls> getViewUrls)
+        public UrlsViewBagFilter(Func<IEmployerUrls> urls)
         {
-            _getViewUrls = getViewUrls;
+            _urls = urls;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var viewUrls = _getViewUrls();
-
-            viewUrls.AccountHashedId = (string)filterContext.RouteData.Values[RouteDataKeys.AccountHashedId];
-
-            filterContext.Controller.ViewBag.Urls = viewUrls;
+            filterContext.Controller.ViewBag.Urls = _urls();
         }
     }
 }
