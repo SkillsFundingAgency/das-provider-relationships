@@ -78,16 +78,18 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             });
 
             ConfigurationFactory.Current = _configurationFactory;
+            
             // replace MS's default claim mapping (between OIDC claims and MS .net proprietary claim types)
             // with an empty mapper - the claim types we receive are DAS specific
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
         }
 
-        internal Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
+        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate)
         {
             if (!useCertificate)
             {
                 _logger.Info("Not using certificate");
+                
                 return null;
             }
 

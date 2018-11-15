@@ -19,39 +19,43 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
     public class AuthorizationContextProviderTests : FluentTest<AuthorizationContextProviderTestsFixture>
     {
         [Test]
-        public void GetAuthorizationContext_WhenGettingAuthorizationContextAndAccountIdExistsAndIsValidAndUserIsAuthenticatedAndUserRefIsValid_ThenShouldReturnAuthroizationContextWithAccountIdAndUserRefValues()
+        public void GetAuthorizationContext_WhenAccountIdExistsAndIsValidAndUserIsAuthenticatedAndUserRefIsValidAndUserEmailIsValid_ThenShouldReturnAuthroizationContextWithAccountIdAndUserRefValues()
         {
-            Run(f => f.SetValidAccountId().SetValidUserRef(), f => f.GetAuthorizationContext(), (f, r) =>
+            Run(f => f.SetValidAccountId().SetValidUserRef().SetValidUserEmail(), f => f.GetAuthorizationContext(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Get<string>("AccountHashedId").Should().Be(f.AccountHashedId);
                 r.Get<long?>("AccountId").Should().Be(f.AccountId);
                 r.Get<Guid?>("UserRef").Should().Be(f.UserRef);
             });
         }
         
         [Test]
-        public void GetAuthorizationContext_WhenGettingAuthorizationContextAndAccountIdDoesNotExistAndUserIsNotAuthenticated_ThenShouldReturnAuthroizationContextWithoutAccountIdAndUserRefValues()
+        public void GetAuthorizationContext_WhenAccountIdDoesNotExistAndUserIsNotAuthenticated_ThenShouldReturnAuthroizationContextWithoutAccountIdAndUserRefValues()
         {
-            Run(f => f.SetNoAccountId().SetUnauthenticatedUser(), f => f.GetAuthorizationContext(), (f, r) =>
+            Run(f => f.SetUnauthenticatedUser(), f => f.GetAuthorizationContext(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Get<string>("AccountHashedId").Should().BeNull();
                 r.Get<long?>("AccountId").Should().BeNull();
                 r.Get<Guid?>("UserRef").Should().BeNull();
             });
         }
         
         [Test]
-        public void GetAuthorizationContext_WhenGettingAuthorizationContextAndAccountIdExistsAndIsInvalid_ThenShouldThrowUnauthorizedAccessException()
+        public void GetAuthorizationContext_WhenAccountIdExistsAndIsInvalid_ThenShouldThrowUnauthorizedAccessException()
         {
             Run(f => f.SetInvalidAccountId(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
         }
         
         [Test]
-        public void GetAuthorizationContext_WhenGettingAuthorizationContextAndUserIsAuthenticatedAndUserRefIsInvalid_ThenShouldThrowUnauthorizedAccessException()
+        public void GetAuthorizationContext_WhenUserIsAuthenticatedAndUserRefIsInvalid_ThenShouldThrowUnauthorizedAccessException()
         {
-            Run(f => f.SetInvalidAccountId().SetInvalidUserRef(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
+            Run(f => f.SetValidAccountId().SetInvalidUserRef(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
+        }
+        
+        [Test]
+        public void GetAuthorizationContext_WhenUserIsAuthenticatedAndUserEmailIsInvalid_ThenShouldThrowUnauthorizedAccessException()
+        {
+            Run(f => f.SetValidAccountId().SetValidUserRef().SetInvalidUserEmail(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
         }
     }
 
@@ -65,12 +69,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         public long AccountId { get; set; }
         public Guid UserRef { get; set; }
         public string UserRefClaimValue { get; set; }
+        public string UserEmail { get; set; }
 
         public AuthorizationContextProviderTestsFixture()
         {
             HttpContext = new Mock<HttpContextBase>();
             HashingService = new Mock<IHashingService>();
             AuthenticationService = new Mock<IAuthenticationService>();
+            
+            HttpContext.Setup(c => c.Request.RequestContext.RouteData).Returns(new RouteData());
+            
             AuthorizationContextProvider = new AuthorizationContextProvider(HttpContext.Object, HashingService.Object, AuthenticationService.Object);
         }
 
@@ -108,13 +116,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             return this;
         }
 
-        public AuthorizationContextProviderTestsFixture SetNoAccountId()
-        {
-            HttpContext.Setup(c => c.Request.RequestContext.RouteData).Returns(new RouteData());
-            
-            return this;
-        }
-
         public AuthorizationContextProviderTestsFixture SetValidUserRef()
         {
             UserRef = Guid.NewGuid();
@@ -136,6 +137,30 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             
             AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
             AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out userRefClaimValue)).Returns(true);
+            
+            return this;
+        }
+
+        public AuthorizationContextProviderTestsFixture SetValidUserEmail()
+        {
+            UserEmail = "foo@bar.com";
+            
+            var userEmailClaimValue = UserEmail;
+            
+            AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out userEmailClaimValue)).Returns(true);
+            
+            return this;
+        }
+
+        public AuthorizationContextProviderTestsFixture SetInvalidUserEmail()
+        {
+            UserEmail = null;
+            
+            var userEmailClaimValue = UserEmail;
+            
+            AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out userEmailClaimValue)).Returns(false);
             
             return this;
         }

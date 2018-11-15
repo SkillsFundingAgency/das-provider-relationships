@@ -5,6 +5,14 @@ namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public class OwinAuthenticationService : IAuthenticationService
     {
+        public string GetCurrentUserClaimValue(string key)
+        {
+            var claimsIdentity = (ClaimsIdentity)HttpContext.Current.User.Identity;
+            var claim = claimsIdentity.FindFirst(key);
+            
+            return claim.Value;
+        }
+
         public bool IsUserAuthenticated()
         {
             //todo: is using HttpContext going to kill self-hosting?
