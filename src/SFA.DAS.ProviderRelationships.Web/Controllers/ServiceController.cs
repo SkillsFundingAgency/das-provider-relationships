@@ -3,7 +3,6 @@ using SFA.DAS.ProviderRelationships.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("service")]
     public class ServiceController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
