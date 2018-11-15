@@ -1,20 +1,23 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Mvc
 {
     public class AccountUrlsViewBagFilter : ActionFilterAttribute
     {
-        private readonly AccountUrls _accountUrls;
+        private readonly Func<AccountUrls> _accountUrls;
 
-        public AccountUrlsViewBagFilter(AccountUrls accountUrls)
+        public AccountUrlsViewBagFilter(Func<AccountUrls> accountUrls)
         {
             _accountUrls = accountUrls;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.ChangeEmailUrl = _accountUrls.ChangeEmailUrl;
-            filterContext.Controller.ViewBag.ChangePasswordUrl = _accountUrls.ChangePasswordUrl;
+            var accountUrls = _accountUrls();
+            
+            filterContext.Controller.ViewBag.ChangeEmailUrl = accountUrls.ChangeEmailUrl;
+            filterContext.Controller.ViewBag.ChangePasswordUrl = accountUrls.ChangePasswordUrl;
         }
     }
 }
