@@ -13,7 +13,6 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.Home;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerRole.Any)]
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
@@ -33,11 +32,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         public ActionResult Local()
         {
             if (_environment.IsCurrent(DasEnv.LOCAL))
+            {
                 return RedirectToAction("Index", new { accountHashedId = "JRML7V" });
+            }
 
             return Redirect(_employerUrls.Homepage());
         }
-        
+ 
+        [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerRole.Any)]       
         [Route("accounts/{accountHashedId}")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {

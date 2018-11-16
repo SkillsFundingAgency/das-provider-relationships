@@ -5,9 +5,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        public static IViewUrls Urls(this HtmlHelper htmlHelper)
+        public static IEmployerUrls EmployerUrls(this HtmlHelper htmlHelper)
         {
-            return (IViewUrls) htmlHelper.ViewBag.Urls;
+            return (IEmployerUrls)htmlHelper.ViewBag.EmployerUrls;
         }
     }
 }

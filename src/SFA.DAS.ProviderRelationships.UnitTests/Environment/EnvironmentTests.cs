@@ -1,7 +1,7 @@
 using System.Collections.Specialized;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
@@ -10,23 +10,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
     [Parallelizable]
     public class EnvironmentTests : FluentTest<EnvironmentTestsFixture>
     {
-        #region Current
-
         [TestCase(DasEnv.LOCAL)]
         [TestCase(DasEnv.AT)]
-        [TestCase(DasEnv.MO)]
-        [TestCase(DasEnv.DEMO)]
-        [TestCase(DasEnv.PROD)]
         [TestCase(DasEnv.TEST)]
         [TestCase(DasEnv.TEST2)]
+        [TestCase(DasEnv.PREPROD)]
+        [TestCase(DasEnv.PROD)]
+        [TestCase(DasEnv.MO)]
+        [TestCase(DasEnv.DEMO)]
         public void WhenGettingCurrent_ThenShouldReturnCurrentEnvironment(DasEnv env)
         {
             Run(f => f.SetCurrent(env), f => f.Current(), (f, r) => r.Should().Be(env));
         }        
-
-        #endregion Current
-
-        #region IsCurrent
 
         [TestCase(false, DasEnv.PROD, new DasEnv[] {})]
         [TestCase(true, DasEnv.MO, new[] {DasEnv.MO})]
@@ -37,16 +32,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         {
             Run(f => f.SetCurrent(current), f => f.IsCurrent(toCheck), (f, r) => r.Should().Be(expected));
         }
-        
-        #endregion IsCurrent
     }
 
     public class EnvironmentTestsFixture
     {
         public ProviderRelationships.Environment.Environment Environment { get; set; }
         public NameValueCollection AppSettings { get; set; }
-
-        #region Arrange
         
         public EnvironmentTestsFixture()
         {
@@ -57,11 +48,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         {
             AppSettings["EnvironmentName"] = environment.ToString();
             Environment = new ProviderRelationships.Environment.Environment(AppSettings);
-        }
-        
-        #endregion Arrange
-
-        #region Act        
+        }        
         
         public DasEnv Current()
         {
@@ -71,8 +58,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         public bool IsCurrent(params DasEnv[] environment)
         {
             return Environment.IsCurrent(environment);
-        }
-        
-        #endregion Act        
+        }        
     }
 }

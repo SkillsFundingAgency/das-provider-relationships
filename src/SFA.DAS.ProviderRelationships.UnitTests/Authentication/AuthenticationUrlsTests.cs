@@ -48,34 +48,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
                 f => f.AuthenticationUrls.UserInfoEndpoint,
                 (f, r) => r.Should().Be(expectedEndpoint));
         }
-
-        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=devprorel&returnurl=",
-            "/account/changepassword?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangePasswordUrl_ThenShouldReturnCorrectChangePasswordUrl(string expectedUrl, string changePasswordUrl, string clientId, string baseAddress)
-        {
-            Run(f =>
-                {
-                    f.SetBaseAddress(baseAddress);
-                    f.IdentityServerConfiguration.Setup(c => c.ClientId).Returns(clientId);
-                    f.IdentityServerConfiguration.Setup(c => c.ChangePasswordUrl).Returns(changePasswordUrl);
-                },
-                f => f.AuthenticationUrls.ChangePasswordUrl,
-                (f, r) => r.Should().Be(expectedUrl));
-        }
-
-        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changeemail?clientId=devprorel&returnurl=",
-            "/account/changeemail?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangeEmailUrl_ThenShouldReturnChangeEmailUrl(string expectedUrl, string changeEmailUrl, string clientId, string baseAddress)
-        {
-            Run(f =>
-                {
-                    f.SetBaseAddress(baseAddress);
-                    f.IdentityServerConfiguration.Setup(c => c.ClientId).Returns(clientId);
-                    f.IdentityServerConfiguration.Setup(c => c.ChangeEmailUrl).Returns(changeEmailUrl);
-                },
-                f => f.AuthenticationUrls.ChangeEmailUrl,
-                (f, r) => r.Should().Be(expectedUrl));
-        }
         
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/identity/connect/endsession?id_token_hint=abc123",
             "/connect/endsession?id_token_hint={0}", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]

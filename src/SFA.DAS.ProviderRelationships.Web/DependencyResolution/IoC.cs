@@ -17,13 +17,14 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
+                c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EmployerFeaturesAuthorizationRegistry>();
                 c.AddRegistry<EmployerRolesAuthorizationRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
+                c.AddRegistry<EnvironmentRegistry>();
                 c.AddRegistry<HashingRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();
