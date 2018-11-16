@@ -107,11 +107,11 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
             IContainer container = CurrentNestedContainer ?? Container;
             
             try {
-                return container.GetAllInstances(serviceType).Cast<object>();   
+                return container.GetAllInstances(serviceType).Cast<object>();
             } catch (Exception ex) {
                 var logger = Container.TryGetInstance<ILog>();
                 
-                logger.Error(ex, $"{nameof(DoGetAllInstances)} error");
+                logger?.Error(ex, $"{nameof(DoGetAllInstances)} error");
 
                 throw;
             }
@@ -127,11 +127,11 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
                         : container.GetInstance(serviceType);
                 }
     
-                return container.GetInstance(serviceType, key);   
+                return container.GetInstance(serviceType, key);
             } catch (Exception ex) {
                 var logger = container.TryGetInstance<ILog>();
                 
-                logger.Error(ex, $"{nameof(DoGetInstance)} error");
+                logger?.Error(ex, $"{nameof(DoGetInstance)} error");
 
                 throw;
             }
