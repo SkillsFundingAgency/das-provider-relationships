@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public RunHealthCheckCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
+            User = new UserBuilder().WithRef(Guid.NewGuid());
             RunHealthCheckCommand = new RunHealthCheckCommand(User.Ref);
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();

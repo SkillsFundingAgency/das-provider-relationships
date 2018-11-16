@@ -6,7 +6,7 @@ using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {

@@ -8,6 +8,8 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public AccountProviderMappings()
         {
+            CreateMap<AccountProvider, AddedAccountProviderDto>();
+
             CreateMap<AccountProvider, AccountProviderDto>();
         }
     }

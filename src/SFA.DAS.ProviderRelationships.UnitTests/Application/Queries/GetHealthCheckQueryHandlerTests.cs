@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetHealthCheckQueryHandlerTestsFixture
     {
         public GetHealthCheckQuery GetHealthCheckQuery { get; set; }
-        public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResponse> Handler { get; set; }
+        public IRequestHandler<GetHealthCheckQuery, GetHealthCheckQueryResult> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public List<HealthCheck> HealthChecks { get; set; }
@@ -48,8 +48,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
             HealthChecks = new List<HealthCheck>
             {
-                new HealthCheckBuilder().WithId(1).Build(),
-                new HealthCheckBuilder().WithId(2).Build()
+                new HealthCheckBuilder().WithId(1),
+                new HealthCheckBuilder().WithId(2)
             };
             
             Db.HealthChecks.AddRange(HealthChecks);
@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Handler = new GetHealthCheckQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
-        public Task<GetHealthCheckQueryResponse> Handle()
+        public Task<GetHealthCheckQueryResult> Handle()
         {
             return Handler.Handle(GetHealthCheckQuery, CancellationToken.None);
         }

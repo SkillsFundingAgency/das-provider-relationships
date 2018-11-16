@@ -122,10 +122,10 @@
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
-    <Compile Include="Routing\RouteDataKeys.cs" />
-    <Compile Include="EndpointStartup.cs" />
+    <Compile Include="NServiceBusStartup.cs" />
+    <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Extensions\UrlHelperExtensions.cs" />
+    <Compile Include="Filters\UrlsViewBagFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -133,16 +133,19 @@
     <Compile Include="Mappings\HealthCheckMappings.cs" />
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\RouteDataKeys.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AddedProviderRouteValues.cs" />
-    <Compile Include="ViewModels\AddedProviderViewModel.cs" />
-    <Compile Include="ViewModels\AddProviderRouteValues.cs" />
-    <Compile Include="ViewModels\AddProviderViewModel.cs" />
-    <Compile Include="ViewModels\AlreadyAddedProviderRouteValues.cs" />
-    <Compile Include="ViewModels\AlreadyAddedProviderViewModel.cs" />
-    <Compile Include="ViewModels\HealthCheckRouteValues.cs" />
-    <Compile Include="ViewModels\HealthCheckViewModel.cs" />
-    <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
+    <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
+    <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
+    <Compile Include="ViewModels\Home\AccountProvidersRouteValues.cs" />
+    <Compile Include="ViewModels\Home\AccountProvidersViewModel.cs" />
+    <Compile Include="ViewModels\Providers\AddedProviderRouteValues.cs" />
+    <Compile Include="ViewModels\Providers\AddedProviderViewModel.cs" />
+    <Compile Include="ViewModels\Providers\AddProviderRouteValues.cs" />
+    <Compile Include="ViewModels\Providers\AddProviderViewModel.cs" />
+    <Compile Include="ViewModels\Providers\AlreadyAddedProviderRouteValues.cs" />
+    <Compile Include="ViewModels\Providers\AlreadyAddedProviderViewModel.cs" />
+    <Compile Include="ViewModels\Providers\SearchProvidersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="403.html" />
@@ -175,6 +178,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HealthCheck\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Providers\Add.cshtml" />
     <Content Include="Views\Providers\Added.cshtml" />
@@ -193,9 +197,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
-    <Folder Include="Views\Permissions" />
+    <Folder Include="Views\Permissions\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj">
+      <Project>{9e04ae68-5753-49e7-ac56-a0cf005d19d6}</Project>
+      <Name>SFA.DAS.ProviderRelationships.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>
@@ -220,7 +228,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\HealthCheck\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -256,10 +263,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-               Other similar extension points exist, see Microsoft.Common.targets.
-          <Target Name="BeforeBuild">
-          </Target>
-          <Target Name="AfterBuild">
-          </Target> -->
 </Project>

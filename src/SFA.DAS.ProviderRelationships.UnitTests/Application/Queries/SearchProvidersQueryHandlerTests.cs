@@ -86,14 +86,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Query = new SearchProvidersQuery(1, 12345678);
         }
 
-        public Task<SearchProvidersQueryResponse> Handle()
+        public Task<SearchProvidersQueryResult> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }
 
         public SearchProvidersQueryHandlerTestsFixture SetProvider()
         {
-            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn).Build();
+            Provider = new ProviderBuilder().WithUkprn(Query.Ukprn);
             
             Db.Providers.Add(Provider);
             Db.SaveChanges();
@@ -103,8 +103,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public SearchProvidersQueryHandlerTestsFixture SetAccountProvider()
         {
-            Account = new AccountBuilder().WithId(Query.AccountId).Build();
-            AccountProvider = new AccountProviderBuilder().WithId(1).WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn).Build();
+            Account = new AccountBuilder().WithId(Query.AccountId);
+            AccountProvider = new AccountProviderBuilder().WithId(1).WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn);
             
             Db.AccountProviders.Add(AccountProvider);
             Db.SaveChanges();

@@ -32,5 +32,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
         {
             return _accountProvider.Object;
         }
+        
+        public static implicit operator AccountProvider(AccountProviderBuilder builder)
+        {
+            return builder.Build();
+        }
     }
 }

@@ -8,9 +8,9 @@ using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Validation;
-using SFA.DAS.ProviderRelationships.Web.Extensions;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
@@ -21,11 +21,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IEmployerUrls _employerUrls;
 
-        public ProvidersController(IMediator mediator, IMapper mapper)
+        public ProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _employerUrls = employerUrls;
         }
 
         [Route("search")]
@@ -93,7 +95,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("{accountProviderId}/added")]
         public async Task<ActionResult> Added(AddedProviderRouteValues routeValues)
         {
-            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AddedProviderViewModel>(response);
             
@@ -112,7 +114,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Search");
                 case "GoToHomepage":
-                    return Redirect(Url.EmployerPortalAccountAction());
+                    return Redirect(_employerUrls.Account());
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -122,7 +124,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("{accountProviderId}/alreadyadded")]
         public async Task<ActionResult> AlreadyAdded(AlreadyAddedProviderRouteValues routeValues)
         {
-            var query = new GetAddedProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var response = await _mediator.Send(query);
             var model = _mapper.Map<AlreadyAddedProviderViewModel>(response);
             

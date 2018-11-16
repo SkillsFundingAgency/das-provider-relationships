@@ -2,12 +2,10 @@
 {
     public sealed class AuthenticationUrls : IAuthenticationUrls
     {
-        public string AuthorizeEndpoint => GetIdentityServerUrl(_configuration.AuthorizeEndpoint);
-        public string ChangePasswordUrl => GetNonIdentityServerUrl(_configuration.ChangePasswordUrl, _configuration.ClientId);
-        public string ChangeEmailUrl => GetNonIdentityServerUrl(_configuration.ChangeEmailUrl, _configuration.ClientId);
-        public string LogoutEndpoint => GetIdentityServerUrl(_configuration.LogoutEndpoint, _authenticationService.GetCurrentUserClaimValue("id_token"));
-        public string TokenEndpoint => GetIdentityServerUrl(_configuration.TokenEndpoint);
-        public string UserInfoEndpoint => GetIdentityServerUrl(_configuration.UserInfoEndpoint);
+        public string AuthorizeEndpoint => GetEndpoint(_configuration.AuthorizeEndpoint);
+        public string LogoutEndpoint => GetEndpoint(_configuration.LogoutEndpoint, _authenticationService.GetCurrentUserClaimValue("id_token"));
+        public string TokenEndpoint => GetEndpoint(_configuration.TokenEndpoint);
+        public string UserInfoEndpoint => GetEndpoint(_configuration.UserInfoEndpoint);
         
         private readonly IIdentityServerConfiguration _configuration;
         private readonly IAuthenticationService _authenticationService;
@@ -18,14 +16,9 @@
             _authenticationService = authenticationService;
         }
 
-        private string GetIdentityServerUrl(string endpoint, params object[] args)
+        private string GetEndpoint(string endpoint, params object[] args)
         {
             return $"{_configuration.BaseAddress}{string.Format(endpoint, args)}";
-        }
-
-        private string GetNonIdentityServerUrl(string endpoint, params object[] args)
-        {
-            return $"{_configuration.BaseAddress.Replace("/identity", "")}{string.Format(endpoint, args)}";
         }
     }
 }

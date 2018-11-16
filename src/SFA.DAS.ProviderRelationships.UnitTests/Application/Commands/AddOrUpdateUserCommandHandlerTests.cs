@@ -87,8 +87,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 .WithEmail(AddOrUpdateUserCommand.Email)
                 .WithFirstName(AddOrUpdateUserCommand.FirstName)
                 .WithLastName(AddOrUpdateUserCommand.LastName)
-                .WithCreated(Now)
-                .Build();
+                .WithCreated(Now);
             
             Db.Users.Add(User);
             Db.SaveChanges();

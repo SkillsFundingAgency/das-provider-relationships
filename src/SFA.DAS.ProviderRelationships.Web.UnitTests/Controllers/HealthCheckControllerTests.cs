@@ -12,7 +12,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.Index(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryResponse.HealthCheck);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryResult.HealthCheck);
             });
         }
 
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HealthCheckController HealthCheckController { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
-        public GetHealthCheckQueryResponse GetHealthCheckQueryResponse { get; set; }
+        public GetHealthCheckQueryResult GetHealthCheckQueryResult { get; set; }
         public HealthCheckRouteValues HealthCheckRouteValues { get; set; }
 
         public HealthCheckControllerTestsFixture()
@@ -57,9 +57,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Index()
         {
-            GetHealthCheckQueryResponse = new GetHealthCheckQueryResponse(new HealthCheckDto());
+            GetHealthCheckQueryResult = new GetHealthCheckQueryResult(new HealthCheckDto());
 
-            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResponse);
+            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResult);
 
             return HealthCheckController.Index();
         }
