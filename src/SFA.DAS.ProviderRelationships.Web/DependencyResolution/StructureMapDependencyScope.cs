@@ -23,6 +23,8 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
 
     using Microsoft.Practices.ServiceLocation;
 
+    using NLog.Logger;
+    
     using StructureMap;
 	
     /// <summary>
@@ -102,19 +104,37 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
         #region Methods
 
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType) {
-            return (CurrentNestedContainer ?? Container).GetAllInstances(serviceType).Cast<object>();
+            IContainer container = CurrentNestedContainer ?? Container;
+            
+            try {
+                return container.GetAllInstances(serviceType).Cast<object>();   
+            } catch (Exception ex) {
+                var logger = Container.TryGetInstance<ILog>();
+                
+                logger.Error(ex, $"{nameof(DoGetAllInstances)} error");
+
+                throw;
+            }
         }
 
         protected override object DoGetInstance(Type serviceType, string key) {
-            IContainer container = (CurrentNestedContainer ?? Container);
+            IContainer container = CurrentNestedContainer ?? Container;
+            
+            try {
+                if (string.IsNullOrEmpty(key)) {
+                    return serviceType.IsAbstract || serviceType.IsInterface
+                        ? container.TryGetInstance(serviceType)
+                        : container.GetInstance(serviceType);
+                }
+    
+                return container.GetInstance(serviceType, key);   
+            } catch (Exception ex) {
+                var logger = container.TryGetInstance<ILog>();
+                
+                logger.Error(ex, $"{nameof(DoGetInstance)} error");
 
-            if (string.IsNullOrEmpty(key)) {
-                return serviceType.IsAbstract || serviceType.IsInterface
-                    ? container.TryGetInstance(serviceType)
-                    : container.GetInstance(serviceType);
+                throw;
             }
-
-            return container.GetInstance(serviceType, key);
         }
 
         #endregion
