@@ -34,6 +34,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 

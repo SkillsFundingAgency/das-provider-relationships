@@ -7,7 +7,6 @@ using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerRoles.Any)]
     public class HomeController : Controller
     {
         private readonly IEnvironment _environment;

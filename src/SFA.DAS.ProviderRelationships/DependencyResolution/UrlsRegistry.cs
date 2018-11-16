@@ -1,3 +1,4 @@
+using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
 using SFA.DAS.ProviderRelationships.Urls;
 
@@ -8,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public UrlsRegistry()
         {
             For<IEmployerUrls>().Use<EmployerUrls>();
-            For<IViewUrls>().Use<ViewUrls>();
+            For<IEmployerUrlsConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>()).Singleton();
         }
     }
 }

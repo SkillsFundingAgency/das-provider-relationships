@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Configuration
+﻿namespace SFA.DAS.ProviderRelationships.Environment
 {
     public enum DasEnv
     {
@@ -6,6 +6,7 @@
         AT,
         TEST,
         TEST2,
+        PREPROD,
         PROD,
         MO,
         DEMO

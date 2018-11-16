@@ -1,11 +1,13 @@
 using System;
 using System.Web;
 using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerFeatures;
+using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.ProviderRelationships.Routing;
+using SFA.DAS.ProviderRelationships.Web.Routing;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization
 {
@@ -25,42 +27,35 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
         public IAuthorizationContext GetAuthorizationContext()
         {
             var authorizationContext = new AuthorizationContext();
-            var accountHashedId = GetAccountHashedId();
-            var accountId = accountHashedId == null ? null : GetAccountId(accountHashedId);
-            var userRef = GetUserRef();
+            var accountValues = GetAccountValues();
+            var userValues = GetUserValues();
             
-            authorizationContext.Set("AccountHashedId", accountHashedId);
-            authorizationContext.Set("AccountId", accountId);
-            authorizationContext.Set("UserRef", userRef);
+            authorizationContext.AddEmployerFeatureValues(accountValues.Id, userValues.Email);
+            authorizationContext.AddEmployerRoleValues(accountValues.Id, userValues.Ref);
 
             return authorizationContext;
         }
-        
-        private string GetAccountHashedId()
+
+        private (string HashedId, long? Id) GetAccountValues()
         {
             if (!_httpContext.Request.RequestContext.RouteData.Values.TryGetValue(RouteDataKeys.AccountHashedId, out var accountHashedId))
             {
-                return null;
+                return (null, null);
             }
-
-            return (string)accountHashedId;
-        }
-
-        private long? GetAccountId(string accountHashedId)
-        {
-            if (!_hashingService.TryDecodeValue(accountHashedId, out var accountId))
+            
+            if (!_hashingService.TryDecodeValue(accountHashedId.ToString(), out var accountId))
             {
                 throw new UnauthorizedAccessException();
             }
 
-            return accountId;
+            return (accountHashedId.ToString(), accountId);
         }
 
-        private Guid? GetUserRef()
+        private (Guid? Ref, string Email) GetUserValues()
         {
             if (!_authenticationService.IsUserAuthenticated())
             {
-                return null;
+                return (null, null);
             }
 
             if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out var userRefClaimValue))
@@ -73,7 +68,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
                 throw new UnauthorizedAccessException();
             }
 
-            return userRef;
+            if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out var userEmail))
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            return (userRef, userEmail);
         }
     }
 }

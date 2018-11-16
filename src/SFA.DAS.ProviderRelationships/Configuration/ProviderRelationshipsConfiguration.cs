@@ -1,9 +1,10 @@
 ﻿using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class ProviderRelationshipsConfiguration
+    public class ProviderRelationshipsConfiguration : IEmployerUrlsConfiguration
     {
         public string AllowedHashstringCharacters { get; set; }
         public string Hashstring { get; set; }
@@ -14,15 +15,17 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string EmployerPortalBaseUrl { get; set; }
         public string EmployerProjectionsBaseUrl { get; set; }
         public string EmployerRecruitBaseUrl { get; set; }
-        public string NServiceBusLicense { get; set; }
+        public string EmployerUsersBaseUrl { get; set; }
         public string ServiceBusConnectionString { get; set; }
         public IdentityServerConfiguration Identity { get; set; }
 
-        public ProviderRelationshipsConfiguration InitialTransform()
+        public string NServiceBusLicense
         {
-            NServiceBusLicense = NServiceBusLicense.HtmlDecode();
-
-            return this;
+            get =>  _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
+            set => _nServiceBusLicense = value;
         }
+        
+        private string _nServiceBusLicense;
+        private string _decodedNServiceBusLicense;
     }
 }

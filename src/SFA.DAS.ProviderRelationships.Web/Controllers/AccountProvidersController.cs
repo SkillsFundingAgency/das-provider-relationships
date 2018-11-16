@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
@@ -14,7 +15,7 @@ using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerRoles.Any)]
+    [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerRole.Any)]
     [RoutePrefix("accounts/{accountHashedId}/providers")]
     public class AccountProvidersController : Controller
     {
@@ -123,7 +124,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 case "GoToHomepage":
-                    return Redirect(_employerUrls.AccountHomepage(model.AccountHashedId));
+                    return Redirect(_employerUrls.Account());
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }

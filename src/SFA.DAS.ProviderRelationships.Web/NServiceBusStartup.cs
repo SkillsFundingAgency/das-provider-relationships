@@ -15,14 +15,14 @@ using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
-    public class EndpointStartup : IStartup
+    public class NServiceBusStartup : IStartup
     {
         private readonly IContainer _container;
         private readonly IEnvironment _environment;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public EndpointStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public NServiceBusStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
             _environment = environment;

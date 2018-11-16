@@ -9,7 +9,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         public AccountProviderMappings()
         {
             CreateMap<GetAddedAccountProviderQueryResult, AddedAccountProviderViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
             
             CreateMap<GetAddedAccountProviderQueryResult, AlreadyAddedAccountProviderViewModel>()

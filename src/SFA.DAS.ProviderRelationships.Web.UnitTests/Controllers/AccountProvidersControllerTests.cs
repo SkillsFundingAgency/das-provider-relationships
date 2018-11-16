@@ -160,7 +160,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeIndexAction()
         {
             Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
-                a.Url == $"https://localhost/accounts/{f.AddedAccountProviderViewModel.AccountHashedId}/teams"));
+                a.Url == $"https://localhost/accounts/ABC123/teams"));
         }
 
         [Test]
@@ -358,13 +358,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             AddedAccountProviderViewModel = new AddedAccountProviderViewModel
             {
-                AccountHashedId = "ABC123",
                 AccountProviderId = 2,
                 Choice = choice
             };
 
-            EmployerUrls.Setup(eu => eu.AccountHomepage(AddedAccountProviderViewModel.AccountHashedId))
-                .Returns($"https://localhost/accounts/{AddedAccountProviderViewModel.AccountHashedId}/teams");
+            EmployerUrls.Setup(eu => eu.Account(null))
+                .Returns($"https://localhost/accounts/ABC123/teams");
 
             return AccountProvidersController.Added(AddedAccountProviderViewModel);
         }

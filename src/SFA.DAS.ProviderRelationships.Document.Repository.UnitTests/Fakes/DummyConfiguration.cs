@@ -4,5 +4,7 @@ namespace SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes
     {
         public string Uri { get; set; }
         public string AuthKey { get; set; }
+
+        public string DatabaseName { get; set; }
     }
 }

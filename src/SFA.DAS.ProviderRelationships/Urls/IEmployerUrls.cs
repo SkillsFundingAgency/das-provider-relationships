@@ -1,16 +1,18 @@
-
 namespace SFA.DAS.ProviderRelationships.Urls
 {
     public interface IEmployerUrls
     {
+        void Initialize(string accountHashedId);
+        
         #region Accounts
 
-        string YourAccounts();
+        string Account(string hashedAccountId = null);
         string NotificationSettings();
-        string RenameAccount(string hashedAccountId = null);
-        string YourTeam(string hashedAccountId = null);
-        string YourOrganisationsAndAgreements(string hashedAccountId = null);
         string PayeSchemes(string hashedAccountId = null);
+        string RenameAccount(string hashedAccountId = null);
+        string YourAccounts();
+        string YourOrganisationsAndAgreements(string hashedAccountId = null);
+        string YourTeam(string hashedAccountId = null);
 
         #endregion Accounts
 
@@ -21,21 +23,32 @@ namespace SFA.DAS.ProviderRelationships.Urls
         #endregion Commitments
 
         #region Finance
+        
+        string Finance(string hashedAccountId = null);
+        
         #endregion Finance
 
         #region Portal
 
+        string Help();
         string Homepage();
-        string AccountHomepage(string hashedAccountId = null);
-        string FinanceHomepage(string hashedAccountId = null);
+        string Privacy();
         string SignIn();
         string SignOut();
-        string Help();
-        string Privacy();
 
         #endregion Portal
 
         #region Recruit
+        
+        string Recruit(string hashedAccountId = null);
+        
         #endregion Recruit
+
+        #region Users
+        
+        string ChangeEmail();
+        string ChangePassword();
+
+        #endregion Users
     }
 }

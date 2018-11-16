@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
             {
                 var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-                var instrumentationKey = ConfigurationManager.AppSettings["InstrumentationKey"];
+                var instrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
 
                 var environment = container.GetInstance<IEnvironment>();
                 if (environment.IsCurrent(DasEnv.LOCAL))

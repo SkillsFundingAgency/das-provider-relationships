@@ -2,17 +2,18 @@
 {
     public interface IIdentityServerConfiguration
     {
+        string AccountActivationUrl { get; }
+        string AuthorizeEndpoint { get; }
+        string BaseAddress { get; }
+        string ChangeEmailUrl { get; }
+        string ChangePasswordUrl { get; }
         string ClientId { get; }
         string ClientSecret { get; }
-        string BaseAddress { get; }
-        string AuthorizeEndPoint { get; }
-        string TokenEndpoint { get; }
-        string UserInfoEndpoint { get; }
-        bool UseCertificate { get; }
+        string LogoutEndpoint { get; }
         string Scopes { get; }
-        string ChangePasswordUrl { get; }
-        string ChangeEmailUrl { get; }
-        string AccountActivationUrl { get; }
         string TokenCertificateThumbprint { get; }
+        string TokenEndpoint { get; }
+        bool UseCertificate { get; }
+        string UserInfoEndpoint { get; }
     }
 }

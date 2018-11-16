@@ -10,18 +10,19 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Startup;
+using SFA.DAS.UnitOfWork.NServiceBus;
 using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.Jobs
+namespace SFA.DAS.ProviderRelationships.MessageHandlers
 {
-    public class EndpointStartup : IStartup
+    public class NServiceBusStartup : IStartup
     {
         private readonly IContainer _container;
         private readonly IEnvironment _environment;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public EndpointStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public NServiceBusStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
             _environment = environment;
@@ -30,18 +31,19 @@ namespace SFA.DAS.ProviderRelationships.Jobs
         
         public async Task StartAsync()
         {
-            var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
-                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
+            var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.MessageHandlers")
+                .UseAzureServiceBusTransport(() => _container.GetInstance<ProviderRelationshipsConfiguration>().ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
+                .UseErrorQueue()
+                .UseInstallers()
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
-                .UseSendOnly()
-                .UseStructureMapBuilder(_container);
+                .UseOutbox()
+                .UseStructureMapBuilder(_container)
+                .UseUnitOfWork();
 
             _endpoint = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
-
-            _container.Configure(c => c.For<IMessageSession>().Use(_endpoint));
         }
 
         public Task StopAsync()
