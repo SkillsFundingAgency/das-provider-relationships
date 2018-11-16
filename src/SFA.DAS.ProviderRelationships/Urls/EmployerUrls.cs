@@ -23,32 +23,32 @@ namespace SFA.DAS.ProviderRelationships.Urls
         
         #region Accounts
         
-        public string Account(string hashedAccountId = null) => Accounts("teams", hashedAccountId);
+        public string Account(string accountHashedId = null) => Accounts("teams", accountHashedId);
         public string NotificationSettings() => Accounts("settings/notifications");
-        public string PayeSchemes(string hashedAccountId = null) => Accounts("schemes", hashedAccountId);
-        public string RenameAccount(string hashedAccountId = null) => Accounts("rename", hashedAccountId);
+        public string PayeSchemes(string accountHashedId = null) => Accounts("schemes", accountHashedId);
+        public string RenameAccount(string accountHashedId = null) => Accounts("rename", accountHashedId);
         public string YourAccounts() => Accounts("service/accounts");
-        public string YourOrganisationsAndAgreements(string hashedAccountId = null) => Accounts("agreements", hashedAccountId);
-        public string YourTeam(string hashedAccountId = null) => Accounts("teams/view", hashedAccountId);
+        public string YourOrganisationsAndAgreements(string accountHashedId = null) => Accounts("agreements", accountHashedId);
+        public string YourTeam(string accountHashedId = null) => Accounts("teams/view", accountHashedId);
 
         private string Accounts(string path) => Action(_employerUrlsConfiguration.EmployerAccountsBaseUrl, path);
-        private string Accounts(string path, string hashedAccountId) => AccountAction(hashedAccountId, _employerUrlsConfiguration.EmployerAccountsBaseUrl, path);
+        private string Accounts(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerAccountsBaseUrl, path, accountHashedId);
         
         #endregion Accounts
         
         #region Commitments
 
-        public string Apprentices(string hashedAccountId = null) => Commitments("apprentices/home", hashedAccountId);
+        public string Apprentices(string accountHashedId = null) => Commitments("apprentices/home", accountHashedId);
         
-        private string Commitments(string path, string hashedAccountId) => AccountAction(hashedAccountId, _employerUrlsConfiguration.EmployerCommitmentsBaseUrl, path);
+        private string Commitments(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerCommitmentsBaseUrl, path, accountHashedId);
 
         #endregion Commitments
         
         #region Finance
 
-        public string Finance(string hashedAccountId = null) => Finance("finance", hashedAccountId);
+        public string Finance(string accountHashedId = null) => Finance("finance", accountHashedId);
         
-        private string Finance(string path, string hashedAccountId) => AccountAction(hashedAccountId, _employerUrlsConfiguration.EmployerFinanceBaseUrl, path);
+        private string Finance(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerFinanceBaseUrl, path, accountHashedId);
         
         #endregion Finance
 
@@ -61,15 +61,15 @@ namespace SFA.DAS.ProviderRelationships.Urls
         public string SignOut() => Portal("service/signout");
 
         private string Portal(string path) => Action(_employerUrlsConfiguration.EmployerPortalBaseUrl, path);
-        private string Portal(string path, string hashedAccountId) => AccountAction(hashedAccountId, _employerUrlsConfiguration.EmployerPortalBaseUrl, path);
+        private string Portal(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerPortalBaseUrl, path, accountHashedId);
 
         #endregion Portal
         
         #region Recruit
         
-        public string Recruit(string hashedAccountId = null) => Recruit(null, hashedAccountId);
+        public string Recruit(string accountHashedId = null) => Recruit(null, accountHashedId);
         
-        private string Recruit(string path, string hashedAccountId) => AccountAction(hashedAccountId, _employerUrlsConfiguration.EmployerRecruitBaseUrl, path);
+        private string Recruit(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerRecruitBaseUrl, path, accountHashedId);
         
         #endregion Recruit
         
@@ -78,11 +78,11 @@ namespace SFA.DAS.ProviderRelationships.Urls
         public string ChangeEmail() => Users("account/changeemail", Portal("service/email/change"));
         public string ChangePassword() => Users("account/changepassword", Portal("service/password/change"));
 
-        private string Users(string path, string returnPath) => Action(_employerUrlsConfiguration.EmployerUsersBaseUrl, $"{path}?clientId={_identityServerConfiguration.ClientId}&returnurl={WebUtility.UrlEncode(returnPath)}");
+        private string Users(string path, string returnUrl) => Action(_employerUrlsConfiguration.EmployerUsersBaseUrl, $"{path}?clientId={_identityServerConfiguration.ClientId}&returnurl={WebUtility.UrlEncode(returnUrl)}");
         
         #endregion Users
         
-        private string AccountAction(string accountHashedId, string baseUrl, string path)
+        private string AccountAction(string baseUrl, string path, string accountHashedId)
         {
             if (accountHashedId == null)
             {
