@@ -14,7 +14,7 @@ Expectations:
 ~27k+ AccountLegalEntities created
 */
 
---:OUT STDOUT 
+:OUT STDOUT 
 
 SET NOCOUNT ON
 
