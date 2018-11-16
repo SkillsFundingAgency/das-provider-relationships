@@ -338,3 +338,4 @@ src/Tools/**/*.*
 !src/DasAmlCert.pfx
 !src/DasIDPCert.pfx
 !src/localhost.pfx
+*.DotSettings

@@ -4,6 +4,7 @@ using Microsoft.Azure.Documents.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs
@@ -15,18 +16,18 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs
         [Test]
         public Task Run_WhenRunningCreateReadStoreDatabaseJob_ThenShouldCreateReadStoreDatabase()
         {
-            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDatabaseIfNotExistsAsync(It.Is<Database>(d => d.Id == "SFA.DAS.ProviderRelationships.ReadStore.Database"), null), Times.Once));
+            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDatabaseIfNotExistsAsync(It.Is<Database>(d => d.Id == DocumentSettings.DatabaseName), null), Times.Once));
         }
         
         [Test]
         public Task Run_WhenRunningCreateReadStoreDatabaseJob_ThenShouldCreateReadStorePermissionsCollection()
         {
-            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri("SFA.DAS.ProviderRelationships.ReadStore.Database"),
+            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DocumentSettings.DatabaseName),
                 It.Is<DocumentCollection>(d => 
-                    d.Id == "permissions" &&
+                    d.Id == DocumentSettings.CollectionName &&
                     d.PartitionKey.Paths.Contains("/ukprn") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/employerAccountLegalEntityId") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/ukprn")
+                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountProviderId") &&
+                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountLegalEntityId")
                 ), null), Times.Once));
         }
     }

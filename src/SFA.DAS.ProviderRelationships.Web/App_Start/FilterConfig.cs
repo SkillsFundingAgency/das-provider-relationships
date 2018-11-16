@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             filters.AddUnauthorizedAccessExceptionFilter();
             filters.AddUnitOfWorkFilter();
             filters.AddValidationFilter();
-            filters.Add(DependencyResolver.Current.GetService<UrlsViewBagFilter>());
+            filters.Add(new UrlsViewBagFilter(() => DependencyResolver.Current.GetService<IViewUrls>()));
         }
     }
 }

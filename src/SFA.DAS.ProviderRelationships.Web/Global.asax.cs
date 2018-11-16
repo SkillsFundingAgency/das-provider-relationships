@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["InstrumentationKey"];
+            TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
             DependencyResolver.Current.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 

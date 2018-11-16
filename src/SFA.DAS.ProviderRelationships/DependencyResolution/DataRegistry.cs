@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
             For<IDocumentClient>().Use(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
-            For<IPermissionsRepository>().Use<PermissionsRepository>();
+            For<IRelationshipsRepository>().Use<RelationshipsRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 

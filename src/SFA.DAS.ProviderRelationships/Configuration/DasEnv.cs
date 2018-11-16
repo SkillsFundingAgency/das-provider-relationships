@@ -6,6 +6,7 @@
         AT,
         TEST,
         TEST2,
+        PREPROD,
         PROD,
         MO,
         DEMO

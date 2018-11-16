@@ -61,9 +61,10 @@
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
-    <PackageReference Include="SFA.DAS.Authorization" Version="0.1.4" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.1.4" />
-    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.1.4" />
+    <PackageReference Include="SFA.DAS.Authorization" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.2.10" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -175,6 +176,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HealthCheck\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Providers\Add.cshtml" />
     <Content Include="Views\Providers\Added.cshtml" />
@@ -259,10 +261,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-               Other similar extension points exist, see Microsoft.Common.targets.
-          <Target Name="BeforeBuild">
-          </Target>
-          <Target Name="AfterBuild">
-          </Target> -->
 </Project>

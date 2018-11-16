@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Configuration;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
@@ -18,6 +19,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IConfiguration>().Use<Configuration.Configuration>()
                 .Ctor<NameValueCollection>().Is(ConfigurationManager.AppSettings);
 
+            For<EmployerFeaturesConfiguration>().Use(c => c.GetInstance<IConfiguration>().Get<EmployerFeaturesConfiguration>("SFA.DAS.ProviderRelationships.EmployerFeatures")).Singleton();
             For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<IConfiguration>().Get<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships").InitialTransform()).Singleton();
             For<ProviderRelationshipsReadStoreConfiguration>().Use(c => c.GetInstance<IConfiguration>().Get<ProviderRelationshipsReadStoreConfiguration>("SFA.DAS.ProviderRelationships.ReadStore")).Singleton();
         }

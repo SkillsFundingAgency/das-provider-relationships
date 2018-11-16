@@ -10,26 +10,26 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
     internal class GetRelationshipWithPermissionQueryHandler : IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
     {
-        private readonly IPermissionsRepository _permissionsRepository;
+        private readonly IRelationshipsRepository _relationshipsRepository;
 
-        public GetRelationshipWithPermissionQueryHandler(IPermissionsRepository permissionsRepository)
+        public GetRelationshipWithPermissionQueryHandler(IRelationshipsRepository relationshipsRepository)
         {
-            _permissionsRepository = permissionsRepository;
+            _relationshipsRepository = relationshipsRepository;
         }
 
         public async Task<GetRelationshipWithPermissionQueryResult> Handle(GetRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
-            var relationships = await _permissionsRepository.CreateQuery()
-                .Where(p => p.Ukprn == request.Ukprn && p.Operations.Contains(request.Operation))
+            var relationships = await _relationshipsRepository.CreateQuery()
+                .Where(p => p.Ukprn == request.Ukprn && p.Deleted == null && p.Operations.Contains(request.Operation))
                 .Select(p => new RelationshipDto
                 {
-                    EmployerAccountId = p.EmployerAccountId,
-                    EmployerAccountPublicHashedId = p.EmployerAccountPublicHashedId,
-                    EmployerAccountName = p.EmployerAccountName,
-                    EmployerAccountLegalEntityId = p.EmployerAccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.EmployerAccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.EmployerAccountLegalEntityName,
-                    EmployerAccountProviderId = p.EmployerAccountProviderId,
+                    EmployerAccountId = p.AccountId,
+                    EmployerAccountPublicHashedId = p.AccountPublicHashedId,
+                    EmployerAccountName = p.AccountName,
+                    EmployerAccountLegalEntityId = p.AccountLegalEntityId,
+                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntityPublicHashedId,
+                    EmployerAccountLegalEntityName = p.AccountLegalEntityName,
+                    EmployerAccountProviderId = p.AccountProviderId,
                     Ukprn = p.Ukprn
                 })
                 .ToListAsync(cancellationToken);

@@ -1,4 +1,6 @@
 using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerFeatures;
+using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
@@ -19,6 +21,8 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<DataRegistry>();
+                c.AddRegistry<EmployerFeaturesAuthorizationRegistry>();
+                c.AddRegistry<EmployerRolesAuthorizationRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<HashingRegistry>();
                 c.AddRegistry<LoggerRegistry>();

@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Queries;
@@ -12,7 +13,7 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.Home;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerRoles.Any)]
+    [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerRole.Any)]
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
