@@ -6,11 +6,11 @@ using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
 using StructureMap.Pipeline;
 
-[assembly: OwinStartup(typeof(OwinStartup))]
+[assembly: OwinStartup(typeof(Startup))]
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
-    public class OwinStartup
+    public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
