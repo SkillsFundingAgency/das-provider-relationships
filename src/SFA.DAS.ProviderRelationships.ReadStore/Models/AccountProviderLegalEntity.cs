@@ -17,21 +17,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("accountLegalEntityName")]
         public string AccountLegalEntityName { get; protected set; }
 
-        [JsonProperty("created")]
-        public DateTime Created { get; protected set; }
-
         [JsonConstructor]
         protected AccountProviderLegalEntity()
         {
         }
 
-        public AccountProviderLegalEntity(long accountProviderLegalEntityId, long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, DateTime created)
+        public AccountProviderLegalEntity(long accountProviderLegalEntityId, long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName)
         {
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
             AccountLegalEntityId = accountLegalEntityId;
             AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
             AccountLegalEntityName = accountLegalEntityName;
-            Created = created;
         }
     }
 }

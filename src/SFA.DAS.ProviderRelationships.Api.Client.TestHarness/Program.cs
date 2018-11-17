@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                 try
                 {
                     var relationshipsRepository = container.GetInstance<IRelationshipsRepository>();
-                    
+
                     var relationship = new Relationship(
                         ukprn: 2001877,
                         accountProviderLegalEntityId: 2123,
@@ -45,13 +45,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                         messageId: "85234231-4975-4ded-a167-a996009eb90e");
 
                     await relationshipsRepository.Add(relationship);
-                    
+
                     relationship.UpdatePermissions(new HashSet<Operation> { Operation.CreateCohort }, DateTime.UtcNow, "0d901e4f-05ef-4ebc-82d4-a99600a27f55");
 
                     await relationshipsRepository.Update(relationship);
-                    
+
                     var apiClient = container.GetInstance<IProviderRelationshipsApiClient>();
-                    var relationshipsRequest = new RelationshipsRequest { Ukprn = relationship.Ukprn, Operation = Operation.CreateCohort };
+                    var relationshipsRequest = new RelationshipsRequest { Ukprn = relationship.AccountProvider.Ukprn, Operation = Operation.CreateCohort };
                     var response = await apiClient.GetRelationshipsWithPermission(relationshipsRequest);
 
                     if (response.Relationships.Any())
@@ -62,7 +62,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    
+
                     throw;
                 }
             }

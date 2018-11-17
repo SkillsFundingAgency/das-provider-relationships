@@ -6,16 +6,42 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    internal class Relationship : Document
+    internal class RelationshipOld : Document
     {
-        [JsonProperty("accountProvider")]
-        public AccountProvider AccountProvider { get; protected set; }
+        [JsonProperty("ukprn")]
+        public long Ukprn { get; protected set; }
 
-        [JsonProperty("accountLegalEntity")]
-        public AccountProviderLegalEntity AccountProviderLegalEntity { get; protected set; }
+        [JsonProperty("accountProviderLegalEntityId")]
+        public long AccountProviderLegalEntityId { get; protected set; }
 
-        [JsonProperty("permissions")]
-        public Permissions Permissions { get; protected set; }
+        [JsonProperty("accountId")]
+        public long AccountId { get; protected set; }
+
+        [JsonProperty("accountPublicHashedId")]
+        public string AccountPublicHashedId { get; protected set; }
+
+        [JsonProperty("accountName")]
+        public string AccountName { get; protected set; }
+
+
+        [JsonProperty("accountLegalEntityId")]
+        public long AccountLegalEntityId { get; protected set; }
+
+        [JsonProperty("accountLegalEntityPublicHashedId")]
+        public string AccountLegalEntityPublicHashedId { get; protected set; }
+
+        [JsonProperty("accountLegalEntityName")]
+        public string AccountLegalEntityName { get; protected set; }
+
+
+        [JsonProperty("accountProviderId")]
+        public int AccountProviderId { get; protected set; }
+
+        [JsonProperty("operations")]
+        public IEnumerable<Operation> Operations { get; protected set; }
+
+        [JsonProperty("outboxData")]
+        public IEnumerable<OutboxMessage> OutboxData  => _outboxData;
 
         [JsonProperty("created")]
         public DateTime Created { get; protected set; }
@@ -23,27 +49,37 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("deleted")]
         public DateTime? Deleted { get; protected set; }
 
-
-        [JsonProperty("outboxData")]
-        public IEnumerable<OutboxMessage> OutboxData  => _outboxData;
+        [JsonProperty("updated")]
+        public DateTime? Updated { get; protected set; }
 
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long ukprn, long accountProviderLegalEntityId,
+        public RelationshipOld(long ukprn, long accountProviderLegalEntityId,
             long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime created, string messageId)
-            : base(1, "relationship")
+            : base(1, "permission")
         {
-            AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
-            AccountProviderLegalEntity = new AccountProviderLegalEntity(accountProviderLegalEntityId, accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
-            Permissions = new Permissions(new HashSet<Operation>());
+            Ukprn = ukprn;
+            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+
+            AccountId = accountId;
+            AccountPublicHashedId = accountPublicHashedId;
+            AccountName = accountName;
+
+            AccountLegalEntityId = accountLegalEntityId;
+            AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
+            AccountLegalEntityName = accountLegalEntityName;
+
+            AccountProviderId = accountProviderId;
             Created = created;
+
+            AddMessageToOutbox(messageId, created);
         }
 
         [JsonConstructor]
-        protected Relationship()
+        protected RelationshipOld()
         {
         }
 
@@ -55,11 +91,20 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             ProcessMessage(messageId, reactivated, () =>
             {
                 EnsureRelationshipIsDeleted();
-                AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
-                AccountProviderLegalEntity = new AccountProviderLegalEntity(accountProviderLegalEntityId, accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
-                Permissions = new Permissions(new HashSet<Operation>());
-                Deleted = null;
+                Ukprn = ukprn;
+                AccountProviderLegalEntityId = accountProviderLegalEntityId;
+
+                AccountId = accountId;
+                AccountPublicHashedId = accountPublicHashedId;
+                AccountName = accountName;
+
+                AccountLegalEntityId = accountLegalEntityId;
+                AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
+                AccountLegalEntityName = accountLegalEntityName;
+
+                AccountProviderId = accountProviderId;
                 Created = reactivated;
+                Deleted = null;
             });
         }
 
@@ -69,7 +114,8 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
                 () =>
                 {
                     EnsureRelationshipIsNotDeleted();
-                    Permissions.UpdateOperations(grants, updated);
+                    Operations = grants;
+                    Updated = updated;
                 }
             );
         }
@@ -79,7 +125,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             ProcessMessage(messageId, deleted, () =>
             {
                 EnsureRelationshipIsNotDeleted();
-                Permissions = new Permissions(new HashSet<Operation>());
+                Operations = new HashSet<Operation>();
                 Deleted = deleted;
             });
         }
@@ -99,7 +145,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         private bool IsMessageChronological(DateTime messageDateTime)
         {
-            var updated = Permissions.Updated ?? DateTime.MinValue;
+            var updated = Updated ?? DateTime.MinValue;
             var deleted = Deleted ?? DateTime.MinValue;
 
             return messageDateTime > Created && messageDateTime >  updated && messageDateTime > deleted;

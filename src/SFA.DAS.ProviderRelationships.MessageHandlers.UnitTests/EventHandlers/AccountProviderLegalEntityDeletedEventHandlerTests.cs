@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                (f,r) => r.Should().Throw<Exception>());
+                (f, r) => r.Should().Throw<Exception>());
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.Deleted == f.Message.Created &&
-                        p.Operations.Any() == false
+                        p.Permissions.Operations.Any() == false
                     )
                     , null, It.IsAny<CancellationToken>())));
         }
@@ -54,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             return RunAsync(f => f.AddMatchingRelationship().SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p => 
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.OutboxData.Count() == 1
                     )
                     , null, It.IsAny<CancellationToken>())));
@@ -72,11 +72,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
     }
 
-    internal class AccountProviderLegalEntityDeletedEventHandlerTestsFixture : 
+    internal class AccountProviderLegalEntityDeletedEventHandlerTestsFixture :
         DocumentEventHandlerTestsFixture<AccountProviderLegalEntityDeletedEvent>
     {
-        public long Ukprn = 11111;
-        public long AccountProviderLegalEntityId = 222222;
+        public static long Ukprn = 11111;
+        public static long AccountProviderLegalEntityId = 2222;
+        public AccountProvider AccountProvider = new AccountProvider(Ukprn, 1, "HASH", "Name", 2);
+        public AccountProviderLegalEntity AccountProviderLegalEntity = new AccountProviderLegalEntity(AccountProviderLegalEntityId, 3333, "HASH2", "LEName");
         public string MessageId = "messageId";
         public string DeletedMessageId = "deletedMessageId";
         public DateTime Created = DateTime.Now.AddMinutes(-12);
@@ -93,11 +95,11 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingRelationship()
         {
             var relationship = new RelationshipBuilder()
-                .WithUkprn(Ukprn)
-                .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
+                .WithAccountProvider(AccountProvider)
+                .WithAccountProviderLegalEntity(AccountProviderLegalEntity)
                 .WithCreated(Created)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
-                .WithOperation(Operation.CreateCohort)
+                .WithPermissionsOperator(Operation.CreateCohort)
                 .Build();
             Relationships.Add(relationship);
 
@@ -107,8 +109,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingDeletedRelationship()
         {
             var relationship = new RelationshipBuilder()
-                .WithUkprn(Ukprn)
-                .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
+                .WithAccountProvider(AccountProvider)
+                .WithAccountProviderLegalEntity(AccountProviderLegalEntity)
                 .WithCreated(Created)
                 .WithDeleted(Deleted)
                 .Build();
@@ -120,10 +122,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityDeletedEventHandlerTestsFixture AddMatchingUpdatedRelationship()
         {
             var relationship = new RelationshipBuilder()
-                .WithUkprn(Ukprn)
-                .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
+                .WithAccountProvider(AccountProvider)
+                .WithAccountProviderLegalEntity(AccountProviderLegalEntity)
                 .WithCreated(Created)
-                .WithUpdated(Updated)
+                .WithPermissionsOperator(Operation.CreateCohort, Updated)
                 .Build();
             Relationships.Add(relationship);
 

@@ -20,22 +20,20 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         public async Task<GetRelationshipWithPermissionQueryResult> Handle(GetRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
             var relationships = await _relationshipsRepository.CreateQuery()
-                .Where(p => p.Ukprn == request.Ukprn && p.Deleted == null && p.Operations.Contains(request.Operation))
-                .Select(p => new RelationshipDto
-                {
-                    EmployerAccountId = p.AccountId,
-                    EmployerAccountPublicHashedId = p.AccountPublicHashedId,
-                    EmployerAccountName = p.AccountName,
-                    EmployerAccountLegalEntityId = p.AccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.AccountLegalEntityName,
-                    EmployerAccountProviderId = p.AccountProviderId,
-                    Ukprn = p.Ukprn
+                .Where(p => p.AccountProvider.Ukprn == request.Ukprn && p.Deleted == null && p.Permissions.Operations.Contains(request.Operation))
+                .Select(p => new RelationshipDto {
+                    EmployerAccountId = p.AccountProvider.AccountId,
+                    EmployerAccountPublicHashedId = p.AccountProvider.AccountPublicHashedId,
+                    EmployerAccountName = p.AccountProvider.AccountName,
+                    EmployerAccountLegalEntityId = p.AccountProviderLegalEntity.AccountLegalEntityId,
+                    EmployerAccountLegalEntityPublicHashedId = p.AccountProviderLegalEntity.AccountLegalEntityPublicHashedId,
+                    EmployerAccountLegalEntityName = p.AccountProviderLegalEntity.AccountLegalEntityName,
+                    EmployerAccountProviderId = p.AccountProvider.AccountProviderId,
+                    Ukprn = p.AccountProvider.Ukprn
                 })
                 .ToListAsync(cancellationToken);
-            
-            return new GetRelationshipWithPermissionQueryResult
-            {
+
+            return new GetRelationshipWithPermissionQueryResult {
                 Relationships = relationships
             };
         }

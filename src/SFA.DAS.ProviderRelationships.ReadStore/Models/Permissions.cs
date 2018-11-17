@@ -10,12 +10,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("operations")]
         public IEnumerable<Operation> Operations { get; protected set; }
 
-        [JsonProperty("created")]
-        public DateTime Created { get; protected set; }
-
-        [JsonProperty("deleted")]
-        public DateTime? Deleted { get; protected set; }
-
         [JsonProperty("updated")]
         public DateTime? Updated { get; protected set; }
 
@@ -24,10 +18,15 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public Permissions(HashSet<Operation> operations, DateTime created)
+        public Permissions(HashSet<Operation> operations)
         {
             Operations = operations;
-            Created = created;
+        }
+
+        public void UpdateOperations(HashSet<Operation> operations, DateTime updated)
+        {
+            Operations = operations;
+            Updated = updated;
         }
     }
 }
