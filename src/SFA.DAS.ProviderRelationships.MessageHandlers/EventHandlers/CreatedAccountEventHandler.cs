@@ -18,7 +18,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
         public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            _db.Value.Accounts.Add(new Account(message.AccountId, message.Name, message.Created));
+            var account = new Account(message.AccountId, message.Name, message.Created);
+            
+            _db.Value.Accounts.Add(account);
 
             return Task.CompletedTask;
         }

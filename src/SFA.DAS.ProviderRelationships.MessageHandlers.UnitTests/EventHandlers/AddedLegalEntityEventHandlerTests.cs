@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class AddedLegalEntityEventHandlerTests : FluentTest<AddedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldAddAccount()
+        public Task Handle_WhenHandlingAddedLegalEntityEvent_ThenShouldAddAccountLegalEntity()
         {
             return RunAsync(f => f.Handle(), f => f.Db.AccountLegalEntities.SingleOrDefault(ale => ale.Id == f.Message.AccountLegalEntityId).Should().NotBeNull()
                 .And.Match<AccountLegalEntity>(a => 
@@ -34,10 +34,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             Message = new AddedLegalEntityEvent
             {
-                AccountLegalEntityId = 55555,
-                AccountLegalEntityPublicHashedId = "PBHASH",
-                AccountId = 123,
-                OrganisationName = "Legal Entity Name",
+                AccountId = 1,
+                AccountLegalEntityId = 2,
+                AccountLegalEntityPublicHashedId = "ALE123",
+                OrganisationName = "Foo",
                 Created = DateTime.UtcNow
             };
         }

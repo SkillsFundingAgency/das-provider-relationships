@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -7,7 +6,6 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
-using Fix = SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.UpdatedLegalEntityEventHandlerTestsFixture;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -16,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class UpdatedLegalEntityEventHandlerTests : FluentTest<UpdatedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingUpdatedLegalEntityEvent_ThenShouldChangeAccountLegalEntityName()
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldChangeAccountLegalEntityName()
         {
             return RunAsync(f => f.Handle(), f =>
             {
@@ -26,45 +24,45 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         }
         
         [Test]
-        public Task Handle_WhenHandlingUpdatedLegalEntityEventOutOfOrder_ThenShouldNotChangeAccountLegalEntityName()
+        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotChangeAccountLegalEntityName()
         {
-            return RunAsync(f => f.SetAccountLegalEntityPreviouslyUpdated(), f => f.Handle(), f =>
+            return RunAsync(f => f.SetAccountLegalEntityUpdatedAfterEvent(), f => f.Handle(), f =>
             {
-                f.AccountLegalEntity.Name.Should().Be(Fix.PreviouslyUpdatedName);
-                f.AccountLegalEntity.Updated.Should().BeBefore(f.Now);
+                f.AccountLegalEntity.Name.Should().Be(f.OriginalAccountLegalEntityName);
+                f.AccountLegalEntity.Updated.Should().Be(f.Now);
             });
         }
     }
     
     public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedLegalEntityEvent>
     {
-        public const string PreviouslyUpdatedName = "Previously Updated Name";
+        public string OriginalAccountLegalEntityName { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
 
         public UpdatedLegalEntityEventHandlerTestsFixture()
             : base(db => new UpdatedLegalEntityEventHandler(db))
         {
+            OriginalAccountLegalEntityName = "Foo";
+            
             Message = new UpdatedLegalEntityEvent
             {
-                AccountLegalEntityId = 123,
-                Name = "Updated Name",
-                Created = DateTime.UtcNow
+                AccountLegalEntityId = 1,
+                Name = "Bar",
+                Created = Now.AddHours(-1)
             };
 
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
-                .WithName(Message.Name);
+                .WithName(OriginalAccountLegalEntityName);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
         }
 
-        public UpdatedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityPreviouslyUpdated()
+        public UpdatedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityUpdatedAfterEvent()
         {
-            AccountLegalEntity = new AccountLegalEntityBuilder()
-                .WithId(Message.AccountLegalEntityId)
-                .WithName(PreviouslyUpdatedName)
-                .WithUpdated(Message.Created.AddHours(-1));
+            AccountLegalEntity.SetPropertyTo(ale => ale.Updated, Now);
+            Db.SaveChanges();
             
             return this;
         }

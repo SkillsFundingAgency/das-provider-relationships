@@ -6,7 +6,10 @@
     [Name] NVARCHAR(100) NOT NULL, 
     [Created] DATETIME2 NOT NULL,
     [Updated] DATETIME2 NULL,
+    [Deleted] DATETIME2 NULL,
     CONSTRAINT [PK_AccountLegalEntities] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_AccountLegalEntities_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]) ON DELETE CASCADE,
-    INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId])
+    INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId] ASC),
+    INDEX [IX_AccountLegalEntities_Deleted] NONCLUSTERED ([Deleted] ASC),
+    INDEX [IX_AccountLegalEntities_AccountId_Deleted] NONCLUSTERED ([AccountId] ASC, [Deleted] ASC)
 )

@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         public void ChangeName(string name, DateTime changed)
         {
-            if (Updated == null || changed > Updated.Value)
+            if (IsChangeNameDateChronological(changed))
             {
                 Name = name;
                 Updated = changed;
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         public AccountProvider AddProvider(Provider provider, User user)
         {
-            RequiresProviderHasNotBeenAddedAlready(provider);
+            EnsureProviderHasNotAlreadyBeenAdded(provider);
 
             var accountProvider = new AccountProvider(this, provider, user);
             
@@ -44,10 +44,17 @@ namespace SFA.DAS.ProviderRelationships.Models
             return accountProvider;
         }
 
-        private void RequiresProviderHasNotBeenAddedAlready(Provider provider)
+        private void EnsureProviderHasNotAlreadyBeenAdded(Provider provider)
         {
             if (AccountProviders.Any(ap => ap.ProviderUkprn == provider.Ukprn))
-                throw new Exception("Requires provider has not been added already");
+            {
+                throw new Exception("Requires provider has not already been added");
+            }
+        }
+
+        private bool IsChangeNameDateChronological(DateTime changed)
+        {
+            return Updated == null || changed > Updated.Value;
         }
     }
 }

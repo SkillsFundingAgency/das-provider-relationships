@@ -34,9 +34,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
             return this;
         }
 
+        public AccountLegalEntityBuilder WithCreated(DateTime created)
+        {
+            _accountLegalEntity.SetupProperty(a => a.Created, created);
+            
+            return this;
+        }
+
         public AccountLegalEntityBuilder WithUpdated(DateTime updated)
         {
             _accountLegalEntity.SetupProperty(a => a.Updated, updated);
+            
+            return this;
+        }
+
+        public AccountLegalEntityBuilder WithDeleted(DateTime deleted)
+        {
+            _accountLegalEntity.SetupProperty(a => a.Deleted, deleted);
             
             return this;
         }

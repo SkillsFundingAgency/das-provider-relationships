@@ -11,7 +11,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual string Name { get; protected set; }
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
-        
+        public virtual DateTime? Deleted { get; protected set; }
+
         public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
         {
             Id = id;
@@ -27,11 +28,39 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         public void ChangeName(string name, DateTime changed)
         {
-            if (Updated == null || changed > Updated.Value)
+            if (IsChangeNameDateChronological(changed))
             {
                 Name = name;
                 Updated = changed;
             }
+        }
+
+        public void Delete(DateTime deleted)
+        {
+            if (IsDeleteDateChronological(deleted))
+            {
+                EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+                
+                Deleted = deleted;
+            }
+        }
+
+        private void EnsureAccountLegalEntityHasNotAlreadyBeenDeleted()
+        {
+            if (Deleted != null)
+            {
+                throw new InvalidOperationException("Requires account legal entity has not already been deleted");
+            }
+        }
+
+        private bool IsChangeNameDateChronological(DateTime changed)
+        {
+            return Updated == null || changed > Updated.Value;
+        }
+
+        private bool IsDeleteDateChronological(DateTime deleted)
+        {
+            return Deleted == null || deleted > Deleted.Value;
         }
     }
 }
