@@ -3,13 +3,15 @@ using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class UpdatedLegalEntityEvent : Event
+    public class UpdatedAccountLegalEntityNameEvent : Event
     {
         public long AccountLegalEntityId { get; }
+        public long AccountId { get; }
         public string Name { get; }
 
-        public UpdatedLegalEntityEvent(long accountLegalEntityId, string name, DateTime created)
+        public UpdatedAccountLegalEntityNameEvent(long accountLegalEntityId, long accountId, string name, DateTime created)
         {
+            AccountId = accountId;
             AccountLegalEntityId = accountLegalEntityId;
             Name = name;
             Created = created;

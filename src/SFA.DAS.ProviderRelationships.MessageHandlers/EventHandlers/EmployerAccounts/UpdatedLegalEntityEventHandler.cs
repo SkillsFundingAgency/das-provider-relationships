@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
         {
             var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == message.AccountLegalEntityId);
 
-            accountLegalEntity.ChangeName(message.Name, message.Created);
+            accountLegalEntity.UpdateName(message.Name, message.Created);
         }
     }
 }

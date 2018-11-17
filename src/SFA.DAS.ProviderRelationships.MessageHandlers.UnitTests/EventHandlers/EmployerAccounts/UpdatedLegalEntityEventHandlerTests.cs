@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
@@ -16,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     public class UpdatedLegalEntityEventHandlerTests : FluentTest<UpdatedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldChangeAccountLegalEntityName()
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldUpdateAccountLegalEntityName()
         {
             return RunAsync(f => f.Handle(), f =>
             {
@@ -26,17 +27,18 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
         
         [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishUpdatedLegalEntityEvent()
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishUpdatedAccountLegalEntityNameEvent()
         {
             return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<UpdatedLegalEntityEvent>(e =>
+                .And.Match<UpdatedAccountLegalEntityNameEvent>(e =>
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
+                    e.AccountId == f.AccountLegalEntity.AccountId &&
                     e.Name == f.AccountLegalEntity.Name &&
                     e.Created == f.AccountLegalEntity.Updated));
         }
         
         [Test]
-        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotChangeAccountLegalEntityName()
+        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotUpdateAccountLegalEntityName()
         {
             return RunAsync(f => f.SetAccountLegalEntityUpdatedAfterEvent(), f => f.Handle(), f =>
             {
@@ -46,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
     }
     
-    public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<DAS.EmployerAccounts.Messages.Events.UpdatedLegalEntityEvent>
+    public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedLegalEntityEvent>
     {
         public string OriginalAccountLegalEntityName { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
@@ -57,7 +59,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             OriginalAccountLegalEntityName = "Foo";
             
-            Message = new DAS.EmployerAccounts.Messages.Events.UpdatedLegalEntityEvent
+            Message = new UpdatedLegalEntityEvent
             {
                 AccountLegalEntityId = 1,
                 Name = "Bar",
@@ -66,6 +68,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
             AccountLegalEntity = new AccountLegalEntityBuilder()
                 .WithId(Message.AccountLegalEntityId)
+                .WithAccountId(2)
                 .WithName(OriginalAccountLegalEntityName);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);

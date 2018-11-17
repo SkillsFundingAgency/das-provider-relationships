@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
@@ -27,14 +28,25 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
         }
 
-        public void ChangeName(string name, DateTime changed)
+        public AccountLegalEntity AddAccountLegalEntity(long accountLegalEntityId, string accountLegalEntityPublicHashedId, string name, DateTime added)
         {
-            if (IsChangeNameDateChronological(changed))
+            EnsureAccountLegalEntityHasNotAlreadyBeenAdded(accountLegalEntityId);
+            
+            var accountLegalEntity = new AccountLegalEntity(this, accountLegalEntityId, accountLegalEntityPublicHashedId, name, added);
+            
+            AccountLegalEntities.Add(accountLegalEntity);
+
+            return accountLegalEntity;
+        }
+
+        public void UpdateName(string name, DateTime updated)
+        {
+            if (IsUpdatedNameDateChronological(updated) && IsUpdatedNameDifferent(name))
             {
                 Name = name;
-                Updated = changed;
+                Updated = updated;
                 
-                Publish(() => new ChangedAccountNameEvent(Id, Name, Updated.Value));
+                Publish(() => new UpdatedAccountNameEvent(Id, Name, Updated.Value));
             }
         }
 
@@ -49,17 +61,45 @@ namespace SFA.DAS.ProviderRelationships.Models
             return accountProvider;
         }
 
+        public void RemoveAccountLegalEntity(AccountLegalEntity accountLegalEntity, DateTime removed)
+        {
+            EnsureAccountLegalEntityHasBeenAdded(accountLegalEntity);
+            
+            accountLegalEntity.Delete(removed);
+        }
+
+        private void EnsureAccountLegalEntityHasBeenAdded(AccountLegalEntity accountLegalEntity)
+        {
+            if (AccountLegalEntities.All(ale => ale.Id != accountLegalEntity.Id))
+            {
+                throw new InvalidOperationException("Requires account legal entity has been added");
+            }
+        }
+
+        private void EnsureAccountLegalEntityHasNotAlreadyBeenAdded(long accountLegalEntityId)
+        {
+            if (AccountLegalEntities.Any(ale => ale.Id == accountLegalEntityId))
+            {
+                throw new InvalidOperationException("Requires account legal entity has not already been added");
+            }
+        }
+
         private void EnsureProviderHasNotAlreadyBeenAdded(Provider provider)
         {
             if (AccountProviders.Any(ap => ap.ProviderUkprn == provider.Ukprn))
             {
-                throw new Exception("Requires provider has not already been added");
+                throw new InvalidOperationException("Requires provider has not already been added");
             }
         }
 
-        private bool IsChangeNameDateChronological(DateTime changed)
+        private bool IsUpdatedNameDateChronological(DateTime updated)
         {
-            return Updated == null || changed > Updated.Value;
+            return Updated == null || updated > Updated.Value;
+        }
+
+        private bool IsUpdatedNameDifferent(string name)
+        {
+            return name != Name;
         }
     }
 }

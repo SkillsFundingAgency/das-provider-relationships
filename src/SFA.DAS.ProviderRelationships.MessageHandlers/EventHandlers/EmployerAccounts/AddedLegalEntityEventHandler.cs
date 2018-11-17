@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
 {
@@ -16,18 +16,11 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
             _db = db;
         }
 
-        public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
+        public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            var accountLegalEntity = new AccountLegalEntity(
-                message.AccountLegalEntityId,
-                message.AccountLegalEntityPublicHashedId,
-                message.AccountId,
-                message.OrganisationName,
-                message.Created);
+            var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
             
-            _db.Value.AccountLegalEntities.Add(accountLegalEntity);
-
-            return Task.CompletedTask;
+            account.AddAccountLegalEntity(message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created);
         }
     }
 }

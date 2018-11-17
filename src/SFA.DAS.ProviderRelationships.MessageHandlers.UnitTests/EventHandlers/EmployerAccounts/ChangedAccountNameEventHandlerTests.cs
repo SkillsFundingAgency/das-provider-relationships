@@ -2,12 +2,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
-using ChangedAccountNameEvent = SFA.DAS.ProviderRelationships.Messages.Events.ChangedAccountNameEvent;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
 {
@@ -16,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     public class ChangedAccountNameEventHandlerTests : FluentTest<ChangedAccountNameEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldChangeAccountName()
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldUpdateAccountName()
         {
             return RunAsync(f => f.Handle(), f =>
             {
@@ -26,17 +27,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
         
         [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishChangedAccountNameEvent()
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishUpdatedAccountNameEvent()
         {
             return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<ChangedAccountNameEvent>(e =>
+                .And.Match<UpdatedAccountNameEvent>(e =>
                     e.AccountId == f.Account.Id &&
                     e.Name == f.Account.Name &&
                     e.Created == f.Account.Updated));
         }
         
         [Test]
-        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotChangeAccountName()
+        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotUpdateAccountName()
         {
             return RunAsync(f => f.SetAccountUpdatedAfterEvent(), f => f.Handle(), f =>
             {
@@ -46,7 +47,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
     }
 
-    public class ChangedAccountNameEventHandlerTestsFixture : EventHandlerTestsFixture<DAS.EmployerAccounts.Messages.Events.ChangedAccountNameEvent>
+    public class ChangedAccountNameEventHandlerTestsFixture : EventHandlerTestsFixture<ChangedAccountNameEvent>
     {
         public string OriginalAccountName { get; set; }
         public Account Account { get; set; }
@@ -57,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             OriginalAccountName = "Foo";
             
-            Message = new DAS.EmployerAccounts.Messages.Events.ChangedAccountNameEvent
+            Message = new ChangedAccountNameEvent
             {
                 AccountId = 1,
                 CurrentName = "Bar",

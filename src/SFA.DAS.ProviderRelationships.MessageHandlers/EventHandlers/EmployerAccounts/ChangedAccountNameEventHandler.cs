@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
         {
             var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
 
-            account.ChangeName(message.CurrentName, message.Created);
+            account.UpdateName(message.CurrentName, message.Created);
         }
     }
 }

@@ -18,9 +18,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 
         public async Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == message.AccountLegalEntityId);
+            var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
+            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(ale => ale.Id == message.AccountLegalEntityId);
 
-            accountLegalEntity.Delete(message.Created);
+            account.RemoveAccountLegalEntity(accountLegalEntity, message.Created);
         }
     }
 }

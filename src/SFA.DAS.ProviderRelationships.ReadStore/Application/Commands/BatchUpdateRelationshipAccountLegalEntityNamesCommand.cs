@@ -4,17 +4,17 @@ using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
-    internal class BatchUpdateRelationshipAccountNamesCommand : Command, IReadStoreRequest<Unit>
+    internal class BatchUpdateRelationshipAccountLegalEntityNamesCommand : Command, IReadStoreRequest<Unit>
     {
         public long Ukprn { get; }
-        public long AccountId { get; }
+        public long AccountLegalEntityId { get; }
         public string Name { get; }
         public DateTime Created { get; }
 
-        public BatchUpdateRelationshipAccountNamesCommand(long ukprn, long accountId, string name, DateTime created)
+        public BatchUpdateRelationshipAccountLegalEntityNamesCommand(long ukprn, long accountLegalEntityId, string name, DateTime created)
         {
             Ukprn = ukprn;
-            AccountId = accountId;
+            AccountLegalEntityId = accountLegalEntityId;
             Name = name;
             Created = created;
         }

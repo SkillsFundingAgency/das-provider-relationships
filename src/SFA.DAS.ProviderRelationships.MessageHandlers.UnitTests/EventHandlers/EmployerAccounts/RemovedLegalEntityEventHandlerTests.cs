@@ -35,6 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class RemovedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<RemovedLegalEntityEvent>
     {
+        public Account Account { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
 
         public RemovedLegalEntityEventHandlerTestsFixture()
@@ -42,12 +43,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             Message = new RemovedLegalEntityEvent
             {
-                AccountLegalEntityId = 1,
+                AccountId = 1,
+                AccountLegalEntityId = 2,
                 Created = Now.AddHours(-1)
             };
-            
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(Message.AccountLegalEntityId);
 
+            Account = new AccountBuilder().WithId(Message.AccountId);
+            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(Message.AccountLegalEntityId).WithAccountId(Account.Id);
+
+            Db.Accounts.Add(Account);
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
         }

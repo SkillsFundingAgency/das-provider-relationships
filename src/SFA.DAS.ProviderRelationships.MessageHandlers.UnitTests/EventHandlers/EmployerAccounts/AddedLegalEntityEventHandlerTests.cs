@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
@@ -21,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 .And.Match<AccountLegalEntity>(a => 
                     a.Id == f.Message.AccountLegalEntityId &&
                     a.PublicHashedId == f.Message.AccountLegalEntityPublicHashedId &&
+                    a.Account == f.Account &&
                     a.AccountId == f.Message.AccountId &&
                     a.Name == f.Message.OrganisationName &&
                     a.Created == f.Message.Created));
@@ -29,6 +31,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class AddedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<AddedLegalEntityEvent>
     {
+        public Account Account { get; set; }
+        
         public AddedLegalEntityEventHandlerTestsFixture()
             : base(db => new AddedLegalEntityEventHandler(db))
         {
@@ -40,6 +44,11 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 OrganisationName = "Foo",
                 Created = DateTime.UtcNow
             };
+
+            Account = new AccountBuilder().WithId(Message.AccountId);
+
+            Db.Accounts.Add(Account);
+            Db.SaveChanges();
         }
     }
 }

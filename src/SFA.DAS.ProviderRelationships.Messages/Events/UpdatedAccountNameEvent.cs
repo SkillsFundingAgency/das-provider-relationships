@@ -3,12 +3,12 @@ using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class ChangedAccountNameEvent : Event
+    public class UpdatedAccountNameEvent : Event
     {
         public long AccountId { get; }
         public string Name { get; }
 
-        public ChangedAccountNameEvent(long accountId, string name, DateTime created)
+        public UpdatedAccountNameEvent(long accountId, string name, DateTime created)
         {
             AccountId = accountId;
             Name = name;

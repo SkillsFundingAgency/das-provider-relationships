@@ -19,35 +19,35 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     [TestFixture]
     [Parallelizable]
-    public class ChangedAccountNameEventHandlerTests : FluentTest<ChangedAccountNameEventHandlerTestsFixture>
+    public class UpdatedAccountLegalEntityNameEventHandlerTests : FluentTest<UpdatedAccountLegalEntityNameEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingChangedAccountNameEvent_ThenShouldSendBatchUpdateRelationshipAccountNamesCommands()
+        public Task Handle_WhenHandlingUpdatedAccountLegalEntityNameEvent_ThenShouldSendBatchUpdateRelationshipAccountLegalEntityNamesCommands()
         {
             return RunAsync(f => f.Handle(), f => f.MessageHandlerContext.SentMessages
                 .Select(m => m.Message)
-                .Cast<BatchUpdateRelationshipAccountNamesCommand>()
+                .Cast<BatchUpdateRelationshipAccountLegalEntityNamesCommand>()
                 .Should()
                 .BeEquivalentTo(f.Ukprns.Select(u => new
                 {
                     Ukprn = u,
-                    f.Message.AccountId,
-                    AccountName = f.Message.Name,
+                    f.Message.AccountLegalEntityId,
+                    f.Message.Name,
                     f.Message.Created
                 })));
         }
     }
 
-    public class ChangedAccountNameEventHandlerTestsFixture
+    public class UpdatedAccountLegalEntityNameEventHandlerTestsFixture
     {
         public TestableMessageHandlerContext MessageHandlerContext { get; set; }
         public List<long> Ukprns { get; set; }
-        public ChangedAccountNameEvent Message { get; set; }
-        public IHandleMessages<ChangedAccountNameEvent> Handler { get; set; }
+        public UpdatedAccountLegalEntityNameEvent Message { get; set; }
+        public IHandleMessages<UpdatedAccountLegalEntityNameEvent> Handler { get; set; }
         public Mock<IMediator> Mediator { get; set; }
-        public GetAccountProviderUkprnsQueryResult GetAccountProviderUkprnsQueryResult { get; set; }
+        public GetAccountProviderUkprnsByAccountIdQueryResult GetAccountProviderUkprnsByAccountIdQueryResult { get; set; }
         
-        public ChangedAccountNameEventHandlerTestsFixture()
+        public UpdatedAccountLegalEntityNameEventHandlerTestsFixture()
         {
             MessageHandlerContext = new TestableMessageHandlerContext();
             
@@ -58,13 +58,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 33333333
             };
             
-            Message = new ChangedAccountNameEvent(1, "Foo", DateTime.UtcNow);
+            Message = new UpdatedAccountLegalEntityNameEvent(2, 1, "Foo", DateTime.UtcNow);
             Mediator = new Mock<IMediator>();
-            GetAccountProviderUkprnsQueryResult = new GetAccountProviderUkprnsQueryResult(Ukprns);
+            GetAccountProviderUkprnsByAccountIdQueryResult = new GetAccountProviderUkprnsByAccountIdQueryResult(Ukprns);
 
-            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderUkprnsQuery>(q => q.AccountId == Message.AccountId), CancellationToken.None)).ReturnsAsync(GetAccountProviderUkprnsQueryResult);
+            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderUkprnsByAccountIdQuery>(q => q.AccountId == Message.AccountId), CancellationToken.None)).ReturnsAsync(GetAccountProviderUkprnsByAccountIdQueryResult);
             
-            Handler = new ChangedAccountNameEventHandler(Mediator.Object);
+            Handler = new UpdatedAccountLegalEntityNameEventHandler(Mediator.Object);
         }
 
         public Task Handle()

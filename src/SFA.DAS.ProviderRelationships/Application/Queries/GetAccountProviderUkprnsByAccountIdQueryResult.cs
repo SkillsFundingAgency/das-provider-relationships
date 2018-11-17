@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
-    public class GetAccountProviderUkprnsQueryResult
+    public class GetAccountProviderUkprnsByAccountIdQueryResult
     {
         public IEnumerable<long> Ukprns { get; }
 
-        public GetAccountProviderUkprnsQueryResult(IEnumerable<long> ukprns)
+        public GetAccountProviderUkprnsByAccountIdQueryResult(IEnumerable<long> ukprns)
         {
             Ukprns = ukprns;
         }

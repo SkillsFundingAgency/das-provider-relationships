@@ -8,18 +8,18 @@ using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
-    public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountNameEvent>
+    public class UpdatedAccountNameEventHandler : IHandleMessages<UpdatedAccountNameEvent>
     {
         private readonly IMediator _mediator;
 
-        public ChangedAccountNameEventHandler(IMediator mediator)
+        public UpdatedAccountNameEventHandler(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
+        public async Task Handle(UpdatedAccountNameEvent message, IMessageHandlerContext context)
         {
-            var result = await _mediator.Send(new GetAccountProviderUkprnsQuery(message.AccountId)); 
+            var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId));
             
             await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchUpdateRelationshipAccountNamesCommand(u, message.AccountId, message.Name, message.Created))));
         }
