@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
     {
         internal HasRelationshipWithPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
-        internal IApiRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
+        internal IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
         internal Mock<IRelationshipsRepository> PermissionsRepository { get; set; }
         internal IOrderedQueryable<Relationship> DocumentQuery { get; set; }
         internal List<Relationship> Permissions { get; set; }

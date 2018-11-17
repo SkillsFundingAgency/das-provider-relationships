@@ -1,4 +1,5 @@
 ﻿using System;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -32,6 +33,8 @@ namespace SFA.DAS.ProviderRelationships.Models
             {
                 Name = name;
                 Updated = changed;
+                
+                Publish(() => new UpdatedLegalEntityEvent(Id, name, Updated.Value));
             }
         }
 

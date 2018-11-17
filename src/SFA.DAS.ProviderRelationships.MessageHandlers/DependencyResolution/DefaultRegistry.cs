@@ -1,4 +1,7 @@
-﻿using StructureMap;
+﻿using NServiceBus;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
+using StructureMap;
+using BatchUpdateRelationshipAccountNamesCommandHandler = SFA.DAS.ProviderRelationships.MessageHandlers.CommandHandlers.BatchUpdateRelationshipAccountNamesCommandHandler;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
 {
@@ -6,6 +9,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
     {
         public DefaultRegistry()
         {
+            For<IHandleMessages<BatchUpdateRelationshipAccountNamesCommand>>().Use<BatchUpdateRelationshipAccountNamesCommandHandler>();
         }
     }
 }

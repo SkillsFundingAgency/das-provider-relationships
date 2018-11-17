@@ -67,7 +67,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetAccountProviderQueryHandlerTestsFixture
     {
         public GetAccountProviderQuery Query { get; set; }
-        public CancellationToken CancellationToken { get; set; }
         public IRequestHandler<GetAccountProviderQuery, GetAccountProviderQueryResult> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
@@ -80,7 +79,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
-            CancellationToken = new CancellationToken();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             ConfigurationProvider = new MapperConfiguration(c =>
@@ -94,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public Task<GetAccountProviderQueryResult> Handle()
         {
-            return Handler.Handle(Query, CancellationToken);
+            return Handler.Handle(Query, CancellationToken.None);
         }
 
         public GetAccountProviderQueryHandlerTestsFixture SetAccountProviders()

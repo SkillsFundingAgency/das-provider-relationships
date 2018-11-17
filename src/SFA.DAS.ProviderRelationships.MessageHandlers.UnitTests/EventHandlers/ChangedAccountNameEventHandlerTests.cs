@@ -1,12 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MediatR;
+using Moq;
+using NServiceBus;
+using NServiceBus.Testing;
 using NUnit.Framework;
-using SFA.DAS.EmployerAccounts.Messages.Events;
+using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
-using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests.Builders;
+using SFA.DAS.ProviderRelationships.Messages.Events;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.Testing;
-using Z.EntityFramework.Plus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
@@ -15,57 +22,54 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class ChangedAccountNameEventHandlerTests : FluentTest<ChangedAccountNameEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldChangeAccountName()
+        public Task Handle_WhenHandlingChangedAccountNameEvent_ThenShouldSendBatchUpdateRelationshipAccountNamesCommands()
         {
-            return RunAsync(f => f.Handle(), f =>
-            {
-                f.Account.Name.Should().Be(f.Message.CurrentName);
-                f.Account.Updated.Should().Be(f.Message.Created);
-            });
-        }
-        
-        [Test]
-        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotChangeAccountName()
-        {
-            return RunAsync(f => f.SetAccountUpdatedAfterEvent(), f => f.Handle(), f =>
-            {
-                f.Account.Name.Should().Be(f.OriginalAccountName);
-                f.Account.Updated.Should().Be(f.Now);
-            });
+            return RunAsync(f => f.Handle(), f => f.MessageHandlerContext.SentMessages
+                .Select(m => m.Message)
+                .Cast<BatchUpdateRelationshipAccountNamesCommand>()
+                .Should()
+                .BeEquivalentTo(f.Ukprns.Select(u => new
+                {
+                    Ukprn = u,
+                    f.Message.AccountId,
+                    AccountName = f.Message.Name,
+                    f.Message.Created
+                })));
         }
     }
 
-    public class ChangedAccountNameEventHandlerTestsFixture : EventHandlerTestsFixture<ChangedAccountNameEvent>
+    public class ChangedAccountNameEventHandlerTestsFixture
     {
-        public string OriginalAccountName { get; set; }
-        public Account Account { get; set; }
-
+        public TestableMessageHandlerContext MessageHandlerContext { get; set; }
+        public List<long> Ukprns { get; set; }
+        public ChangedAccountNameEvent Message { get; set; }
+        public IHandleMessages<ChangedAccountNameEvent> Handler { get; set; }
+        public Mock<IMediator> Mediator { get; set; }
+        public GetAccountProviderUkprnsQueryResult GetAccountProviderUkprnsQueryResult { get; set; }
+        
         public ChangedAccountNameEventHandlerTestsFixture()
-            : base(db => new ChangedAccountNameEventHandler(db))
         {
-            OriginalAccountName = "Foo";
+            MessageHandlerContext = new TestableMessageHandlerContext();
             
-            Message = new ChangedAccountNameEvent
+            Ukprns = new List<long>
             {
-                AccountId = 1,
-                CurrentName = "Bar",
-                Created = Now.AddHours(-1)
+                11111111,
+                22222222,
+                33333333
             };
+            
+            Message = new ChangedAccountNameEvent(1, "Foo", DateTime.UtcNow);
+            Mediator = new Mock<IMediator>();
+            GetAccountProviderUkprnsQueryResult = new GetAccountProviderUkprnsQueryResult(Ukprns);
 
-            Account = new AccountBuilder()
-                .WithId(Message.AccountId)
-                .WithName(OriginalAccountName);
-
-            Db.Accounts.Add(Account);
-            Db.SaveChanges();
+            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderUkprnsQuery>(q => q.AccountId == Message.AccountId), CancellationToken.None)).ReturnsAsync(GetAccountProviderUkprnsQueryResult);
+            
+            Handler = new ChangedAccountNameEventHandler(Mediator.Object);
         }
 
-        public ChangedAccountNameEventHandlerTestsFixture SetAccountUpdatedAfterEvent()
+        public Task Handle()
         {
-            Account.SetPropertyTo(a => a.Updated, Now);
-            Db.SaveChanges();
-            
-            return this;
+            return Handler.Handle(Message, MessageHandlerContext);
         }
     }
 }

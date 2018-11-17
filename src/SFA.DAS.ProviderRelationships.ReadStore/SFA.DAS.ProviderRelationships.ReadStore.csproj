@@ -17,6 +17,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="5.0.1" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
     </ItemGroup>
 

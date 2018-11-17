@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class HasRelationshipWithPermissionQueryHandler : IApiRequestHandler<HasRelationshipWithPermissionQuery, bool>
+    internal class HasRelationshipWithPermissionQueryHandler : IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>
     {
         private readonly IRelationshipsRepository _relationshipsRepository;
 

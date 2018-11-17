@@ -8,7 +8,7 @@ using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class GetRelationshipWithPermissionQueryHandler : IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
+    internal class GetRelationshipWithPermissionQueryHandler : IReadStoreRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
     {
         private readonly IRelationshipsRepository _relationshipsRepository;
 

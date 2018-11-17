@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
-using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders

@@ -68,14 +68,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public RelationshipsRequest RelationshipsRequest { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
-        internal Mock<IApiMediator> Mediator { get; set; }
+        internal Mock<IReadStoreMediator> Mediator { get; set; }
         public List<RelationshipDto> Relationships { get; set; }
 
         public ProviderRelationshipsApiClientTestsFixture()
         {
             Relationships = new List<RelationshipDto>();
             CancellationToken = CancellationToken.None;
-            Mediator = new Mock<IApiMediator>();
+            Mediator = new Mock<IReadStoreMediator>();
             ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(Mediator.Object);
         }
 

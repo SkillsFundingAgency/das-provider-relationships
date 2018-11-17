@@ -8,9 +8,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
-        private readonly IApiMediator _mediator;
+        private readonly IReadStoreMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IApiMediator mediator)
+        public ProviderRelationshipsApiClient(IReadStoreMediator mediator)
         {
             _mediator = mediator;
         }
