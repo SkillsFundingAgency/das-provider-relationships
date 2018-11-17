@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore.UnitTests\SFA.DAS.ProviderRelationships.ReadStore.UnitTests.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
     </ItemGroup>

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Extensions
 {
-    internal static class PropertySetterExtension
+    public static class PropertySetterExtension
     {
         public static TObject SetPropertyTo<TObject, TProperty>(this TObject obj,
             Expression<Func<TObject, TProperty>> property, TProperty value)
