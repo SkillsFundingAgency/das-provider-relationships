@@ -8,10 +8,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class Relationship : Document
     {
-        [JsonProperty("accountProvider")]
+        [JsonProperty("ap")]
         public AccountProvider AccountProvider { get; protected set; }
 
-        [JsonProperty("accountLegalEntity")]
+        [JsonProperty("aple")]
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; protected set; }
 
         [JsonProperty("permissions")]

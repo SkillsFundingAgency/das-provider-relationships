@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                 {
                     Paths = new Collection<string>
                     {
-                        "/ukprn"
+                        "/ap/ukprn"
                     }
                 },
                 UniqueKeyPolicy = new UniqueKeyPolicy
@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                     {
                         new UniqueKey
                         {
-                            Paths = new Collection<string> { "/accountProviderId", "/accountLegalEntityId" }
+                            Paths = new Collection<string> { "/ap/accountProviderId", "/aple/accountLegalEntityId" }
                         }
                     }
                 }
