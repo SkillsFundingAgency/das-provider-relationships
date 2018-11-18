@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
         public async Task Handle(UpdatedAccountLegalEntityNameEvent message, IMessageHandlerContext context)
         {
-            var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId)); 
+            var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId));
             
             await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchUpdateRelationshipAccountLegalEntityNamesCommand(u, message.AccountLegalEntityId, message.Name, message.Created))));
         }

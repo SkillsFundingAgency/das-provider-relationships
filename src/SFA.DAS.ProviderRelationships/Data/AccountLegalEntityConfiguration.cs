@@ -8,9 +8,10 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public void Configure(EntityTypeBuilder<AccountLegalEntity> builder)
         {
-            builder.Property(a => a.Id).ValueGeneratedNever();
-            builder.Property(a => a.PublicHashedId).IsRequired().HasColumnType("char(6)");
-            builder.Property(a => a.Name).IsRequired().HasColumnType("nvarchar(100)");
+            builder.Property(ale => ale.Id).ValueGeneratedNever();
+            builder.Property(ale => ale.PublicHashedId).IsRequired().HasColumnType("char(6)");
+            builder.Property(ale => ale.Name).IsRequired().HasColumnType("nvarchar(100)");
+            builder.HasOne(ale => ale.Account).WithMany(a => a.AccountLegalEntities).Metadata.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

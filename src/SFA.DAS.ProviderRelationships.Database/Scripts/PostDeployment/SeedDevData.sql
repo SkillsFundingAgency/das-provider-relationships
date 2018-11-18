@@ -1,6 +1,6 @@
 ﻿IF (NOT EXISTS (SELECT 1 FROM [dbo].[Accounts] WHERE Id = 1))
 BEGIN
-    INSERT INTO [dbo].[Accounts] ([Id], [Name], [Created]) VALUES (1, 'Foo Ltd', GETUTCDATE())
+    INSERT INTO [dbo].[Accounts] ([Id], [PublicHashedId], [Name], [Created]) VALUES (1, 'LDMVWV', 'Foo Ltd', GETUTCDATE())
 END
 
 IF (NOT EXISTS (SELECT 1 FROM [dbo].[AccountLegalEntities] WHERE Id = 1))

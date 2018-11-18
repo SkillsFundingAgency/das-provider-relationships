@@ -1,17 +1,20 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
+using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
 {
     [TestFixture]
-    [NonParallelizable]
+    [Parallelizable]
     public class RemovedLegalEntityEventHandlerTests : FluentTest<RemovedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
@@ -27,6 +30,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
         
         [Test]
+        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishDeletedAccountLegalEntityEvent()
+        {
+            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+                .And.Match<DeletedAccountLegalEntityEvent>(e =>
+                    e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
+                    e.AccountId == f.AccountLegalEntity.AccountId &&
+                    e.Created == f.AccountLegalEntity.Deleted));
+        }
+        
+        [Test]
         public Task Handle_WhenEventIsHandledChronologicallyAndAccountLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
             return RunAsync(f => f.SetAccountLegalEntityDeletedBeforeEvent(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
@@ -37,6 +50,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     {
         public Account Account { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
+        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
 
         public RemovedLegalEntityEventHandlerTestsFixture()
             : base(db => new RemovedLegalEntityEventHandler(db))
@@ -54,6 +68,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             Db.Accounts.Add(Account);
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
+
+            UnitOfWorkContext = new UnitOfWorkContext();
         }
 
         public RemovedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityDeletedAfterEvent()

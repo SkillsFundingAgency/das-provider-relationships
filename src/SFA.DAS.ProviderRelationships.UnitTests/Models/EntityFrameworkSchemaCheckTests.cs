@@ -20,7 +20,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Ignore("To be run adhoc (but could live in an integration test)")]
         public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
         {
-            using (var container = new Container(c => c.AddRegistry<ConfigurationRegistry>()))
+            using (var container = new Container(c =>
+            {
+                c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<EnvironmentRegistry>();
+            }))
             {
                 var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
                 

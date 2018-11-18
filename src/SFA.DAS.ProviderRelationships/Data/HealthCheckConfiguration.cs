@@ -8,6 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public void Configure(EntityTypeBuilder<HealthCheck> builder)
         {
+            builder.HasOne(h => h.User).WithMany().Metadata.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

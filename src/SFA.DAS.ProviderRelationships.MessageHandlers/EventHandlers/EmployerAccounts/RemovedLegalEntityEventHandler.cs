@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
         {
             var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
             var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(ale => ale.Id == message.AccountLegalEntityId);
-
+            
             account.RemoveAccountLegalEntity(accountLegalEntity, message.Created);
         }
     }

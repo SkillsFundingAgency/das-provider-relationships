@@ -18,7 +18,9 @@ namespace SFA.DAS.ProviderRelationships.Models
         public AccountProvider(Account account, Provider provider, User user)
         {
             Account = account;
+            AccountId = account.Id;
             Provider = provider;
+            ProviderUkprn = provider.Ukprn;
             Created = DateTime.UtcNow;
             
             Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created));
