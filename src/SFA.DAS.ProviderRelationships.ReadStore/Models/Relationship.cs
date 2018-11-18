@@ -40,6 +40,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             AccountProviderLegalEntity = new AccountProviderLegalEntity(accountProviderLegalEntityId, accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
             Permissions = new Permissions(new HashSet<Operation>());
             Created = created;
+            AddMessageToOutbox(messageId, created);
         }
 
         [JsonConstructor]
