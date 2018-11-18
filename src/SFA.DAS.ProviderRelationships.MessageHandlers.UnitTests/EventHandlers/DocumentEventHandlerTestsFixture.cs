@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using NServiceBus;
+using SFA.DAS.CosmosDb.Testing;
 using SFA.DAS.NServiceBus;
-using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
