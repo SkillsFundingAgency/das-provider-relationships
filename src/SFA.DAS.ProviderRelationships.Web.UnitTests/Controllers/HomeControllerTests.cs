@@ -2,7 +2,6 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;

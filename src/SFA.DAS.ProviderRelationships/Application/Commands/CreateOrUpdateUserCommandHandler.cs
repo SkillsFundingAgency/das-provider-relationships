@@ -6,16 +6,16 @@ using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class AddOrUpdateUserCommandHandler : RequestHandler<AddOrUpdateUserCommand>
+    public class CreateOrUpdateUserCommandHandler : RequestHandler<CreateOrUpdateUserCommand>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
-        public AddOrUpdateUserCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public CreateOrUpdateUserCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
             _db = db;
         }
 
-        protected override void Handle(AddOrUpdateUserCommand request)
+        protected override void Handle(CreateOrUpdateUserCommand request)
         {
             var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref);
 

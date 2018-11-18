@@ -1,12 +1,13 @@
 using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
+using MediatR;
+using Moq;
+using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
-using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
@@ -16,26 +17,27 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     public class AddedLegalEntityEventHandlerTests : FluentTest<AddedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingAddedLegalEntityEvent_ThenShouldAddAccountLegalEntity()
+        public Task Handle_WhenHandlingAddedLegalEntityEvent_ThenShouldSendAddAccountLegalEntityCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.AccountLegalEntities.SingleOrDefault(ale => ale.Id == f.Message.AccountLegalEntityId).Should().NotBeNull()
-                .And.Match<AccountLegalEntity>(a => 
-                    a.Id == f.Message.AccountLegalEntityId &&
-                    a.PublicHashedId == f.Message.AccountLegalEntityPublicHashedId &&
-                    a.Account == f.Account &&
-                    a.AccountId == f.Message.AccountId &&
-                    a.Name == f.Message.OrganisationName &&
-                    a.Created == f.Message.Created));
+            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<AddAccountLegalEntityCommand>(c => 
+                c.AccountId == f.Message.AccountId &&
+                c.AccountLegalEntityId == f.Message.AccountLegalEntityId &&
+                c.AccountLegalEntityPublicHashedId == f.Message.AccountLegalEntityPublicHashedId &&
+                c.OrganisationName == f.Message.OrganisationName &&
+                c.Created == f.Message.Created), CancellationToken.None), Times.Once));
         }
     }
 
-    public class AddedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<AddedLegalEntityEvent>
+    public class AddedLegalEntityEventHandlerTestsFixture
     {
-        public Account Account { get; set; }
+        public Mock<IMediator> Mediator { get; set; }
+        public AddedLegalEntityEvent Message { get; set; }
+        public IHandleMessages<AddedLegalEntityEvent> Handler { get; set; }
         
         public AddedLegalEntityEventHandlerTestsFixture()
-            : base(db => new AddedLegalEntityEventHandler(db))
         {
+            Mediator = new Mock<IMediator>();
+            
             Message = new AddedLegalEntityEvent
             {
                 AccountId = 1,
@@ -44,11 +46,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 OrganisationName = "Foo",
                 Created = DateTime.UtcNow
             };
+            
+            Handler = new AddedLegalEntityEventHandler(Mediator.Object);
+        }
 
-            Account = new AccountBuilder().WithId(Message.AccountId);
-
-            Db.Accounts.Add(Account);
-            Db.SaveChanges();
+        public Task Handle()
+        {
+            return Handler.Handle(Message, null);
         }
     }
 }

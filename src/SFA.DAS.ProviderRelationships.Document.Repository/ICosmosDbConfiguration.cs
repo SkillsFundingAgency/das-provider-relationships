@@ -4,6 +4,5 @@
     {
         string Uri { get; set; }
         string AuthKey { get; set; }
-        string DatabaseName { get; set; }
     }
 }

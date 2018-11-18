@@ -1,11 +1,13 @@
 using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
+using MediatR;
+using Moq;
+using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
-using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
@@ -15,27 +17,40 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     public class CreatedAccountEventHandlerTests : FluentTest<CreatedAccountEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldAddAccount()
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendCreateAccountLegalEntityCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault(a => a.Id == f.Message.AccountId).Should().NotBeNull()
-                .And.Match<Account>(a => 
-                    a.Id == f.Message.AccountId &&
-                    a.Name == f.Message.Name &&
-                    a.Created == f.Message.Created));
+            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateAccountCommand>(c => 
+                c.AccountId == f.Message.AccountId &&
+                c.PublicHashedId == f.Message.PublicHashedId &&
+                c.Name == f.Message.Name &&
+                c.Created == f.Message.Created), CancellationToken.None), Times.Once));
         }
     }
 
-    public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent>
+    public class CreatedAccountEventHandlerTestsFixture
     {
+        public Mock<IMediator> Mediator { get; set; }
+        public CreatedAccountEvent Message { get; set; }
+        public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
+        
         public CreatedAccountEventHandlerTestsFixture()
-            : base(db => new CreatedAccountEventHandler(db))
         {
+            Mediator = new Mock<IMediator>();
+            
             Message = new CreatedAccountEvent
             {
-                AccountId = 123,
-                Name = "Acme",
+                AccountId = 1,
+                PublicHashedId = "AAA123",
+                Name = "Foo",
                 Created = DateTime.UtcNow
             };
+            
+            Handler = new CreatedAccountEventHandler(Mediator.Object);
+        }
+
+        public Task Handle()
+        {
+            return Handler.Handle(Message, null);
         }
     }
 }

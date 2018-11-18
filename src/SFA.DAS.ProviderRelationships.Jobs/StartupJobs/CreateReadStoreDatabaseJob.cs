@@ -4,7 +4,6 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs

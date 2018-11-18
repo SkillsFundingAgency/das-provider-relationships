@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Moq;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 

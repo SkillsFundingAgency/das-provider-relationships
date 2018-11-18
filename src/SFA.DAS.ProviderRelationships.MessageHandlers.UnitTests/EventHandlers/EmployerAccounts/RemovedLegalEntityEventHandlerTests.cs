@@ -1,15 +1,14 @@
 using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
+using MediatR;
+using Moq;
+using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
-using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
-using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.EmployerAccounts
 {
@@ -18,74 +17,38 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     public class RemovedLegalEntityEventHandlerTests : FluentTest<RemovedLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenEventIsHandledChronologicallyAndAccountLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
+        public Task Handle_WhenHandlingRemoveLegalEntityEvent_ThenShouldSendRemoveAccountLegalEntityCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Message.Created));
-        }
-        
-        [Test]
-        public Task Handle_WhenEventIsHandledNonChronologically_ThenShouldNotDeleteAccountLegalEntity()
-        {
-            return RunAsync(f => f.SetAccountLegalEntityDeletedAfterEvent(), f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Now));
-        }
-        
-        [Test]
-        public Task Handle_WhenEventIsHandledChronologically_ThenShouldPublishDeletedAccountLegalEntityEvent()
-        {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<DeletedAccountLegalEntityEvent>(e =>
-                    e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
-                    e.AccountId == f.AccountLegalEntity.AccountId &&
-                    e.Created == f.AccountLegalEntity.Deleted));
-        }
-        
-        [Test]
-        public Task Handle_WhenEventIsHandledChronologicallyAndAccountLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
-        {
-            return RunAsync(f => f.SetAccountLegalEntityDeletedBeforeEvent(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<RemoveAccountLegalEntityCommand>(c =>
+                c.AccountId == f.Message.AccountId &&
+                c.AccountLegalEntityId == f.Message.AccountLegalEntityId &&
+                c.Created == f.Message.Created), CancellationToken.None), Times.Once));
         }
     }
 
-    public class RemovedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<RemovedLegalEntityEvent>
+    public class RemovedLegalEntityEventHandlerTestsFixture
     {
-        public Account Account { get; set; }
-        public AccountLegalEntity AccountLegalEntity { get; set; }
-        public IUnitOfWorkContext UnitOfWorkContext { get; set; }
-
+        public Mock<IMediator> Mediator { get; set; }
+        public RemovedLegalEntityEvent Message { get; set; }
+        public IHandleMessages<RemovedLegalEntityEvent> Handler { get; set; }
+        
         public RemovedLegalEntityEventHandlerTestsFixture()
-            : base(db => new RemovedLegalEntityEventHandler(db))
         {
+            Mediator = new Mock<IMediator>();
+            
             Message = new RemovedLegalEntityEvent
             {
                 AccountId = 1,
                 AccountLegalEntityId = 2,
-                Created = Now.AddHours(-1)
+                Created = DateTime.UtcNow
             };
-
-            Account = new AccountBuilder().WithId(Message.AccountId);
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(Message.AccountLegalEntityId).WithAccountId(Account.Id);
-
-            Db.Accounts.Add(Account);
-            Db.AccountLegalEntities.Add(AccountLegalEntity);
-            Db.SaveChanges();
-
-            UnitOfWorkContext = new UnitOfWorkContext();
+            
+            Handler = new RemovedLegalEntityEventHandler(Mediator.Object);
         }
 
-        public RemovedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityDeletedAfterEvent()
+        public Task Handle()
         {
-            AccountLegalEntity.SetPropertyTo(ale => ale.Deleted, Now);
-            Db.SaveChanges();
-            
-            return this;
-        }
-
-        public RemovedLegalEntityEventHandlerTestsFixture SetAccountLegalEntityDeletedBeforeEvent()
-        {
-            AccountLegalEntity.SetPropertyTo(ale => ale.Deleted, Message.Created.AddHours(-1));
-            Db.SaveChanges();
-            
-            return this;
+            return Handler.Handle(Message, null);
         }
     }
 }

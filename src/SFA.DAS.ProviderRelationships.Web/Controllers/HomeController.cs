@@ -1,7 +1,4 @@
 ﻿using System.Web.Mvc;
-using SFA.DAS.Authorization.EmployerRoles;
-using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Urls;
 

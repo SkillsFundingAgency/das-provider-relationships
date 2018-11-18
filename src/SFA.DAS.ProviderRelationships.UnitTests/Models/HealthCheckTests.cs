@@ -97,7 +97,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             PreRun = DateTime.UtcNow;
 
-            HealthCheck.ReceiveProviderRelationshipsEvent(new HealthCheckEvent(1, DateTime.UtcNow));
+            HealthCheck.ReceiveProviderRelationshipsEvent();
 
             PostRun = DateTime.UtcNow;
         }

@@ -20,9 +20,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
     public class PostAuthenticationHandlerTests : FluentTest<PostAuthenticationHandlerTestsFixture>
     {
         [Test]
-        public void Handle_WhenHandlingPostAuthenticationIdentity_ThenShouldSendAddOrUpdateUserCommand()
+        public void Handle_WhenHandlingPostAuthenticationIdentity_ThenShouldSendCreateOrUpdateUserCommand()
         {
-            Run(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<AddOrUpdateUserCommand>(c => 
+            Run(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateOrUpdateUserCommand>(c => 
                 c.Ref == f.Ref && c.Email == f.Email && c.FirstName == f.FirstName && c.LastName == f.LastName), CancellationToken.None), Times.Once));
         }
     }

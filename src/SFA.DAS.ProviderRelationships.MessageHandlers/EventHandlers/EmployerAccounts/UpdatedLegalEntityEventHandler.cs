@@ -1,26 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
 {
     public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntityEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly IMediator _mediator;
 
-        public UpdatedLegalEntityEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public UpdatedLegalEntityEventHandler(IMediator mediator)
         {
-            _db = db;
+            _mediator = mediator;
         }
 
-        public async Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
+        public Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
         {
-            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == message.AccountLegalEntityId);
-
-            accountLegalEntity.UpdateName(message.Name, message.Created);
+            return _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
         }
     }
 }

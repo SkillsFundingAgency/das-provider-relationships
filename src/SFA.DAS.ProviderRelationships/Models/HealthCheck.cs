@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         public HealthCheck(User user)
         {
             User = user;
+            UserRef = user.Ref;
         }
 
         protected HealthCheck()
@@ -25,16 +26,16 @@ namespace SFA.DAS.ProviderRelationships.Models
         
         public async Task Run(Func<Task> apprenticeshipInfoServiceApiRequest)
         {
-            await SendApprenticehipInfoServiceApiRequest(apprenticeshipInfoServiceApiRequest);
+            await SendApprenticeshipInfoServiceApiRequest(apprenticeshipInfoServiceApiRequest);
             PublishProviderRelationshipsEvent();
         }
 
-        public void ReceiveProviderRelationshipsEvent(HealthCheckEvent message)
+        public void ReceiveProviderRelationshipsEvent()
         {
             ReceivedProviderRelationshipsEvent = DateTime.UtcNow;
         }
 
-        private async Task SendApprenticehipInfoServiceApiRequest(Func<Task> run)
+        private async Task SendApprenticeshipInfoServiceApiRequest(Func<Task> run)
         {
             SentApprenticeshipInfoServiceApiRequest = DateTime.UtcNow;
 

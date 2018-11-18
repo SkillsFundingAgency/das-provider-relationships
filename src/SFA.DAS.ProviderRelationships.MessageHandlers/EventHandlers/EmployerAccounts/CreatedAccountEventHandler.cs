@@ -1,28 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
 {
     public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly IMediator _mediator;
 
-        public CreatedAccountEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public CreatedAccountEventHandler(IMediator mediator)
         {
-            _db = db;
+            _mediator = mediator;
         }
 
         public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            var account = new Account(message.AccountId, message.PublicHashedId, message.Name, message.Created);
-            
-            _db.Value.Accounts.Add(account);
-
-            return Task.CompletedTask;
+            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.PublicHashedId, message.Name, message.Created));
         }
     }
 }

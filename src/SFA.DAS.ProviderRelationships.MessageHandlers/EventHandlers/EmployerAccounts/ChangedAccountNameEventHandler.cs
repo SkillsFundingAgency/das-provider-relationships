@@ -1,26 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
 {
     public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountNameEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly IMediator _mediator;
 
-        public ChangedAccountNameEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public ChangedAccountNameEventHandler(IMediator mediator)
         {
-            _db = db;
+            _mediator = mediator;
         }
 
-        public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
+        public Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
         {
-            var account = await _db.Value.Accounts.SingleAsync(a => a.Id == message.AccountId);
-
-            account.UpdateName(message.CurrentName, message.Created);
+            return _mediator.Send(new UpdateAccountNameCommand(message.AccountId, message.CurrentName, message.Created));
         }
     }
 }

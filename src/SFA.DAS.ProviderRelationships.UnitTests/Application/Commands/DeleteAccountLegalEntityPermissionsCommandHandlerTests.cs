@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public long AccountLegalEntityId { get; set; }
-        public DeleteAccountLegalEntityPermissionsCommand DeleteAccountLegalEntityPermissionsCommand { get; set; }
+        public DeleteAccountLegalEntityPermissionsCommand Command { get; set; }
         public IRequestHandler<DeleteAccountLegalEntityPermissionsCommand, Unit> Handler { get; set; }
 
         public DeleteAccountLegalEntityPermissionsCommandHandlerTestsFixture()
@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             BatchDeleteManager.InMemoryDbContextFactory = () => Db;
             
             AccountLegalEntityId = 1;
-            DeleteAccountLegalEntityPermissionsCommand = new DeleteAccountLegalEntityPermissionsCommand(AccountLegalEntityId);
+            Command = new DeleteAccountLegalEntityPermissionsCommand(AccountLegalEntityId);
 
             Db.Permissions.Add(new PermissionBuilder().WithAccountLegalEntityId(AccountLegalEntityId));
             Db.Permissions.Add(new PermissionBuilder().WithAccountLegalEntityId(AccountLegalEntityId));
@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public async Task Handle()
         {
-            await Handler.Handle(DeleteAccountLegalEntityPermissionsCommand, CancellationToken.None);
+            await Handler.Handle(Command, CancellationToken.None);
             await Db.SaveChangesAsync();
         }
     }
