@@ -32,7 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
 
                     var relationship = new Relationship(
                         ukprn: 2001877,
-                        accountProviderLegalEntityId: 2123,
                         accountId: 11222,
                         accountPublicHashedId: "HASHED11123",
                         accountName: "AccountNameBB",

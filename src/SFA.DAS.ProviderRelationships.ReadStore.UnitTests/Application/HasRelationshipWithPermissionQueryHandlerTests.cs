@@ -66,27 +66,27 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
             {
                 new RelationshipBuilder()
                     .WithAccountProvider(new AccountProvider(11111111, 1, "AAA111","account name 1", 1))
-                    .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(1,1,"ALE111", "legal entity name ALE111"))
+                    .WithAccountProviderLegalEntity(new AccountLegalEntity(1,"ALE111", "legal entity name ALE111"))
                     .WithPermissionsOperator(Operation.CreateCohort)
                     .Build(),
                 new RelationshipBuilder()
                     .WithAccountProvider(new AccountProvider(11111111, 1, "AAA111","account name 1", 1))
-                    .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(2,2,"ALE222", "legal entity name ALE222"))
+                    .WithAccountProviderLegalEntity(new AccountLegalEntity(2,"ALE222", "legal entity name ALE222"))
                     .WithPermissionsOperator(Operation.CreateCohort)
                     .Build(),
                 new RelationshipBuilder()
                     .WithAccountProvider(new AccountProvider(22222222, 2, "AAA222","account name 2", 2))
-                    .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(3,3,"ALE333", "legal entity name ALE333"))
+                    .WithAccountProviderLegalEntity(new AccountLegalEntity(3,"ALE333", "legal entity name ALE333"))
                     .WithPermissionsOperator(Operation.CreateCohort)
                     .Build(),
                 new RelationshipBuilder()
                     .WithAccountProvider(new AccountProvider(22222222, 3, "AAA333","account name 3", 3))
-                    .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(4,4,"ALE444", "legal entity name ALE444"))
+                    .WithAccountProviderLegalEntity(new AccountLegalEntity(4,"ALE444", "legal entity name ALE444"))
                     .WithPermissionsOperator(Operation.CreateCohort)
                     .Build(),
                 new RelationshipBuilder()
                     .WithAccountProvider(new AccountProvider(11111111, 4, "AAA444","account name 4", 4))
-                    .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(5,5,"ALE555", "legal entity name ALE555"))
+                    .WithAccountProviderLegalEntity(new AccountLegalEntity(5,"ALE555", "legal entity name ALE555"))
                     .WithPermissionsOperator(Operation.CreateCohort)
                     .Build(),
             });

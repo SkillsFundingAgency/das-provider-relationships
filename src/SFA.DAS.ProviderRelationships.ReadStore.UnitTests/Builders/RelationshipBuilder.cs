@@ -44,9 +44,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public RelationshipBuilder WithAccountProviderLegalEntity(AccountProviderLegalEntity accountProviderLegalEntity)
+        public RelationshipBuilder WithAccountProviderLegalEntity(AccountLegalEntity accountLegalEntity)
         {
-            _relationship.SetPropertyTo(p => p.AccountProviderLegalEntity, accountProviderLegalEntity);
+            _relationship.SetPropertyTo(p => p.AccountLegalEntity, accountLegalEntity);
 
             return this;
         }

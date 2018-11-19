@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public AccountProvider AccountProvider { get; protected set; }
 
         [JsonProperty("aple")]
-        public AccountProviderLegalEntity AccountProviderLegalEntity { get; protected set; }
+        public AccountLegalEntity AccountLegalEntity { get; protected set; }
 
         [JsonProperty("permissions")]
         public Permissions Permissions { get; protected set; }
@@ -30,17 +30,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long ukprn, long accountProviderLegalEntityId,
-            long accountId, string accountPublicHashedId, string accountName, 
+        public Relationship(long ukprn, long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime created, string messageId)
             : base(1, "relationship")
         {
             AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
-            AccountProviderLegalEntity = new AccountProviderLegalEntity(accountProviderLegalEntityId, accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
+            AccountLegalEntity = new AccountLegalEntity(accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
             Permissions = new Permissions(new HashSet<Operation>());
             Created = created;
             AddMessageToOutbox(messageId, created);
+            Id = new Guid();
         }
 
         [JsonConstructor]
@@ -48,8 +48,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public void Recreate(long ukprn, long accountProviderLegalEntityId, 
-            long accountId, string accountPublicHashedId, string accountName, 
+        public void Recreate(long ukprn, long accountId, string accountPublicHashedId, string accountName, 
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
             int accountProviderId, DateTime reactivated, string messageId)
         {
@@ -57,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             {
                 EnsureRelationshipIsDeleted();
                 AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
-                AccountProviderLegalEntity = new AccountProviderLegalEntity(accountProviderLegalEntityId, accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
+                AccountLegalEntity = new AccountLegalEntity(accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
                 Permissions = new Permissions(new HashSet<Operation>());
                 Deleted = null;
                 Created = reactivated;

@@ -1,13 +1,9 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    internal class AccountProviderLegalEntity
+    internal class AccountLegalEntity
     {
-        [JsonProperty("accountProviderLegalEntityId")]
-        public long AccountProviderLegalEntityId { get; protected set; }
-
         [JsonProperty("accountLegalEntityId")]
         public long AccountLegalEntityId { get; protected set; }
 
@@ -18,13 +14,12 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public string AccountLegalEntityName { get; protected set; }
 
         [JsonConstructor]
-        protected AccountProviderLegalEntity()
+        protected AccountLegalEntity()
         {
         }
 
-        public AccountProviderLegalEntity(long accountProviderLegalEntityId, long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName)
+        public AccountLegalEntity(long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName)
         {
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
             AccountLegalEntityId = accountLegalEntityId;
             AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
             AccountLegalEntityName = accountLegalEntityName;

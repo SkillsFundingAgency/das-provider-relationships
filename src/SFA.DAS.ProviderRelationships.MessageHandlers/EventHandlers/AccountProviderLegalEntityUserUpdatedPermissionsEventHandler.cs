@@ -17,7 +17,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 
         public async Task Handle(AccountProviderLegalEntityUserUpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
-            var permission = await _relationshipsRepository.CreateQuery().SingleAsync(p => p.AccountProvider.Ukprn == message.Ukprn && p.AccountProviderLegalEntity.AccountProviderLegalEntityId == message.AccountProviderLegalEntityId);
+            var permission = await _relationshipsRepository.CreateQuery().SingleAsync(p => p.AccountProvider.Ukprn == message.Ukprn && 
+                              p.AccountProvider.AccountProviderId == message.AccountProviderId &&
+                              p.AccountLegalEntity.AccountLegalEntityId == message.AccountLegalEntityId);
 
             permission.UpdatePermissions(message.Operations, message.Created, context.MessageId);
             await _relationshipsRepository.Update(permission);

@@ -25,9 +25,9 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs
             return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DocumentSettings.DatabaseName),
                 It.Is<DocumentCollection>(d => 
                     d.Id == DocumentSettings.CollectionName &&
-                    d.PartitionKey.Paths.Contains("/ukprn") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountProviderId") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountLegalEntityId")
+                    d.PartitionKey.Paths.Contains("/ap/ukprn") &&
+                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/ap/accountProviderId") &&
+                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/ale/accountLegalEntityId")
                 ), null), Times.Once));
         }
     }

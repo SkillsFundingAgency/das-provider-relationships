@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         {
             var hasPermission = await _relationshipsRepository.CreateQuery()
                 .AnyAsync(p => p.AccountProvider.Ukprn == request.Ukprn && p.Deleted == null
-                                                        && p.AccountProviderLegalEntity.AccountLegalEntityId == request.EmployerAccountLegalEntityId
+                                                        && p.AccountLegalEntity.AccountLegalEntityId == request.EmployerAccountLegalEntityId
                                                         && p.Permissions.Operations.Contains(request.Operation), cancellationToken)
                 .ConfigureAwait(false);
 

@@ -25,9 +25,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
                     EmployerAccountId = p.AccountProvider.AccountId,
                     EmployerAccountPublicHashedId = p.AccountProvider.AccountPublicHashedId,
                     EmployerAccountName = p.AccountProvider.AccountName,
-                    EmployerAccountLegalEntityId = p.AccountProviderLegalEntity.AccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.AccountProviderLegalEntity.AccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.AccountProviderLegalEntity.AccountLegalEntityName,
+                    EmployerAccountLegalEntityId = p.AccountLegalEntity.AccountLegalEntityId,
+                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntity.AccountLegalEntityPublicHashedId,
+                    EmployerAccountLegalEntityName = p.AccountLegalEntity.AccountLegalEntityName,
                     EmployerAccountProviderId = p.AccountProvider.AccountProviderId,
                     Ukprn = p.AccountProvider.Ukprn
                 })

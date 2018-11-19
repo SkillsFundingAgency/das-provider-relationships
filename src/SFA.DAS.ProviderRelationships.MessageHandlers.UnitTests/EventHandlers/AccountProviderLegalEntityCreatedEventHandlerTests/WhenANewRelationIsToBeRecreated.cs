@@ -25,13 +25,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.AccountProvider.Ukprn == f.Ukprn &&
-                        p.AccountProviderLegalEntity.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                         p.AccountProvider.AccountId == f.AccountId &&
                         p.AccountProvider.AccountPublicHashedId == f.AccountPublicHashedId &&
                         p.AccountProvider.AccountName == f.AccountName &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityId == f.AccountLegalEntityId &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityPublicHashedId == f.AccountLegalEntityPublicHashedId &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityName == f.AccountLegalEntityName &&
+                        p.AccountLegalEntity.AccountLegalEntityId == f.AccountLegalEntityId &&
+                        p.AccountLegalEntity.AccountLegalEntityPublicHashedId == f.AccountLegalEntityPublicHashedId &&
+                        p.AccountLegalEntity.AccountLegalEntityName == f.AccountLegalEntityName &&
                         p.AccountProvider.AccountProviderId == f.AccountProviderId &&
                         p.Created == f.Created &&
                         p.OutboxData.Count() == 2 &&
@@ -54,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
+                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
                         p.AccountProvider.AccountProviderId == f.AccountProviderId &&
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.ReactivatedMessageId)
@@ -69,7 +68,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
+                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
                         p.AccountProvider.AccountProviderId == f.AccountProviderId &&
                         p.OutboxData.Count() == 1
                     )
@@ -83,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
                         p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountProviderLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
+                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
                         p.AccountProvider.AccountProviderId == f.AccountProviderId &&
                         p.Deleted == null &&
                         p.OutboxData.Count() == 2 &&
@@ -98,7 +97,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         DocumentEventHandlerTestsFixture<AccountProviderLegalEntityCreatedEvent>
     {
         public long Ukprn = 11111;
-        public long AccountProviderLegalEntityId = 222222;
         public long AccountId = 333333;
         public string AccountPublicHashedId = "HASHED33";
         public string AccountName = "AccountName";
@@ -117,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             : base((repo) => new AccountProviderLegalEntityCreatedEventHandler(repo))
 
         {
-            Message = new AccountProviderLegalEntityCreatedEvent(Ukprn, AccountProviderLegalEntityId, AccountId,
+            Message = new AccountProviderLegalEntityCreatedEvent(Ukprn, AccountId,
                 AccountPublicHashedId, AccountName,
                 AccountLegalEntityId, AccountLegalEntityPublicHashedId, AccountLegalEntityName, AccountProviderId,
                 ProviderName, Created);
@@ -165,7 +163,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             return new RelationshipBuilder()
                 .WithAccountProvider(new AccountProvider(Ukprn, AccountId, AccountPublicHashedId, "Old Account Name", AccountProviderId))
-                .WithAccountProviderLegalEntity(new AccountProviderLegalEntity(AccountProviderLegalEntityId, AccountLegalEntityId, AccountLegalEntityPublicHashedId, "Old LE Name"))
+                .WithAccountProviderLegalEntity(new AccountLegalEntity(AccountLegalEntityId, AccountLegalEntityPublicHashedId, "Old LE Name"))
                 .WithCreated(Created.AddMinutes(-1))
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created));
         }
