@@ -7,7 +7,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
     {
         private readonly Mock<AccountProvider> _accountProvider = new Mock<AccountProvider> { CallBase = true };
 
-        public AccountProviderBuilder WithId(int id)
+        public AccountProviderBuilder WithId(long id)
         {
             _accountProvider.SetupProperty(ap => ap.Id, id);
             

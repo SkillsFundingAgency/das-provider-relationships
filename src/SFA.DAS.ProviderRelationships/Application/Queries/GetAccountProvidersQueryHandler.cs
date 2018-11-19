@@ -26,7 +26,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         {
             var accountProviders = await _db.Value.AccountProviders
                 .Where(ap => ap.Account.Id == request.AccountId)
-                .ProjectTo<AccountProviderDto>(_configurationProvider)
+                .OrderBy(ap => ap.Provider.Name)
+                .ProjectTo<AccountProviderSummaryDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
             return new GetAccountProvidersQueryResult(accountProviders);

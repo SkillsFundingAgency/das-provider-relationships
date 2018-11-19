@@ -31,9 +31,9 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new AccountLegalEntityProviderConfiguration());
             modelBuilder.ApplyConfiguration(new AccountProviderConfiguration());
             modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }

@@ -2,8 +2,6 @@ using System;
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 {
@@ -72,9 +70,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 UserRef = userRef,
                 Created = DateTime.UtcNow
             });
-
-            await _messageSession.Publish(new GrantedPermissionEvent(1, accountLegalEntityId, 0, (int)PermissionType.CreateCohort, "", userRef, DateTime.UtcNow));
-            await _messageSession.Publish(new RevokedPermissionEvent(1, accountLegalEntityId, 0, (int)PermissionType.CreateCohort, "", userRef, DateTime.UtcNow));
             
             await _messageSession.Publish(new RemovedLegalEntityEvent
             {
