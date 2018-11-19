@@ -7,10 +7,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     internal abstract class Document : IDocument
     {
         [JsonProperty("id")]
-        public virtual Guid Id { get; set; }
+        public virtual Guid Id { get; protected set; }
 
         [JsonIgnore]
-        public virtual string ETag { get; set; }
+        public virtual string ETag { get; protected set; }
 
         [JsonProperty("_etag")]
         private string ReadOnlyETag { set => ETag = value; }
