@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonProperty("ap")]
         public AccountProvider AccountProvider { get; protected set; }
 
-        [JsonProperty("aple")]
+        [JsonProperty("ale")]
         public AccountLegalEntity AccountLegalEntity { get; protected set; }
 
         [JsonProperty("permissions")]
