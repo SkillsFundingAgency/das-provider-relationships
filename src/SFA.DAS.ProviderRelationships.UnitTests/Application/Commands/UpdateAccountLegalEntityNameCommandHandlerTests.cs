@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
                     e.AccountId == f.AccountLegalEntity.AccountId &&
                     e.Name == f.AccountLegalEntity.Name &&
-                    e.Created == f.AccountLegalEntity.Updated));
+                    e.Updated == f.AccountLegalEntity.Updated));
         }
         
         [Test]

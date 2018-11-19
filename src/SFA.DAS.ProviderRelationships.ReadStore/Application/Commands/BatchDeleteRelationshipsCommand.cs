@@ -1,10 +1,9 @@
 using System;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
-    public class BatchDeleteRelationshipsCommand : Command, IReadStoreRequest<Unit>
+    public class BatchDeleteRelationshipsCommand : IReadStoreRequest<Unit>
     {
         public long Ukprn { get; }
         public long AccountLegalEntityId { get; }

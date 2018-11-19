@@ -1,10 +1,9 @@
 using System;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
-    internal class BatchUpdateRelationshipAccountLegalEntityNamesCommand : Command, IReadStoreRequest<Unit>
+    internal class BatchUpdateRelationshipAccountLegalEntityNamesCommand : IReadStoreRequest<Unit>
     {
         public long Ukprn { get; }
         public long AccountLegalEntityId { get; }

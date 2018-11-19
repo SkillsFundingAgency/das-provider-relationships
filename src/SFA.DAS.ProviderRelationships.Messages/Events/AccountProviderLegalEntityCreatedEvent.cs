@@ -1,9 +1,8 @@
 using System;
-using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class AccountProviderLegalEntityCreatedEvent : Event
+    public class AccountProviderLegalEntityCreatedEvent
     {
         public long Ukprn { get; }
         public long AccountProviderLegalEntityId { get; }
@@ -21,7 +20,10 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
 
         public int AccountProviderId { get;  }
         public string AccountProviderName { get; }
+        
 
+        public DateTime Created { get;}
+        
         public AccountProviderLegalEntityCreatedEvent(long ukprn, long accountProviderLegalEntityId, 
             long accountId, string accountPublicHashedId, string accountName,
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,

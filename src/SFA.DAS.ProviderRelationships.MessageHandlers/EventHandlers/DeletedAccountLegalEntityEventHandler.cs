@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
             var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId));
          
             await _mediator.Send(new DeleteAccountLegalEntityPermissionsCommand(message.AccountLegalEntityId));   
-            await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchDeleteRelationshipsCommand(u, message.AccountLegalEntityId, message.Created))));
+            await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchDeleteRelationshipsCommand(u, message.AccountLegalEntityId, message.Deleted))));
         }
     }
 }

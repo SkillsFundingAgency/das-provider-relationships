@@ -1,18 +1,18 @@
 using System;
-using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class DeletedAccountLegalEntityEvent : Event
+    public class DeletedAccountLegalEntityEvent
     {
         public long AccountLegalEntityId { get; }
         public long AccountId { get; }
+        public DateTime Deleted { get;}
 
-        public DeletedAccountLegalEntityEvent(long accountLegalEntityId, long accountId, DateTime created)
+        public DeletedAccountLegalEntityEvent(long accountLegalEntityId, long accountId, DateTime deleted)
         {
             AccountLegalEntityId = accountLegalEntityId;
             AccountId = accountId;
-            Created = created;
+            Deleted = deleted;
         }
     }
 }

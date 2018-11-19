@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenHandlingAddAccountProviderCommand_ThenShouldPublishAddedAccountProviderEvent()
         {
             return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<AddedAccountProviderEvent>(e => e.AccountId == f.Account.Id && e.ProviderUkprn == f.Provider.Ukprn && e.UserRef == f.User.Ref && e.Created >= f.Now));
+                .And.Match<AddedAccountProviderEvent>(e => e.AccountId == f.Account.Id && e.ProviderUkprn == f.Provider.Ukprn && e.UserRef == f.User.Ref && e.Added >= f.Now));
         }
         
         [Test]

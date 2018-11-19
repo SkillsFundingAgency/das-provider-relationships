@@ -36,6 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .UseErrorQueue()
                 .UseInstallers()
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
+                .UseMessageConventions()
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()

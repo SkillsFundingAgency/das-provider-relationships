@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 .And.Match<DeletedAccountLegalEntityEvent>(e =>
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
                     e.AccountId == f.AccountLegalEntity.AccountId &&
-                    e.Created == f.AccountLegalEntity.Deleted));
+                    e.Deleted == f.AccountLegalEntity.Deleted));
         }
         
         [Test]

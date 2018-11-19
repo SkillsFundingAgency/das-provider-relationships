@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
         {
             var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId));
             
-            await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchUpdateRelationshipAccountNamesCommand(u, message.AccountId, message.Name, message.Created))));
+            await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchUpdateRelationshipAccountNamesCommand(u, message.AccountId, message.Name, message.Updated))));
         }
     }
 }

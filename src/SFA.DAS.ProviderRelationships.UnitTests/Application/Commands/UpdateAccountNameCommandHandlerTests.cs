@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 .And.Match<UpdatedAccountNameEvent>(e =>
                     e.AccountId == f.Account.Id &&
                     e.Name == f.Account.Name &&
-                    e.Created == f.Account.Updated));
+                    e.Updated == f.Account.Updated));
         }
         
         [Test]

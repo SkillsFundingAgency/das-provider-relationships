@@ -15,7 +15,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.ReadStore.EventHandlers
 {
-    internal abstract class ReadStoreEventHandlerTestsFixture<TEvent> where TEvent : Event
+    internal abstract class ReadStoreEventHandlerTestsFixture<TEvent> where TEvent : class
     {
         internal Mock<IRelationshipsRepository> RelationshipsRepository;
         internal Mock<IMessageHandlerContext> MessageHandlerContext;

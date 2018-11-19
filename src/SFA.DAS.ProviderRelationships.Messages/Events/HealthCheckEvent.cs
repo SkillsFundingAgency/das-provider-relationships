@@ -1,11 +1,11 @@
 ﻿using System;
-using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class HealthCheckEvent : Event
+    public class HealthCheckEvent
     {
         public int Id { get; }
+        public DateTime Created { get;}
 
         public HealthCheckEvent(int id, DateTime created)
         {

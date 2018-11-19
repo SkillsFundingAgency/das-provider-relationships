@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 {
                     Ukprn = u,
                     f.Message.AccountLegalEntityId,
-                    f.Message.Created
+                    Created = f.Message.Deleted
                 })));
         }
     }
