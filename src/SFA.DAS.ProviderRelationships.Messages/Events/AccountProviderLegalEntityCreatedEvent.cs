@@ -6,9 +6,6 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
     public class AccountProviderLegalEntityCreatedEvent : Event
     {
         public long Ukprn { get; }
-        public long AccountProviderLegalEntityId { get; }
-
-
         public long AccountId { get; }
         public string AccountPublicHashedId { get; }
         public string AccountName { get; }
@@ -22,13 +19,11 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public int AccountProviderId { get;  }
         public string AccountProviderName { get; }
 
-        public AccountProviderLegalEntityCreatedEvent(long ukprn, long accountProviderLegalEntityId, 
-            long accountId, string accountPublicHashedId, string accountName,
+        public AccountProviderLegalEntityCreatedEvent(long ukprn, long accountId, string accountPublicHashedId, string accountName,
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
             int accountProviderId, string accountProviderName, DateTime created)
         {
             Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
 
             AccountId = accountId;
             AccountPublicHashedId = accountPublicHashedId;

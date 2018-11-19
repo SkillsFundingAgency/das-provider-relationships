@@ -18,29 +18,30 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 
         public async Task Run()
         {
-            long ukprn = 2001677;
-            long accountId = 2134;
+            long ukprn = 5055678;
+            int accountProviderId = 1;
+            long accountLegalEntityId = 2134;
 
-            var createEvent = new AccountProviderLegalEntityCreatedEvent(ukprn, accountId, 22222, "HASHED123", "AccountName",
-                3333, "HASH333", "LEName", 1234, "ProvderName", DateTime.Now); 
+            var createEvent = new AccountProviderLegalEntityCreatedEvent(ukprn, 2, "HASHED123", "AccountName",
+                accountLegalEntityId, "HASH333", "LEName", accountProviderId, "ProvderName", DateTime.Now); 
             
             await _messageSession.Publish(createEvent);
 
-            var update1Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountId, Guid.NewGuid(), new HashSet<Operation> {Operation.CreateCohort}, DateTime.Now);
+            var update1Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountProviderId, accountLegalEntityId, Guid.NewGuid(), new HashSet<Operation> {Operation.CreateCohort}, DateTime.Now);
 
             await _messageSession.Publish(update1Event);
 
-            //var update2Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountId, Guid.NewGuid(), new HashSet<Operation>(), DateTime.Now);
+            var update2Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountProviderId, accountLegalEntityId, Guid.NewGuid(), new HashSet<Operation>(), DateTime.Now);
 
-            //await _messageSession.Publish(update2Event);
+            await _messageSession.Publish(update2Event);
 
-            //var update3Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountId, Guid.NewGuid(), new HashSet<Operation> { Operation.CreateCohort }, DateTime.Now);
+            var update3Event = new AccountProviderLegalEntityUserUpdatedPermissionsEvent(ukprn, accountProviderId, accountLegalEntityId, Guid.NewGuid(), new HashSet<Operation> { Operation.CreateCohort }, DateTime.Now);
 
-            //await _messageSession.Publish(update3Event);
+            await _messageSession.Publish(update3Event);
 
-            //var deletedEvent = new AccountProviderLegalEntityDeletedEvent(ukprn, accountId, DateTime.Now);
+            var deletedEvent = new AccountProviderLegalEntityDeletedEvent(ukprn, accountProviderId, accountLegalEntityId, DateTime.Now);
 
-            //await _messageSession.Publish(deletedEvent);
+            await _messageSession.Publish(deletedEvent);
         }
     }
 }

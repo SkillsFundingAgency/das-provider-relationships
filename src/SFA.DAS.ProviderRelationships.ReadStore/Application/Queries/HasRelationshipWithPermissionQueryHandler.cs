@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
@@ -15,11 +15,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         {
             _relationshipsRepository = relationshipsRepository;
         }
-        
+
         public async Task<bool> Handle(HasRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
             var hasRelationshipWithPermission = await _relationshipsRepository.CreateQuery()
-                .AnyAsync(p => p.Ukprn == request.Ukprn && p.Deleted == null && p.Operations.Contains(request.Operation), cancellationToken)
+                .AnyAsync(p => p.Provider.Ukprn == request.Ukprn && p.Deleted == null && p.AccountProvider.Operations.Contains(request.Operation), cancellationToken)
                 .ConfigureAwait(false);
 
             return hasRelationshipWithPermission;

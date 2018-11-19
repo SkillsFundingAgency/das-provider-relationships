@@ -1,4 +1,4 @@
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data

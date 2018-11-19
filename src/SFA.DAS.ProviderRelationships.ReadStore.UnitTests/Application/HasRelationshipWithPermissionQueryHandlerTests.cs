@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes;
+using SFA.DAS.CosmosDb.Testing;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         {
             return RunAsync(f => f.Handle(), (f, r) => r.Should().BeFalse());
         }
-        
+
         [Test]
         public Task Handle_WhenRelationshipsExist_ThenShouldReturnTrue()
         {
@@ -59,68 +59,45 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
         {
             return Handler.Handle(Query, CancellationToken);
         }
-        
+
         public HasRelationshipWithPermissionQueryHandlerTestsFixture AddRelationships()
         {
-            Permissions.AddRange(new []
+            Permissions.AddRange(new[]
             {
                 new RelationshipBuilder()
-                    .WithAccountId(1)
-                    .WithAccountPublicHashedId("AAA111")
-                    .WithAccountName("account name 1")
-                    .WithAccountLegalEntityId(1)
-                    .WithAccountLegalEntityPublicHashedId("ALE111")
-                    .WithAccountLegalEntityName("legal entity name ALE111")
-                    .WithAccountProviderId(1)
                     .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
+                    .WithAccount(new Account(1, "AAA111","account name 1"))
+                    .WithAccountProvider(new AccountProvider(1, new HashSet<Operation> { Operation.CreateCohort}))
+                    .WithAccountLegalEntity(new AccountLegalEntity(1,"ALE111", "legal entity name ALE111"))
                     .Build(),
                 new RelationshipBuilder()
-                    .WithAccountId(1)
-                    .WithAccountPublicHashedId("AAA111")
-                    .WithAccountName("account name 1")
-                    .WithAccountLegalEntityId(2)
-                    .WithAccountLegalEntityPublicHashedId("ALE222")
-                    .WithAccountLegalEntityName("legal entity name ALE222")
-                    .WithAccountProviderId(1)
                     .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
+                    .WithAccount(new Account(1, "AAA111","account name 1"))
+                    .WithAccountProvider(new AccountProvider(1, new HashSet<Operation> { Operation.CreateCohort}))
+                    .WithAccountLegalEntity(new AccountLegalEntity(2,"ALE222", "legal entity name ALE222"))
                     .Build(),
                 new RelationshipBuilder()
-                    .WithAccountId(2)
-                    .WithAccountPublicHashedId("AAA222")
-                    .WithAccountName("account name 2")
-                    .WithAccountLegalEntityId(3)
-                    .WithAccountLegalEntityPublicHashedId("ALE333")
-                    .WithAccountLegalEntityName("legal entity name ALE333")
-                    .WithAccountProviderId(2)
                     .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
+                    .WithAccount(new Account(2, "AAA222","account name 2"))
+                    .WithAccountProvider(new AccountProvider(2, new HashSet<Operation> { Operation.CreateCohort}))
+                    .WithAccountLegalEntity(new AccountLegalEntity(3,"ALE333", "legal entity name ALE333"))
                     .Build(),
                 new RelationshipBuilder()
-                    .WithAccountId(3)
-                    .WithAccountPublicHashedId("AAA333")
-                    .WithAccountName("account name 3")
-                    .WithAccountLegalEntityId(4)
-                    .WithAccountLegalEntityPublicHashedId("ALE444")
-                    .WithAccountLegalEntityName("legal entity name ALE444")
-                    .WithAccountProviderId(3)
                     .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
+                    .WithAccount(new Account(3, "AAA333","account name 3"))
+                    .WithAccountProvider(new AccountProvider(3, new HashSet<Operation> { Operation.CreateCohort}))
+                    .WithAccountLegalEntity(new AccountLegalEntity(4,"ALE444", "legal entity name ALE444"))
+                    .WithExplicitOperator(Operation.CreateCohort)
                     .Build(),
                 new RelationshipBuilder()
-                    .WithAccountId(4)
-                    .WithAccountPublicHashedId("AAA444")
-                    .WithAccountName("account name 4")
-                    .WithAccountLegalEntityId(5)
-                    .WithAccountLegalEntityPublicHashedId("ALE555")
-                    .WithAccountLegalEntityName("legal entity name ALE555")
-                    .WithAccountProviderId(4)
                     .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
+                    .WithAccount(new Account(4, "AAA444","account name 4"))
+                    .WithAccountProvider(new AccountProvider(4, new HashSet<Operation> { Operation.CreateCohort}))
+                    .WithAccountLegalEntity(new AccountLegalEntity(5,"ALE555", "legal entity name ALE555"))
+                    .WithExplicitOperator(Operation.CreateCohort)
                     .Build(),
             });
-            
+
             return this;
         }
     }

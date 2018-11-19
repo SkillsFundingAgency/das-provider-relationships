@@ -6,12 +6,14 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
     public class AccountProviderLegalEntityDeletedEvent : Event
     {
         public long Ukprn { get; }
-        public long AccountProviderLegalEntityId { get; }
+        public long AccountProviderId { get; }
+        public long AccountLegalEntityId { get; }
 
-        public AccountProviderLegalEntityDeletedEvent(long ukprn, long accountProviderLegalEntityId, DateTime created)
+        public AccountProviderLegalEntityDeletedEvent(long ukprn, long accountProviderId, long accountLegalEntityId, DateTime created)
         {
             Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+            AccountProviderId = accountProviderId;
+            AccountLegalEntityId = accountLegalEntityId;
             Created = created;
         }
     }
