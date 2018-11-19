@@ -20,16 +20,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
         public async Task<GetRelationshipWithPermissionQueryResult> Handle(GetRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
             var relationships = await _relationshipsRepository.CreateQuery()
-                .Where(p => p.AccountProvider.Ukprn == request.Ukprn && p.Deleted == null && p.Permissions.Operations.Contains(request.Operation))
+                .Where(p => p.Provider.Ukprn == request.Ukprn && p.Deleted == null && p.AccountProvider.Operations.Contains(request.Operation))
                 .Select(p => new RelationshipDto {
-                    EmployerAccountId = p.AccountProvider.AccountId,
-                    EmployerAccountPublicHashedId = p.AccountProvider.AccountPublicHashedId,
-                    EmployerAccountName = p.AccountProvider.AccountName,
-                    EmployerAccountLegalEntityId = p.AccountLegalEntity.AccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntity.AccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.AccountLegalEntity.AccountLegalEntityName,
-                    EmployerAccountProviderId = p.AccountProvider.AccountProviderId,
-                    Ukprn = p.AccountProvider.Ukprn
+                    EmployerAccountId = p.Account.Id,
+                    EmployerAccountPublicHashedId = p.Account.AccountPublicHashedId,
+                    EmployerAccountName = p.Account.AccountName,
+                    EmployerAccountLegalEntityId = p.AccountLegalEntity.Id,
+                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntity.PublicHashedId,
+                    EmployerAccountLegalEntityName = p.AccountLegalEntity.Name,
+                    EmployerAccountProviderId = p.AccountProvider.Id,
+                    Ukprn = p.Provider.Ukprn
                 })
                 .ToListAsync(cancellationToken);
 

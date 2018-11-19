@@ -4,25 +4,25 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class AccountLegalEntity
     {
-        [JsonProperty("accountLegalEntityId")]
-        public long AccountLegalEntityId { get; protected set; }
+        [JsonProperty("id")]
+        public long Id { get; protected set; }
 
-        [JsonProperty("accountLegalEntityPublicHashedId")]
-        public string AccountLegalEntityPublicHashedId { get; protected set; }
+        [JsonProperty("publicHashedId")]
+        public string PublicHashedId { get; protected set; }
 
-        [JsonProperty("accountLegalEntityName")]
-        public string AccountLegalEntityName { get; protected set; }
+        [JsonProperty("name")]
+        public string Name { get; protected set; }
 
         [JsonConstructor]
         protected AccountLegalEntity()
         {
         }
 
-        public AccountLegalEntity(long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName)
+        public AccountLegalEntity(long id, string publicHashedId, string name)
         {
-            AccountLegalEntityId = accountLegalEntityId;
-            AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
-            AccountLegalEntityName = accountLegalEntityName;
+            Id = id;
+            PublicHashedId = publicHashedId;
+            Name = name;
         }
     }
 }

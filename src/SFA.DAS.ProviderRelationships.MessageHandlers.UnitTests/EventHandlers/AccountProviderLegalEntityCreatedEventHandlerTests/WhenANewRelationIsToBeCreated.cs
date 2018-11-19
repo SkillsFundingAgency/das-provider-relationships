@@ -22,14 +22,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 f => f.SetMessageIdInContext(f.MessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
                 f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<Relationship>(p =>
-                        p.AccountProvider.Ukprn == f.Ukprn &&
-                        p.AccountProvider.AccountId == f.AccountId &&
-                        p.AccountProvider.AccountPublicHashedId == f.AccountPublicHashedId &&
-                        p.AccountProvider.AccountName == f.AccountName &&
-                        p.AccountLegalEntity.AccountLegalEntityId == f.AccountLegalEntityId &&
-                        p.AccountLegalEntity.AccountLegalEntityPublicHashedId == f.AccountLegalEntityPublicHashedId &&
-                        p.AccountLegalEntity.AccountLegalEntityName == f.AccountLegalEntityName &&
-                        p.AccountProvider.AccountProviderId == f.AccountProviderId &&
+                        p.Provider.Ukprn == f.Ukprn &&
+                        p.Account.Id == f.AccountId &&
+                        p.Account.AccountPublicHashedId == f.AccountPublicHashedId &&
+                        p.Account.AccountName == f.AccountName &&
+                        p.AccountLegalEntity.Id == f.AccountLegalEntityId &&
+                        p.AccountLegalEntity.PublicHashedId == f.AccountLegalEntityPublicHashedId &&
+                        p.AccountLegalEntity.Name == f.AccountLegalEntityName &&
+                        p.AccountProvider.Id == f.AccountProviderId &&
                         p.Created == f.Created &&
                         p.OutboxData.Count() == 1 &&
                         p.OutboxData.First().MessageId == f.MessageId

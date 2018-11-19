@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                     await relationshipsRepository.Update(relationship);
 
                     var apiClient = container.GetInstance<IProviderRelationshipsApiClient>();
-                    var relationshipsRequest = new RelationshipsRequest { Ukprn = relationship.AccountProvider.Ukprn, Operation = Operation.CreateCohort };
+                    var relationshipsRequest = new RelationshipsRequest { Ukprn = relationship.Provider.Ukprn, Operation = Operation.CreateCohort };
                     var response = await apiClient.GetRelationshipsWithPermission(relationshipsRequest);
 
                     if (response.Relationships.Any())

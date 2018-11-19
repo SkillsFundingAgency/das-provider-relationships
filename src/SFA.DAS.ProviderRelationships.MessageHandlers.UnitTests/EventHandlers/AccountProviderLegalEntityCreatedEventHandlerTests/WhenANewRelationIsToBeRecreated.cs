@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,14 +25,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             return RunAsync(f => f.AddDeletedMatchingRelationship().SetMessageIdInContext(f.ReactivatedMessageId),
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.AccountProvider.Ukprn == f.Ukprn &&
-                        p.AccountProvider.AccountId == f.AccountId &&
-                        p.AccountProvider.AccountPublicHashedId == f.AccountPublicHashedId &&
-                        p.AccountProvider.AccountName == f.AccountName &&
-                        p.AccountLegalEntity.AccountLegalEntityId == f.AccountLegalEntityId &&
-                        p.AccountLegalEntity.AccountLegalEntityPublicHashedId == f.AccountLegalEntityPublicHashedId &&
-                        p.AccountLegalEntity.AccountLegalEntityName == f.AccountLegalEntityName &&
-                        p.AccountProvider.AccountProviderId == f.AccountProviderId &&
+                        p.Provider.Ukprn == f.Ukprn &&
+                        p.Account.Id == f.AccountId &&
+                        p.Account.AccountPublicHashedId == f.AccountPublicHashedId &&
+                        p.Account.AccountName == f.AccountName &&
+                        p.AccountLegalEntity.Id == f.AccountLegalEntityId &&
+                        p.AccountLegalEntity.PublicHashedId == f.AccountLegalEntityPublicHashedId &&
+                        p.AccountLegalEntity.Name == f.AccountLegalEntityName &&
+                        p.AccountProvider.Id == f.AccountProviderId &&
                         p.Created == f.Created &&
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.ReactivatedMessageId)
@@ -52,9 +53,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             return RunAsync(f => f.AddFutureDeletedMatchingRelationship().SetMessageIdInContext(f.ReactivatedMessageId),
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
-                        p.AccountProvider.AccountProviderId == f.AccountProviderId &&
+                        p.Account.AccountName != f.AccountName &&
+                        p.AccountLegalEntity.Name != f.AccountLegalEntityName &&
+                        p.AccountProvider.Id == f.AccountProviderId &&
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.ReactivatedMessageId)
                     )
@@ -67,9 +68,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             return RunAsync(f => f.AddActiveMatchingRelationship().SetMessageIdInContext(f.MessageId),
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
-                        p.AccountProvider.AccountProviderId == f.AccountProviderId &&
+                        p.Account.AccountName != f.AccountName &&
+                        p.AccountLegalEntity.Name != f.AccountLegalEntityName &&
+                        p.AccountProvider.Id == f.AccountProviderId &&
                         p.OutboxData.Count() == 1
                     )
                     , null, It.IsAny<CancellationToken>())));
@@ -81,9 +82,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             return RunAsync(f => f.AddFutureUpdatedPermissionsMatchingRelationship().SetMessageIdInContext(f.ReactivatedMessageId),
                 f => f.Handle(),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.AccountProvider.AccountName != f.AccountName &&
-                        p.AccountLegalEntity.AccountLegalEntityName != f.AccountLegalEntityName &&
-                        p.AccountProvider.AccountProviderId == f.AccountProviderId &&
+                        p.Account.AccountName != f.AccountName &&
+                        p.AccountLegalEntity.Name != f.AccountLegalEntityName &&
+                        p.AccountProvider.Id == f.AccountProviderId &&
                         p.Deleted == null &&
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Any(o => o.MessageId == f.ReactivatedMessageId)
@@ -143,7 +144,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public AccountProviderLegalEntityRecreatedEventHandlerTestsFixture AddFutureUpdatedPermissionsMatchingRelationship()
         {
             var permission = CreateBasicRelationshipBuilder()
-                .WithPermissionsOperator(Operation.CreateCohort, Created.AddMonths(1))
+                .WithExplicitOperator(Operation.CreateCohort, Created.AddMonths(1))
                 .Build();
             Relationships.Add(permission);
 
@@ -162,8 +163,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public RelationshipBuilder CreateBasicRelationshipBuilder()
         {
             return new RelationshipBuilder()
-                .WithAccountProvider(new AccountProvider(Ukprn, AccountId, AccountPublicHashedId, "Old Account Name", AccountProviderId))
-                .WithAccountProviderLegalEntity(new AccountLegalEntity(AccountLegalEntityId, AccountLegalEntityPublicHashedId, "Old LE Name"))
+                .WithUkprn(Ukprn)
+                .WithAccount(new Account(AccountId, AccountPublicHashedId, "Old Account Name"))
+                .WithAccountProvider(new AccountProvider(AccountProviderId, new HashSet<Operation>()))
+                .WithAccountLegalEntity(new AccountLegalEntity(AccountLegalEntityId, AccountLegalEntityPublicHashedId, "Old LE Name"))
                 .WithCreated(Created.AddMinutes(-1))
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created));
         }

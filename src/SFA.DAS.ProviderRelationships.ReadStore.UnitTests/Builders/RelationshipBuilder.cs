@@ -13,7 +13,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
         public RelationshipBuilder()
         {
             _relationship = (Relationship)Activator.CreateInstance(typeof(Relationship), true);
-            _relationship.SetPropertyTo(p => p.Permissions, new Permissions(new HashSet<Operation>()));
         }
 
         public RelationshipBuilder WithId(Guid id)
@@ -37,6 +36,27 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
+        public RelationshipBuilder WithAccount(Account account)
+        {
+            _relationship.SetPropertyTo(p => p.Account, account);
+
+            return this;
+        }
+
+        public RelationshipBuilder WithUkprn(long ukprn)
+        {
+            _relationship.SetPropertyTo(p => p.Provider, new Provider(ukprn));
+
+            return this;
+        }
+
+        public RelationshipBuilder WithAccountLegalEntity(AccountLegalEntity accountLegalEntity)
+        {
+            _relationship.SetPropertyTo(p => p.AccountLegalEntity, accountLegalEntity);
+
+            return this;
+        }
+
         public RelationshipBuilder WithAccountProvider(AccountProvider accountProvider)
         {
             _relationship.SetPropertyTo(p => p.AccountProvider, accountProvider);
@@ -44,23 +64,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public RelationshipBuilder WithAccountProviderLegalEntity(AccountLegalEntity accountLegalEntity)
+        public RelationshipBuilder WithExplicitOperator(Operation operation, DateTime? updated = null)
         {
-            _relationship.SetPropertyTo(p => p.AccountLegalEntity, accountLegalEntity);
-
-            return this;
-        }
-
-        public RelationshipBuilder WithPermissions(Permissions permissions)
-        {
-            _relationship.SetPropertyTo(p => p.Permissions, permissions);
-
-            return this;
-        }
-
-        public RelationshipBuilder WithPermissionsOperator(Operation operation, DateTime? updated = null)
-        {
-            var permissions = _relationship.Permissions;
+            var permissions = _relationship.AccountProvider;
             permissions.SetPropertyTo(p => p.Operations, new List<Operation> { operation });
 
             if (updated.HasValue)
@@ -88,20 +94,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
 
             return this;
         }
-
-        //public Relationship2Builder WithCreated(DateTime created)
-        //{
-        //    _relationship.SetPropertyTo(p => p.Created, created);
-
-        //    return this;
-        //}
-
-        //public Relationship2Builder WithUpdated(DateTime? updated)
-        //{
-        //    _relationship.SetPropertyTo(p => p.Updated, updated);
-
-        //    return this;
-        //}
 
         public Relationship Build()
         {

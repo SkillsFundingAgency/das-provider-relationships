@@ -1,24 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class AccountProvider
     {
-        [JsonProperty("ukprn")]
-        public long Ukprn { get; protected set; }
+        [JsonProperty("id")]
+        public int Id { get; protected set; }
 
-        [JsonProperty("accountProviderId")]
-        public int AccountProviderId { get; protected set; }
-
-        [JsonProperty("accountId")]
-        public long AccountId { get; protected set; }
-
-        [JsonProperty("accountPublicHashedId")]
-        public string AccountPublicHashedId { get; protected set; }
-
-        [JsonProperty("accountName")]
-        public string AccountName { get; protected set; }
+        [JsonProperty("operations")]
+        public IEnumerable<Operation> Operations { get; protected set; }
 
         [JsonProperty("updated")]
         public DateTime? Updated { get; protected set; }
@@ -28,13 +21,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public AccountProvider(long ukprn, long accountId, string accountPublicHashedId, string accountName, int accountProviderId)
+        public AccountProvider(int id, HashSet<Operation> operations)
         {
-            Ukprn = ukprn;
-            AccountId = accountId;
-            AccountPublicHashedId = accountPublicHashedId;
-            AccountName = accountName;
-            AccountProviderId = accountProviderId;
+            Id = id;
+            Operations = operations;
+        }
+
+        public void UpdateOperations(HashSet<Operation> operations, DateTime updated)
+        {
+            Operations = operations;
+            Updated = updated;
         }
     }
 }

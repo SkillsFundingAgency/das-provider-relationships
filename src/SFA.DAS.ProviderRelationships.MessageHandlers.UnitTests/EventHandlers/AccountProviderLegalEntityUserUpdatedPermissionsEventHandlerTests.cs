@@ -33,8 +33,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
             return RunAsync(f => f.AddMatchingRelationship().SetMessageIdInContext(f.UpdatedMessageId),
                 f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.Permissions.Updated == f.Message.Created &&
-                        p.Permissions.Operations.FirstOrDefault() == Operation.CreateCohort
+                        p.AccountProvider.Updated == f.Message.Created &&
+                        p.AccountProvider.Operations.FirstOrDefault() == Operation.CreateCohort
                     )
                     , null, It.IsAny<CancellationToken>())));
         }
@@ -92,7 +92,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public static long Ukprn = 11111;
         public static int AccountProviderId = 2;
         public static int AccountLegalEntityId = 3;
-        public AccountProvider AccountProvider = new AccountProvider(Ukprn, 1, "HASH", "Name", AccountProviderId);
+        public Account Account = new Account(1, "HASH", "Name");
+        public AccountProvider AccountProvider = new AccountProvider(AccountProviderId, new HashSet<Operation>());
         public AccountLegalEntity AccountLegalEntity = new AccountLegalEntity(AccountLegalEntityId, "HASH2", "LEName");
         public string MessageId = "messageId";
         public string UpdatedMessageId = "updatedMessageId";
@@ -110,8 +111,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingRelationship()
         {
             var relationship = new RelationshipBuilder()
+                .WithUkprn(Ukprn)
+                .WithAccount(Account)
                 .WithAccountProvider(AccountProvider)
-                .WithAccountProviderLegalEntity(AccountLegalEntity)
+                .WithAccountLegalEntity(AccountLegalEntity)
                 .WithCreated(Created)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .Build();
@@ -123,11 +126,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingUpdatedRelationship()
         {
             var relationship = new RelationshipBuilder()
+                .WithUkprn(Ukprn)
+                .WithAccount(Account)
                 .WithAccountProvider(AccountProvider)
-                .WithAccountProviderLegalEntity(AccountLegalEntity)
+                .WithAccountLegalEntity(AccountLegalEntity)
                 .WithCreated(Created)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
-                .WithPermissionsOperator(Operation.CreateCohort, Updated)
+                .WithExplicitOperator(Operation.CreateCohort, Updated)
                 .Build();
             Relationships.Add(relationship);
 
@@ -137,8 +142,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         public AccountProviderLegalEntityUserUpdatedPermissionsEventHandlerTestsFixture AddMatchingDeletedRelationship()
         {
             var relationship = new RelationshipBuilder()
+                .WithUkprn(Ukprn)
+                .WithAccount(Account)
                 .WithAccountProvider(AccountProvider)
-                .WithAccountProviderLegalEntity(AccountLegalEntity)
+                .WithAccountLegalEntity(AccountLegalEntity)
                 .WithCreated(Created)
                 .WithOutboxMessage(new OutboxMessage(MessageId, Created))
                 .WithDeleted(Deleted)

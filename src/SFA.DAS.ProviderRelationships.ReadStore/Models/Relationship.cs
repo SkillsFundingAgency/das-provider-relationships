@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Newtonsoft.Json;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -8,14 +9,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class Relationship : Document
     {
-        [JsonProperty("ap")]
-        public AccountProvider AccountProvider { get; protected set; }
+        [JsonProperty("account")]
+        public Account Account { get; protected set; }
 
-        [JsonProperty("ale")]
+        [JsonProperty("provider")]
+        public Provider Provider { get; protected set; }
+
+        [JsonProperty("accountLegalEntity")]
         public AccountLegalEntity AccountLegalEntity { get; protected set; }
 
-        [JsonProperty("permissions")]
-        public Permissions Permissions { get; protected set; }
+        [JsonProperty("accountProvider")]
+        public AccountProvider AccountProvider { get; protected set; }
 
         [JsonProperty("created")]
         public DateTime Created { get; protected set; }
@@ -35,9 +39,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             int accountProviderId, DateTime created, string messageId)
             : base(1, "relationship")
         {
-            AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
+            Account = new Account(accountId, accountPublicHashedId, accountName);
+            Provider = new Provider(ukprn);
             AccountLegalEntity = new AccountLegalEntity(accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
-            Permissions = new Permissions(new HashSet<Operation>());
+            AccountProvider = new AccountProvider(accountProviderId, new HashSet<Operation>());
             Created = created;
             AddMessageToOutbox(messageId, created);
             Id = new Guid();
@@ -48,16 +53,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public void Recreate(long ukprn, long accountId, string accountPublicHashedId, string accountName, 
-            long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName, 
+        public void Recreate(long ukprn, long accountId, string accountPublicHashedId, string accountName,
+            long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
             int accountProviderId, DateTime reactivated, string messageId)
         {
             ProcessMessage(messageId, reactivated, () =>
             {
                 EnsureRelationshipIsDeleted();
-                AccountProvider = new AccountProvider(ukprn, accountId, accountPublicHashedId, accountName, accountProviderId);
+                Account = new Account(accountId, accountPublicHashedId, accountName);
+                Provider = new Provider(ukprn);
                 AccountLegalEntity = new AccountLegalEntity(accountLegalEntityId, accountLegalEntityPublicHashedId, accountLegalEntityName);
-                Permissions = new Permissions(new HashSet<Operation>());
+                AccountProvider = new AccountProvider(accountProviderId, new HashSet<Operation>());
                 Deleted = null;
                 Created = reactivated;
             });
@@ -69,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
                 () =>
                 {
                     EnsureRelationshipIsNotDeleted();
-                    Permissions.UpdateOperations(grants, updated);
+                    AccountProvider.UpdateOperations(grants, updated);
                 }
             );
         }
@@ -79,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             ProcessMessage(messageId, deleted, () =>
             {
                 EnsureRelationshipIsNotDeleted();
-                Permissions = new Permissions(new HashSet<Operation>());
+                AccountProvider = new AccountProvider(AccountProvider.Id, new HashSet<Operation>());
                 Deleted = deleted;
             });
         }
@@ -99,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         private bool IsMessageChronological(DateTime messageDateTime)
         {
-            var updated = Permissions.Updated ?? DateTime.MinValue;
+            var updated = AccountProvider.Updated ?? DateTime.MinValue;
             var deleted = Deleted ?? DateTime.MinValue;
 
             return messageDateTime > Created && messageDateTime >  updated && messageDateTime > deleted;
