@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[Accounts]
-(												-- Employer_Account Data Type
-	[Id] BIGINT NOT NULL IDENTITY,
-	[AccountId] BIGINT NOT NULL PRIMARY KEY,				-- bitint
-	[Name] NVARCHAR(100) NOT NULL,				-- nvarchar(100)
-	[PublicHashedId] CHAR(6) NOT NULL,			-- nvarchar(100)
-	--CONSTRAINT AK_AccountId UNIQUE(AccountId)
-	CONSTRAINT AK_Accounts_Id UNIQUE CLUSTERED(Id)
+(                                           
+    [Id] BIGINT NOT NULL,
+    [PublicHashedId] CHAR(6) NOT NULL,
+    [Name] NVARCHAR(100) NOT NULL,
+    [Created] DATETIME2 NOT NULL,
+    [Updated] DATETIME2 NULL,
+    CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([Id] ASC)
 )

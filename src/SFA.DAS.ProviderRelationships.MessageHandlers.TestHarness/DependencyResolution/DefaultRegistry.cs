@@ -6,11 +6,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
     {
         public DefaultRegistry()
         {
-            Scan(s =>
-            {
-                s.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));
-                s.RegisterConcreteTypesAgainstTheFirstInterface();
-            });
         }
     }
 }

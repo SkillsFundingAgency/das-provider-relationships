@@ -2,13 +2,19 @@ using System;
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.EmployerCommitments.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 {
     public class PublishAllEvents
     {
-        public async Task Run(NServiceBusConfig nServiceBusConfig)
+        private readonly IMessageSession _messageSession;
+
+        public PublishAllEvents(IMessageSession messageSession)
+        {
+            _messageSession = messageSession;
+        }
+
+        public async Task Run()
         {
             var userRef = Guid.NewGuid();
             const string userName = "Bob Loblaw";
@@ -22,31 +28,61 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             const string originalLegalEntityName = "Legal Entity";
             const string updatedLegalEntityName = "New Legal Entity";
 
-            //todo: need mechanism to set permissions. new permission created/updates event. who owns? probably employercommitments somewhere
-            //todo: why are messages not being removed from queue?
+            await _messageSession.Publish(new CreatedAccountEvent
+            {
+                AccountId = accountId,
+                PublicHashedId = accountPublicHashedId,
+                Name = originalAccountName,
+                UserName = userName,
+                UserRef = userRef,
+                Created = DateTime.UtcNow
+            });
 
-            await nServiceBusConfig.Endpoint.Publish(new CreatedAccountEvent
-            { AccountId = accountId, PublicHashedId = accountPublicHashedId, Name = originalAccountName, UserName = userName, UserRef = userRef, Created = DateTime.UtcNow });
+            await _messageSession.Publish(new ChangedAccountNameEvent
+            {
+                AccountId = accountId,
+                PreviousName = originalAccountName,
+                CurrentName = updatedAccountName,
+                UserName = userName,
+                UserRef = userRef,
+                Created = DateTime.UtcNow
+            });
+            
+            await _messageSession.Publish(new AddedLegalEntityEvent
+            {
+                AccountLegalEntityId = accountLegalEntityId,
+                AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId,
+                OrganisationName = originalLegalEntityName,
+                AccountId = accountId,
+                LegalEntityId = legalEntityId,
+                AgreementId = 2,
+                UserName = userName,
+                UserRef = userRef,
+                Created = DateTime.UtcNow
+            });
 
-            await nServiceBusConfig.Endpoint.Publish(new ChangedAccountNameEvent
-            { AccountId = accountId, PreviousName = originalAccountName, CurrentName = updatedAccountName, UserName = userName, UserRef = userRef, Created = DateTime.UtcNow });
-
-            // note: no address in created, but in updated
-            await nServiceBusConfig.Endpoint.Publish(new AddedLegalEntityEvent
-            { AccountLegalEntityId = accountLegalEntityId, AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId, OrganisationName = originalLegalEntityName, AccountId = accountId, LegalEntityId = legalEntityId, AgreementId = 2, UserName = userName, UserRef = userRef, Created = DateTime.UtcNow });
-
-            await nServiceBusConfig.Endpoint.Publish(new UpdatedLegalEntityEvent
-            { AccountLegalEntityId = accountLegalEntityId, Name = updatedLegalEntityName, Address = "New LE Address", UserName = userName, UserRef = userRef, Created = DateTime.UtcNow });
-
-            await nServiceBusConfig.Endpoint.Publish(new PermissionGrantedEvent
-            { AccountLegalEntityId = accountLegalEntityId, Type = PermissionType.CreateCohort, UserRef = userRef, Created = DateTime.UtcNow });
-
-            await nServiceBusConfig.Endpoint.Publish(new PermissionRevokedEvent
-            { AccountLegalEntityId = accountLegalEntityId, Type = PermissionType.CreateCohort, UserRef = userRef, Created = DateTime.UtcNow });
-
-            //todo: why does this leave a message on 2 qs: sfa.das.eas.web & & sfa.das.providerrelationships.messagehandlers??
-            await nServiceBusConfig.Endpoint.Publish(new RemovedLegalEntityEvent
-                { AccountLegalEntityId = accountLegalEntityId, OrganisationName = updatedLegalEntityName, AccountId = accountId, LegalEntityId = legalEntityId, AgreementId = 2, AgreementSigned = true, UserName = userName, UserRef = userRef, Created = DateTime.UtcNow});
+            await _messageSession.Publish(new UpdatedLegalEntityEvent
+            {
+                AccountLegalEntityId = accountLegalEntityId,
+                Name = updatedLegalEntityName,
+                Address = "New LE Address",
+                UserName = userName,
+                UserRef = userRef,
+                Created = DateTime.UtcNow
+            });
+            
+            await _messageSession.Publish(new RemovedLegalEntityEvent
+            {
+                AccountLegalEntityId = accountLegalEntityId,
+                OrganisationName = updatedLegalEntityName,
+                AccountId = accountId,
+                LegalEntityId = legalEntityId,
+                AgreementId = 2, 
+                AgreementSigned = true,
+                UserName = userName,
+                UserRef = userRef,
+                Created = DateTime.UtcNow
+            });
         }
     }
 }

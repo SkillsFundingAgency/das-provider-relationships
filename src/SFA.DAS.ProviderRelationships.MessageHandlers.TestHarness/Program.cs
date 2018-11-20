@@ -1,24 +1,29 @@
+using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static async Task Main()
         {
             using (var container = IoC.Initialize())
             {
-                var nServiceBusConfig = new NServiceBusConfig(container);
+                var startup = container.GetInstance<IStartup>();
+
+                await startup.StartAsync();
+                
+                var scenario = container.GetInstance<PublishAllEvents>();
+
                 try
                 {
-                    nServiceBusConfig.Start();
-
-                    new PublishAllEvents().Run(nServiceBusConfig).GetAwaiter().GetResult();
+                    await scenario.Run();
                 }
                 finally
                 {
-                    nServiceBusConfig.Stop();
+                    await startup.StopAsync();
                 }
             }
         }

@@ -1,19 +1,17 @@
-﻿using System;
-using System.Security.Claims;
-using FluentAssertions;
+﻿using System.Security.Claims;
 using NUnit.Framework;
 using Moq;
 using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Testing;
 using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.AuthenticationStartupTestsFixture;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
+    [Parallelizable]
     public class AuthenticationStartupTests : FluentTest<AuthenticationStartupTestsFixture> // might have to update fluenttest to handle 2-phase construction of the testfixture for async construction
     {
     }
@@ -43,11 +41,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             var mockAppBuilder = new Mock<IAppBuilder>();
             var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
             var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
+            var mockPostAuthenticationHandler = new Mock<IPostAuthenticationHandler>();
 
             var mockConfigurationFactory = new Mock<ConfigurationFactory>();
             var logger = new Mock<ILog>();
             _authenticationStartup = new AuthenticationStartup(mockAppBuilder.Object, mockIdentityServerConfig.Object,
-                mockAuthenticationUrls.Object, mockConfigurationFactory.Object, logger.Object);
+                mockAuthenticationUrls.Object, mockPostAuthenticationHandler.Object, mockConfigurationFactory.Object, logger.Object);
         }
 
         //public void AssertClaim(string claimType, string expectedValue)

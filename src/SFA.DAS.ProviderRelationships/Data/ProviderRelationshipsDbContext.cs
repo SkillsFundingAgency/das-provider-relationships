@@ -1,45 +1,41 @@
-﻿using System.Data.Common;
-using System.Data.Entity;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
-    [DbConfigurationType(typeof(SqlAzureDbConfiguration))]
-    public class ProviderRelationshipsDbContext : DbContext, IProviderRelationshipsDbContext
+    public class ProviderRelationshipsDbContext : DbContext
     {
-        public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
-        public virtual DbSet<Permission> Permissions { get; set; }
-        public virtual DbSet<HealthCheck> HealthChecks { get; set; }
-        public virtual DbSet<Provider> Providers { get; set; }
-
-        static ProviderRelationshipsDbContext()
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public DbSet<AccountProvider> AccountProviders { get; set; }
+        public DbSet<HealthCheck> HealthChecks { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+        public DbSet<User> Users { get; set; }
+        
+        public ProviderRelationshipsDbContext(DbContextOptions<ProviderRelationshipsDbContext> options) : base(options)
         {
-            Database.SetInitializer<ProviderRelationshipsDbContext>(null);
-        }
-
-        public ProviderRelationshipsDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
-        {
-        }
-
-        public ProviderRelationshipsDbContext(DbConnection connection, DbTransaction transaction)
-            : base(connection, false)
-        {
-            Database.UseTransaction(transaction);
         }
 
         protected ProviderRelationshipsDbContext()
         {
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public virtual Task ExecuteSqlCommandAsync(string sql, params object[] parameters)
         {
+            return Database.ExecuteSqlCommandAsync(sql, parameters);
         }
 
-        public void Delete(object entity)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Entry(entity).State = EntityState.Deleted;
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
+            modelBuilder.ApplyConfiguration(new ProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

@@ -1,33 +1,45 @@
-﻿using Microsoft.Azure.WebJobs;
-using SFA.DAS.ProviderRelationships.Configuration;
+﻿using System.Configuration;
+using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Jobs.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
+using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Jobs
 {
     public static class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
             using (var container = IoC.Initialize())
             {
-                var config = new JobHostConfiguration
-                {
-                    JobActivator = new StructureMapJobActivator(container)
-                };
+                var startup = container.GetInstance<IStartup>();
+                var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
+                var instrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
 
-                var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
-
-                if (isDevelopment)
+                var environment = container.GetInstance<IEnvironment>();
+                if (environment.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }
 
+                config.LoggerFactory = new LoggerFactory()
+                    .AddApplicationInsights(instrumentationKey, null)
+                    .AddNLog();
+
                 config.UseTimers();
 
-                var host = new JobHost(config);
-
-                host.Call(typeof(EndpointJob).GetMethod(nameof(EndpointJob.RunAsync)));
-                host.RunAndBlock();
+                var jobHost = new JobHost(config);
+                
+                await startup.StartAsync();
+                await jobHost.CallAsync(typeof(CreateReadStoreDatabaseJob).GetMethod(nameof(CreateReadStoreDatabaseJob.Run)));
+                
+                jobHost.RunAndBlock();
+                
+                await startup.StopAsync();
             }
         }
     }

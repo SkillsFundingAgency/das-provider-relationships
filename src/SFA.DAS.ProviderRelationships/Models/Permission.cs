@@ -1,18 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using SFA.DAS.EmployerCommitments.Messages.Events;
+﻿using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
     public class Permission : Entity
     {
-        public virtual int PermissionId { get; set; }
-        public virtual PermissionType Type { get; set; }
+        public virtual long Id { get; protected set; }
+        public virtual AccountProvider AccountProvider { get; protected set; }
+        public virtual long AccountProviderId { get; protected set; }
+        public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
+        public virtual long AccountLegalEntityId { get; protected set; }
+        public virtual Operation Operation { get; protected set; }
+        
+        public Permission(AccountProvider accountProvider, AccountLegalEntity accountLegalEntity, Operation operation)
+        {
+            AccountProvider = accountProvider;
+            AccountProviderId = accountProvider.Id;
+            AccountLegalEntity = accountLegalEntity;
+            AccountLegalEntityId = accountLegalEntity.Id;
+            Operation = operation;
+        }
 
-        public virtual long AccountLegalEntityId { get; set; }
-        //[ForeignKey("AccountLegalEntityId")]
-        public virtual AccountLegalEntity AccountLegalEntity { get; set; }
-
-        public virtual long UKPRN { get; set; }
-        public virtual Provider Provider { get; set; }
+        protected Permission()
+        {
+        }
     }
 }

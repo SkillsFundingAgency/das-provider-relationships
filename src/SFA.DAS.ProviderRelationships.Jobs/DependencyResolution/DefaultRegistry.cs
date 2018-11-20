@@ -1,4 +1,7 @@
-﻿using StructureMap;
+﻿using Microsoft.EntityFrameworkCore;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
+using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
 {
@@ -6,11 +9,16 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
     {
         public DefaultRegistry()
         {
-            Scan(s =>
-            {
-                s.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));
-                s.RegisterConcreteTypesAgainstTheFirstInterface();
-            });
+            For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
+        }
+
+        private ProviderRelationshipsDbContext GetDbContext(IContext context)
+        {
+            var connectionString = context.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString;
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connectionString);
+            var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
+            
+            return db;
         }
     }
 }

@@ -1,24 +1,79 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountLegalEntity : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public virtual long AccountLegalEntityId { get; set; }
-        public virtual string AccountLegalEntityPublicHashedId { get; set; }
+        public virtual long Id { get; protected set; }
+        public virtual string PublicHashedId { get; protected set; }
+        public virtual Account Account { get; protected set; }
+        public virtual long AccountId { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual DateTime Created { get; protected set; }
+        public virtual DateTime? Updated { get; protected set; }
+        public virtual DateTime? Deleted { get; protected set; }
+        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
 
-        public virtual string Name { get; set; }
+        internal AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
+        {
+            Id = id;
+            PublicHashedId = publicHashedId;
+            Account = account;
+            AccountId = account.Id;
+            Name = name;
+            Created = created;
+        }
 
-        public virtual long AccountId { get; set; }
+        protected AccountLegalEntity()
+        {
+        }
 
-        //[ForeignKey("AccountId")]
-        public virtual Account Account { get; set; }
+        public void UpdateName(string name, DateTime updated)
+        {
+            if (IsUpdatedNameDateChronological(updated) && IsUpdatedNameDifferent(name))
+            {
+                Name = name;
+                Updated = updated;
+                
+                Publish(() => new UpdatedAccountLegalEntityNameEvent(Id, AccountId, Name, Updated.Value));
+            }
+        }
 
-        public virtual ICollection<Permission> Permissions { get; set; }
-        
-        // providers that have been set-up as having a relationships with the AccountLegalEntity
-        public virtual ICollection<Provider> Providers { get; set; }
+        internal void Delete(DateTime deleted)
+        {
+            if (IsDeleteDateChronological(deleted))
+            {
+                EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+                
+                Deleted = deleted;
+                
+                Publish(() => new DeletedAccountLegalEntityEvent(Id, AccountId, Deleted.Value));
+            }
+        }
+
+        private void EnsureAccountLegalEntityHasNotAlreadyBeenDeleted()
+        {
+            if (Deleted != null)
+            {
+                throw new InvalidOperationException("Requires account legal entity has not already been deleted");
+            }
+        }
+
+        private bool IsDeleteDateChronological(DateTime deleted)
+        {
+            return Deleted == null || deleted > Deleted.Value;
+        }
+
+        private bool IsUpdatedNameDateChronological(DateTime updated)
+        {
+            return Updated == null || updated > Updated.Value;
+        }
+
+        private bool IsUpdatedNameDifferent(string name)
+        {
+            return name != Name;
+        }
     }
 }

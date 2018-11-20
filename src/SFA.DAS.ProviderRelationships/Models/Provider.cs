@@ -1,16 +1,18 @@
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
     public class Provider
     {
-        [Key]
-        public virtual long UKPRN { get; set; }
+        public virtual long Ukprn { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual DateTime Created { get; protected set; }
+        public virtual DateTime? Updated { get; protected set; }
+        public virtual ICollection<AccountProvider> AccountProviders { get; protected set; } = new List<AccountProvider>();
         
-        public virtual string Name { get; set; }
-        
-        // AccountLegalEntities that have set up a relationship with this provider
-        public virtual ICollection<AccountLegalEntity> AccountLegalEntities { get; set; }
+        protected Provider()
+        {
+        }
     }
 }

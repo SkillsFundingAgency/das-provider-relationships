@@ -1,4 +1,7 @@
-﻿using StructureMap;
+﻿using NServiceBus;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
+using StructureMap;
+using BatchDeleteRelationshipsCommandHandler = SFA.DAS.ProviderRelationships.MessageHandlers.CommandHandlers.BatchDeleteRelationshipsCommandHandler;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
 {
@@ -6,11 +9,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
     {
         public DefaultRegistry()
         {
-            Scan(s =>
-            {
-                s.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("SFA.DAS"));
-                s.RegisterConcreteTypesAgainstTheFirstInterface();
-            });
+            For<IHandleMessages<BatchDeleteRelationshipsCommand>>().Use<BatchDeleteRelationshipsCommandHandler>();
         }
     }
 }

@@ -1,0 +1,46 @@
+using System.Data.SqlClient;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.DependencyResolution;
+using StructureMap;
+using TestSupport.EfSchemeCompare;
+
+namespace SFA.DAS.ProviderRelationships.UnitTests.Models
+{
+    /// <summary>
+    /// https://www.thereformedprogrammer.net/ef-core-taking-full-control-of-the-database-schema/
+    /// </summary>
+    [TestFixture]
+    public class EntityFrameworkSchemaCheckTests
+    {
+        [Test]
+        [Ignore("To be run adhoc (but could live in an integration test)")]
+        public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
+        {
+            using (var container = new Container(c =>
+            {
+                c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<EnvironmentRegistry>();
+            }))
+            {
+                var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
+                
+                using (var connection = new SqlConnection(configuration.DatabaseConnectionString))
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
+
+                    using (var context = new ProviderRelationshipsDbContext(optionsBuilder.Options))
+                    {
+                        var comparer = new CompareEfSql();
+                        var hasErrors = comparer.CompareEfWithDb(context);
+
+                        hasErrors.Should().BeFalse(comparer.GetAllErrors);
+                    }
+                }
+            }
+        }
+    }
+}

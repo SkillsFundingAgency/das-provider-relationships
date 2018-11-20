@@ -3,12 +3,12 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
 {
     [TestFixture]
+    [Parallelizable]
     public class IdentityServerConfigurationFactoryTests : FluentTest<IdentityServerConfigurationFactoryTestsFixture>
     {
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/confirm", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity", "/account/confirm")]

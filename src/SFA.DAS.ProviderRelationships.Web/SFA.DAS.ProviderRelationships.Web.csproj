@@ -48,13 +48,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper">
-      <Version>7.0.1</Version>
-    </PackageReference>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="BrockAllen.CookieTempData.dll" Version="1.3.0" />
-    <PackageReference Include="MediatR">
-      <Version>5.1.0</Version>
-    </PackageReference>
+    <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.7.2" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
     <PackageReference Include="Microsoft.AspNet.TelemetryCorrelation" Version="1.0.4" />
@@ -65,18 +61,22 @@
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
+    <PackageReference Include="SFA.DAS.Authorization" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.2.10" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="SFA.DAS.NServiceBus" Version="3.0.1" />
-    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="3.0.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.EntityFramework" Version="2.1.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="2.1.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="2.1.1" />
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="6.0.4" />
+    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="6.0.4" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.0.9" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="4.0.9" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="4.0.9" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
-    <PackageReference Include="SFA.DAS.Validation" Version="1.0.2" />
-    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="1.0.2" />
+    <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="5.1.3" />
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="StructureMap.MVC5" Version="3.1.1.134" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
@@ -106,37 +106,54 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BinderConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\NServiceBusConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Authorization\AuthorizationContextProvider.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
+    <Compile Include="Controllers\AccountProvidersController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
+    <Compile Include="NServiceBusStartup.cs" />
+    <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Extensions\OperationExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Extensions\UrlHelperExtensions.cs" />
+    <Compile Include="Filters\UrlsViewBagFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Mappings\HealthCheckMappings.cs" />
-    <Compile Include="Mappings\ProviderMappings.cs" />
+    <Compile Include="Mappings\AccountProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UrlParameterKeys.cs" />
+    <Compile Include="Routing\RouteDataKeys.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AddProviderViewModel.cs" />
-    <Compile Include="ViewModels\HealthCheckViewModel.cs" />
-    <Compile Include="ViewModels\SearchProvidersViewModel.cs" />
+    <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
+    <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AccountProvidersRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddedAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AddAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\GetAccountProviderRouteValues.cs" />
+    <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="403.html" />
+    <Content Include="404.html" />
+    <Content Include="Error.html" />
     <Content Include="Content\css\application.css" />
     <Content Include="Content\js\application.js" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
@@ -164,6 +181,13 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HealthCheck\Index.cshtml" />
+    <Content Include="Views\AccountProviders\Add.cshtml" />
+    <Content Include="Views\AccountProviders\Added.cshtml" />
+    <Content Include="Views\AccountProviders\AlreadyAdded.cshtml" />
+    <Content Include="Views\AccountProviders\Index.cshtml" />
+    <Content Include="Views\AccountProviders\Find.cshtml" />
+    <Content Include="Views\AccountProviders\Get.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -174,12 +198,20 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Permissions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
+    <Folder Include="ViewModels\Providers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj">
+      <Project>{7f2f7041-07e0-48c0-a65a-e7ff06c65532}</Project>
+      <Name>SFA.DAS.ProviderRelationships.Api.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj">
+      <Project>{9e04ae68-5753-49e7-ac56-a0cf005d19d6}</Project>
+      <Name>SFA.DAS.ProviderRelationships.Types</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>
@@ -203,13 +235,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Shared\AccessDenied.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Permissions\SearchProviders.cshtml" />
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\Permissions\AddProvider.cshtml" />
-    <Content Include="Views\HealthCheck\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -241,14 +267,8 @@
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '$(UserProfile)\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>
