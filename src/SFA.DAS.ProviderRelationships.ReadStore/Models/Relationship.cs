@@ -76,6 +76,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             Created = created;
 
             AddMessageToOutbox(messageId, created);
+            Id = Guid.NewGuid();
         }
 
         [JsonConstructor]

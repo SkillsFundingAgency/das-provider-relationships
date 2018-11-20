@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NServiceBus;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.Fakes;
+using SFA.DAS.CosmosDb.Testing;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
