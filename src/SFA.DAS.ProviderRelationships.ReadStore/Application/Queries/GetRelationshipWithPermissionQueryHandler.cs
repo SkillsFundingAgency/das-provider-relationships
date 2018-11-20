@@ -24,11 +24,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
                 .Select(p => new RelationshipDto
                 {
                     EmployerAccountId = p.AccountId,
-                    EmployerAccountPublicHashedId = p.AccountPublicHashedId,
-                    EmployerAccountName = p.AccountName,
+                    EmployerAccountPublicHashedId = "p.AccountPublicHashedId",
+                    EmployerAccountName = "p.AccountName",
                     EmployerAccountLegalEntityId = p.AccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.AccountLegalEntityName,
+                    EmployerAccountLegalEntityPublicHashedId = "p.AccountLegalEntityPublicHashedId",
+                    EmployerAccountLegalEntityName = "p.AccountLegalEntityName",
                     EmployerAccountProviderId = p.AccountProviderId,
                     Ukprn = p.Ukprn
                 })
