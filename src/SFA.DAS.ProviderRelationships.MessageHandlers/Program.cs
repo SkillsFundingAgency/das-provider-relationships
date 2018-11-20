@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -33,20 +32,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                await jobHost.CallAsync(typeof(Program).GetMethod(nameof(Block)));
                 
                 jobHost.RunAndBlock();
                 
                 await startup.StopAsync();
-            }
-        }
-        
-        [NoAutomaticTrigger]
-        public static async Task Block(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(3000, cancellationToken);
             }
         }
     }
