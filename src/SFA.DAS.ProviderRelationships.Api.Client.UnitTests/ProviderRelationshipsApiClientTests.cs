@@ -76,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             Relationships = new List<RelationshipDto>();
             CancellationToken = CancellationToken.None;
             Mediator = new Mock<IReadStoreMediator>();
-            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(Mediator.Object);
+            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(null, Mediator.Object);
         }
 
         public Task<RelationshipsResponse> GetRelationshipsWithPermission()

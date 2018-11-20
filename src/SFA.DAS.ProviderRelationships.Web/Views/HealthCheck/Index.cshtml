@@ -48,8 +48,17 @@
                             </tr>
                             <tr>
                                 <td class="govuk-table__cell">SFA.DAS.ProviderRelationships</td>
-                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
-                                <td class="govuk-table__cell govuk-table__cell--center">-</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.SentProviderRelationshipsApiRequest.ToString("HH:mm:ss")</td>
+                                <td class="govuk-table__cell govuk-table__cell--center">
+                                    @if (Model.HealthCheck.ReceivedProviderRelationshipsApiResponse == null)
+                                    {
+                                        @:Failed
+                                    }
+                                    else
+                                    {
+                                        @Model.HealthCheck.ReceivedProviderRelationshipsApiResponse.Value.ToString("HH:mm:ss") @:(@Model.HealthCheck.ReceivedProviderRelationshipsApiResponse.Value.Subtract(Model.HealthCheck.SentProviderRelationshipsApiRequest).ToHumanReadableString())
+                                    }
+                                </td>
                                 <td class="govuk-table__cell govuk-table__cell--center">@Model.HealthCheck.PublishedProviderRelationshipsEvent.ToString("HH:mm:ss")</td>
                                 <td class="govuk-table__cell govuk-table__cell--center">
                                     @if (Model.HealthCheck.ReceivedProviderRelationshipsEvent == null)
