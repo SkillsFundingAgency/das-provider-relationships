@@ -2,14 +2,15 @@
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize]
+    [DasAuthorize(EmployerFeature.ProviderRelationships)]
     [RoutePrefix("healthcheck")]
     public class HealthCheckController : Controller
     {
@@ -23,8 +24,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [Route]
-        public async Task<ActionResult> Index(GetHealthCheckQuery query)
+        public async Task<ActionResult> Index()
         {
+            var query = new GetHealthCheckQuery();
             var response = await _mediator.Send(query);
             var model = _mapper.Map<HealthCheckViewModel>(response);
 
@@ -34,8 +36,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route]
-        public async Task<ActionResult> Index(RunHealthCheckCommand command)
+        public async Task<ActionResult> Index(HealthCheckRouteValues routeValues)
         {
+            var command = new RunHealthCheckCommand(routeValues.UserRef.Value);
+            
             await _mediator.Send(command);
 
             return RedirectToAction("Index");

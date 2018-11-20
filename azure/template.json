@@ -11,6 +11,15 @@
         "appServiceName": {
             "type": "string"
         },
+        
+        "aseHostingEnvironmentName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "aseResourceGroup": {
+            "type": "string",
+            "defaultValue": ""
+        },
         "customHostName": {
             "type": "string"
         },
@@ -36,14 +45,56 @@
             "type": "string"
         },
         "workerAppServicePlanName": {
-            "type" : "string"
+            "type": "string"
         },
         "cosmosDbName": {
-            "type": "string" 
+            "type": "string"
+        },
+        "webJobStorageAccountName": {
+            "type": "string"
+        },
+        "sqlServerResourceGroupName": {
+            "type": "string"
+        },
+        "sqlServerName": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        },
+        "elasticPoolName": {
+            "type": "string"
+        },
+        "logAnalyticsSubscriptionId": {
+            "type": "string",
+            "defaultValue": "[subscription().subscriptionId]"
+        },
+        "logAnalyticsResourceGroup": {
+            "type": "string"
+        },
+        "logAnalyticsWorkspaceName": {
+            "type": "string"
         }
     },
     "variables": {},
     "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "StorageAccount",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/storage-account-arm.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('webJobStorageAccountName')]"
+                    }
+                }
+            }
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "worker-app-service-plan-deployment",
@@ -56,19 +107,25 @@
                 },
                 "parameters": {
                     "appServicePlanName": {
-                        "value":  "[parameters('workerAppServicePlanName')]"
+                        "value": "[parameters('workerAppServicePlanName')]"
                     },
-                    "aspLocation":{
+                    "aspLocation": {
                         "value": "West Europe"
                     },
                     "aspSize": {
-                        "value" : "1"
+                        "value": "1"
                     },
                     "aspInstances": {
-                        "value": 1 
+                        "value": 1
+                    },
+                    "aseHostingEnvironmentName": {
+                        "value": "[parameters('aseHostingEnvironmentName')]"
+                    },
+                    "aseResourceGroup": {
+                        "value": "[parameters('aseResourceGroup')]"
                     }
                 }
-             }
+            }
         },
         {
             "apiVersion": "2017-05-10",
@@ -177,11 +234,26 @@
                                 "value": "[reference('worker-app-insights-deployment').outputs.InstrumentationKey.value]"
                             }
                         ]
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "AzureWebJobsDashboard",
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "type": "Custom"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
+                                "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                "type": "Custom"
+                            }
+                        ]
                     }
                 }
             },
             "dependsOn": [
-                "worker-app-service-plan-deployment"
+                "worker-app-service-plan-deployment",
+                "StorageAccount"
             ]
         },
         {
@@ -246,6 +318,39 @@
                     },
                     "defaultConsistencyLevel": {
                         "value": "Strong"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "SQLDatabase",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sqlServerResourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/sql-database.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "databaseName": {
+                        "value": "[parameters('databaseName')]"
+                    },
+                    "sqlServerName": {
+                        "value": "[parameters('sqlServerName')]"
+                    },
+                    "elasticPoolName": {
+                        "value": "[parameters('elasticPoolName')]"
+                    },
+                    "logAnalyticsSubscriptionId": {
+                        "value": "[parameters('logAnalyticsSubscriptionId')]"
+                    },
+                    "logAnalyticsResourceGroup": {
+                        "value": "[parameters('logAnalyticsResourceGroup')]"
+                    },
+                    "logAnalyticsWorkspaceName": {
+                        "value": "[parameters('logAnalyticsWorkspaceName')]"
                     }
                 }
             }

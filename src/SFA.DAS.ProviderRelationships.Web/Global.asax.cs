@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Startup;
@@ -21,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
             DependencyResolver.Current.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 
@@ -33,10 +35,8 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             var exception = Server.GetLastError();
             var logger = DependencyResolver.Current.GetService<ILog>();
-            var telemetryClient = new TelemetryClient();
 
             logger.Error(exception, "Application error");
-            telemetryClient.TrackException(exception);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
             builder.HasKey(p => p.Ukprn);
             builder.Property(p => p.Ukprn).ValueGeneratedNever();
-
             builder.Property(p => p.Name).IsRequired().HasColumnType("nvarchar(100)");
         }
     }

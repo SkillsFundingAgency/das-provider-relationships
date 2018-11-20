@@ -1,7 +1,10 @@
-﻿using System.Threading;
+﻿using System.Configuration;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
-using SFA.DAS.ProviderRelationships.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Startup;
 
@@ -15,24 +18,31 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
             {
                 var startup = container.GetInstance<IStartup>();
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-                var isDevelopment = ConfigurationHelper.IsCurrentEnvironment(DasEnv.LOCAL);
+                var instrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
 
-                if (isDevelopment)
+                var environment = container.GetInstance<IEnvironment>();
+                if (environment.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }
 
-                var host = new JobHost(config);
+                config.LoggerFactory = new LoggerFactory()
+                    .AddApplicationInsights(instrumentationKey, null)
+                    .AddNLog();
+
+                var jobHost = new JobHost(config);
                 
                 await startup.StartAsync();
-                host.Call(typeof(Program).GetMethod(nameof(BlockAsync)));
-                host.RunAndBlock();
+                await jobHost.CallAsync(typeof(Program).GetMethod(nameof(Block)));
+                
+                jobHost.RunAndBlock();
+                
                 await startup.StopAsync();
             }
         }
         
         [NoAutomaticTrigger]
-        public static async Task BlockAsync(CancellationToken cancellationToken)
+        public static async Task Block(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {

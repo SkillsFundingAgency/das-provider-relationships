@@ -1,26 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
 {
     public class HealthCheckEventHandler : IHandleMessages<HealthCheckEvent>
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private readonly IMediator _mediator;
 
-        public HealthCheckEventHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public HealthCheckEventHandler(IMediator mediator)
         {
-            _db = db;
+            _mediator = mediator;
         }
 
-        public async Task Handle(HealthCheckEvent message, IMessageHandlerContext context)
+        public Task Handle(HealthCheckEvent message, IMessageHandlerContext context)
         {
-            var healthCheck = await _db.Value.HealthChecks.SingleAsync(h => h.Id == message.Id);
-
-            healthCheck.ReceiveProviderRelationshipsEvent(message);
+            return _mediator.Send(new ReceiveProviderRelationshipsHealthCheckEventCommand(message.Id));
         }
     }
 }

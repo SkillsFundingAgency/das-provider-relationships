@@ -9,3 +9,20 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+
+IF (
+    @@servername NOT LIKE '%-at-%' AND
+    @@servername NOT LIKE '%-test-%' AND
+    @@servername NOT LIKE '%-test2-%' AND
+    @@servername NOT LIKE '%-pp-%' AND
+    @@servername NOT LIKE '%-prd-%' AND
+    @@servername NOT LIKE '%-mo-%'
+)
+BEGIN
+    :r .\SeedDevData.sql
+END
+
+IF (@@servername LIKE '%-test-%')
+BEGIN
+    :r .\SeedTestData.sql
+END

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
+using MediatR;
+using Moq;
+using NServiceBus;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.Models;
-using SFA.DAS.ProviderRelationships.UnitTests;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
@@ -15,32 +17,28 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
     public class HealthCheckEventHandlerTests : FluentTest<HealthCheckEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingAHealthCheckEvent_ThenShouldUpdateHealthCheck()
+        public Task Handle_WhenHandlingHealthCheckEvent_ThenShouldSendCreateAccountLegalEntityCommandReceiveProviderRelationshipsHealthCheckEventCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.HealthChecks[1].ReceivedProviderRelationshipsEvent.Should().NotBeNull());
+            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<ReceiveProviderRelationshipsHealthCheckEventCommand>(c => c.Id == f.Message.Id), CancellationToken.None), Times.Once));
         }
     }
 
-    public class HealthCheckEventHandlerTestsFixture : EventHandlerTestsFixture<HealthCheckEvent>
+    public class HealthCheckEventHandlerTestsFixture
     {
-        public List<HealthCheck> HealthChecks { get; set; }
-
+        public Mock<IMediator> Mediator { get; set; }
+        public HealthCheckEvent Message { get; set; }
+        public IHandleMessages<HealthCheckEvent> Handler { get; set; }
+        
         public HealthCheckEventHandlerTestsFixture()
-            : base(ldb => new HealthCheckEventHandler(ldb))
         {
-            HealthChecks = new List<HealthCheck>
-            {
-                new HealthCheckBuilder().WithId(1).Build(),
-                new HealthCheckBuilder().WithId(2).Build()
-            };
-            
-            Db.HealthChecks.AddRange(HealthChecks);
-            Db.SaveChanges();
+            Mediator = new Mock<IMediator>();
+            Message = new HealthCheckEvent(1, DateTime.UtcNow);
+            Handler = new HealthCheckEventHandler(Mediator.Object);
         }
 
-        public override Task Handle()
+        public Task Handle()
         {
-            return Handler.Handle(new HealthCheckEvent { Id = HealthChecks[1].Id }, null);
+            return Handler.Handle(Message, null);
         }
     }
 }

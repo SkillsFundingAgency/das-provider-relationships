@@ -11,6 +11,7 @@ using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
@@ -41,8 +42,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public RunHealthCheckCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
-            RunHealthCheckCommand = new RunHealthCheckCommand { UserRef = User.Ref };
+            User = new UserBuilder().WithRef(Guid.NewGuid());
+            RunHealthCheckCommand = new RunHealthCheckCommand(User.Ref);
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();
 

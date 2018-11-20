@@ -2,8 +2,6 @@ using System;
 using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 {
@@ -69,22 +67,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Name = updatedLegalEntityName,
                 Address = "New LE Address",
                 UserName = userName,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
-
-            await _messageSession.Publish(new GrantedPermissionEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                Type = (int)PermissionType.CreateCohort,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
-
-            await _messageSession.Publish(new RevokedPermissionEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                Type = (int)PermissionType.CreateCohort,
                 UserRef = userRef,
                 Created = DateTime.UtcNow
             });

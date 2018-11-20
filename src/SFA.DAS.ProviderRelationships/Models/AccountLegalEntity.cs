@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -7,19 +8,20 @@ namespace SFA.DAS.ProviderRelationships.Models
     {
         public virtual long Id { get; protected set; }
         public virtual string PublicHashedId { get; protected set; }
+        public virtual Account Account { get; protected set; }
         public virtual long AccountId { get; protected set; }
         public virtual string Name { get; protected set; }
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
-        
-        public virtual Account Account { get; protected set; }
-        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
-        
-        public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
+        public virtual DateTime? Deleted { get; protected set; }
+        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
+
+        internal AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
         {
             Id = id;
             PublicHashedId = publicHashedId;
-            AccountId = accountId;
+            Account = account;
+            AccountId = account.Id;
             Name = name;
             Created = created;
         }
@@ -28,18 +30,50 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
         }
 
-        public void ChangeName(string name, DateTime changed)
+        public void UpdateName(string name, DateTime updated)
         {
-            if (Updated == null || changed > Updated.Value)
+            if (IsUpdatedNameDateChronological(updated) && IsUpdatedNameDifferent(name))
             {
                 Name = name;
-                Updated = changed;
+                Updated = updated;
+                
+                Publish(() => new UpdatedAccountLegalEntityNameEvent(Id, AccountId, Name, Updated.Value));
             }
         }
 
-        public void AddRelationship(long ukprn)
+        internal void Delete(DateTime deleted)
         {
-            AccountLegalEntityProviders.Add(new AccountLegalEntityProvider(Id, ukprn));
+            if (IsDeleteDateChronological(deleted))
+            {
+                EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+                
+                Deleted = deleted;
+                
+                Publish(() => new DeletedAccountLegalEntityEvent(Id, AccountId, Deleted.Value));
+            }
+        }
+
+        private void EnsureAccountLegalEntityHasNotAlreadyBeenDeleted()
+        {
+            if (Deleted != null)
+            {
+                throw new InvalidOperationException("Requires account legal entity has not already been deleted");
+            }
+        }
+
+        private bool IsDeleteDateChronological(DateTime deleted)
+        {
+            return Deleted == null || deleted > Deleted.Value;
+        }
+
+        private bool IsUpdatedNameDateChronological(DateTime updated)
+        {
+            return Updated == null || updated > Updated.Value;
+        }
+
+        private bool IsUpdatedNameDifferent(string name)
+        {
+            return name != Name;
         }
     }
 }

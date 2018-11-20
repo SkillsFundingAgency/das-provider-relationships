@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.ProviderRelationships.Web.ViewModels;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Mappings
 {
@@ -9,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public HealthCheckMappings()
         {
-            CreateMap<GetHealthCheckQueryResponse, HealthCheckViewModel>();
+            CreateMap<GetHealthCheckQueryResult, HealthCheckViewModel>();
         }
     }
 }

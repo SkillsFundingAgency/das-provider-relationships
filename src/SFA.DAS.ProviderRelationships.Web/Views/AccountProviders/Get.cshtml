@@ -1,0 +1,43 @@
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.GetAccountProviderViewModel
+
+@{
+    ViewBag.Title = @Model.AccountProvider.ProviderName;
+}
+
+@section breadcrumb
+{
+    <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+            @Model.AccountProvider.ProviderName
+            <span class="govuk-caption-m govuk-!-font-weight-bold govuk-!-margin-bottom-8">UKPRN @Model.AccountProvider.ProviderUkprn</span>
+        </h1>
+        <p class="govuk-body">Set permissions for a single organisation, or set the same permissions for all your organisations at the same time.</p>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <table class="govuk-table govuk-!-font-size-19">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header">Your organisations</th>
+                    <th class="govuk-table__header">Permissions</th>
+                    <th class="govuk-table__header"></th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var accountLegalEntity in Model.AccountLegalEntities)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@accountLegalEntity.Name</td>
+                        <td class="govuk-table__cell">No permissions set</td>
+                        <td class="govuk-table__cell"><a href="@Url.Action("Index", "Permissions", new { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,35 +1,24 @@
-﻿using SFA.DAS.ProviderRelationships.Configuration;
-
-namespace SFA.DAS.ProviderRelationships.Authentication
+﻿namespace SFA.DAS.ProviderRelationships.Authentication
 {
     public sealed class AuthenticationUrls : IAuthenticationUrls
     {
-        private readonly IIdentityServerConfiguration _config;
+        public string AuthorizeEndpoint => GetEndpoint(_configuration.AuthorizeEndpoint);
+        public string LogoutEndpoint => GetEndpoint(_configuration.LogoutEndpoint, _authenticationService.GetCurrentUserClaimValue("id_token"));
+        public string TokenEndpoint => GetEndpoint(_configuration.TokenEndpoint);
+        public string UserInfoEndpoint => GetEndpoint(_configuration.UserInfoEndpoint);
+        
+        private readonly IIdentityServerConfiguration _configuration;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationUrls(IIdentityServerConfiguration config)
+        public AuthenticationUrls(IIdentityServerConfiguration configuration, IAuthenticationService authenticationService)
         {
-            _config = config;
+            _configuration = configuration;
+            _authenticationService = authenticationService;
         }
 
-        public string AuthorizeEndpoint => Generate(_config.AuthorizeEndPoint);
-        public string TokenEndpoint => Generate(_config.TokenEndpoint);
-        public string UserInfoEndpoint => Generate(_config.UserInfoEndpoint);
-
-        public string ChangePasswordUrl => GenerateChangeUrl(_config.ChangePasswordUrl);
-        public string ChangeEmailUrl => GenerateChangeUrl(_config.ChangeEmailUrl);
-
-        //public string LogoutEndpoint() => $"{_configuration.BaseAddress}{_configuration.LogoutEndpoint}";
-        //public string RegisterLink() => _configuration.BaseAddress.Replace("/identity", "") + string.Format(_configuration.RegisterLink, _configuration.ClientId);
-        //public string RequiresVerification() => _baseUrl + "requires_verification";
-
-        private string Generate(string endpoint)
+        private string GetEndpoint(string endpoint, params object[] args)
         {
-            return $"{_config.BaseAddress}{endpoint}";
-        }
-
-        private string GenerateChangeUrl(string pathFormat)
-        {
-            return $"{_config.BaseAddress.Replace("/identity", "")}{string.Format(pathFormat, _config.ClientId)}";
+            return $"{_configuration.BaseAddress}{string.Format(endpoint, args)}";
         }
     }
 }

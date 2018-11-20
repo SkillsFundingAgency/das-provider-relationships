@@ -8,8 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public void Configure(EntityTypeBuilder<HealthCheck> builder)
         {
-            //todo: compare complains about ... HealthCheck->Property 'UserRef', nullability. Expected = NULL, found = NOT NULL
-            //builder.HasOne<User>().WithMany().IsRequired();
+            builder.HasOne(h => h.User).WithMany().Metadata.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

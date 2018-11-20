@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
@@ -7,6 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
+        public DbSet<AccountProvider> AccountProviders { get; set; }
         public DbSet<HealthCheck> HealthChecks { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Provider> Providers { get; set; }
@@ -16,12 +18,22 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
         }
 
+        protected ProviderRelationshipsDbContext()
+        {
+        }
+
+        public virtual Task ExecuteSqlCommandAsync(string sql, params object[] parameters)
+        {
+            return Database.ExecuteSqlCommandAsync(sql, parameters);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new AccountLegalEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new AccountLegalEntityProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountProviderConfiguration());
             modelBuilder.ApplyConfiguration(new HealthCheckConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }

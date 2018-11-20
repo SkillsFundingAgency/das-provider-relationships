@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 
@@ -52,11 +53,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.UnitOfWorkContext.GetEvents().Should().HaveCount(1)
                 .And.AllBeOfType<HealthCheckEvent>()
-                .And.AllBeEquivalentTo(new HealthCheckEvent
-                {
-                    Id = f.HealthCheck.Id,
-                    Created = f.HealthCheck.PublishedProviderRelationshipsEvent
-                }));
+                .And.AllBeEquivalentTo(new HealthCheckEvent(f.HealthCheck.Id, f.HealthCheck.PublishedProviderRelationshipsEvent)));
         }
 
         [Test]
@@ -77,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture()
         {
-            User = new UserBuilder().WithRef(Guid.NewGuid()).Build();
+            User = new UserBuilder().WithRef(Guid.NewGuid());
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
         }
@@ -100,14 +97,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             PreRun = DateTime.UtcNow;
 
-            HealthCheck.ReceiveProviderRelationshipsEvent(new HealthCheckEvent());
+            HealthCheck.ReceiveProviderRelationshipsEvent();
 
             PostRun = DateTime.UtcNow;
         }
 
         public HealthCheckTestsFixture SetHealthCheck()
         {
-            HealthCheck = new HealthCheckBuilder().WithId(1).Build();
+            HealthCheck = new HealthCheckBuilder().WithId(1);
 
             return this;
         }

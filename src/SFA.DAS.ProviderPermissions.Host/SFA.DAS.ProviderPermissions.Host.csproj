@@ -11,16 +11,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Web.WebJobs.Publish" Version="2.0.0"/>
+        <PackageReference Include="Microsoft.Web.WebJobs.Publish" Version="2.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System.Web"/>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Web" />
     </ItemGroup>
 
     <Target Name="CopyWebJobs">
-        <MSBuild Projects="$(WebJobProjects)" Targets="Restore;Build" Properties="DeployOnBuild=true;Configuration=$(Configuration);WebPublishMethod=FileSystem;PublishUrl=$(PublishIntermediateOutputPath)" RunEachTargetSeparately="true" StopOnFirstFailure="true"/>
+        <MSBuild Projects="$(WebJobProjects)" Targets="Restore;Build" Properties="DeployOnBuild=true;Configuration=$(Configuration);WebPublishMethod=FileSystem;PublishUrl=$(PublishIntermediateOutputPath)" RunEachTargetSeparately="true" StopOnFirstFailure="true" />
     </Target>
 
 </Project>

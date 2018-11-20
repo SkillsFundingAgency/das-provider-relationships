@@ -10,19 +10,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
     [Parallelizable]
     public class AuthenticationUrlsTests : FluentTest<AuthenticationUrlsTestsFixture>
     {
-        #region Endpoints
-
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/identity/connect/authorize",
             "/connect/authorize", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingAuthorizeEndpoint_ThenShouldReturnCorrectAuthorizeEndpoint(string expectedAuthorizeEndpoint, string authorizeEndPoint, string baseAddress)
+        public void WhenGettingAuthorizeEndpoint_ThenShouldReturnCorrectAuthorizeEndpoint(string expectedEndpoint, string authorizeEndpoint, string baseAddress)
         {
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
-                    f._mockIdentityServerConfig.Setup(c => c.AuthorizeEndPoint).Returns(authorizeEndPoint);
+                    f.IdentityServerConfiguration.Setup(c => c.AuthorizeEndpoint).Returns(authorizeEndpoint);
                 },
                 f => f.AuthenticationUrls.AuthorizeEndpoint,
-                (f, r) => r.Should().Be(expectedAuthorizeEndpoint));
+                (f, r) => r.Should().Be(expectedEndpoint));
         }
 
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/identity/connect/token",
@@ -32,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
-                    f._mockIdentityServerConfig.Setup(c => c.TokenEndpoint).Returns(tokenEndpoint);
+                    f.IdentityServerConfiguration.Setup(c => c.TokenEndpoint).Returns(tokenEndpoint);
                 },
                 f => f.AuthenticationUrls.TokenEndpoint,
                 (f, r) => r.Should().Be(expectedEndpoint));
@@ -45,61 +43,48 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
-                    f._mockIdentityServerConfig.Setup(c => c.UserInfoEndpoint).Returns(userInfoEndpoint);
+                    f.IdentityServerConfiguration.Setup(c => c.UserInfoEndpoint).Returns(userInfoEndpoint);
                 },
                 f => f.AuthenticationUrls.UserInfoEndpoint,
                 (f, r) => r.Should().Be(expectedEndpoint));
         }
-
-        #endregion Endpoints
-
-        #region ChangeUrls
-
-        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changepassword?clientId=devprorel&returnurl=",
-            "/account/changepassword?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangePasswordUrl_ThenShouldReturnCorrectChangePasswordUrl(string expectedUrl, string changePasswordUrl, string clientId, string baseAddress)
+        
+        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/identity/connect/endsession?id_token_hint=abc123",
+            "/connect/endsession?id_token_hint={0}", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
+        public void WhenGettingLogoutEndpoint_ThenShouldReturnCorrectLogoutEndpoint(string expectedEndpoint, string logoutEndpoint, string baseAddress)
         {
             Run(f =>
                 {
                     f.SetBaseAddress(baseAddress);
-                    f._mockIdentityServerConfig.Setup(c => c.ClientId).Returns(clientId);
-                    f._mockIdentityServerConfig.Setup(c => c.ChangePasswordUrl).Returns(changePasswordUrl);
+                    f.SetCurrentUserClaim("id_token", "abc123");
+                    f.IdentityServerConfiguration.Setup(c => c.LogoutEndpoint).Returns(logoutEndpoint);
                 },
-                f => f.AuthenticationUrls.ChangePasswordUrl,
-                (f, r) => r.Should().Be(expectedUrl));
+                f => f.AuthenticationUrls.LogoutEndpoint,
+                (f, r) => r.Should().Be(expectedEndpoint));
         }
-
-        [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/changeemail?clientId=devprorel&returnurl=",
-            "/account/changeemail?clientId={0}&returnurl=", "devprorel", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
-        public void WhenGettingChangeEmailUrl_ThenShouldReturnChangeEmailUrl(string expectedUrl, string changeEmailUrl, string clientId, string baseAddress)
-        {
-            Run(f =>
-                {
-                    f.SetBaseAddress(baseAddress);
-                    f._mockIdentityServerConfig.Setup(c => c.ClientId).Returns(clientId);
-                    f._mockIdentityServerConfig.Setup(c => c.ChangeEmailUrl).Returns(changeEmailUrl);
-                },
-                f => f.AuthenticationUrls.ChangeEmailUrl,
-                (f, r) => r.Should().Be(expectedUrl));
-        }
-
-        #endregion ChangeUrls
     }
 
     public class AuthenticationUrlsTestsFixture
     {
-        public readonly AuthenticationUrls AuthenticationUrls;
-        public readonly Mock<IIdentityServerConfiguration> _mockIdentityServerConfig;
+        public AuthenticationUrls AuthenticationUrls { get; set; }
+        public Mock<IIdentityServerConfiguration> IdentityServerConfiguration { get; set; }
+        public Mock<IAuthenticationService> AuthenticationService { get; set; }
 
         public AuthenticationUrlsTestsFixture()
         {
-            _mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
-            AuthenticationUrls = new AuthenticationUrls(_mockIdentityServerConfig.Object);
+            IdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
+            AuthenticationService = new Mock<IAuthenticationService>();
+            AuthenticationUrls = new AuthenticationUrls(IdentityServerConfiguration.Object, AuthenticationService.Object);
         }
 
         public void SetBaseAddress(string baseAddress)
         {
-            _mockIdentityServerConfig.Setup(c => c.BaseAddress).Returns(baseAddress);
+            IdentityServerConfiguration.Setup(c => c.BaseAddress).Returns(baseAddress);
+        }
+
+        public void SetCurrentUserClaim(string key, string value)
+        {
+            AuthenticationService.Setup(s => s.GetCurrentUserClaimValue(key)).Returns(value);
         }
     }
 }
