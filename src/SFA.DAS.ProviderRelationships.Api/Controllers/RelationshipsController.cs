@@ -12,8 +12,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
-    //todo: not getting providers, getting relationships
-    [RoutePrefix("providers/{ukprn}")]
+    [RoutePrefix("relationships")]
     public class ProvidersController : ApiController
     {
         private readonly IMediator _mediator;
@@ -23,8 +22,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             _mediator = mediator;
         }
 
-        [Route("relationships")]
-        public async Task<IHttpActionResult> GetRelationshipsWithPermission(long ukprn, string queryOperation)
+        /// <summary>
+        /// Get relationships with optional (currently mandatory) filters
+        /// </summary>
+        /// <param name="ukprn">Filter relationships to only those for this provider</param>
+        /// <param name="queryOperation">Filter relationships to only those which have this permission</param>
+        [Route("")]
+        public async Task<IHttpActionResult> Get(long? ukprn, string queryOperation)
         //public async Task<IHttpActionResult> GetRelationshipsWithPermission(RelationshipsRequest request)
         {
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
@@ -35,45 +39,27 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
 
             //? gonna make structure nasty, unless call check method with returns error/operation
             //IHttpActionResult errorResult = null;
+
+            // we could accept non-nullable, but we might want to return all relationships
+            if (ukprn == null)
+            {
+                // logically this would return all relationships (filtered by operation if supplied)
+                throw new HttpResponseException(HttpStatusCode.NotImplemented);
+            }
             
             if (queryOperation == null)
             //if (request.Operation) // mvc handles not matching. use request but with string??
             {
-                // logically this would return all relationships
+                // logically this would return all relationships (filtered by ukprn if supplied)
                 throw new HttpResponseException(HttpStatusCode.NotImplemented);
             }
 
             if (!Enum.TryParse(queryOperation, true, out Operation operation))
                 return BadRequest();
             
-            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(ukprn, operation));
+            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(ukprn.Value, operation));
 
             return Ok(new RelationshipsResponse {Relationships = result.Relationships});
         }
     }
-    
-//    [RoutePrefix("relationships")]
-//    public class RelationshipsController : ApiController
-//    {
-//        //        public long Ukprn { get; set; }
-//        //public Operation Operation { get; set; }
-//
-//        [Route]
-//        public IHttpActionResult GetRelationshipsWithPermission()//bool withPermission)
-//        {
-////            //RequestContext.
-////            var queryNameValuePairs = Request.GetQueryNameValuePairs();
-////
-////            var withPermission = queryNameValuePairs.FirstOrDefault(nvp =>
-////                nvp.Key.Equals("withPermission", StringComparison.OrdinalIgnoreCase));
-////
-////            if (withPermission.Equals(default(KeyValuePair<string, string>)))
-////            {
-////                // logically this would return all relationships
-////                throw new HttpResponseException(HttpStatusCode.NotImplemented);
-////            }
-//
-//            return Ok();
-//        }
-//    }
 }
