@@ -1,7 +1,9 @@
-﻿namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
+﻿using System.Threading.Tasks;
+
+namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
 {
     public interface ITableStorageConfigurationService
     {
-        T Get<T>();
+        Task<T> Get<T>();
     }
 }

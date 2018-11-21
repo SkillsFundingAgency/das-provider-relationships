@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public DataRegistry()
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
-            For<IDocumentClient>().Use(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Singleton();
+            For<IDocumentClient>().Use(c =>  c.GetInstance<IDocumentClientFactory>().CreateDocumentClient().GetAwaiter().GetResult()).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
             For<IRelationshipsRepository>().Use<RelationshipsRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));

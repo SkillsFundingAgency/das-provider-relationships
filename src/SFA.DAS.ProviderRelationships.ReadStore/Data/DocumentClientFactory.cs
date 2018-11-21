@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
@@ -14,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
             _configurationService = configurationService;
         }
 
-        public IDocumentClient CreateDocumentClient()
+        public async Task<IDocumentClient> CreateDocumentClient()
         {
             var connectionPolicy = new ConnectionPolicy
             {
@@ -25,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
                 }
             };
 
-            var configuration = _configurationService.Get<ReadStoreConfiguration>();
+            var configuration = await _configurationService.Get<ReadStoreConfiguration>();
 
             return new DocumentClient(new Uri(configuration.Uri), configuration.AuthKey, connectionPolicy);
         }

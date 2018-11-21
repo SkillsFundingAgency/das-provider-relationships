@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
             _environmentService = environmentService;
         }
 
-        public T Get<T>()
+        public async Task<T> Get<T>()
         {
             var environmentName = _environmentService.GetVariable(EnvironmentVariableNames.Environment);
             var storageConnectionString = _environmentService.GetVariable(EnvironmentVariableNames.ConfigurationStorageConnectionString);
@@ -31,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
             TableResult result;
             try
             {
-                result = table.ExecuteAsync(operation).Result;
+                result = await table.ExecuteAsync(operation);
             }
             catch (Exception e)
             {

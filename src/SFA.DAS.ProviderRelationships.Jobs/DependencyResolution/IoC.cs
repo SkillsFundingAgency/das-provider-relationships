@@ -1,4 +1,7 @@
-﻿using SFA.DAS.ProviderRelationships.DependencyResolution;
+﻿using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
+using SFA.DAS.ProviderRelationships.DependencyResolution;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
