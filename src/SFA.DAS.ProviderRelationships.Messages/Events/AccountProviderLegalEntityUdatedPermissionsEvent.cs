@@ -18,14 +18,14 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public string AccountLegalEntityPublicHashedId { get;  }
         public string AccountLegalEntityName { get;  }
 
-        public IEnumerable<Operation> Operations { get; }
+        public HashSet<Operation> Operations { get; }
 
         public DateTime Created { get;}
         
         public AccountProviderLegalEntityUdatedPermissionsEvent(long ukprn, int accountProviderId, string accountProviderName, 
             long accountId, string accountPublicHashedId, string accountName,
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
-            HashSet<Operation> grants, DateTime created)
+            HashSet<Operation> operations, DateTime created)
         {
             Ukprn = ukprn;
 
@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
             AccountProviderId = accountProviderId;
             AccountProviderName = accountProviderName;
 
-            Operations = grants;
+            Operations = operations;
             Created = created;
         }
     }

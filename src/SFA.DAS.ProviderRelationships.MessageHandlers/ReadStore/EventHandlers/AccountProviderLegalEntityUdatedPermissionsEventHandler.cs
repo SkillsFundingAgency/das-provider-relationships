@@ -5,7 +5,6 @@ using NServiceBus;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
-using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.ReadStore.EventHandlers
 {
@@ -21,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.ReadStore.EventHandlers
         public Task Handle(AccountProviderLegalEntityUdatedPermissionsEvent message, IMessageHandlerContext context)
         {
             return _mediator.Send(new UpdateRelationshipCommand(message.Ukprn, message.AccountProviderId, message.AccountId, message.AccountLegalEntityId, 
-                (HashSet<Operation>)message.Operations, context.MessageId, message.Created));
+                message.Operations, context.MessageId, message.Created));
         }
     }
 }
