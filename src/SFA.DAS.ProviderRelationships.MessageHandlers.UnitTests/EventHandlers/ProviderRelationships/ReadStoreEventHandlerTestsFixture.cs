@@ -7,7 +7,7 @@ using SFA.DAS.CosmosDb.Testing;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.ReadStore.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
 {
     internal abstract class ReadStoreEventHandlerTestsFixture<TEvent> where TEvent : class
     {

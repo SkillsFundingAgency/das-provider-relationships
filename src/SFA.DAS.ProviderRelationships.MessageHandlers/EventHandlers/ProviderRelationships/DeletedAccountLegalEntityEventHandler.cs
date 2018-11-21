@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     public class DeletedAccountLegalEntityEventHandler : IHandleMessages<DeletedAccountLegalEntityEvent>
     {

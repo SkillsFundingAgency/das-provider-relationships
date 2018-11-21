@@ -4,7 +4,7 @@ using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     public class HealthCheckEventHandler : IHandleMessages<HealthCheckEvent>
     {

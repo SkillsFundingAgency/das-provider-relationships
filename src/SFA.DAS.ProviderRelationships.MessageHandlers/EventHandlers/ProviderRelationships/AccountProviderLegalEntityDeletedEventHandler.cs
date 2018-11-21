@@ -4,7 +4,7 @@ using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.ReadStore.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     internal class AccountProviderLegalEntityDeletedEventHandler : IHandleMessages<AccountProviderLegalEntityDeletedEvent>
     {

@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.ReadStore.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     internal class AccountProviderLegalEntityCreatedEventHandler : IHandleMessages<AccountProviderLegalEntityCreatedEvent>
     {
