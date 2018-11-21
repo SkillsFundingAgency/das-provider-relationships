@@ -1,0 +1,62 @@
+@using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.GetAccountProviderLegalEntityViewModel
+
+@{
+    ViewBag.Title = Model.AccountLegalEntity.Name;
+}
+
+@section breadcrumb
+{
+    <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id })">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Set permissions</h1>
+        <p class="govuk-body">Set permissions for @Model.AccountProvider.ProviderName to do tasks on behalf of @Model.AccountLegalEntity.Name?</p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <table class="govuk-table govuk-!-font-size-19">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th class="govuk-table__header">Permissions</th>
+                        <th class="govuk-table__header"></th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @for (var i = 0; i < Model.Operations.Count; i++)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                @Html.HiddenFor(m => m.Operations[i].Value)
+                                @Model.Operations[i].Value.GetDescription()
+                            </td>
+                            <td class="govuk-table__cell">
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset">
+                                        <div class="govuk-radios govuk-radios--inline">
+                                            <div class="govuk-radios__item">
+                                                @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, true, new { id = $"operation-{i}-yes", @class = "govuk-radios__input" })
+                                                <label class="govuk-label govuk-radios__label" for="operation-@i-yes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, false, new { id = $"operation-{i}-no", @class = "govuk-radios__input" })
+                                                <label class="govuk-label govuk-radios__label" for="operation-@i-no">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button class="govuk-button" type="submit">Set permissions</button>
+        }
+    </div>
+</div>

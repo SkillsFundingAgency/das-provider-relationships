@@ -224,7 +224,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
-        public RequestContext RequestContext { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
         public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
         public FindProviderToAddQueryResult FindProvidersQueryResult { get; set; }
@@ -245,8 +244,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile<AccountProviderMappings>()).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
-            RequestContext = new RequestContext();
-
             AccountProvidersController = new AccountProvidersController(Mediator.Object, Mapper, EmployerUrls.Object);
         }
 
@@ -303,7 +300,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = 12345678
             };
             
-            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(new ProviderDto
+            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(new ProviderBasicDto
             {
                 Ukprn = 12345678,
                 Name = "Foo"
@@ -339,14 +336,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
             {
                 Id = 2,
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678,
-                    Name = "Foo"
-                }
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
             });
 
             Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
@@ -376,14 +370,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
             {
                 Id = 2,
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678,
-                    Name = "Foo"
-                }
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
             });
 
             Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AlreadyAddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
@@ -416,14 +407,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     Id = 2,
                     ProviderName = "Foo"
                 },
-                new List<AccountLegalEntityDto>
+                new List<AccountLegalEntityBasicDto>
                 {
-                    new AccountLegalEntityDto
+                    new AccountLegalEntityBasicDto
                     {
                         Id = 3,
                         Name = "Foo Ltd"
                     },
-                    new AccountLegalEntityDto
+                    new AccountLegalEntityBasicDto
                     {
                         Id = 4,
                         Name = "Bar Ltd"

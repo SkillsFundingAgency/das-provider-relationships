@@ -35,12 +35,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name,
-                        AccountProviderLegalEntities = new List<AccountProviderLegalEntitySummaryDto>
+                        AccountProviderLegalEntities = new List<AccountProviderLegalEntityDto>
                         {
-                            new AccountProviderLegalEntitySummaryDto
+                            new AccountProviderLegalEntityDto
                             {
                                 Id = f.AccountProviderLegalEntity.Id,
-                                AccountProviderId = f.AccountProvider.Id,
                                 AccountLegalEntityId = f.AccountLegalEntity.Id,
                                 Permissions = new List<PermissionDto>
                                 {
@@ -54,10 +53,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         }
                     });
                 
-                r.AccountLegalEntities.Should().NotBeNull().And.BeOfType<List<AccountLegalEntityDto>>()
-                    .And.BeEquivalentTo(new List<AccountLegalEntityDto>
+                r.AccountLegalEntities.Should().NotBeNull().And.BeOfType<List<AccountLegalEntityBasicDto>>()
+                    .And.BeEquivalentTo(new List<AccountLegalEntityBasicDto>
                     {
-                        new AccountLegalEntityDto
+                        new AccountLegalEntityBasicDto
                         {
                             Id = f.AccountLegalEntity.Id,
                             Name = f.AccountLegalEntity.Name
@@ -117,9 +116,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 .WithAccountId(Account.Id)
                 .WithProviderUkprn(Provider.Ukprn);
 
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(4).WithName("Bar").WithAccountId(Account.Id);
-            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder().WithId(5).WithAccountProviderId(AccountProvider.Id).WithAccountLegalEntityId(AccountLegalEntity.Id);
-            Permission = new PermissionBuilder().WithId(3).WithAccountProviderLegalEntityId(AccountProviderLegalEntity.Id).WithOperation(Operation.CreateCohort);
+            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(3).WithName("Bar").WithAccountId(Account.Id);
+            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder().WithId(4).WithAccountProviderId(AccountProvider.Id).WithAccountLegalEntityId(AccountLegalEntity.Id);
+            Permission = new PermissionBuilder().WithId(5).WithAccountProviderLegalEntityId(AccountProviderLegalEntity.Id).WithOperation(Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

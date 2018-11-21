@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public AccountLegalEntityMappings()
         {
-            CreateMap<AccountLegalEntity, AccountLegalEntityDto>();
+            CreateMap<AccountLegalEntity, AccountLegalEntityBasicDto>();
         }
     }
 }

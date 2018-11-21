@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             var accountLegalEntities = await _db.Value.AccountLegalEntities
                 .Where(ale => ale.Account.Id == request.AccountId && ale.Deleted == null)
                 .OrderBy(ale => ale.Name)
-                .ProjectTo<AccountLegalEntityDto>(_configurationProvider)
+                .ProjectTo<AccountLegalEntityBasicDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
             return new GetAccountProviderQueryResult(accountProvider, accountLegalEntities);

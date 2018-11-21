@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public ProviderMappings()
         {
-            CreateMap<Provider, ProviderDto>();
+            CreateMap<Provider, ProviderBasicDto>();
         }
     }
 }

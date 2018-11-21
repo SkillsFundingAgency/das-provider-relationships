@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
     {
         private static readonly Dictionary<Operation, string> OperationDescriptions = Enum.GetValues(typeof(Operation))
             .Cast<Operation>()
-            .ToDictionary(v => v, v => Regex.Replace(v.ToString(), "([A-Z])", " $1").TrimStart());
+            .ToDictionary(v => v, v => Regex.Replace(v.ToString(), "(.)([A-Z])", m => $"{m.Groups[1].Value} {m.Groups[2].Value.ToLower()}"));
         
         public static string GetDescription(this Operation operation)
         {

@@ -20,7 +20,6 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Ukprn)
             <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s govuk-!-margin-bottom-0">

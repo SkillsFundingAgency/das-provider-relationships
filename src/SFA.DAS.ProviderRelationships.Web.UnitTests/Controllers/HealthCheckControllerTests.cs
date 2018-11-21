@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HealthCheckControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>()).CreateMapper();
+            Mapper = new MapperConfiguration(c => {}).CreateMapper();
             HealthCheckController = new HealthCheckController(Mediator.Object, Mapper);
         }
 
