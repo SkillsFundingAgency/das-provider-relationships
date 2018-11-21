@@ -19,7 +19,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         protected override async Task Handle(RemoveAccountLegalEntityCommand request, CancellationToken cancellationToken)
         {
             var account = await _db.Value.Accounts.SingleAsync(a => a.Id == request.AccountId, cancellationToken);
-            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(ale => ale.Id == request.AccountLegalEntityId, cancellationToken);
+            
+            var accountLegalEntity = await _db.Value.AccountLegalEntities
+                .Include(ale => ale.AccountProviderLegalEntities)
+                .ThenInclude(aple => aple.AccountProvider)
+                .SingleAsync(ale => ale.Id == request.AccountLegalEntityId, cancellationToken);
             
             account.RemoveAccountLegalEntity(accountLegalEntity, request.Created);
         }

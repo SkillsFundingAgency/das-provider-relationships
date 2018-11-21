@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedures\ImportProviders.sql" />
+    <Build Include="Tables\AccountProviderLegalEntities.sql" />
     <Build Include="Tables\AccountProviders.sql" />
     <Build Include="Tables\ClientOutboxData.sql" />
     <Build Include="Tables\OutboxData.sql" />
