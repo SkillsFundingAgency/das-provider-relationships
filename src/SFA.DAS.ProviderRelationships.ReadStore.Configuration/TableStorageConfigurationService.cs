@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
             TableResult result;
             try
             {
-                result = table.Execute(operation);
+                result = table.ExecuteAsync(operation).Result;
             }
             catch (Exception e)
             {
