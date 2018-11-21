@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -14,7 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
         public virtual DateTime? Deleted { get; protected set; }
-        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
+        public virtual ICollection<AccountProviderLegalEntity> AccountProviderLegalEntities { get; protected set; } = new List<AccountProviderLegalEntity>();
 
         internal AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
         {
@@ -36,8 +35,6 @@ namespace SFA.DAS.ProviderRelationships.Models
             {
                 Name = name;
                 Updated = updated;
-                
-                Publish(() => new UpdatedAccountLegalEntityNameEvent(Id, AccountId, Name, Updated.Value));
             }
         }
 
@@ -46,10 +43,15 @@ namespace SFA.DAS.ProviderRelationships.Models
             if (IsDeleteDateChronological(deleted))
             {
                 EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+
+                foreach (var accountProviderLegalEntity in AccountProviderLegalEntities)
+                {
+                    accountProviderLegalEntity.Delete();
+                }
+                
+                AccountProviderLegalEntities.Clear();
                 
                 Deleted = deleted;
-                
-                Publish(() => new DeletedAccountLegalEntityEvent(Id, AccountId, Deleted.Value));
             }
         }
 

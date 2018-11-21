@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
@@ -30,16 +28,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenCommandIsHandledNonChronologically_ThenShouldNotDeleteAccountLegalEntity()
         {
             return RunAsync(f => f.SetAccountLegalEntityDeletedAfterCommand(), f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Now));
-        }
-        
-        [Test]
-        public Task Handle_WhenCommandIsHandledChronologically_ThenShouldPublishDeletedAccountLegalEntityEvent()
-        {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<DeletedAccountLegalEntityEvent>(e =>
-                    e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
-                    e.AccountId == f.AccountLegalEntity.AccountId &&
-                    e.Deleted == f.AccountLegalEntity.Deleted));
         }
         
         [Test]

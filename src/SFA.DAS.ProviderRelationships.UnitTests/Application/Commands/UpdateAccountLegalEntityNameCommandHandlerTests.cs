@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
@@ -28,17 +26,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 f.AccountLegalEntity.Name.Should().Be(f.Command.Name);
                 f.AccountLegalEntity.Updated.Should().Be(f.Command.Created);
             });
-        }
-        
-        [Test]
-        public Task Handle_WhenCommandIsHandledChronologically_ThenShouldPublishUpdatedAccountLegalEntityNameEvent()
-        {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<UpdatedAccountLegalEntityNameEvent>(e =>
-                    e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
-                    e.AccountId == f.AccountLegalEntity.AccountId &&
-                    e.Name == f.AccountLegalEntity.Name &&
-                    e.Updated == f.AccountLegalEntity.Updated));
         }
         
         [Test]

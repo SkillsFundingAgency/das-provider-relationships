@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SFA.DAS.ProviderRelationships.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -44,8 +43,6 @@ namespace SFA.DAS.ProviderRelationships.Models
             {
                 Name = name;
                 Updated = updated;
-                
-                Publish(() => new UpdatedAccountNameEvent(Id, Name, Updated.Value));
             }
         }
 
