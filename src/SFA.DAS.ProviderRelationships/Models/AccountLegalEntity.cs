@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -7,13 +6,11 @@ namespace SFA.DAS.ProviderRelationships.Models
     {
         public virtual long Id { get; protected set; }
         public virtual string PublicHashedId { get; protected set; }
+        public virtual Account Account { get; protected set; }
         public virtual long AccountId { get; protected set; }
         public virtual string Name { get; protected set; }
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
-        
-        public virtual Account Account { get; protected set; }
-        public virtual ICollection<AccountLegalEntityProvider> AccountLegalEntityProviders { get; protected set; } = new List<AccountLegalEntityProvider>();
         
         public AccountLegalEntity(long id, string publicHashedId, long accountId, string name, DateTime created)
         {
@@ -35,11 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Models
                 Name = name;
                 Updated = changed;
             }
-        }
-
-        public void AddRelationship(long ukprn)
-        {
-            AccountLegalEntityProviders.Add(new AccountLegalEntityProvider(Id, ukprn));
         }
     }
 }

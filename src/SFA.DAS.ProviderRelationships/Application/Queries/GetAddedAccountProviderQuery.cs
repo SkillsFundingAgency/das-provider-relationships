@@ -5,9 +5,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
     public class GetAddedAccountProviderQuery : IRequest<GetAddedAccountProviderQueryResult>
     {
         public long AccountId { get;  }
-        public int AccountProviderId { get; }
+        public long AccountProviderId { get; }
 
-        public GetAddedAccountProviderQuery(long accountId, int accountProviderId)
+        public GetAddedAccountProviderQuery(long accountId, long accountProviderId)
         {
             AccountId = accountId;
             AccountProviderId = accountProviderId;
