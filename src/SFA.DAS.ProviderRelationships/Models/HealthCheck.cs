@@ -11,6 +11,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual Guid UserRef { get; protected set; }
         public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
         public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
+        public virtual DateTime SentProviderRelationshipsApiRequest { get; protected set; }
+        public virtual DateTime? ReceivedProviderRelationshipsApiResponse { get; protected set; }
         public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }
         public virtual DateTime? ReceivedProviderRelationshipsEvent { get; protected set; }
 
@@ -24,9 +26,10 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
         }
         
-        public async Task Run(Func<Task> apprenticeshipInfoServiceApiRequest)
+        public async Task Run(Func<Task> apprenticeshipInfoServiceApiRequest, Func<Task> providerRelationshipsApiRequest)
         {
             await SendApprenticeshipInfoServiceApiRequest(apprenticeshipInfoServiceApiRequest);
+            await SendProviderRelationshipsApiRequest(providerRelationshipsApiRequest);
             PublishProviderRelationshipsEvent();
         }
 
@@ -43,6 +46,20 @@ namespace SFA.DAS.ProviderRelationships.Models
             {
                 await run();
                 ReceivedApprenticeshipInfoServiceApiResponse = DateTime.UtcNow;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private async Task SendProviderRelationshipsApiRequest(Func<Task> run)
+        {
+            SentProviderRelationshipsApiRequest = DateTime.UtcNow;
+
+            try
+            {
+                await run();
+                ReceivedProviderRelationshipsApiResponse = DateTime.UtcNow;
             }
             catch (Exception)
             {

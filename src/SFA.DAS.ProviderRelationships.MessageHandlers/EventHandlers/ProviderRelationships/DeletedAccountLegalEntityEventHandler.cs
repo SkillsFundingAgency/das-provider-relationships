@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     public class DeletedAccountLegalEntityEventHandler : IHandleMessages<DeletedAccountLegalEntityEvent>
     {
@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers
         {
             var result = await _mediator.Send(new GetAccountProviderUkprnsByAccountIdQuery(message.AccountId));
          
-            await _mediator.Send(new DeleteAccountLegalEntityPermissionsCommand(message.AccountLegalEntityId));   
+            await _mediator.Send(new DeleteAccountLegalEntityPermissionsCommand(message.AccountLegalEntityId));
             await Task.WhenAll(result.Ukprns.Select(u => context.SendLocal(new BatchDeleteRelationshipsCommand(u, message.AccountLegalEntityId, message.Deleted))));
         }
     }

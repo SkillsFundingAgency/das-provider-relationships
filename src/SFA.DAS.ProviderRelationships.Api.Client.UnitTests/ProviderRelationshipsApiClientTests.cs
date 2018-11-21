@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
@@ -60,6 +64,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         {
             return RunAsync(f => f.AddRelationships(), f => f.HasRelationshipWithPermission(), (f, r) => r.Should().BeTrue());
         }
+        
+        [Test]
+        public Task HealthCheck_WhenHealthCheckFails_ThenShouldThrowException()
+        {
+            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<HttpRequestException>());
+        }
     }
 
     public class ProviderRelationshipsApiClientTestsFixture
@@ -68,6 +78,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public RelationshipsRequest RelationshipsRequest { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
+        public HttpClient Client { get; set; }
+        public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         internal Mock<IReadStoreMediator> Mediator { get; set; }
         public List<RelationshipDto> Relationships { get; set; }
 
@@ -75,8 +87,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         {
             Relationships = new List<RelationshipDto>();
             CancellationToken = CancellationToken.None;
+            HttpMessageHandler = new FakeHttpMessageHandler();
+            Client = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
             Mediator = new Mock<IReadStoreMediator>();
-            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(Mediator.Object);
+            
+            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(Client, Mediator.Object);
         }
 
         public Task<RelationshipsResponse> GetRelationshipsWithPermission()
@@ -122,6 +137,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             return ProviderRelationshipsApiClient.HasRelationshipWithPermission(RelationshipsRequest, CancellationToken);
         }
 
+        public Task HealthCheck()
+        {
+            return ProviderRelationshipsApiClient.HealthCheck();
+        }
+
         public ProviderRelationshipsApiClientTestsFixture AddRelationships()
         {
             Relationships.AddRange(new []
@@ -129,6 +149,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
                 new RelationshipDto(),
                 new RelationshipDto()
             });
+            
+            return this;
+        }
+
+        public ProviderRelationshipsApiClientTestsFixture SetHealthCheckFailure()
+        {
+            HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("") };
             
             return this;
         }

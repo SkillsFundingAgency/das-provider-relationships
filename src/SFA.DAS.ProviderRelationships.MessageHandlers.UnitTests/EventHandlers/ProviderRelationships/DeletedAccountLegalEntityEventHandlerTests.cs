@@ -10,44 +10,43 @@ using NServiceBus;
 using NServiceBus.Testing;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries;
-using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
+using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
 {
     [TestFixture]
     [Parallelizable]
-    public class UpdatedAccountNameEventHandlerTests : FluentTest<UpdatedAccountNameEventHandlerTestsFixture>
+    public class DeletedAccountLegalEntityEventHandlerTests : FluentTest<DeletedAccountLegalEntityEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingUpdatedAccountNameEvent_ThenShouldSendBatchUpdateRelationshipAccountNamesCommands()
+        public Task Handle_WhenHandlingDeletedAccountLegalEntityEvent_ThenShouldSendBatchDeleteRelationshipsCommands()
         {
             return RunAsync(f => f.Handle(), f => f.MessageHandlerContext.SentMessages
                 .Select(m => m.Message)
-                .Cast<BatchUpdateRelationshipAccountNamesCommand>()
+                .Cast<BatchDeleteRelationshipsCommand>()
                 .Should()
                 .BeEquivalentTo(f.Ukprns.Select(u => new
                 {
                     Ukprn = u,
-                    f.Message.AccountId,
-                    f.Message.Name,
-                    Created = f.Message.Updated
+                    f.Message.AccountLegalEntityId,
+                    Created = f.Message.Deleted
                 })));
         }
     }
 
-    public class UpdatedAccountNameEventHandlerTestsFixture
+    public class DeletedAccountLegalEntityEventHandlerTestsFixture
     {
         public TestableMessageHandlerContext MessageHandlerContext { get; set; }
         public List<long> Ukprns { get; set; }
-        public UpdatedAccountNameEvent Message { get; set; }
-        public IHandleMessages<UpdatedAccountNameEvent> Handler { get; set; }
+        public DeletedAccountLegalEntityEvent Message { get; set; }
+        public IHandleMessages<DeletedAccountLegalEntityEvent> Handler { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public GetAccountProviderUkprnsByAccountIdQueryResult GetAccountProviderUkprnsByAccountIdQueryResult { get; set; }
         
-        public UpdatedAccountNameEventHandlerTestsFixture()
+        public DeletedAccountLegalEntityEventHandlerTestsFixture()
         {
             MessageHandlerContext = new TestableMessageHandlerContext();
             
@@ -58,13 +57,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
                 33333333
             };
             
-            Message = new UpdatedAccountNameEvent(1, "Foo", DateTime.UtcNow);
+            Message = new DeletedAccountLegalEntityEvent(2, 1, DateTime.UtcNow);
             Mediator = new Mock<IMediator>();
             GetAccountProviderUkprnsByAccountIdQueryResult = new GetAccountProviderUkprnsByAccountIdQueryResult(Ukprns);
 
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderUkprnsByAccountIdQuery>(q => q.AccountId == Message.AccountId), CancellationToken.None)).ReturnsAsync(GetAccountProviderUkprnsByAccountIdQueryResult);
             
-            Handler = new UpdatedAccountNameEventHandler(Mediator.Object);
+            Handler = new DeletedAccountLegalEntityEventHandler(Mediator.Object);
         }
 
         public Task Handle()

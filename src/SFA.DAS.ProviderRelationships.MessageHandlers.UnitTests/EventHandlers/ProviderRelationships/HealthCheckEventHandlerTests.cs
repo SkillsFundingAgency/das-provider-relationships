@@ -6,11 +6,11 @@ using Moq;
 using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
-using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers;
+using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
 {
     [TestFixture]
     [Parallelizable]
