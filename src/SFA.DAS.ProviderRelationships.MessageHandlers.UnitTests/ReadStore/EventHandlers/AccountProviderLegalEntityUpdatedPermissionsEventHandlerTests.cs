@@ -61,8 +61,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.ReadStore.Even
 
             Handler = new AccountProviderLegalEntityUdatedPermissionsEventHandler(ReadStoreMediator.Object);
         }
-
-        
-
     }
 }

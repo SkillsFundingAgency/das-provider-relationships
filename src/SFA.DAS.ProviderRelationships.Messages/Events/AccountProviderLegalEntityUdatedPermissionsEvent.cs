@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public string AccountLegalEntityPublicHashedId { get;  }
         public string AccountLegalEntityName { get;  }
 
-        public HashSet<Operation> Operations { get; }
+        public IEnumerable<Operation> Operations { get; }
 
         public DateTime Created { get;}
         

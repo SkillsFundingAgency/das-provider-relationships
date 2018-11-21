@@ -7,11 +7,11 @@ using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
-    internal class UpdatedRelationshipCommandHandler : IReadStoreRequestHandler<UpdateRelationshipCommand, Unit>
+    internal class UpdateRelationshipCommandHandler : IReadStoreRequestHandler<UpdateRelationshipCommand, Unit>
     {
         private readonly IRelationshipsRepository _relationshipsRepository;
 
-        public UpdatedRelationshipCommandHandler(IRelationshipsRepository relationshipsRepository)
+        public UpdateRelationshipCommandHandler(IRelationshipsRepository relationshipsRepository)
         {
             _relationshipsRepository = relationshipsRepository;
         }

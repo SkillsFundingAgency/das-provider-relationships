@@ -115,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         public List<Relationship> Relationships;
 
         public UpdateRelationshipCommand Command;
-        public UpdatedRelationshipCommandHandler Handler;
+        public UpdateRelationshipCommandHandler Handler;
 
         public WhenItIsAMatchingRelationshipFixture()
         {
@@ -124,7 +124,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
 
             RelationshipsRepository.SetupCosmosCreateQueryToReturn(Relationships);
 
-            Handler = new UpdatedRelationshipCommandHandler(RelationshipsRepository.Object);
+            Handler = new UpdateRelationshipCommandHandler(RelationshipsRepository.Object);
 
             Command = new UpdateRelationshipCommand(Ukprn, AccountProviderId, AccountId, AccountLegalEntityId, 
                 UpdateOperations, UpdateMessageId, Updated);

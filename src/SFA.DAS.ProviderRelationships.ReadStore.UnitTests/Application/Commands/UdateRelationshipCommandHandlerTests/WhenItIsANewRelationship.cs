@@ -54,14 +54,14 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         public Mock<IRelationshipsRepository> RelationshipsRepository;
 
         public UpdateRelationshipCommand Command;
-        public UpdatedRelationshipCommandHandler Handler;
+        public UpdateRelationshipCommandHandler Handler;
 
         public WhenItIsANewRelationshipFixture()
         {
             RelationshipsRepository = new Mock<IRelationshipsRepository>();
             RelationshipsRepository.SetupCosmosCreateQueryToReturn(new List<Relationship>());
 
-            Handler = new UpdatedRelationshipCommandHandler(RelationshipsRepository.Object);
+            Handler = new UpdateRelationshipCommandHandler(RelationshipsRepository.Object);
 
             Command = new UpdateRelationshipCommand(Ukprn, AccountProviderId, AccountId, AccountLegalEntityId, 
                 Operations, MessageId, Updated);
