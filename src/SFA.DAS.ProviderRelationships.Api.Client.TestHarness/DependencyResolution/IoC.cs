@@ -10,7 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
             return new Container(c =>
             {
                 c.AddRegistry<ProviderRelationshipsApiClientRegistry>();
-                c.AddRegistry<DefaultRegistry>();
             });
         }
     }

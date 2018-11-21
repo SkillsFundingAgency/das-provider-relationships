@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Documents;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using StructureMap;
@@ -19,6 +20,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
             For<IRelationshipsRepository>().Use<RelationshipsRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
+            For<ITableStorageConfigurationService>().Use<TableStorageConfigurationService>();
+            For<IEnvironmentService>().Use<EnvironmentService>();
         }
     }
 }

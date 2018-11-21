@@ -22,6 +22,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj" />
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore.Configuration\SFA.DAS.ProviderRelationships.ReadStore.Configuration.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj" />
     </ItemGroup>
 

@@ -1,18 +1,17 @@
 ﻿using System;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using SFA.DAS.ProviderRelationships.Document.Repository;
 using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     internal class DocumentClientFactory : IDocumentClientFactory
     {
-        private readonly ProviderRelationshipsReadStoreConfiguration _configuration;
+        private readonly ITableStorageConfigurationService _configurationService;
 
-        public DocumentClientFactory(ProviderRelationshipsReadStoreConfiguration configuration)
+        public DocumentClientFactory(ITableStorageConfigurationService configurationService)
         {
-            _configuration = configuration;
+            _configurationService = configurationService;
         }
 
         public IDocumentClient CreateDocumentClient()
@@ -26,7 +25,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
                 }
             };
 
-            return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
+            var configuration = _configurationService.Get<ReadStoreConfiguration>();
+
+            return new DocumentClient(new Uri(configuration.Uri), configuration.AuthKey, connectionPolicy);
         }
     }
 }

@@ -10,6 +10,7 @@ using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.UnitOfWork;
 using StructureMap;
@@ -25,6 +26,8 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
             For<IRelationshipsRepository>().Use<RelationshipsRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
+            For<ITableStorageConfigurationService>().Use<TableStorageConfigurationService>();
+            For<IEnvironmentService>().Use<EnvironmentService>();
         }
 
         private ProviderRelationshipsDbContext GetDbContext(IContext context)

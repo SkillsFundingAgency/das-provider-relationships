@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
@@ -23,12 +23,21 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             Console.ReadLine();
         }
 
+        private const string VariablePrefix = "AppSettings_";
+
+        private static void SetupEnvironmentVariables()
+        {
+            Environment.SetEnvironmentVariable(VariablePrefix + EnvironmentVariableNames.Environment, "LOCAL");
+            Environment.SetEnvironmentVariable(VariablePrefix + EnvironmentVariableNames.ConfigurationStorageConnectionString, "UseDevelopmentStorage=true");
+        }
+
         private static async Task Test()
         {
             using (var container = IoC.Initialize())
             {
                 try
                 {
+                    SetupEnvironmentVariables();
                     var relationshipsRepository = container.GetInstance<IRelationshipsRepository>();
                     
                     var relationship = new Relationship(
