@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         public Permission(AccountProviderLegalEntity accountProviderLegalEntity, Operation operation)
         {
             AccountProviderLegalEntity = accountProviderLegalEntity;
-            AccountProviderLegalEntityId = AccountProviderLegalEntity.Id;
+            AccountProviderLegalEntityId = accountProviderLegalEntity.Id;
             Operation = operation;
         }
 

@@ -9,7 +9,5 @@
     [Deleted] DATETIME2 NULL,
     CONSTRAINT [PK_AccountLegalEntities] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_AccountLegalEntities_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts] ([Id]),
-    INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId] ASC),
-    INDEX [IX_AccountLegalEntities_Deleted] NONCLUSTERED ([Deleted] ASC),
-    INDEX [IX_AccountLegalEntities_AccountId_Deleted] NONCLUSTERED ([AccountId] ASC, [Deleted] ASC)
+    INDEX [IX_AccountLegalEntities_AccountId] NONCLUSTERED ([AccountId] ASC)
 )
