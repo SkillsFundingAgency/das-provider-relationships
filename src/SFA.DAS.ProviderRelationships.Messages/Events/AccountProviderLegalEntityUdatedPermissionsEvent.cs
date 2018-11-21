@@ -1,36 +1,33 @@
 using System;
+using System.Collections.Generic;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
-    public class AccountProviderLegalEntityCreatedEvent
+    public class AccountProviderLegalEntityUdatedPermissionsEvent
     {
         public long Ukprn { get; }
-        public long AccountProviderLegalEntityId { get; }
-
+        public int AccountProviderId { get; }
+        public string AccountProviderName { get; }
 
         public long AccountId { get; }
         public string AccountPublicHashedId { get; }
         public string AccountName { get; }
 
-
         public long AccountLegalEntityId { get; }
         public string AccountLegalEntityPublicHashedId { get;  }
         public string AccountLegalEntityName { get;  }
 
-
-        public int AccountProviderId { get;  }
-        public string AccountProviderName { get; }
-        
+        public HashSet<Operation> Operations { get; }
 
         public DateTime Created { get;}
         
-        public AccountProviderLegalEntityCreatedEvent(long ukprn, long accountProviderLegalEntityId, 
+        public AccountProviderLegalEntityUdatedPermissionsEvent(long ukprn, int accountProviderId, string accountProviderName, 
             long accountId, string accountPublicHashedId, string accountName,
             long accountLegalEntityId, string accountLegalEntityPublicHashedId, string accountLegalEntityName,
-            int accountProviderId, string accountProviderName, DateTime created)
+            HashSet<Operation> operations, DateTime created)
         {
             Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
 
             AccountId = accountId;
             AccountPublicHashedId = accountPublicHashedId;
@@ -43,8 +40,8 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
             AccountProviderId = accountProviderId;
             AccountProviderName = accountProviderName;
 
+            Operations = operations;
             Created = created;
         }
-
     }
 }

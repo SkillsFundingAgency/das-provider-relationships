@@ -13,6 +13,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
             For<IReadStoreRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>>().Use<GetRelationshipWithPermissionQueryHandler>();
             For<IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
             For<IReadStoreRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
+            For<IReadStoreRequestHandler<UpdateRelationshipCommand, Unit>>().Use<UpdateRelationshipCommandHandler>();
         }
     }
 }
