@@ -8,26 +8,32 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class Relationship : Document
     {
-        [JsonProperty("ukprn")]
-        public long Ukprn { get; protected set; }
-
-        [JsonProperty("accountProviderId")]
-        public long AccountProviderId { get; protected set; }
-
         [JsonProperty("accountId")]
         public long AccountId { get; protected set; }
 
         [JsonProperty("accountLegalEntityId")]
         public long AccountLegalEntityId { get; protected set; }
 
+        [JsonProperty("accountProviderId")]
+        public long AccountProviderId { get; protected set; }
+
+        [JsonProperty("accountProviderLegalEntityId")]
+        public long AccountProviderLegalEntityId { get; protected set; }
+
+        [JsonProperty("ukprn")]
+        public long Ukprn { get; protected set; }
+
         [JsonProperty("operations")]
         public IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
 
         [JsonProperty("outboxData")]
-        public IEnumerable<OutboxMessage> OutboxData  => _outboxData;
+        public IEnumerable<OutboxMessage> OutboxData => _outboxData;
+
+        [JsonProperty("created")]
+        public DateTime Created { get; protected set; }
 
         [JsonProperty("updated")]
-        public DateTime Updated { get; protected set; }
+        public DateTime? Updated { get; protected set; }
 
         [JsonProperty("deleted")]
         public DateTime? Deleted { get; protected set; }
@@ -35,20 +41,19 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long ukprn, long accountProviderId, long accountId, long accountLegalEntityId, 
-            HashSet<Operation> operations, string messageId, DateTime created)
+        public Relationship(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, HashSet<Operation> grantedOperations, DateTime created, string messageId)
             : base(1, "relationship")
         {
-            Ukprn = ukprn;
-            AccountProviderId = accountProviderId;
+            Id = Guid.NewGuid();
             AccountId = accountId;
             AccountLegalEntityId = accountLegalEntityId;
-            Operations = operations;
-            Updated = created;
+            AccountProviderId = accountProviderId;
+            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+            Ukprn = ukprn;
+            Operations = grantedOperations;
+            Created = created;
 
-            AddMessageToOutbox(messageId, created);
-
-            Id = Guid.NewGuid();
+            AddOutboxMessage(messageId, created);
         }
 
         [JsonConstructor]
@@ -56,47 +61,74 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
         }
 
-        public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
+        public void Delete(DateTime deleted, string messageId)
         {
-            ProcessMessage(messageId, updated,
-                () =>
+            ProcessMessage(messageId, deleted, () =>
+            {
+                if (IsDeletedDateChronological(deleted))
                 {
-                    Operations = grants;
-                    Updated = updated;
-                    Deleted = null;
+                    EnsureRelationshipHasNotAlreadyBeenDeleted();
+                
+                    Deleted = deleted;
                 }
-            );
+            });
         }
 
-        private void ProcessMessage(string messageId, DateTime messageCreated, Action action)
+        public void UpdatePermissions(HashSet<Operation> grantedOperations, DateTime updated, string messageId)
         {
-            if (MessageAlreadyProcessed(messageId))
-                return;
+            ProcessMessage(messageId, updated, () =>
+            {
+                if (IsUpdatedDateChronological(updated))
+                {
+                    Operations = grantedOperations;
+                    Updated = updated;
+                }
+            });
+        }
 
-            AddMessageToOutbox(messageId, messageCreated);
-            if (!IsMessageChronological(messageCreated))
+        private void AddOutboxMessage(string messageId, DateTime created)
+        {
+            if (messageId is null)
+            {
+                throw new ArgumentNullException(nameof(messageId));
+            }
+            
+            _outboxData.Add(new OutboxMessage(messageId, created));
+        }
+
+        private void EnsureRelationshipHasNotAlreadyBeenDeleted()
+        {
+            if (Deleted != null)
+            {
+                throw new InvalidOperationException("Requires relationship has not already been deleted");
+            }
+        }
+
+        private bool IsDeletedDateChronological(DateTime deleted)
+        {
+            return Deleted == null || deleted > Deleted.Value;
+        }
+
+        private bool IsMessageAlreadyProcessed(string messageId)
+        {
+            return OutboxData.Any(m => m.MessageId == messageId);
+        }
+
+        private bool IsUpdatedDateChronological(DateTime updated)
+        {
+            return updated > Created && (Updated == null || updated > Updated.Value);
+        }
+
+        private void ProcessMessage(string messageId, DateTime created, Action action)
+        {
+            if (IsMessageAlreadyProcessed(messageId))
             {
                 return;
             }
+
+            AddOutboxMessage(messageId, created);
+            
             action();
-        }
-
-        private bool IsMessageChronological(DateTime messageDateTime)
-        {
-            var deleted = Deleted ?? DateTime.MinValue;
-
-            return messageDateTime > Updated && messageDateTime > deleted;
-        }
-
-        private bool MessageAlreadyProcessed(string messageId)
-        {
-            return OutboxData.Any(x => x.MessageId == messageId);
-        }
-
-        private void AddMessageToOutbox(string messageId, DateTime created)
-        {
-            if (messageId is null) throw new ArgumentNullException(nameof(messageId));
-            _outboxData.Add(new OutboxMessage(messageId, created));
         }
     }
 }

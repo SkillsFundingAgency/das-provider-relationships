@@ -31,18 +31,20 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
         }
 
-        public void UpdatePermissions(AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
+        public AccountProviderLegalEntity UpdatePermissions(AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
         {
             var accountProviderLegalEntity = AccountProviderLegalEntities.SingleOrDefault(aple => aple.AccountLegalEntityId == accountLegalEntity.Id);
 
             if (accountProviderLegalEntity == null)
             {
-                AccountProviderLegalEntities.Add(new AccountProviderLegalEntity(this, accountLegalEntity, user, grantedOperations));
+                AccountProviderLegalEntities.Add(accountProviderLegalEntity = new AccountProviderLegalEntity(this, accountLegalEntity, user, grantedOperations));
             }
             else
             {
                 accountProviderLegalEntity.UpdatePermissions(user, grantedOperations);
             }
+
+            return accountProviderLegalEntity;
         }
     }
 }

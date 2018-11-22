@@ -11,10 +11,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
         {
             For<ReadStoreServiceFactory>().Use<ReadStoreServiceFactory>(c => c.GetInstance);
             For<IReadStoreMediator>().Use<ReadStoreMediator>();
+            For<IReadStoreRequestHandler<DeletePermissionsCommand, Unit>>().Use<DeletePermissionsCommandHandler>();
             For<IReadStoreRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>>().Use<GetRelationshipWithPermissionQueryHandler>();
             For<IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
             For<IReadStoreRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
-            For<IReadStoreRequestHandler<UpdateRelationshipCommand, Unit>>().Use<UpdateRelationshipCommandHandler>();
+            For<IReadStoreRequestHandler<UpdatePermissionsCommand, Unit>>().Use<UpdatePermissionsCommandHandler>();
         }
     }
 }

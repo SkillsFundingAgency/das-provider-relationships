@@ -6,19 +6,26 @@ using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
-    internal class AccountProviderLegalEntityUdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissionsEvent>
+    public class UpdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissionsEvent>
     {
         private readonly IReadStoreMediator _mediator;
 
-        public AccountProviderLegalEntityUdatedPermissionsEventHandler(IReadStoreMediator mediator)
+        public UpdatedPermissionsEventHandler(IReadStoreMediator mediator)
         {
             _mediator = mediator;
         }
 
         public Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
-            return _mediator.Send(new UpdateRelationshipCommand(message.Ukprn, message.AccountProviderId, message.AccountId, message.AccountLegalEntityId, 
-                message.Operations, context.MessageId, message.Updated));
+            return _mediator.Send(new UpdatePermissionsCommand(
+                message.AccountId,
+                message.AccountLegalEntityId,
+                message.AccountProviderId,
+                message.AccountProviderLegalEntityId,
+                message.Ukprn,
+                message.GrantedOperations,
+                message.Updated,
+                context.MessageId));
         }
     }
 }

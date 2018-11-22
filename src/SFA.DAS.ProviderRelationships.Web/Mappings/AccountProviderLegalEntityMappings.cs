@@ -12,7 +12,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         public AccountProviderLegalEntityMappings()
         {
             CreateMap<GetAccountProviderLegalEntityQueryResult, GetAccountProviderLegalEntityViewModel>()
-                .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.Ignore())
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())
                 .ForMember(d => d.Operations, x => x.MapFrom(s => Enum.GetValues(typeof(Operation))
@@ -27,7 +26,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.Ignore())
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())
-                .ForMember(d => d.Operations, o => o.Ignore());
+                .ForMember(d => d.Operations, o => o.Ignore())
+                .ForMember(d => d.UserRef, o => o.Ignore());
         }
     }
 }

@@ -58,6 +58,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
         }
 
 
+        public RelationshipBuilder WithAccountProviderLegalEntityId(long accountProviderLegalEntityId)
+        {
+            _relationship.SetPropertyTo(p => p.AccountProviderLegalEntityId, accountProviderLegalEntityId);
+            
+            return this;
+        }
+
         public RelationshipBuilder WithOperation(Operation operation)
         {
             _relationship.SetPropertyTo(p => p.Operations, new List<Operation> { operation });
@@ -92,6 +99,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
         public Relationship Build()
         {
             return _relationship;
+        }
+        
+        public static implicit operator Relationship(RelationshipBuilder builder)
+        {
+            return builder.Build();
         }
     }
 }

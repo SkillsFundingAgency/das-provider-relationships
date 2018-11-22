@@ -5,11 +5,11 @@ using SFA.DAS.EmployerAccounts.Messages.Events;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
 {
-    public class PublishEmployerAccountsEvents
+    public class PublishEmployerAccountsEventsScenario
     {
         private readonly IMessageSession _messageSession;
 
-        public PublishEmployerAccountsEvents(IMessageSession messageSession)
+        public PublishEmployerAccountsEventsScenario(IMessageSession messageSession)
         {
             _messageSession = messageSession;
         }
@@ -18,12 +18,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
         {
             var userRef = Guid.NewGuid();
             const string userName = "Bob Loblaw";
-            const long accountId = 1;
+            const long accountId = 10;
             const string accountPublicHashedId = "ACCPUB";
             const string originalAccountName = "Account Name";
             const string updatedAccountName = "New Account Name";
-            const long legalEntityId = 8;
-            const long accountLegalEntityId = 5;
+            const long legalEntityId = 20;
+            const long accountLegalEntityId = 1020;
             const string accountLegalEntityPublicHashedId = "ALEPUB";
             const string originalAccountLegalEntityName = "Legal Entity";
             const string updatedAccountLegalEntityName = "New Legal Entity";

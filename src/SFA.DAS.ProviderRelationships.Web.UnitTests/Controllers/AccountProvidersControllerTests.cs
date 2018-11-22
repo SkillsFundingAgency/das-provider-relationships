@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class AccountProvidersControllerTests : FluentTest<AccountProvidersControllerTestsFixture>
     {
         [Test]
-        public Task Index_WhenGettingIndexAction_ThenShouldReturnView()
+        public Task Index_WhenGettingIndexAction_ThenShouldReturnIndexView()
         {
             return RunAsync(f => f.Index(), (f, r) =>
             {
@@ -91,7 +91,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldAddAccountProvider()
+        public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldSendAddAccountProviderCommand()
         {
             return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(
                 It.Is<AddAccountProviderCommand>(c => 
@@ -204,7 +204,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Get_WhenAccountHasMultipleAccountLegalEntities_ThenShouldReturnShowView()
+        public Task Get_WhenAccountHasMultipleAccountLegalEntities_ThenShouldReturnGetView()
         {
             return RunAsync(f => f.Get(), (f, r) =>
             {

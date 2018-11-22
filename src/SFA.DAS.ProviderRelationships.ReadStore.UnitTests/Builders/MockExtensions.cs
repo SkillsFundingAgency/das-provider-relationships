@@ -7,12 +7,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
 {
     public static class MockExtensions
     {
-        public static void SetupCosmosCreateQueryToReturn<T, TDocument>(this Mock<T> mock, IEnumerable<TDocument> list) where T : class, IDocumentRepository<TDocument> where TDocument : class
+        public static void SetupCreateQueryToReturn<TRepository, TDocument>(this Mock<TRepository> documentRepository, IEnumerable<TDocument> documents) where TRepository : class, IDocumentRepository<TDocument> where TDocument : class
         {
-            var documentQuery = new FakeDocumentQuery<TDocument>(list);
-            mock.Setup(x => x.CreateQuery(null)).Returns(documentQuery);
+            var documentQuery = new FakeDocumentQuery<TDocument>(documents);
+            
+            documentRepository.Setup(r => r.CreateQuery(null)).Returns(documentQuery);
         }
     }
-
-
 }

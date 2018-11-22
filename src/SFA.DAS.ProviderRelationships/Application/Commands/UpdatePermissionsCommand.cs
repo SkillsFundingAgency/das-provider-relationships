@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
-    public class UpdatePermissionsCommand : IRequest
+    public class UpdatePermissionsCommand : IRequest<long>
     {
         public long AccountId { get; }
         public long AccountProviderId { get; }

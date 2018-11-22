@@ -16,50 +16,46 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 {
     [TestFixture]
     [Parallelizable]
-    internal class AccountProviderLegalEntityUpdatedPermissionsEventHandlerTests : FluentTest<AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture>
+    internal class UpdatedPermissionsEventHandlerTests : FluentTest<UpdatedPermissionsEventHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingEvent_ThenShouldSendUpdateRelationshipCommand()
+        public Task Handle_WhenHandlingEvent_ThenShouldSendUpdatePermissionsCommand()
         {
             return RunAsync(f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.ReadStoreMediator.Verify(x => x.Send(It.Is<UpdateRelationshipCommand>(p =>
+                f => f.ReadStoreMediator.Verify(x => x.Send(It.Is<UpdatePermissionsCommand>(p =>
                         p.Ukprn == f.Ukprn &&
-                        p.AccountProviderId == f.AccountProviderId &&
-                        p.AccountId == f.AccountId &&
-                        p.AccountLegalEntityId == f.AccountLegalEntityId &&
-                        p.Operations == f.Operations &&
+                        p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
+                        p.GrantedOperations == f.GrantedOperations &&
                         p.Updated == f.Created &&
-                        p.MessageId == f.MessageId
-                        ), 
+                        p.MessageId == f.MessageId), 
                     It.IsAny<CancellationToken>())));
         }
     }
 
-    internal class AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture
+    internal class UpdatedPermissionsEventHandlerTestsFixture
     {
         public string MessageId = "messageId";
         public UpdatedPermissionsEvent Message;
-        public long Ukprn = 11111;
-        public int AccountProviderId = 55555;
-        public long AccountId = 333333;
-        public long AccountLegalEntityId = 44444;
+        public long AccountId = 1;
+        public long AccountLegalEntityId = 2;
+        public long AccountProviderId = 3;
+        public long AccountProviderLegalEntityId = 4;
+        public long Ukprn = 12345678;
         public Guid UserRef = Guid.NewGuid();
-        public HashSet<Operation> Operations = new HashSet<Operation>();
+        public HashSet<Operation> GrantedOperations = new HashSet<Operation>();
         public DateTime Created = DateTime.Now.AddMinutes(-1);
-
         public Mock<IMessageHandlerContext> MessageHandlerContext;
         public Mock<IReadStoreMediator> ReadStoreMediator;
-        public AccountProviderLegalEntityUdatedPermissionsEventHandler Handler;
+        public UpdatedPermissionsEventHandler Handler;
 
-        public AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture()
+        public UpdatedPermissionsEventHandlerTestsFixture()
         {
             ReadStoreMediator = new Mock<IReadStoreMediator>();
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
             MessageHandlerContext.Setup(x => x.MessageId).Returns(MessageId);
             
-            Message = new UpdatedPermissionsEvent(AccountId, AccountLegalEntityId, AccountProviderId, Ukprn, UserRef, Operations, Created);
-
-            Handler = new AccountProviderLegalEntityUdatedPermissionsEventHandler(ReadStoreMediator.Object);
+            Message = new UpdatedPermissionsEvent(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, UserRef, GrantedOperations, Created);
+            Handler = new UpdatedPermissionsEventHandler(ReadStoreMediator.Object);
         }
     }
 }

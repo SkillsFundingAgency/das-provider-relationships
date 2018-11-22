@@ -59,13 +59,11 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Scripts" />
-    <Folder Include="Scripts\Manual" />
     <Folder Include="Tables\" />
     <Folder Include="UserDefinedTypes\" />
     <Folder Include="StoredProcedures\" />
     <Folder Include="Scripts\PreDeployment\" />
     <Folder Include="Scripts\PostDeployment\" />
-    <Folder Include="Scripts\Manual\AML-2819" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeployment\PreDeployment.sql" />
@@ -74,10 +72,10 @@
     <PostDeploy Include="Scripts\PostDeployment\PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scripts\Manual\AML-2819_One_off_account_seeding.sql" />
     <None Include="Scripts\PostDeployment\SeedDevData.sql" />
     <None Include="Scripts\PostDeployment\SeedTestData.sql" />
     <None Include="SFA.DAS.ProviderRelationships.Database.publish.xml" />
-    <None Include="Scripts\Manual\AML-2819\AML-2819_One_off_account_seeding.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedures\ImportProviders.sql" />

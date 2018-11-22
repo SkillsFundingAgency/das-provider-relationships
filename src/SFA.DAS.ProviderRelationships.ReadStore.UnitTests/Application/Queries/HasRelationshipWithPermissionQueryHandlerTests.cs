@@ -14,7 +14,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application
+namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Queries
 {
     [TestFixture]
     [Parallelizable]

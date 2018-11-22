@@ -6,7 +6,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
-    public class FindProviderToAddQueryResponseTests : FluentTest<object>
+    public class FindProviderToAddQueryResultTests : FluentTest<object>
     {
         [Test]
         public void ProviderNotFound_WhenProviderIdIsNotNull_ThenShouldReturnFalse()

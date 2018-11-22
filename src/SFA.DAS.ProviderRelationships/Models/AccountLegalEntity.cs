@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         internal void Delete(DateTime deleted)
         {
-            if (IsDeleteDateChronological(deleted))
+            if (IsDeletedDateChronological(deleted))
             {
                 EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
 
@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             }
         }
 
-        private bool IsDeleteDateChronological(DateTime deleted)
+        private bool IsDeletedDateChronological(DateTime deleted)
         {
             return Deleted == null || deleted > Deleted.Value;
         }

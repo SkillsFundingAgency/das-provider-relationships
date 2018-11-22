@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Created = DateTime.UtcNow;
             
-            Publish(() => new UpdatedPermissionsEvent(accountProvider.AccountId, accountLegalEntity.Id, accountProvider.Id, accountProvider.ProviderUkprn, user.Ref, grantedOperations, Created));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Created));
         }
 
         protected AccountProviderLegalEntity()
@@ -41,10 +41,10 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             Permissions.Clear();
             
-            Publish(() => new DeletedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, AccountProvider.ProviderUkprn, deleted));
+            Publish(() => new DeletedPermissionsEvent(Id, AccountProvider.ProviderUkprn, deleted));
         }
 
-        public void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
+        internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
             Permissions.Clear();
             
@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Updated = DateTime.UtcNow;
             
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Updated.Value));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Updated.Value));
         }
     }
 }

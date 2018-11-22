@@ -28,11 +28,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
             return this;
         }
 
+        public AccountProviderLegalEntityBuilder WithAccountProvider(AccountProvider accountProvider)
+        {
+            _accountProviderLegalEntity.SetupProperty(p => p.AccountProvider, accountProvider);
+
+            return this;
+        }
+
         public AccountProviderLegalEntity Build()
         {
             return _accountProviderLegalEntity.Object;
         }
-        
+
         public static implicit operator AccountProviderLegalEntity(AccountProviderLegalEntityBuilder builder)
         {
             return builder.Build();

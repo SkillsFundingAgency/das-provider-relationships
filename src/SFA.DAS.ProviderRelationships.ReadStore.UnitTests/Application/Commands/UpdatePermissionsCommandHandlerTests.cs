@@ -12,12 +12,31 @@ using SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands.UdateRelationshipCommandHandlerTests
+namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
 {
-    internal class WhenItIsAMatchingRelationship : FluentTest<WhenItIsAMatchingRelationshipFixture>
+    [TestFixture]
+    [Parallelizable]
+    internal class UpdatePermissionsCommandHandlerTests : FluentTest<UpdatePermissionsCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_AValidCommand_ThenShouldUpdateExistingDocumentOperations()
+        public Task Handle_WhenDocumentDoesNotExist_ThenShouldCreateDocument()
+        {
+            return RunAsync(f => f.Handler.Handle(f.Command, CancellationToken.None),
+                f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<Relationship>(p =>
+                        p.Ukprn == f.Ukprn &&
+                        p.AccountProviderId == f.AccountProviderId &&
+                        p.AccountId == f.AccountId &&
+                        p.AccountLegalEntityId == f.AccountLegalEntityId &&
+                        p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
+                        p.Operations.Equals(f.Operations) &&
+                        p.Created == f.Updated &&
+                        p.Updated == null
+                    ), null,
+                    It.IsAny<CancellationToken>())));
+        }
+        
+        [Test]
+        public Task Handle_WhenDocumentExists_ThenShouldUpdateDocument()
         {
             return RunAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
@@ -26,14 +45,14 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
                         p.AccountProviderId == f.AccountProviderId &&
                         p.AccountId == f.AccountId &&
                         p.AccountLegalEntityId == f.AccountLegalEntityId &&
-                        p.Operations.Equals(f.UpdateOperations) &&
+                        p.Operations.Equals(f.Operations) &&
                         p.Updated == f.Updated
                     ), null,
                     It.IsAny<CancellationToken>())));
         }
 
         [Test]
-        public Task Handle_AValidCommand_ThenShouldAddUpdateMessageIdToOutbox()
+        public Task Handle_WhenCommandIsNotDuplicateAndIsHandledChronologically_ThenShouldAddUpdateMessageIdToOutbox()
         {
             return RunAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
@@ -46,7 +65,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         }
 
         [Test]
-        public Task Handle_ADuplicateMessageId_ThenShouldSimplyIgnoreTheUpdate()
+        public Task Handle_WhenCommandIsDuplicate_ThenShouldSimplyIgnoreTheUpdate()
         {
             return RunAsync(f => f.FindMatchingRelationshipWithUpdateMessageAlreadyProcessed(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
@@ -57,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         }
 
         [Test]
-        public Task Handle_AnOldMessageId_ThenShouldSimplySwallowTheMessageAndAddItToTheOutbox()
+        public Task Handle_WhenCommandIsNotHandledChronologically_ThenShouldSimplySwallowTheMessageAndAddItToTheOutbox()
         {
             return RunAsync(f => f.FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
@@ -68,38 +87,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
                     ), null,
                     It.IsAny<CancellationToken>())));
         }
-
-        [Test]
-        public Task Handle_AnOldMessageIdToADeletedRelationship_ThenShouldSimplySwallowTheMessageAndAddItToTheOutbox()
-        {
-            return RunAsync(f => f.FindMatchingRelationshipWhichWasDeletedLaterThanNewMessage(),
-                f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.Operations.Contains(Operation.CreateCohort) == false &&
-                        p.Deleted != null &&
-                        p.OutboxData.Count() == 2 &&
-                        p.OutboxData.Count(o => o.MessageId == f.UpdateMessageId) == 1
-                    ), null,
-                    It.IsAny<CancellationToken>())));
-        }
-
-        [Test]
-        public Task Handle_ANewerMessageToADeletedRelationship_ThenShouldUndeleteAndAddItToTheOutbox()
-        {
-            return RunAsync(f => f.FindMatchingRelationshipWhichWasDeletedEarlierThanNewMessage(),
-                f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
-                        p.Operations.Contains(Operation.CreateCohort) &&
-                        p.Deleted == null &&
-                        p.OutboxData.Count() == 2 &&
-                        p.OutboxData.Count(o => o.MessageId == f.UpdateMessageId) == 1
-                    ), null,
-                    It.IsAny<CancellationToken>())));
-        }
-
     }
 
-    internal class WhenItIsAMatchingRelationshipFixture
+    internal class UpdatePermissionsCommandHandlerTestsFixture
     {
         public string CreateMessageId = "createMessageId";
         public string UpdateMessageId = "updateMessageId";
@@ -107,37 +97,34 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         public int AccountProviderId = 55555;
         public long AccountId = 333333;
         public long AccountLegalEntityId = 44444;
-        public HashSet<Operation> UpdateOperations = new HashSet<Operation> { Operation.CreateCohort };
+        public long AccountProviderLegalEntityId = 6666;
+        public HashSet<Operation> Operations = new HashSet<Operation> { Operation.CreateCohort };
         public DateTime Created = DateTime.Now.AddMinutes(-10);
         public DateTime Updated = DateTime.Now.AddMinutes(-1);
-
         public Mock<IRelationshipsRepository> RelationshipsRepository;
         public List<Relationship> Relationships;
-
-        public UpdateRelationshipCommand Command;
-        public UpdateRelationshipCommandHandler Handler;
-
-        public WhenItIsAMatchingRelationshipFixture()
+        public UpdatePermissionsCommand Command;
+        public UpdatePermissionsCommandHandler Handler;
+        
+        public UpdatePermissionsCommandHandlerTestsFixture()
         {
             RelationshipsRepository = new Mock<IRelationshipsRepository>();
             Relationships = new List<Relationship>();
 
-            RelationshipsRepository.SetupCosmosCreateQueryToReturn(Relationships);
+            RelationshipsRepository.SetupCreateQueryToReturn(Relationships);
 
-            Handler = new UpdateRelationshipCommandHandler(RelationshipsRepository.Object);
-
-            Command = new UpdateRelationshipCommand(Ukprn, AccountProviderId, AccountId, AccountLegalEntityId, 
-                UpdateOperations, UpdateMessageId, Updated);
+            Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object);
+            Command = new UpdatePermissionsCommand(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, Operations, Updated, UpdateMessageId);
         }
 
-        public WhenItIsAMatchingRelationshipFixture FindMatchingRelationship()
+        public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationship()
         {
             Relationships.Add(CreateBasicRelationship()
                 .Build());
             return this;
         }
 
-        public WhenItIsAMatchingRelationshipFixture FindMatchingRelationshipWhichWasDeletedEarlierThanNewMessage()
+        public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasDeletedEarlierThanNewMessage()
         {
             Relationships.Add(CreateBasicRelationship()
                 .WithDeleted(Updated.AddHours(-1))
@@ -145,7 +132,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             return this;
         }
 
-        public WhenItIsAMatchingRelationshipFixture FindMatchingRelationshipWhichWasDeletedLaterThanNewMessage()
+        public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasDeletedLaterThanNewMessage()
         {
             Relationships.Add(CreateBasicRelationship()
                 .WithDeleted(Updated.AddHours(1))
@@ -153,7 +140,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             return this;
         }
 
-        public WhenItIsAMatchingRelationshipFixture FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage()
+        public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage()
         {
             Relationships.Add(CreateBasicRelationship()
                 .WithUpdated(Updated.AddHours(1))
@@ -161,7 +148,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             return this;
         }
 
-        public WhenItIsAMatchingRelationshipFixture FindMatchingRelationshipWithUpdateMessageAlreadyProcessed()
+        public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWithUpdateMessageAlreadyProcessed()
         {
             Relationships.Add(CreateBasicRelationship()
                 .WithOutboxMessage(new OutboxMessage(UpdateMessageId, Updated))
@@ -176,6 +163,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
                 .WithAccountProviderId(AccountProviderId)
                 .WithAccountId(AccountId)
                 .WithAccountLegalEntityId(AccountLegalEntityId)
+                .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
                 .WithOutboxMessage(new OutboxMessage(CreateMessageId, Created));
         }
     }

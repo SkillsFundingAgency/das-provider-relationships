@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -82,10 +80,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             var operations = model.Operations.Where(o => o.IsEnabled).Select(o => o.Value).ToHashSet();
             var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
+            var accountProviderLegalEntityId = await _mediator.Send(command);
             
-            await _mediator.Send(command);
-            
-            return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId });
+            //return RedirectToAction("Updated", new { AccountProviderLegalEntityId = accountProviderLegalEntityId });
+            return RedirectToAction("Get", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId });
         }
     }
 }
