@@ -22,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
             For<ITableStorageConfigurationService>().Use<TableStorageConfigurationService>();
             For<IEnvironmentService>().Use<EnvironmentService>();
+            For<IAzureTableStorageConnectionAdapter>().Use<AzureTableStorageConnectionAdapter>();
         }
     }
 }
