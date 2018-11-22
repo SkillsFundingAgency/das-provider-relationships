@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 
@@ -10,28 +9,31 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
     {
         private const string ConfigurationTableReference = "Configuration";
         private const string DefaultVersion = "1.0";
+        private const string DefaultEnvironment = "LOCAL";
+        private const string DefaultStorageConnectionString = "UseDevelopmentStorage=true";
         private readonly IEnvironmentService _environmentService;
+        private readonly IAzureTableStorageConnectionAdapter _azureTableStorageConnectionAdapter;
+        
 
-        public TableStorageConfigurationService(IEnvironmentService environmentService)
+        public TableStorageConfigurationService(IEnvironmentService environmentService, IAzureTableStorageConnectionAdapter azureTableStorageConnectionAdapter)
         {
             _environmentService = environmentService;
+            _azureTableStorageConnectionAdapter = azureTableStorageConnectionAdapter;
         }
 
         public T Get<T>()
         {
-            var environmentName = _environmentService.GetVariable(EnvironmentVariableNames.Environment);
-            var storageConnectionString = _environmentService.GetVariable(EnvironmentVariableNames.ConfigurationStorageConnectionString);
+            var environmentName = _environmentService.GetVariable(EnvironmentVariableNames.Environment) ?? DefaultEnvironment;
+            var storageConnectionString = _environmentService.GetVariable(EnvironmentVariableNames.ConfigurationStorageConnectionString) ?? DefaultStorageConnectionString;
             var rowKey = $"{Assembly.GetAssembly(typeof(T)).GetName().Name}_{DefaultVersion}";
 
-            var conn = CloudStorageAccount.Parse(storageConnectionString);
-            var tableClient = conn.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(ConfigurationTableReference);
+            var table = _azureTableStorageConnectionAdapter.GetTableReference(storageConnectionString, ConfigurationTableReference);
 
-            var operation = TableOperation.Retrieve(environmentName, rowKey);
+            var operation = _azureTableStorageConnectionAdapter.GetRetrieveOperation(environmentName, rowKey);
             TableResult result;
             try
             {
-                result = table.ExecuteAsync(operation).Result;
+                result = _azureTableStorageConnectionAdapter.Execute(table, operation);
             }
             catch (Exception e)
             {
