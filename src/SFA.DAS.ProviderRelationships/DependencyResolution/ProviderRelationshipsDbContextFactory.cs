@@ -1,5 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using NServiceBus.Persistence;
 using SFA.DAS.NServiceBus.ClientOutbox;
@@ -25,7 +26,11 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             var clientSession = _unitOfWorkContext.Find<IClientOutboxTransaction>();
             var serverSession = _unitOfWorkContext.Find<SynchronizedStorageSession>();
             var sqlSession = clientSession?.GetSqlSession() ?? serverSession?.GetSqlSession() ?? throw new Exception("Cannot find the SQL session");
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseLoggerFactory(_loggerFactory).UseSqlServer(sqlSession.Connection);
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseLoggerFactory(_loggerFactory)
+                .UseSqlServer(sqlSession.Connection)
+                //todo: check. leave in. debug only??
+                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
             var dbContext = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             
             dbContext.Database.UseTransaction(sqlSession.Transaction);

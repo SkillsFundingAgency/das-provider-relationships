@@ -13,22 +13,24 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
     [RoutePrefix("relationships")]
-    public class ProvidersController : ApiController
+    public class RelationshipsController : ApiController
     {
         private readonly IMediator _mediator;
 
-        public ProvidersController(IMediator mediator)
+        public RelationshipsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
+        //todo: https://stackoverflow.com/questions/11862069/optional-query-string-parameters-in-asp-net-web-api
         /// <summary>
         /// Get relationships with optional (currently mandatory) filters
         /// </summary>
         /// <param name="ukprn">Filter relationships to only those for this provider</param>
         /// <param name="queryOperation">Filter relationships to only those which have this permission</param>
         [Route("")]
-        public async Task<IHttpActionResult> Get(long? ukprn, string queryOperation)
+        public async Task<IHttpActionResult> Get(long? ukprn = null, string queryOperation = null)
+            //todo:
         //public async Task<IHttpActionResult> GetRelationshipsWithPermission(RelationshipsRequest request)
         {
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
