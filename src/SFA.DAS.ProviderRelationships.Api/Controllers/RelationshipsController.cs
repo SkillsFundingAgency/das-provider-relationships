@@ -1,23 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using MediatR;
+using SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
-    public class GetRelationshipsParams
-    {
-        public long? ukprn { get; set; }
-        public string operation { get; set; } // can we get model binder to go straight to enum. also rename
-    }
-    
     [RoutePrefix("relationships")]
     public class RelationshipsController : ApiController
     {
@@ -35,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// ukprn: Filter relationships to only those for this provider
         /// operation: Filter relationships to only those which have this permission
         /// </param>
-        public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParams parameters)
+        public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters)
         {
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
             // it might not be most performant though

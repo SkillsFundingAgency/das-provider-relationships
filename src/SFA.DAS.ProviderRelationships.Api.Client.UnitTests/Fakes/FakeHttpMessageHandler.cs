@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes
 {
+    //todo: rename from Fake, so it's not confused with ms fakes?
     public class FakeHttpMessageHandler : DelegatingHandler
     {
         public HttpResponseMessage HttpResponseMessage { get; set; }
