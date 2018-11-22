@@ -33,6 +33,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 .UseErrorQueue()
                 .UseInstallers()
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
+                .UseMessageConventions()
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
                 .UseStructureMapBuilder(_container)

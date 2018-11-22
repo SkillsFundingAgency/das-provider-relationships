@@ -1,38 +1,20 @@
 ﻿{
-    "ukprn": 20501977,
-    "accountProviderLegalEntityId": 215523,
-    "accountId": 522522,
-    "accountPublicHashedId": "HASHED553",
-    "accountName": "AccountName55",
-    "accountLegalEntityId": 443333,
-    "accountLegalEntityPublicHashedId": "HASH37533",
-    "accountLegalEntityName": "LENameABDD",
-    "accountProviderId": 1245334,
-    "operations": [],
+    "ukprn": 2001677,
+    "accountProviderId": 2,
+    "accountId": 2134,
+    "accountLegalEntityId": 456,
+    "operations": [0],
     "outboxData": [
         {
-            "messageId": "553616b5-7447-4cf6-9fb0-a99600abd4c9",
-            "created": "2018-11-12T10:25:35.8300194+00:00"
-        },
-        {
-            "messageId": "56b6efd8-82b1-4a84-8523-a99600ac07b0",
-            "created": "2018-11-12T10:26:20.5318736+00:00"
-        },
-        {
-            "messageId": "416836a1-de51-4b8a-a0cb-a99600ac0789",
-            "created": "2018-11-12T10:26:20.4021873+00:00"
-        },
-        {
-            "messageId": "4e3a8e8a-c5da-452d-b27a-a99600ac07db",
-            "created": "2018-11-12T10:26:20.6729482+00:00"
+            "messageId": "e9d299a4-c4b3-439f-8c45-a99e0178a06e",
+            "created": "2018-11-20T22:51:15.3459703+00:00"
         }
     ],
-    "created": "2018-11-12T10:25:35.8300194+00:00",
-    "deleted": "2018-11-12T10:26:20.6729482+00:00",
-    "updated": "2018-11-12T10:26:20.5318736+00:00",
-    "id": "462ca80b-7b08-48d2-a012-3bfdfe7bba74",
+    "updated": "2018-11-20T22:51:15.3459703+00:00",
+    "deleted": null,
+    "id": "9593253c-0120-406d-9c65-02a495923bc6",
     "metadata": {
-        "schemaType": "permission",
+        "schemaType": "relationship",
         "schemaVersion": 1
     }
 }

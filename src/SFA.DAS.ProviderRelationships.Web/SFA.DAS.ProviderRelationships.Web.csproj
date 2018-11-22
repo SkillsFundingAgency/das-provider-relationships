@@ -69,11 +69,11 @@
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="SFA.DAS.NServiceBus" Version="5.0.1" />
-    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="5.0.1" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="3.2.2" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="3.2.2" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="3.2.2" />
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="6.0.4" />
+    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="6.0.4" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.0.9" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="4.0.9" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="4.0.9" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
     <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
     <PackageReference Include="SFA.DAS.Validation.Mvc" Version="5.1.3" />
@@ -201,9 +201,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
-    <Folder Include="ViewModels\Providers" />
+    <Folder Include="ViewModels\Providers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj">
+      <Project>{7f2f7041-07e0-48c0-a65a-e7ff06c65532}</Project>
+      <Name>SFA.DAS.ProviderRelationships.Api.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj">
       <Project>{9e04ae68-5753-49e7-ac56-a0cf005d19d6}</Project>
       <Name>SFA.DAS.ProviderRelationships.Types</Name>

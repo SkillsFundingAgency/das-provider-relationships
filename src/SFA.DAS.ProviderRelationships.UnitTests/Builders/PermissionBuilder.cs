@@ -15,9 +15,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
             return this;
         }
 
-        public PermissionBuilder WithAccountProviderId(long accountProviderId)
+        public PermissionBuilder WithAccountProviderLegalEntityId(long accountProviderLegalEntityId)
         {
-            _permission.SetupProperty(p => p.AccountProviderId, accountProviderId);
+            _permission.SetupProperty(p => p.AccountProviderLegalEntityId, accountProviderLegalEntityId);
             
             return this;
         }

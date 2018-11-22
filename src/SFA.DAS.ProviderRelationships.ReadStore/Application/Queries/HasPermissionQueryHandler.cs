@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class HasPermissionQueryHandler : IApiRequestHandler<HasPermissionQuery, bool>
+    internal class HasPermissionQueryHandler : IReadStoreRequestHandler<HasPermissionQuery, bool>
     {
         private readonly IRelationshipsRepository _relationshipsRepository;
 

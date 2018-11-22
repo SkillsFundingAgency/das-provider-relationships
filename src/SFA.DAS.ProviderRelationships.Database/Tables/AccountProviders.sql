@@ -6,8 +6,8 @@
     [Created] DATETIME2 NOT NULL,
     [Updated] DATETIME2 NULL,
     CONSTRAINT [PK_AccountProviders] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_AccountProviders_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts]([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_AccountProviders_Providers_ProviderUkprn] FOREIGN KEY ([ProviderUkprn]) REFERENCES [Providers]([Ukprn]) ON DELETE CASCADE,
+    CONSTRAINT [FK_AccountProviders_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts] ([Id]),
+    CONSTRAINT [FK_AccountProviders_Providers_ProviderUkprn] FOREIGN KEY ([ProviderUkprn]) REFERENCES [Providers] ([Ukprn]),
     CONSTRAINT [UK_AccountProviders_AccountId_ProviderUkprn] UNIQUE ([AccountId] ASC, [ProviderUkprn] ASC), 
     INDEX [IX_AccountProviders_AccountId] NONCLUSTERED ([AccountId] ASC),
     INDEX [IX_AccountProviders_ProviderUkprn] NONCLUSTERED ([ProviderUkprn] ASC)

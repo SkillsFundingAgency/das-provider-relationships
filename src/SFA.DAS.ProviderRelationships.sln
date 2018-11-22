@@ -41,19 +41,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client.UnitTests", "SFA.DAS.ProviderRelationships.Api.Client.UnitTests\SFA.DAS.ProviderRelationships.Api.Client.UnitTests.csproj", "{93F57F41-2B02-4DE2-853C-151873455CF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Document.Repository", "SFA.DAS.ProviderRelationships.Document.Repository\SFA.DAS.ProviderRelationships.Document.Repository.csproj", "{CF279807-AA86-45B4-9F28-2D3FFB7C2711}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Types", "SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj", "{9E04AE68-5753-49E7-AC56-A0CF005D19D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Types", "SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj", "{9E04AE68-5753-49E7-AC56-A0CF005D19D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore", "SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj", "{38AAFBC7-D6C2-4550-8E7D-E7E502C1D92A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore", "SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj", "{38AAFBC7-D6C2-4550-8E7D-E7E502C1D92A}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness", "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness\SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.csproj", "{67A9B56E-B40E-4691-A037-A105CD57FADF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness", "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness\SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.csproj", "{67A9B56E-B40E-4691-A037-A105CD57FADF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client.TestHarness", "SFA.DAS.ProviderRelationships.Api.Client.TestHarness\SFA.DAS.ProviderRelationships.Api.Client.TestHarness.csproj", "{9010B8CE-3AFF-437C-BE39-A2556958ABA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client.TestHarness", "SFA.DAS.ProviderRelationships.Api.Client.TestHarness\SFA.DAS.ProviderRelationships.Api.Client.TestHarness.csproj", "{9010B8CE-3AFF-437C-BE39-A2556958ABA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore.UnitTests", "SFA.DAS.ProviderRelationships.ReadStore.UnitTests\SFA.DAS.ProviderRelationships.ReadStore.UnitTests.csproj", "{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore.UnitTests", "SFA.DAS.ProviderRelationships.ReadStore.UnitTests\SFA.DAS.ProviderRelationships.ReadStore.UnitTests.csproj", "{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api", "SFA.DAS.ProviderRelationships.Api\SFA.DAS.ProviderRelationships.Api.csproj", "{CCBEC137-2904-4046-9968-CCBF6EE2415A}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Document.Repository.UnitTests", "SFA.DAS.ProviderRelationships.Document.Repository.UnitTests\SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.csproj", "{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore.Configuration", "SFA.DAS.ProviderRelationships.ReadStore.Configuration\SFA.DAS.ProviderRelationships.ReadStore.Configuration.csproj", "{CC910810-CB95-4174-ABFA-81F137E741EF}"
 EndProject
@@ -119,10 +131,6 @@ Global
 		{93F57F41-2B02-4DE2-853C-151873455CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93F57F41-2B02-4DE2-853C-151873455CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93F57F41-2B02-4DE2-853C-151873455CF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF279807-AA86-45B4-9F28-2D3FFB7C2711}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E04AE68-5753-49E7-AC56-A0CF005D19D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E04AE68-5753-49E7-AC56-A0CF005D19D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E04AE68-5753-49E7-AC56-A0CF005D19D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -143,14 +151,18 @@ Global
 		{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBEC137-2904-4046-9968-CCBF6EE2415A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBEC137-2904-4046-9968-CCBF6EE2415A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBEC137-2904-4046-9968-CCBF6EE2415A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBEC137-2904-4046-9968-CCBF6EE2415A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC910810-CB95-4174-ABFA-81F137E741EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC910810-CB95-4174-ABFA-81F137E741EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC910810-CB95-4174-ABFA-81F137E741EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC910810-CB95-4174-ABFA-81F137E741EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80876710-9B1F-4106-A840-C8C51A499172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80876710-9B1F-4106-A840-C8C51A499172}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80876710-9B1F-4106-A840-C8C51A499172}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -168,7 +180,7 @@ Global
 		{67A9B56E-B40E-4691-A037-A105CD57FADF} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 		{9010B8CE-3AFF-437C-BE39-A2556958ABA4} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 		{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
-		{4EE5446A-D8A9-4C8D-81EF-123D53D80D04} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
+		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 		{80876710-9B1F-4106-A840-C8C51A499172} = {04794025-72A5-4A0D-B7DD-BD3BBE2BD055}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

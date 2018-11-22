@@ -1,7 +1,6 @@
 using System.Web;
 using SFA.DAS.Authorization;
 using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.Logging;
 using StructureMap;

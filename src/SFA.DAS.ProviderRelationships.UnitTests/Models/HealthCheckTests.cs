@@ -69,6 +69,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         public HealthCheck HealthCheck { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public Func<Task> ApprenticeshipInfoServiceApiRequest { get; set; }
+        public Func<Task> ProviderRelationshipsApiRequest { get; set; }
         public DateTime? PreRun { get; set; }
         public DateTime? PostRun { get; set; }
 
@@ -77,6 +78,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
             User = new UserBuilder().WithRef(Guid.NewGuid());
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
+            ProviderRelationshipsApiRequest = () => Task.CompletedTask;
         }
 
         public HealthCheck New()
@@ -88,7 +90,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             PreRun = DateTime.UtcNow;
 
-            await HealthCheck.Run(ApprenticeshipInfoServiceApiRequest);
+            await HealthCheck.Run(ApprenticeshipInfoServiceApiRequest, ProviderRelationshipsApiRequest);
 
             PostRun = DateTime.UtcNow;
         }
@@ -97,7 +99,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             PreRun = DateTime.UtcNow;
 
-            HealthCheck.ReceiveProviderRelationshipsEvent(new HealthCheckEvent(1, DateTime.UtcNow));
+            HealthCheck.ReceiveProviderRelationshipsEvent();
 
             PostRun = DateTime.UtcNow;
         }

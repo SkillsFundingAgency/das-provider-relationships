@@ -1,7 +1,6 @@
 ﻿using System;
 using NServiceBus;
 using SFA.DAS.NServiceBus.AzureServiceBus;
-using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Extensions
 {

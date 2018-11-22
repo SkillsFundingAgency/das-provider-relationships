@@ -1,6 +1,7 @@
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
+using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<MediatorRegistry>();
                 c.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
+                c.AddRegistry<ProviderRelationshipsApiClientRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<UrlsRegistry>();
                 c.AddRegistry<DefaultRegistry>();
