@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
             var relationships = await _db.Value.AccountProviderLegalEntities
                 .Where(aple => aple.AccountProvider.ProviderUkprn == request.Ukprn
                                && aple.Permissions.Any(p => p.Operation == request.Operation))
-                //.OrderBy(ap => ap.Provider.Name)
+                //.OrderBy(?)
                 .Include(aple => aple.AccountProvider)
                     .ThenInclude(ap => ap.Account)
                 .Include(aple => aple.AccountLegalEntity)
