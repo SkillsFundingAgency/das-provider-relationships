@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             long accountId = 2134;
             long accountLegalEntityId = 455;
 
-            var createEvent = new AccountProviderLegalEntityUdatedPermissionsEvent(ukprn, 
+            var createEvent = new AccountProviderLegalEntityUpdatedPermissionsEvent(ukprn, 
                 accountProviderId, "AccountProviderName",  accountId, "HASHAC", "AcountNmae", 
                 accountLegalEntityId, "HASHED123", "AccountLEName",
                 new HashSet<Operation>(), 
@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             
             await _messageSession.Publish(createEvent);
 
-            var updateEvent = new AccountProviderLegalEntityUdatedPermissionsEvent(ukprn,
+            var updateEvent = new AccountProviderLegalEntityUpdatedPermissionsEvent(ukprn,
                 accountProviderId, "AccountProviderName", accountId, "HASHAC", "AcountNmae",
                 accountLegalEntityId, "HASHED123", "AccountLEName",
                 new HashSet<Operation>{Operation.CreateCohort},

@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     internal class AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture
     {
         public string MessageId = "messageId";
-        public AccountProviderLegalEntityUdatedPermissionsEvent Message;
+        public AccountProviderLegalEntityUpdatedPermissionsEvent Message;
         public long Ukprn = 11111;
         public int AccountProviderId = 55555;
         public long AccountId = 333333;
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
         public Mock<IMessageHandlerContext> MessageHandlerContext;
         public Mock<IReadStoreMediator> ReadStoreMediator;
-        public AccountProviderLegalEntityUdatedPermissionsEventHandler Handler;
+        public AccountProviderLegalEntityUpdatedPermissionsEventHandler Handler;
 
         public AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture()
         {
@@ -56,10 +56,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
             MessageHandlerContext.Setup(x => x.MessageId).Returns(MessageId);
 
-            Message = new AccountProviderLegalEntityUdatedPermissionsEvent(Ukprn, AccountProviderId, "APName", AccountId,
+            Message = new AccountProviderLegalEntityUpdatedPermissionsEvent(Ukprn, AccountProviderId, "APName", AccountId,
                 "ACHASH", "ACName", AccountLegalEntityId, "ALEHASH", "ALENAME", Operations, Created);
 
-            Handler = new AccountProviderLegalEntityUdatedPermissionsEventHandler(ReadStoreMediator.Object);
+            Handler = new AccountProviderLegalEntityUpdatedPermissionsEventHandler(ReadStoreMediator.Object);
         }
     }
 }
