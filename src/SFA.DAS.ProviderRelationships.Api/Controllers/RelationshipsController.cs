@@ -35,14 +35,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// ukprn: Filter relationships to only those for this provider
         /// operation: Filter relationships to only those which have this permission
         /// </param>
-        public int x { get; set; }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        /// <exception cref="HttpResponseException"></exception>
         public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParams parameters)
         {
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
