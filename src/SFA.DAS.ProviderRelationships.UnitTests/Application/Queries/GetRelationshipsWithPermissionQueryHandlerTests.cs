@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetRelationshipsWithPermissionQueryHandlerTests : FluentTest<GetRelationshipsWithPermissionQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingRelationshipsWithPermissionQuery_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
+        public Task Handle_WhenUkprnIsFoundAndRelationshipHasPermissionForSuppliedOperation_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), (f, r) =>
             {
@@ -42,6 +42,25 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     }
                 }));
             });
+        }
+
+        [Test, Ignore("for now")]
+        public Task Handle_WhenUkprnIsFoundAndRelationshipHasNotGotPermissionForSuppliedOperation_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test, Ignore("for now")]
+        public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnSumfink()
+        {
+            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+        }
+
+        
+        [Test, Ignore("for now")]
+        public Task Handle_WhenHandlingRelationshipsWithPermissionQueryAndUkprnIsNotFound_ThenShouldReturnSumfink()
+        {
+            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 
