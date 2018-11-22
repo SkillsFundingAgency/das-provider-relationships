@@ -1,4 +1,4 @@
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
 {
@@ -6,6 +6,5 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
     {
         public string Uri { get; set; }
         public string AuthKey { get; set; }
-        public string DatabaseName { get; set; }
     }
 }

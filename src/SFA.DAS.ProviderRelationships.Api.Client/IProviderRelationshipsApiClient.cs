@@ -9,5 +9,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         Task<RelationshipsResponse> GetRelationshipsWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default);
         Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default);
         Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default);
+        Task HealthCheck();
     }
 }

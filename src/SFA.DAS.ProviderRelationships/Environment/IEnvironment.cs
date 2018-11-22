@@ -1,5 +1,3 @@
-using SFA.DAS.ProviderRelationships.Configuration;
-
 namespace SFA.DAS.ProviderRelationships.Environment
 {
     public interface IEnvironment

@@ -13,12 +13,14 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual long ProviderUkprn { get; protected set; }
         public virtual DateTime Created { get; protected set; }
         public virtual DateTime? Updated { get; protected set; }
-        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
+        public virtual ICollection<AccountProviderLegalEntity> AccountProviderLegalEntities { get; protected set; } = new List<AccountProviderLegalEntity>();
         
         public AccountProvider(Account account, Provider provider, User user)
         {
             Account = account;
+            AccountId = account.Id;
             Provider = provider;
+            ProviderUkprn = provider.Ukprn;
             Created = DateTime.UtcNow;
             
             Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created));

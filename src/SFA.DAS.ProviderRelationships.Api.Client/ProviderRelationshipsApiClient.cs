@@ -1,16 +1,19 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using SFA.DAS.Http;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {
-    public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
+    public class ProviderRelationshipsApiClient : ApiClientBase, IProviderRelationshipsApiClient
     {
-        private readonly IApiMediator _mediator;
+        private readonly IReadStoreMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IApiMediator mediator)
+        public ProviderRelationshipsApiClient(HttpClient client, IReadStoreMediator mediator)
+            : base(client)
         {
             _mediator = mediator;
         }
@@ -33,6 +36,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
         {
             return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
+        }
+
+        public Task HealthCheck()
+        {
+            return GetAsync("healthcheck");
         }
     }
 }

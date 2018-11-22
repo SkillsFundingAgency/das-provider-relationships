@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Specialized;
-using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Environment
 {

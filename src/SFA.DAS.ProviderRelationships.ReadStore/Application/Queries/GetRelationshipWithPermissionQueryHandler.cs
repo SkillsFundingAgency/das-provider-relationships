@@ -1,14 +1,14 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Document.Repository;
+using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class GetRelationshipWithPermissionQueryHandler : IApiRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
+    internal class GetRelationshipWithPermissionQueryHandler : IReadStoreRequestHandler<GetRelationshipWithPermissionQuery, GetRelationshipWithPermissionQueryResult>
     {
         private readonly IRelationshipsRepository _relationshipsRepository;
 
@@ -24,11 +24,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
                 .Select(p => new RelationshipDto
                 {
                     EmployerAccountId = p.AccountId,
-                    EmployerAccountPublicHashedId = p.AccountPublicHashedId,
-                    EmployerAccountName = p.AccountName,
+                    EmployerAccountPublicHashedId = "p.AccountPublicHashedId",
+                    EmployerAccountName = "p.AccountName",
                     EmployerAccountLegalEntityId = p.AccountLegalEntityId,
-                    EmployerAccountLegalEntityPublicHashedId = p.AccountLegalEntityPublicHashedId,
-                    EmployerAccountLegalEntityName = p.AccountLegalEntityName,
+                    EmployerAccountLegalEntityPublicHashedId = "p.AccountLegalEntityPublicHashedId",
+                    EmployerAccountLegalEntityName = "p.AccountLegalEntityName",
                     EmployerAccountProviderId = p.AccountProviderId,
                     Ukprn = p.Ukprn
                 })

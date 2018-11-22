@@ -8,6 +8,8 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public void Configure(EntityTypeBuilder<AccountProvider> builder)
         {
+            builder.HasOne(ap => ap.Account).WithMany(a => a.AccountProviders).Metadata.DeleteBehavior = DeleteBehavior.Restrict;
+            builder.HasOne(ap => ap.Provider).WithMany(p => p.AccountProviders).Metadata.DeleteBehavior = DeleteBehavior.Restrict;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication
             var email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value;
             var firstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value;
             var lastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value;
-            var command = new AddOrUpdateUserCommand(@ref, email, firstName, lastName);
+            var command = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
             
             _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(command)).GetAwaiter().GetResult();
         }

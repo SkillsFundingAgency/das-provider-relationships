@@ -3,7 +3,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
-    internal class HasPermissionQuery : IApiRequest<bool>
+    internal class HasPermissionQuery : IReadStoreRequest<bool>
     {
         public long Ukprn { get; }
         public long EmployerAccountLegalEntityId { get; }

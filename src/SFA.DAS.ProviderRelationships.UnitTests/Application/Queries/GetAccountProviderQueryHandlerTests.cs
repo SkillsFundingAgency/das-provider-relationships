@@ -35,12 +35,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name,
-                        Permissions = new List<PermissionDto>
+                        AccountProviderLegalEntities = new List<AccountProviderLegalEntitySummaryDto>
                         {
-                            new PermissionDto
+                            new AccountProviderLegalEntitySummaryDto
                             {
-                                Id = f.Permission.Id,
-                                Operation = f.Permission.Operation
+                                Id = f.AccountProviderLegalEntity.Id,
+                                AccountProviderId = f.AccountProvider.Id,
+                                AccountLegalEntityId = f.AccountLegalEntity.Id,
+                                Permissions = new List<PermissionDto>
+                                {
+                                    new PermissionDto
+                                    {
+                                        Id = f.Permission.Id,
+                                        Operation = f.Permission.Operation
+                                    }
+                                }
                             }
                         }
                     });
@@ -67,26 +76,27 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
     public class GetAccountProviderQueryHandlerTestsFixture
     {
         public GetAccountProviderQuery Query { get; set; }
-        public CancellationToken CancellationToken { get; set; }
         public IRequestHandler<GetAccountProviderQuery, GetAccountProviderQueryResult> Handler { get; set; }
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
-        public Permission Permission { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
+        public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
+        public Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
-            CancellationToken = new CancellationToken();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             ConfigurationProvider = new MapperConfiguration(c =>
             {
                 c.AddProfile<AccountLegalEntityMappings>();
                 c.AddProfile<AccountProviderMappings>();
+                c.AddProfile<AccountProviderLegalEntityMappings>();
+                c.AddProfile<PermissionMappings>();
             });
             
             Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
@@ -94,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public Task<GetAccountProviderQueryResult> Handle()
         {
-            return Handler.Handle(Query, CancellationToken);
+            return Handler.Handle(Query, CancellationToken.None);
         }
 
         public GetAccountProviderQueryHandlerTestsFixture SetAccountProviders()
@@ -107,14 +117,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 .WithAccountId(Account.Id)
                 .WithProviderUkprn(Provider.Ukprn);
 
-            Permission = new PermissionBuilder().WithId(3).WithAccountProviderId(AccountProvider.Id).WithOperation(Operation.CreateCohort);
             AccountLegalEntity = new AccountLegalEntityBuilder().WithId(4).WithName("Bar").WithAccountId(Account.Id);
+            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder().WithId(5).WithAccountProviderId(AccountProvider.Id).WithAccountLegalEntityId(AccountLegalEntity.Id);
+            Permission = new PermissionBuilder().WithId(3).WithAccountProviderLegalEntityId(AccountProviderLegalEntity.Id).WithOperation(Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
             Db.AccountProviders.Add(AccountProvider);
-            Db.Permissions.Add(Permission);
             Db.AccountLegalEntities.Add(AccountLegalEntity);
+            Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
+            Db.Permissions.Add(Permission);
             Db.SaveChanges();
             
             return this;

@@ -33,6 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
                 .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
+                .UseMessageConventions()
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
