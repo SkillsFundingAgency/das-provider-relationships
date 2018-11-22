@@ -29,7 +29,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseLoggerFactory(_loggerFactory)
                 .UseSqlServer(sqlSession.Connection)
-                //todo: check. leave in. debug only??
                 .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
             var dbContext = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             

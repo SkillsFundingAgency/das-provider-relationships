@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using StructureMap;
@@ -15,10 +16,11 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
         private ProviderRelationshipsDbContext GetDbContext(IContext context)
         {
             var connectionString = context.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString;
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connectionString);
-            var db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
-            
-            return db;
+            //todo: UseLoggerFactory
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseSqlServer(connectionString)
+                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            return new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
     }
 }
