@@ -43,27 +43,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Types", "SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj", "{9E04AE68-5753-49E7-AC56-A0CF005D19D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Types", "SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj", "{9E04AE68-5753-49E7-AC56-A0CF005D19D6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore", "SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj", "{38AAFBC7-D6C2-4550-8E7D-E7E502C1D92A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore", "SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj", "{38AAFBC7-D6C2-4550-8E7D-E7E502C1D92A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness", "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness\SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.csproj", "{67A9B56E-B40E-4691-A037-A105CD57FADF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness", "SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness\SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.csproj", "{67A9B56E-B40E-4691-A037-A105CD57FADF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client.TestHarness", "SFA.DAS.ProviderRelationships.Api.Client.TestHarness\SFA.DAS.ProviderRelationships.Api.Client.TestHarness.csproj", "{9010B8CE-3AFF-437C-BE39-A2556958ABA4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.Client.TestHarness", "SFA.DAS.ProviderRelationships.Api.Client.TestHarness\SFA.DAS.ProviderRelationships.Api.Client.TestHarness.csproj", "{9010B8CE-3AFF-437C-BE39-A2556958ABA4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore.UnitTests", "SFA.DAS.ProviderRelationships.ReadStore.UnitTests\SFA.DAS.ProviderRelationships.ReadStore.UnitTests.csproj", "{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.ReadStore.UnitTests", "SFA.DAS.ProviderRelationships.ReadStore.UnitTests\SFA.DAS.ProviderRelationships.ReadStore.UnitTests.csproj", "{0471B02C-BD6B-4C62-B1EC-B807C6AD87AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api", "SFA.DAS.ProviderRelationships.Api\SFA.DAS.ProviderRelationships.Api.csproj", "{CCBEC137-2904-4046-9968-CCBF6EE2415A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Document.Repository.UnitTests", "SFA.DAS.ProviderRelationships.Document.Repository.UnitTests\SFA.DAS.ProviderRelationships.Document.Repository.UnitTests.csproj", "{4EE5446A-D8A9-4C8D-81EF-123D53D80D04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
 EndProject
