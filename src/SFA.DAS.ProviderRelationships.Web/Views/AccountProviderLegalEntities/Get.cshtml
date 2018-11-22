@@ -11,9 +11,13 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Set permissions</h1>
         <p class="govuk-body">Set permissions for @Model.AccountProvider.ProviderName to do tasks on behalf of @Model.AccountLegalEntity.Name?</p>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -33,8 +37,8 @@
                                 @Model.Operations[i].Value.GetDescription()
                             </td>
                             <td class="govuk-table__cell">
-                                <div class="govuk-form-group">
-                                    <fieldset class="govuk-fieldset">
+                                <div class="govuk-form-group govuk-!-margin-bottom-0 govuk-!-margin-top-2">
+                                    <fieldset class="govuk-fieldset das-permissions-fieldset--float-right">
                                         <div class="govuk-radios govuk-radios--inline">
                                             <div class="govuk-radios__item">
                                                 @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, true, new { id = $"operation-{i}-yes", @class = "govuk-radios__input" })

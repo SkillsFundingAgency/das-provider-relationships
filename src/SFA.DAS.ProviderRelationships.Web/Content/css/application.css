@@ -633,3 +633,8 @@ li.menu-link.sub-menu-open ul {
 .govuk-info-summary__list a:focus, .govuk-success-summary__list a:focus {
     color: #0b0c0c
 }
+
+/**Float right permissions table **/
+.das-permissions-fieldset--float-right {
+    float: right;
+}
