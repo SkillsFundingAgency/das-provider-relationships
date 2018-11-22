@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.ReadStore.EventHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     internal class AccountProviderLegalEntityUdatedPermissionsEventHandler : IHandleMessages<AccountProviderLegalEntityUdatedPermissionsEvent>
     {

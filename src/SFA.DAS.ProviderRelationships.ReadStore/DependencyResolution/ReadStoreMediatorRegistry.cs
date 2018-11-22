@@ -1,3 +1,4 @@
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using StructureMap;
