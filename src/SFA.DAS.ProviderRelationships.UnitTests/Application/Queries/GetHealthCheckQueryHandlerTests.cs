@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             GetHealthCheckQuery = new GetHealthCheckQuery();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>());
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(HealthCheckMappings)));
 
             HealthChecks = new List<HealthCheck>
             {

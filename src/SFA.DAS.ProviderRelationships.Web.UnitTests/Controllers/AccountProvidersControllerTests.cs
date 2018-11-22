@@ -242,7 +242,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProvidersControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<AccountProviderMappings>()).CreateMapper();
+            Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
             AccountProvidersController = new AccountProvidersController(Mediator.Object, Mapper, EmployerUrls.Object);
         }

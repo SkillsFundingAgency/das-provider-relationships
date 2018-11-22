@@ -46,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetProviderToAddQuery(12345678);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<ProviderMappings>());
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(ProviderMappings)));
             Handler = new GetProviderToAddQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 

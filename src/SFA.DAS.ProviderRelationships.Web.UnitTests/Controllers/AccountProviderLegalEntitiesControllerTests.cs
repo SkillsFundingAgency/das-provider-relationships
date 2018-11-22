@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProviderLegalEntitiesControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>()).CreateMapper();
+            Mapper = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings))).CreateMapper();
             AccountProvidersController = new AccountProviderLegalEntitiesController(Mediator.Object, Mapper);
         }
 

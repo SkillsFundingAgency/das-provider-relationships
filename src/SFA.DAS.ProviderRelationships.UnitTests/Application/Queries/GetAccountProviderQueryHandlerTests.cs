@@ -90,13 +90,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Query = new GetAccountProviderQuery(1, 2);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
-            ConfigurationProvider = new MapperConfiguration(c =>
-            {
-                c.AddProfile<AccountLegalEntityMappings>();
-                c.AddProfile<AccountProviderMappings>();
-                c.AddProfile<AccountProviderLegalEntityMappings>();
-                c.AddProfile<PermissionMappings>();
-            });
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
             
             Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
