@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Db.Providers.Add(Provider);
             Db.SaveChanges();
             
-            Command = new AddAccountProviderCommand(Account.Id, User.Ref, Provider.Ukprn);
+            Command = new AddAccountProviderCommand(Account.Id, Provider.Ukprn, User.Ref);
             Now = DateTime.UtcNow;
             UnitOfWorkContext = new UnitOfWorkContext();
             Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));

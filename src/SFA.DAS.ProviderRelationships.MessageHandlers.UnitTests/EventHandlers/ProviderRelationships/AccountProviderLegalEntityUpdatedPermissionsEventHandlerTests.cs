@@ -38,11 +38,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     internal class AccountProviderLegalEntityUpdatedPermissionsEventHandlerTestsFixture
     {
         public string MessageId = "messageId";
-        public AccountProviderLegalEntityUdatedPermissionsEvent Message;
+        public UpdatedPermissionsEvent Message;
         public long Ukprn = 11111;
         public int AccountProviderId = 55555;
         public long AccountId = 333333;
         public long AccountLegalEntityId = 44444;
+        public Guid UserRef = Guid.NewGuid();
         public HashSet<Operation> Operations = new HashSet<Operation>();
         public DateTime Created = DateTime.Now.AddMinutes(-1);
 
@@ -55,9 +56,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             ReadStoreMediator = new Mock<IReadStoreMediator>();
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
             MessageHandlerContext.Setup(x => x.MessageId).Returns(MessageId);
-
-            Message = new AccountProviderLegalEntityUdatedPermissionsEvent(Ukprn, AccountProviderId, "APName", AccountId,
-                "ACHASH", "ACName", AccountLegalEntityId, "ALEHASH", "ALENAME", Operations, Created);
+            
+            Message = new UpdatedPermissionsEvent(AccountId, AccountLegalEntityId, AccountProviderId, Ukprn, UserRef, Operations, Created);
 
             Handler = new AccountProviderLegalEntityUdatedPermissionsEventHandler(ReadStoreMediator.Object);
         }

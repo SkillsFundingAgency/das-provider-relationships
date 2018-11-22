@@ -91,7 +91,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "Confirm":
-                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.UserRef.Value, model.Ukprn.Value);
+                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
                     var accountProviderId = await _mediator.Send(command);
 
                     return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });

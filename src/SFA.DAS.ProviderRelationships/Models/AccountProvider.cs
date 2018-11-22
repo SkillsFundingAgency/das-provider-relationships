@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -12,7 +14,6 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual Provider Provider { get; protected set; }
         public virtual long ProviderUkprn { get; protected set; }
         public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
         public virtual ICollection<AccountProviderLegalEntity> AccountProviderLegalEntities { get; protected set; } = new List<AccountProviderLegalEntity>();
         
         public AccountProvider(Account account, Provider provider, User user)
@@ -28,6 +29,20 @@ namespace SFA.DAS.ProviderRelationships.Models
         
         protected AccountProvider()
         {
+        }
+
+        public void UpdatePermissions(AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
+        {
+            var accountProviderLegalEntity = AccountProviderLegalEntities.SingleOrDefault(aple => aple.AccountLegalEntityId == accountLegalEntity.Id);
+
+            if (accountProviderLegalEntity == null)
+            {
+                AccountProviderLegalEntities.Add(new AccountProviderLegalEntity(this, accountLegalEntity, user, grantedOperations));
+            }
+            else
+            {
+                accountProviderLegalEntity.UpdatePermissions(user, grantedOperations);
+            }
         }
     }
 }

@@ -28,12 +28,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
                 .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
-
+            
             if (accountProvider == null)
             {
                 return null;
             }
-            
+
             var accountLegalEntities = await _db.Value.AccountLegalEntities
                 .Where(ale => ale.Account.Id == request.AccountId && ale.Deleted == null)
                 .OrderBy(ale => ale.Name)

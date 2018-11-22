@@ -18,9 +18,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         
         public async Task<long> Handle(AddAccountProviderCommand request, CancellationToken cancellationToken)
         {
-            var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var account = await _db.Value.Accounts.Include(a => a.AccountProviders).SingleAsync(a => a.Id == request.AccountId, cancellationToken);
             var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
+            var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var accountProvider = account.AddProvider(provider, user);
 
             await _db.Value.SaveChangesAsync(cancellationToken);

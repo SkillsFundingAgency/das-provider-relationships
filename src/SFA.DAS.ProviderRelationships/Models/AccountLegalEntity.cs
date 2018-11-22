@@ -46,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
                 foreach (var accountProviderLegalEntity in AccountProviderLegalEntities)
                 {
-                    accountProviderLegalEntity.Delete();
+                    accountProviderLegalEntity.Delete(deleted);
                 }
                 
                 AccountProviderLegalEntities.Clear();

@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         public long Ukprn { get; protected set; }
 
         [JsonProperty("accountProviderId")]
-        public int AccountProviderId { get; protected set; }
+        public long AccountProviderId { get; protected set; }
 
         [JsonProperty("accountId")]
         public long AccountId { get; protected set; }
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long ukprn, int accountProviderId, long accountId, long accountLegalEntityId, 
+        public Relationship(long ukprn, long accountProviderId, long accountId, long accountLegalEntityId, 
             HashSet<Operation> operations, string messageId, DateTime created)
             : base(1, "relationship")
         {

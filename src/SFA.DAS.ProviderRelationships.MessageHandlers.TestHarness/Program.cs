@@ -15,8 +15,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 
                 await startup.StartAsync();
                 
-                //var scenario = container.GetInstance<PublishAllEvents>();
-                var scenario = container.GetInstance<PublishAccountProviderLegalEvents>();
+                var scenario = container.GetInstance<PublishEmployerAccountsEvents>();
+                //var scenario = container.GetInstance<PublishProviderRelationshipsEvents>();
 
                 try
                 {

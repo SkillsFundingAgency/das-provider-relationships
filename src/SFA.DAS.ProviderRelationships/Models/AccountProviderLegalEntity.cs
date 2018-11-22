@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
@@ -11,27 +13,49 @@ namespace SFA.DAS.ProviderRelationships.Models
         public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
         public virtual long AccountLegalEntityId { get; protected set; }
         public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
+        public virtual DateTime Created { get; protected set; }
+        public virtual DateTime? Updated { get; protected set; }
         
-        public AccountProviderLegalEntity(AccountProvider accountProvider, AccountLegalEntity accountLegalEntity, IEnumerable<Operation> operations)
+        public AccountProviderLegalEntity(AccountProvider accountProvider, AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
         {
             AccountProvider = accountProvider;
             AccountProviderId = accountProvider.Id;
             AccountLegalEntity = accountLegalEntity;
             AccountLegalEntityId = accountLegalEntity.Id;
 
-            foreach (var operation in operations)
+            foreach (var operation in grantedOperations)
             {
                 Permissions.Add(new Permission(this, operation));
             }
+            
+            Created = DateTime.UtcNow;
+            
+            Publish(() => new UpdatedPermissionsEvent(accountProvider.AccountId, accountLegalEntity.Id, accountProvider.Id, accountProvider.ProviderUkprn, user.Ref, grantedOperations, Created));
         }
 
         protected AccountProviderLegalEntity()
         {
         }
 
-        public void Delete()
+        internal void Delete(DateTime deleted)
         {
             Permissions.Clear();
+            
+            Publish(() => new DeletedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, AccountProvider.ProviderUkprn, deleted));
+        }
+
+        public void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
+        {
+            Permissions.Clear();
+            
+            foreach (var operation in grantedOperations)
+            {
+                Permissions.Add(new Permission(this, operation));
+            }
+            
+            Updated = DateTime.UtcNow;
+            
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Updated.Value));
         }
     }
 }
