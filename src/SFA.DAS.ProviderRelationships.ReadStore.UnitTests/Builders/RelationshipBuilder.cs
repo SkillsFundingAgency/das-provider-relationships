@@ -35,13 +35,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public RelationshipBuilder WithAccountProviderLegalEntityId(long accountProviderLegalEntityId)
-        {
-            _relationship.SetPropertyTo(p => p.AccountProviderLegalEntityId, accountProviderLegalEntityId);
-
-            return this;
-        }
-
         public RelationshipBuilder WithAccountId(long employerAccountId)
         {
             _relationship.SetPropertyTo(p => p.AccountId, employerAccountId);
@@ -49,37 +42,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public RelationshipBuilder WithAccountPublicHashedId(string employerAccountPublicHashedId)
-        {
-            _relationship.SetPropertyTo(p => p.AccountPublicHashedId, employerAccountPublicHashedId);
-            
-            return this;
-        }
-
-        public RelationshipBuilder WithAccountName(string employerAccountName)
-        {
-            _relationship.SetPropertyTo(p => p.AccountName, employerAccountName);
-            
-            return this;
-        }
 
         public RelationshipBuilder WithAccountLegalEntityId(long employerAccountLegalEntityId)
         {
             _relationship.SetPropertyTo(p => p.AccountLegalEntityId, employerAccountLegalEntityId);
-            
-            return this;
-        }
-
-        public RelationshipBuilder WithAccountLegalEntityPublicHashedId(string employerAccountLegalEntityPublicHashedId)
-        {
-            _relationship.SetPropertyTo(p => p.AccountLegalEntityPublicHashedId, employerAccountLegalEntityPublicHashedId);
-            
-            return this;
-        }
-
-        public RelationshipBuilder WithAccountLegalEntityName(string employerAccountLegalEntityName)
-        {
-            _relationship.SetPropertyTo(p => p.AccountLegalEntityName, employerAccountLegalEntityName);
             
             return this;
         }
@@ -116,14 +82,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Builders
             return this;
         }
 
-        public RelationshipBuilder WithCreated(DateTime created)
-        {
-            _relationship.SetPropertyTo(p => p.Created, created);
-
-            return this;
-        }
-
-        public RelationshipBuilder WithUpdated(DateTime? updated)
+        public RelationshipBuilder WithUpdated(DateTime updated)
         {
             _relationship.SetPropertyTo(p => p.Updated, updated);
 
