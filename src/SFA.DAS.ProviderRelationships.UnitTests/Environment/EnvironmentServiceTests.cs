@@ -1,14 +1,15 @@
+using System;
 using System.Collections.Specialized;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Environment;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
 {
     [TestFixture]
     [Parallelizable]
-    public class EnvironmentTests : FluentTest<EnvironmentTestsFixture>
+    public class EnvironmentServiceTests : FluentTest<EnvironmentTestsFixture>
     {
         [TestCase(DasEnv.LOCAL)]
         [TestCase(DasEnv.AT)]
@@ -36,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
 
     public class EnvironmentTestsFixture
     {
-        public ProviderRelationships.Environment.Environment Environment { get; set; }
+        public EnvironmentService EnvironmentService { get; set; }
         public NameValueCollection AppSettings { get; set; }
         
         public EnvironmentTestsFixture()
@@ -46,18 +47,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
 
         public void SetCurrent(DasEnv environment)
         {
-            AppSettings["EnvironmentName"] = environment.ToString();
-            Environment = new ProviderRelationships.Environment.Environment(AppSettings);
-        }        
-        
+            System.Environment.SetEnvironmentVariable("AppSettings_EnvironmentName", environment.ToString());
+            EnvironmentService = new EnvironmentService();
+        }
+
         public DasEnv Current()
         {
-            return Environment.Current;
+            return (DasEnv)Enum.Parse(typeof(DasEnv), EnvironmentService.GetVariable("EnvironmentName"));
         }
 
         public bool IsCurrent(params DasEnv[] environment)
         {
-            return Environment.IsCurrent(environment);
+            return EnvironmentService.IsCurrent(environment);
         }        
     }
 }

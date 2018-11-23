@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Environment;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
@@ -24,14 +24,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class HomeControllerTestsFixture
     {
         public HomeController HomeController { get; set; }
-        public Mock<IEnvironment> Environment { get; set; }
+        public Mock<IEnvironmentService> Environment { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
         
         public const string EmployerPortalUrl = "https://foo.bar";
 
         public HomeControllerTestsFixture()
         {
-            Environment = new Mock<IEnvironment>();
+            Environment = new Mock<IEnvironmentService>();
             EmployerUrls = new Mock<IEmployerUrls>();
 
             EmployerUrls.Setup(au => au.Homepage()).Returns(EmployerPortalUrl);

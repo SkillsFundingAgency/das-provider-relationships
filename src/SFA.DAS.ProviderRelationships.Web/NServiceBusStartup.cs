@@ -7,8 +7,8 @@ using SFA.DAS.NServiceBus.NLog;
 using SFA.DAS.NServiceBus.SqlServer;
 using SFA.DAS.NServiceBus.StructureMap;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.Startup;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using StructureMap;
@@ -18,11 +18,11 @@ namespace SFA.DAS.ProviderRelationships.Web
     public class NServiceBusStartup : IStartup
     {
         private readonly IContainer _container;
-        private readonly IEnvironment _environment;
+        private readonly IEnvironmentService _environment;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public NServiceBusStartup(IContainer container, IEnvironment environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public NServiceBusStartup(IContainer container, IEnvironmentService environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
             _environment = environment;

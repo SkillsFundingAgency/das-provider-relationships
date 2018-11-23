@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
-using SFA.DAS.ProviderRelationships.Environment;
 using SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers
@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var instrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
 
-                var environment = container.GetInstance<IEnvironment>();
+                var environment = container.GetInstance<IEnvironmentService>();
                 if (environment.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
