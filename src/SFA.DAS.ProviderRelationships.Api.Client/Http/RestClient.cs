@@ -1,9 +1,6 @@
 using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
@@ -73,6 +70,5 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
                 .ToDictionary(x => x.Name, x => x.GetValue(queryData)?.ToString() ?? string.Empty);
             return QueryHelpers.AddQueryString(uri, queryDataDictionary);
         }
-        //Post can use PostAsJsonAsync
     }
 }
