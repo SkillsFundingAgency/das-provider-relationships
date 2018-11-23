@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         private static string GenerateMessage(HttpResponseMessage httpResponseMessage, string errorResponse)
         {
             return
-$@"Request '{httpResponseMessage.RequestMessage.RequestUri}' returned {httpResponseMessage.StatusCode} {httpResponseMessage.ReasonPhrase}
+$@"Request '{httpResponseMessage.RequestMessage.RequestUri}' returned {(int)httpResponseMessage.StatusCode} {httpResponseMessage.ReasonPhrase}
 Response:
 {errorResponse}";
         }

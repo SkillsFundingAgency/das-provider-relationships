@@ -17,11 +17,20 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 
         public HttpClient CreateHttpClient()
         {
-            var httpClient = new HttpClientBuilder()
-                .WithDefaultHeaders()
-                .WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration))
-                .Build();
+            var httpClientBuilder = new HttpClientBuilder()
+                .WithDefaultHeaders();
 
+            // don't want to add dependency on ProviderRelationships for IEnvironment
+//            var environment = container.GetInstance<IEnvironmentService>();
+//            if (environment.IsCurrent(DasEnv.LOCAL))
+
+//todo: replace this dangerous #if with environmentservice's environment.IsCurrent(DasEnv.LOCAL) when the package is available
+#if !DEBUG
+            httpClientBuilder.WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration));
+#endif
+
+            var httpClient = httpClientBuilder.Build();
+            
             httpClient.BaseAddress = new Uri(_configuration.ApiBaseUrl);
 
             return httpClient;

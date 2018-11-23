@@ -13,8 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             IncludeRegistry<ReadStoreMediatorRegistry>();
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<Http.HttpClientFactory>();
-            For<IRestClient>().Use<RestClient>();
-            For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
+            For<IRestClient>().Use<RestClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
+            For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
         }
     }
 }

@@ -8,6 +8,8 @@ using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
+//todo: plug in auth on client from MA (remote only)
+
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
     [RoutePrefix("relationships")]

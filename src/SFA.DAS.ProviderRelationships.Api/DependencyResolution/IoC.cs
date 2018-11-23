@@ -15,7 +15,8 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
             config.UseStructureMap(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<DataRegistry>();
+                //c.AddRegistry<DataRegistry>();
+                c.AddRegistry<ApiDataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<EnvironmentRegistry>();
                 c.AddRegistry<HashingRegistry>();

@@ -23,10 +23,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         public RestClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            
-//            _httpClient.DefaultRequestHeaders.Accept.Clear();
-//            _httpClient.DefaultRequestHeaders.Accept.Add(
-//                new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<T> Get<T>(Uri uri, object queryData = null, CancellationToken cancellationToken = default)
