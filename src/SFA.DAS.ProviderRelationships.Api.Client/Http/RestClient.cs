@@ -35,9 +35,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         public async Task<T> Get<T>(Uri uri, object queryData = null, CancellationToken cancellationToken = default)
         {
             var response = await GetResponse(uri, queryData, cancellationToken);
-
-            //1 form array?
-            //return await response.Content.ReadAsAsync<T>(new [] { new JsonMediaTypeFormatter() }, cancellationToken);
             return await response.Content.ReadAsAsync<T>(cancellationToken);
         }
         
