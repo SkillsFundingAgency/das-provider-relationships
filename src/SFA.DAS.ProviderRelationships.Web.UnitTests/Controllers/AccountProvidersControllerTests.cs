@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -203,7 +204,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Get_WhenGettingGetAction_ThenShouldReturnShowView()
+        public Task Get_WhenAccountHasMultipleAccountLegalEntities_ThenShouldReturnShowView()
         {
             return RunAsync(f => f.Get(), (f, r) =>
             {
@@ -214,6 +215,24 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 model.AccountProvider.Should().BeSameAs(f.GetAccountProviderQueryResult.AccountProvider);
                 model.AccountLegalEntities.Should().BeEquivalentTo(f.GetAccountProviderQueryResult.AccountLegalEntities);
             });
+        }
+
+        [Test]
+        public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
+        {
+            return RunAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Get") &&
+                a.RouteValues["Controller"].Equals("AccountProviderLegalEntities") &&
+                a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountLegalEntities[0].Id) &&
+                a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id)));
+        }
+
+        [Test]
+        public Task Get_WhenAccountHasSingleAccountLegalEntityAndReferrerIsSetPermissions_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
+        {
+            return RunAsync(f => f.Get(1, "SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Index") &&
+                a.RouteValues["Controller"] == null));
         }
     }
 
@@ -393,12 +412,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderViewModel);
         }
 
-        public Task<ActionResult> Get()
+        public Task<ActionResult> Get(int? accountLegalEntities = null, string referrer = null)
         {
             GetAccountProviderRouteValues = new GetAccountProviderRouteValues
             {
                 AccountId = 1,
-                AccountProviderId = 2
+                AccountProviderId = 2,
+                Referrer = referrer
             };
             
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
@@ -407,19 +427,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     Id = 2,
                     ProviderName = "Foo"
                 },
-                new List<AccountLegalEntityBasicDto>
-                {
-                    new AccountLegalEntityBasicDto
+                Enumerable.Range(3, accountLegalEntities ?? 2)
+                    .Select(i => new AccountLegalEntityBasicDto
                     {
-                        Id = 3,
-                        Name = "Foo Ltd"
-                    },
-                    new AccountLegalEntityBasicDto
-                    {
-                        Id = 4,
-                        Name = "Bar Ltd"
-                    }
-                });
+                        Id = i,
+                        Name = i.ToString()
+                    })
+                    .ToList());
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             

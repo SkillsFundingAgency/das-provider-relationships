@@ -10,6 +10,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Validation.Mvc;
 
@@ -164,6 +165,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
+
+            if (model != null && model.AccountLegalEntities.Count == 1)
+            {
+                return routeValues.Referrer == "SetPermissions"
+                    ? RedirectToAction("Index")
+                    : RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountLegalEntityId = model.AccountLegalEntities[0].Id, AccountProviderId = model.AccountProvider.Id });
+            }
             
             return View(model);
         }
