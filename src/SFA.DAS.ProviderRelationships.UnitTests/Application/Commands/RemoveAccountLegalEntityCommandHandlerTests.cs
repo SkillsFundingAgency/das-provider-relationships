@@ -74,9 +74,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public RemoveAccountLegalEntityCommandHandlerTestsFixture()
         {
             Now = DateTime.UtcNow;
-            Account = new AccountBuilder().WithId(1);
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(2).WithAccountId(Account.Id);
-            AccountProvider = new AccountProviderBuilder().WithId(3).WithAccountId(Account.Id).WithProviderUkprn(12345678);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 2).Set(ale => ale.AccountId, Account.Id);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 3).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, 12345678);
             Command = new RemoveAccountLegalEntityCommand(Account.Id, AccountLegalEntity.Id, Now.AddHours(-1));
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
@@ -97,7 +97,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public RemoveAccountLegalEntityCommandHandlerTestsFixture SetAccountLegalEntityDeletedAfterCommand()
         {
-            AccountLegalEntity.SetPropertyTo(ale => ale.Deleted, Now);
+            AccountLegalEntity.Set(ale => ale.Deleted, Now);
             Db.SaveChanges();
             
             return this;
@@ -105,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public RemoveAccountLegalEntityCommandHandlerTestsFixture SetAccountLegalEntityDeletedBeforeCommand()
         {
-            AccountLegalEntity.SetPropertyTo(ale => ale.Deleted, Command.Removed.AddHours(-1));
+            AccountLegalEntity.Set(ale => ale.Deleted, Command.Removed.AddHours(-1));
             Db.SaveChanges();
             
             return this;
@@ -115,11 +115,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             AccountProviderLegalEntities = new List<AccountProviderLegalEntity>
             {
-                new AccountProviderLegalEntityBuilder().WithId(4).WithAccountProvider(AccountProvider),
-                new AccountProviderLegalEntityBuilder().WithId(5).WithAccountProvider(AccountProvider)
+                EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 4).Set(aple => aple.AccountProvider, AccountProvider),
+                EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 5).Set(aple => aple.AccountProvider, AccountProvider),
             };
             
-            AccountLegalEntity.SetPropertyTo(ale => ale.AccountProviderLegalEntities, AccountProviderLegalEntities);
+            AccountLegalEntity.AddRange(ale => ale.AccountProviderLegalEntities, AccountProviderLegalEntities);
             Db.SaveChanges();
             
             return this;

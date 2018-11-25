@@ -104,10 +104,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             UnitOfWorkContext = new UnitOfWorkContext();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new UpdatePermissionsCommand(1, 2, 3, Guid.NewGuid(), new HashSet<Operation> { Operation.CreateCohort });
-            Account = new AccountBuilder().WithId(Command.AccountId);
-            AccountProvider = new AccountProviderBuilder().WithId(Command.AccountProviderId).WithAccountId(Account.Id);
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(Command.AccountLegalEntityId).WithAccountId(Account.Id);
-            User = new UserBuilder().WithRef(Command.UserRef);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Command.AccountId);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Command.AccountProviderId).Set(ap => ap.AccountId, Account.Id);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, Command.AccountLegalEntityId).Set(ale => ale.AccountId, Account.Id);
+            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Command.UserRef);
             
             Db.Accounts.Add(Account);
             Db.AccountProviders.Add(AccountProvider);
@@ -125,12 +125,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public UpdatePermissionsCommandHandlerTestsFixture SetAccountProviderLegalEntity()
         {
-            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder()
-                .WithId(4)
-                .WithAccountProviderId(AccountProvider.Id)
-                .WithAccountLegalEntityId(AccountLegalEntity.Id);
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                .Set(aple => aple.Id, 4)
+                .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
             
-            AccountProvider.SetPropertyTo(ap => ap.AccountProviderLegalEntities, new List<AccountProviderLegalEntity> { AccountProviderLegalEntity });
+            AccountProvider.Add(ap => ap.AccountProviderLegalEntities, AccountProviderLegalEntity);
             
             Db.SaveChanges();
             

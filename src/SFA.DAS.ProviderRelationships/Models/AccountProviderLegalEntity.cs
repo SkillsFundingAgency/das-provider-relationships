@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -7,51 +8,46 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountProviderLegalEntity : Entity
     {
-        public virtual long Id { get; protected set; }
-        public virtual AccountProvider AccountProvider { get; protected set; }
-        public virtual long AccountProviderId { get; protected set; }
-        public virtual AccountLegalEntity AccountLegalEntity { get; protected set; }
-        public virtual long AccountLegalEntityId { get; protected set; }
-        public virtual ICollection<Permission> Permissions { get; protected set; } = new List<Permission>();
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
-        
+        public long Id { get; private set; }
+        public AccountProvider AccountProvider { get; private set; }
+        public long AccountProviderId { get; private set; }
+        public AccountLegalEntity AccountLegalEntity { get; private set; }
+        public long AccountLegalEntityId { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Updated { get; private set; }
+        public IEnumerable<Permission> Permissions => _permissions;
+
+        private readonly List<Permission> _permissions = new List<Permission>();
+
         public AccountProviderLegalEntity(AccountProvider accountProvider, AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
         {
             AccountProvider = accountProvider;
             AccountProviderId = accountProvider.Id;
             AccountLegalEntity = accountLegalEntity;
             AccountLegalEntityId = accountLegalEntity.Id;
-
-            foreach (var operation in grantedOperations)
-            {
-                Permissions.Add(new Permission(this, operation));
-            }
+            
+            _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
             
             Created = DateTime.UtcNow;
             
             Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Created));
         }
 
-        protected AccountProviderLegalEntity()
+        private AccountProviderLegalEntity()
         {
         }
 
         internal void Delete(DateTime deleted)
         {
-            Permissions.Clear();
+            _permissions.Clear();
             
             Publish(() => new DeletedPermissionsEvent(Id, AccountProvider.ProviderUkprn, deleted));
         }
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
-            Permissions.Clear();
-            
-            foreach (var operation in grantedOperations)
-            {
-                Permissions.Add(new Permission(this, operation));
-            }
+            _permissions.Clear();
+            _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
             
             Updated = DateTime.UtcNow;
             

@@ -75,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture()
         {
-            User = new UserBuilder().WithRef(Guid.NewGuid());
+            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
             UnitOfWorkContext = new UnitOfWorkContext();
             ApprenticeshipInfoServiceApiRequest = () => Task.CompletedTask;
             ProviderRelationshipsApiRequest = () => Task.CompletedTask;
@@ -106,7 +106,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
         public HealthCheckTestsFixture SetHealthCheck()
         {
-            HealthCheck = new HealthCheckBuilder().WithId(1);
+            HealthCheck = EntityActivator.CreateInstance<HealthCheck>().Set(h => h.Id, 1);
 
             return this;
         }

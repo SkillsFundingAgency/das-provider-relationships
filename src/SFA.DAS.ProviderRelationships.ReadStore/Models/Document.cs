@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 
         protected Document(short schemaVersion, string schemaType)
         {
-            Metadata = new DocumentMetadata(schemaVersion, schemaType);
+            Metadata = new DocumentMetadata(schemaType, schemaVersion);
         }
         
         protected Document()

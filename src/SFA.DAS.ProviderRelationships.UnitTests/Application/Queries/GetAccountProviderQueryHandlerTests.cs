@@ -102,17 +102,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderQueryHandlerTestsFixture SetAccountProviders()
         {
-            Account = new AccountBuilder().WithId(Query.AccountId);
-            Provider = new ProviderBuilder().WithUkprn(11111111).WithName("Foo");
-            
-            AccountProvider = new AccountProviderBuilder()
-                .WithId(Query.AccountProviderId)
-                .WithAccountId(Account.Id)
-                .WithProviderUkprn(Provider.Ukprn);
-
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(3).WithName("Bar").WithAccountId(Account.Id);
-            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder().WithId(4).WithAccountProviderId(AccountProvider.Id).WithAccountLegalEntityId(AccountLegalEntity.Id);
-            Permission = new PermissionBuilder().WithId(5).WithAccountProviderLegalEntityId(AccountProviderLegalEntity.Id).WithOperation(Operation.CreateCohort);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
+            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 3).Set(ale => ale.Name, "Bar").Set(ale => ale.AccountId, Account.Id);
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 4).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
+            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 5).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

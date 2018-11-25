@@ -64,41 +64,36 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Queries
         {
             Permissions.AddRange(new []
             {
-                new RelationshipBuilder()
-                    .WithAccountId(1)
-                    .WithAccountLegalEntityId(1)
-                    .WithAccountProviderId(1)
-                    .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
-                new RelationshipBuilder()
-                    .WithAccountId(1)
-                    .WithAccountLegalEntityId(2)
-                    .WithAccountProviderId(1)
-                    .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
-                new RelationshipBuilder()
-                    .WithAccountId(2)
-                    .WithAccountLegalEntityId(3)
-                    .WithAccountProviderId(2)
-                    .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
-                new RelationshipBuilder()
-                    .WithAccountId(3)
-                    .WithAccountLegalEntityId(4)
-                    .WithAccountProviderId(3)
-                    .WithUkprn(22222222)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
-                new RelationshipBuilder()
-                    .WithAccountId(4)
-                    .WithAccountLegalEntityId(5)
-                    .WithAccountProviderId(4)
-                    .WithUkprn(11111111)
-                    .WithOperation(Operation.CreateCohort)
-                    .Build(),
+                DocumentActivator.CreateInstance<Relationship>()
+                    .Set(r => r.AccountId, 1)
+                    .Set(r => r.AccountLegalEntityId, 1)
+                    .Set(r => r.AccountProviderId, 1)
+                    .Set(r => r.Ukprn, 11111111)
+                    .Add(r => r.Operations, Operation.CreateCohort),
+                DocumentActivator.CreateInstance<Relationship>()
+                    .Set(r => r.AccountId, 1)
+                    .Set(r => r.AccountLegalEntityId, 2)
+                    .Set(r => r.AccountProviderId, 1)
+                    .Set(r => r.Ukprn, 11111111)
+                    .Add(r => r.Operations, Operation.CreateCohort),
+                DocumentActivator.CreateInstance<Relationship>()
+                    .Set(r => r.AccountId, 2)
+                    .Set(r => r.AccountLegalEntityId, 3)
+                    .Set(r => r.AccountProviderId, 2)
+                    .Set(r => r.Ukprn, 22222222)
+                    .Add(r => r.Operations, Operation.CreateCohort),
+                DocumentActivator.CreateInstance<Relationship>()
+                    .Set(r => r.AccountId, 3)
+                    .Set(r => r.AccountLegalEntityId, 4)
+                    .Set(r => r.AccountProviderId, 3)
+                    .Set(r => r.Ukprn, 22222222)
+                    .Add(r => r.Operations, Operation.CreateCohort),
+                DocumentActivator.CreateInstance<Relationship>()
+                    .Set(r => r.AccountId, 4)
+                    .Set(r => r.AccountLegalEntityId, 5)
+                    .Set(r => r.AccountProviderId, 4)
+                    .Set(r => r.Ukprn, 11111111)
+                    .Add(r => r.Operations, Operation.CreateCohort)
             });
             
             return this;

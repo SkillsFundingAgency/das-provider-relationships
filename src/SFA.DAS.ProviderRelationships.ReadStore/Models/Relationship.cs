@@ -9,34 +9,34 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     internal class Relationship : Document
     {
         [JsonProperty("accountId")]
-        public long AccountId { get; protected set; }
+        public long AccountId { get; private set; }
 
         [JsonProperty("accountLegalEntityId")]
-        public long AccountLegalEntityId { get; protected set; }
+        public long AccountLegalEntityId { get; private set; }
 
         [JsonProperty("accountProviderId")]
-        public long AccountProviderId { get; protected set; }
+        public long AccountProviderId { get; private set; }
 
         [JsonProperty("accountProviderLegalEntityId")]
-        public long AccountProviderLegalEntityId { get; protected set; }
+        public long AccountProviderLegalEntityId { get; private set; }
 
         [JsonProperty("ukprn")]
-        public long Ukprn { get; protected set; }
+        public long Ukprn { get; private set; }
 
         [JsonProperty("operations")]
-        public IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
+        public IEnumerable<Operation> Operations { get; private set; } = new HashSet<Operation>();
 
         [JsonProperty("outboxData")]
         public IEnumerable<OutboxMessage> OutboxData => _outboxData;
 
         [JsonProperty("created")]
-        public DateTime Created { get; protected set; }
+        public DateTime Created { get; private set; }
 
         [JsonProperty("updated")]
-        public DateTime? Updated { get; protected set; }
+        public DateTime? Updated { get; private set; }
 
         [JsonProperty("deleted")]
-        public DateTime? Deleted { get; protected set; }
+        public DateTime? Deleted { get; private set; }
 
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         }
 
         [JsonConstructor]
-        protected Relationship()
+        private Relationship()
         {
         }
 

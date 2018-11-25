@@ -48,8 +48,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
             HealthChecks = new List<HealthCheck>
             {
-                new HealthCheckBuilder().WithId(1),
-                new HealthCheckBuilder().WithId(2)
+                EntityActivator.CreateInstance<HealthCheck>().Set(h => h.Id, 1),
+                EntityActivator.CreateInstance<HealthCheck>().Set(h => h.Id, 2)
             };
             
             Db.HealthChecks.AddRange(HealthChecks);

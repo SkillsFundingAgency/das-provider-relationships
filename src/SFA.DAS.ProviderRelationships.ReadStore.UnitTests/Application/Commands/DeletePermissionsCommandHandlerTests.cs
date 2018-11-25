@@ -50,13 +50,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         {
             Now = DateTime.UtcNow;
             Command = new DeletePermissionsCommand(1, 12345678, Now.AddHours(-1), Guid.NewGuid().ToString());
-            Relationship = new RelationshipBuilder().WithAccountProviderLegalEntityId(1).WithUkprn(Command.Ukprn);
+            Relationship = DocumentActivator.CreateInstance<Relationship>().Set(r => r.AccountProviderLegalEntityId, 1).Set(r => r.Ukprn, Command.Ukprn);
             RelationshipsRepository = new Mock<IRelationshipsRepository>();
             
             Relationships = new List<Relationship>
             {
                 Relationship,
-                new RelationshipBuilder().WithAccountProviderLegalEntityId(2).WithUkprn(Command.Ukprn)
+                DocumentActivator.CreateInstance<Relationship>().Set(r => r.AccountProviderLegalEntityId, 2).Set(r => r.Ukprn, Command.Ukprn)
             };
             
             RelationshipsRepository.SetupCreateQueryToReturn(Relationships);
@@ -71,14 +71,14 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
 
         public DeletePermissionsCommandHandlerTestsFixture SetRelationshipDeletedAfterCommand()
         {
-            Relationship.SetPropertyTo(ale => ale.Deleted, Now);
+            Relationship.Set(ale => ale.Deleted, Now);
             
             return this;
         }
 
         public DeletePermissionsCommandHandlerTestsFixture SetRelationshipDeletedBeforeCommand()
         {
-            Relationship.SetPropertyTo(ale => ale.Deleted, Command.Deleted.AddHours(-1));
+            Relationship.Set(ale => ale.Deleted, Command.Deleted.AddHours(-1));
             
             return this;
         }

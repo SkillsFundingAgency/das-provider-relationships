@@ -4,10 +4,10 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class Permission : Entity
     {
-        public virtual long Id { get; protected set; }
-        public virtual AccountProviderLegalEntity AccountProviderLegalEntity { get; protected set; }
-        public virtual long AccountProviderLegalEntityId { get; protected set; }
-        public virtual Operation Operation { get; protected set; }
+        public long Id { get; private set; }
+        public AccountProviderLegalEntity AccountProviderLegalEntity { get; private set; }
+        public long AccountProviderLegalEntityId { get; private set; }
+        public Operation Operation { get; private set; }
         
         public Permission(AccountProviderLegalEntity accountProviderLegalEntity, Operation operation)
         {
@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Operation = operation;
         }
 
-        protected Permission()
+        private Permission()
         {
         }
     }

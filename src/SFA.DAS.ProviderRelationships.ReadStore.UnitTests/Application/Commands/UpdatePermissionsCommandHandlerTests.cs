@@ -119,52 +119,48 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
 
         public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationship()
         {
-            Relationships.Add(CreateBasicRelationship()
-                .Build());
+            Relationships.Add(CreateBasicRelationship());
+            
             return this;
         }
 
         public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasDeletedEarlierThanNewMessage()
         {
-            Relationships.Add(CreateBasicRelationship()
-                .WithDeleted(Updated.AddHours(-1))
-                .Build());
+            Relationships.Add(CreateBasicRelationship().Set(r => r.Deleted, Updated.AddHours(-1)));
+            
             return this;
         }
 
         public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasDeletedLaterThanNewMessage()
         {
-            Relationships.Add(CreateBasicRelationship()
-                .WithDeleted(Updated.AddHours(1))
-                .Build());
+            Relationships.Add(CreateBasicRelationship().Set(r => r.Deleted, Updated.AddHours(1)));
+            
             return this;
         }
 
         public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage()
         {
-            Relationships.Add(CreateBasicRelationship()
-                .WithUpdated(Updated.AddHours(1))
-                .Build());
+            Relationships.Add(CreateBasicRelationship().Set(r => r.Updated, Updated.AddHours(1)));
+            
             return this;
         }
 
         public UpdatePermissionsCommandHandlerTestsFixture FindMatchingRelationshipWithUpdateMessageAlreadyProcessed()
         {
-            Relationships.Add(CreateBasicRelationship()
-                .WithOutboxMessage(new OutboxMessage(UpdateMessageId, Updated))
-                .Build());
+            Relationships.Add(CreateBasicRelationship().Add(r => r.OutboxData, new OutboxMessage(UpdateMessageId, Updated)));
+            
             return this;
         }
 
-        private RelationshipBuilder CreateBasicRelationship()
+        private Relationship CreateBasicRelationship()
         {
-            return new RelationshipBuilder()
-                .WithUkprn(Ukprn)
-                .WithAccountProviderId(AccountProviderId)
-                .WithAccountId(AccountId)
-                .WithAccountLegalEntityId(AccountLegalEntityId)
-                .WithAccountProviderLegalEntityId(AccountProviderLegalEntityId)
-                .WithOutboxMessage(new OutboxMessage(CreateMessageId, Created));
+            return DocumentActivator.CreateInstance<Relationship>()
+                .Set(r => r.Ukprn, Ukprn)
+                .Set(r => r.AccountProviderId, AccountProviderId)
+                .Set(r => r.AccountId, AccountId)
+                .Set(r => r.AccountLegalEntityId, AccountLegalEntityId)
+                .Set(r => r.AccountProviderLegalEntityId, AccountProviderLegalEntityId)
+                .Add(r => r.OutboxData, new OutboxMessage(CreateMessageId, Created));
         }
     }
 }
