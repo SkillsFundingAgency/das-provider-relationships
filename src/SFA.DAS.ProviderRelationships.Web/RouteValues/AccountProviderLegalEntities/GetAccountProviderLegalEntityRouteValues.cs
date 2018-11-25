@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
+namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 {
-    public class UpdateAccountProviderLegalEntityRouteValues : IAuthorizationContextModel
+    public class GetAccountProviderLegalEntityRouteValues : IAuthorizationContextModel
     {
         [Required]
         public long? AccountId { get; set; }

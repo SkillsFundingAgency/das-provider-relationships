@@ -16,6 +16,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 using SFA.DAS.Testing;
 

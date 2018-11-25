@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
+namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
 {
     public class AddAccountProviderRouteValues
     {

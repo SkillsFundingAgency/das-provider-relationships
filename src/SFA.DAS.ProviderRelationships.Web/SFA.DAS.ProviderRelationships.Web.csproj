@@ -135,25 +135,25 @@
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Mappings\AccountProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Routing\RouteDataKeys.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntityRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\AccountProvidersRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\AddAccountProviderRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\AddedAccountProviderRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\AlreadyAddedAccountProviderRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\GetAccountProviderRouteValues.cs" />
+    <Compile Include="RouteValues\HealthCheck\HealthCheckRouteValues.cs" />
+    <Compile Include="RouteValues\RouteValueKeys.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\OperationViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />
-    <Compile Include="ViewModels\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\AccountProvidersRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\AddedAccountProviderRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\AddAccountProviderRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviders\AddAccountProviderViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\GetAccountProviderRouteValues.cs" />
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
