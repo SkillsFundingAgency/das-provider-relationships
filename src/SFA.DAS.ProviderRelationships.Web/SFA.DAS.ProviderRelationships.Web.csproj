@@ -137,6 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntityRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AccountProvidersRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AddAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AddedAccountProviderRouteValues.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\OperationViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
@@ -189,6 +191,7 @@
     </Content>
     <Content Include="Views\AccountProviderLegalEntities\Get.cshtml" />
     <Content Include="Views\AccountProviderLegalEntities\Update.cshtml" />
+    <Content Include="Views\AccountProviderLegalEntities\Updated.cshtml" />
     <Content Include="Views\HealthCheck\Index.cshtml" />
     <Content Include="Views\AccountProviders\Add.cshtml" />
     <Content Include="Views\AccountProviders\Added.cshtml" />

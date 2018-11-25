@@ -83,8 +83,18 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
             var accountProviderLegalEntityId = await _mediator.Send(command);
             
-            //return RedirectToAction("Updated", new { AccountProviderLegalEntityId = accountProviderLegalEntityId });
-            return RedirectToAction("Get", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId });
+            return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderLegalEntityId = accountProviderLegalEntityId });
+        }
+
+        [HttpNotFoundForNullModel]
+        [Route("updated")]
+        public ActionResult Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
+        {
+            var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderLegalEntityId.Value);
+            var result = _mediator.Send(query);
+            var model = _mapper.Map<UpdatedAccountProviderLegalEntityViewModel>(result);
+            
+            return View(model);
         }
     }
 }
