@@ -7,15 +7,6 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
-    // why ApiClientBase wasn't suitable...
-    // doesn't insert the response body into the exception when it gets returned on error (nor does it log the response body, so blinds you to the root cause (if it's supplied))!
-    // only supports fetching the response body as a string, and doesn't allow getting it as a type
-    // fetches the response body on error for no reason
-    // uses inheritance rather than composition
-    // is not test friendly
-    // doesn't actually give you much
-    // RestClient fixes those issues, and adds misc improvements
-    
     public class RestClient : IRestClient
     {
         private readonly HttpClient _httpClient;
