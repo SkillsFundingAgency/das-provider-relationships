@@ -15,8 +15,4 @@
     <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore.Configuration\SFA.DAS.ProviderRelationships.ReadStore.Configuration.csproj" />
-  </ItemGroup>
-
 </Project>

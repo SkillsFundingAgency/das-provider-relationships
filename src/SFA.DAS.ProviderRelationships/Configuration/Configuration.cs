@@ -1,8 +1,7 @@
 using System.Collections.Specialized;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
-using SFA.DAS.ProviderRelationships.Environment;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {

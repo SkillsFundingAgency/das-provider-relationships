@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;

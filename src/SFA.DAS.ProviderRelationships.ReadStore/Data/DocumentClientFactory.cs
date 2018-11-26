@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
+using SFA.DAS.AutoConfiguration;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {

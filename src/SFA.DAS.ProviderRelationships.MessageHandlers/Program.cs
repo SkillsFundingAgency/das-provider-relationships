@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers

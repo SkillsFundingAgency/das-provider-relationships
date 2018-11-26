@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers

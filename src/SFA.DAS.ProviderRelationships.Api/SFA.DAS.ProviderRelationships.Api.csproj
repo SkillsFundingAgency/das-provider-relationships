@@ -126,10 +126,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore.Configuration\SFA.DAS.ProviderRelationships.ReadStore.Configuration.csproj">
-      <Project>{CC910810-CB95-4174-ABFA-81F137E741EF}</Project>
-      <Name>SFA.DAS.ProviderRelationships.ReadStore.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj">
       <Project>{c7fbd758-8531-4e65-be21-6f013c6c6b25}</Project>
       <Name>SFA.DAS.ProviderRelationships</Name>

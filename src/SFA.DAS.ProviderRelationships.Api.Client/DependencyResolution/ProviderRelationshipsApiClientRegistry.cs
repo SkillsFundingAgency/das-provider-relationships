@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
-using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using StructureMap;
 
