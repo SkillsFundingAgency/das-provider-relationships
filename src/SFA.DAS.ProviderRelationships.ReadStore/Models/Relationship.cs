@@ -65,12 +65,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
             ProcessMessage(messageId, deleted, () =>
             {
-                if (IsDeletedDateChronological(deleted))
-                {
-                    EnsureRelationshipHasNotAlreadyBeenDeleted();
-                
-                    Deleted = deleted;
-                }
+                EnsureRelationshipHasNotBeenDeleted();
+            
+                Deleted = deleted;
             });
         }
 
@@ -78,8 +75,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         {
             ProcessMessage(messageId, updated, () =>
             {
-                if (IsUpdatedDateChronological(updated))
+                if (IsUpdatedPermissionsDateChronological(updated))
                 {
+                    EnsureRelationshipHasNotBeenDeleted();
+                    
                     Operations = grantedOperations;
                     Updated = updated;
                 }
@@ -96,39 +95,31 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             _outboxData.Add(new OutboxMessage(messageId, created));
         }
 
-        private void EnsureRelationshipHasNotAlreadyBeenDeleted()
+        private void EnsureRelationshipHasNotBeenDeleted()
         {
             if (Deleted != null)
             {
-                throw new InvalidOperationException("Requires relationship has not already been deleted");
+                throw new InvalidOperationException("Requires relationship has not been deleted");
             }
         }
 
-        private bool IsDeletedDateChronological(DateTime deleted)
-        {
-            return Deleted == null || deleted > Deleted.Value;
-        }
-
-        private bool IsMessageAlreadyProcessed(string messageId)
+        private bool IsMessageProcessed(string messageId)
         {
             return OutboxData.Any(m => m.MessageId == messageId);
         }
 
-        private bool IsUpdatedDateChronological(DateTime updated)
+        private bool IsUpdatedPermissionsDateChronological(DateTime updated)
         {
-            return updated > Created && (Updated == null || updated > Updated.Value);
+            return updated > Created && (Updated == null || updated > Updated.Value) && (Deleted == null || updated > Deleted.Value);
         }
 
         private void ProcessMessage(string messageId, DateTime created, Action action)
         {
-            if (IsMessageAlreadyProcessed(messageId))
+            if (!IsMessageProcessed(messageId))
             {
-                return;
+                action();
+                AddOutboxMessage(messageId, created);
             }
-
-            AddOutboxMessage(messageId, created);
-            
-            action();
         }
     }
 }

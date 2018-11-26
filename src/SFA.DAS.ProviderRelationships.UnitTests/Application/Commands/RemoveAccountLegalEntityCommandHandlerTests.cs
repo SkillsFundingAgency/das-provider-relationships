@@ -22,38 +22,32 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     public class RemoveAccountLegalEntityCommandHandlerTests : FluentTest<RemoveAccountLegalEntityCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndAccountLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
+        public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
             return RunAsync(f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Command.Removed));
         }
         
         [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldDeleteAccountProviderLegalEntities()
+        public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldDeleteAccountProviderLegalEntities()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), f => f.AccountLegalEntity.AccountProviderLegalEntities.Should().BeEmpty());
         }
         
         [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldPublishDeletedPermissionsEvents()
+        public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldPublishDeletedPermissionsEvents()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().Should().AllBeOfType<DeletedPermissionsEvent>()
                 .And.BeEquivalentTo(f.AccountProviderLegalEntities.Select(aple => new DeletedPermissionsEvent(aple.Id, f.AccountProvider.ProviderUkprn, f.Command.Removed))));
         }
         
         [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesDoNotExist_ThenShouldNotPublishDeletedPermissionsEvent()
+        public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesDoNotExist_ThenShouldNotPublishDeletedPermissionsEvent()
         {
             return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().BeNull());
         }
         
         [Test]
-        public Task Handle_WhenCommandIsHandledNonChronologically_ThenShouldNotDeleteAccountLegalEntity()
-        {
-            return RunAsync(f => f.SetAccountLegalEntityDeletedAfterCommand(), f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Now));
-        }
-        
-        [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndAccountLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
+        public Task Handle_WhenAccountLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
             return RunAsync(f => f.SetAccountLegalEntityDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
@@ -93,14 +87,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             await Handler.Handle(Command, CancellationToken.None);
             await Db.SaveChangesAsync();
-        }
-
-        public RemoveAccountLegalEntityCommandHandlerTestsFixture SetAccountLegalEntityDeletedAfterCommand()
-        {
-            AccountLegalEntity.Set(ale => ale.Deleted, Now);
-            Db.SaveChanges();
-            
-            return this;
         }
 
         public RemoveAccountLegalEntityCommandHandlerTestsFixture SetAccountLegalEntityDeletedBeforeCommand()

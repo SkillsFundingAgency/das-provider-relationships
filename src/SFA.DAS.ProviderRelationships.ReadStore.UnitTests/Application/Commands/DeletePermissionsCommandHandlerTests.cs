@@ -19,19 +19,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
     internal class DeletePermissionsCommandHandlerTests : FluentTest<DeletePermissionsCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndRelationshipHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
+        public Task Handle_WhenRelationshipHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
             return RunAsync(f => f.Handle(), f => f.Relationship.Deleted.Should().Be(f.Command.Deleted));
         }
         
         [Test]
-        public Task Handle_WhenCommandIsHandledNonChronologically_ThenShouldNotDeleteRelationship()
-        {
-            return RunAsync(f => f.SetRelationshipDeletedAfterCommand(), f => f.Handle(), f => f.Relationship.Deleted.Should().Be(f.Now));
-        }
-        
-        [Test]
-        public Task Handle_WhenCommandIsHandledChronologicallyAndRelationshipHasAlreadyBeenDeleted_ThenShouldThrowException()
+        public Task Handle_WhenRelationshipHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
             return RunAsync(f => f.SetRelationshipDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }

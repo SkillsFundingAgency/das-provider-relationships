@@ -35,6 +35,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             if (IsUpdatedNameDateChronological(updated) && IsUpdatedNameDifferent(name))
             {
+                EnsureAccountLegalEntityHasNotBeenDeleted();
+                
                 Name = name;
                 Updated = updated;
             }
@@ -42,37 +44,29 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         internal void Delete(DateTime deleted)
         {
-            if (IsDeletedDateChronological(deleted))
-            {
-                EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+            EnsureAccountLegalEntityHasNotBeenDeleted();
 
-                foreach (var accountProviderLegalEntity in _accountProviderLegalEntities)
-                {
-                    accountProviderLegalEntity.Delete(deleted);
-                }
-                
-                _accountProviderLegalEntities.Clear();
-                
-                Deleted = deleted;
+            foreach (var accountProviderLegalEntity in _accountProviderLegalEntities)
+            {
+                accountProviderLegalEntity.Delete(deleted);
             }
+            
+            _accountProviderLegalEntities.Clear();
+            
+            Deleted = deleted;
         }
 
-        private void EnsureAccountLegalEntityHasNotAlreadyBeenDeleted()
+        private void EnsureAccountLegalEntityHasNotBeenDeleted()
         {
             if (Deleted != null)
             {
-                throw new InvalidOperationException("Requires account legal entity has not already been deleted");
+                throw new InvalidOperationException("Requires account legal entity has not been deleted");
             }
-        }
-
-        private bool IsDeletedDateChronological(DateTime deleted)
-        {
-            return Deleted == null || deleted > Deleted.Value;
         }
 
         private bool IsUpdatedNameDateChronological(DateTime updated)
         {
-            return Updated == null || updated > Updated.Value;
+            return (Updated == null || updated > Updated.Value) && (Deleted == null || updated > Deleted.Value);
         }
 
         private bool IsUpdatedNameDifferent(string name)
