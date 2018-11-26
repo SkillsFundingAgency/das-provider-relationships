@@ -122,7 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 case "GoToHomepage":
@@ -151,7 +151,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 default:

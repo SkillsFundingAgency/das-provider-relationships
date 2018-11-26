@@ -5,12 +5,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
     public class GetUpdatedAccountProviderLegalEntityQuery : IRequest<GetUpdatedAccountProviderLegalEntityQueryResult>
     {
         public long AccountId { get; }
-        public long AccountProviderLegalEntityId { get; }
+        public long AccountProviderId { get; }
+        public long AccountLegalEntityId { get; }
 
-        public GetUpdatedAccountProviderLegalEntityQuery(long accountId, long accountProviderLegalEntityId)
+        public GetUpdatedAccountProviderLegalEntityQuery(long accountId, long accountProviderId, long accountLegalEntityId)
         {
             AccountId = accountId;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+            AccountProviderId = accountProviderId;
+            AccountLegalEntityId = accountLegalEntityId;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,8 +11,10 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 using SFA.DAS.Validation.Mvc;
 
@@ -23,11 +26,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IEmployerUrls _employerUrls;
 
-        public AccountProviderLegalEntitiesController(IMediator mediator, IMapper mapper)
+        public AccountProviderLegalEntitiesController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _employerUrls = employerUrls;
         }
 
         [HttpNotFoundForNullModel]
@@ -81,20 +86,39 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             var operations = model.Operations.Where(o => o.IsEnabled).Select(o => o.Value).ToHashSet();
             var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
-            var accountProviderLegalEntityId = await _mediator.Send(command);
             
-            return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderLegalEntityId = accountProviderLegalEntityId });
+            await _mediator.Send(command);
+            
+            return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
 
         [HttpNotFoundForNullModel]
         [Route("updated")]
-        public ActionResult Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
+        public async Task<ActionResult> Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
         {
-            var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderLegalEntityId.Value);
-            var result = _mediator.Send(query);
+            var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
+            var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdatedAccountProviderLegalEntityViewModel>(result);
             
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("updated")]
+        public ActionResult Updated(UpdatedAccountProviderLegalEntityViewModel model)
+        {
+            switch (model.Choice)
+            {
+                case "SetPermissions":
+                    return RedirectToAction("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
+                case "AddTrainingProvider":
+                    return RedirectToAction("Find", "AccountProviders");
+                case "GoToHomepage":
+                    return Redirect(_employerUrls.Account());
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
+            }
         }
     }
 }

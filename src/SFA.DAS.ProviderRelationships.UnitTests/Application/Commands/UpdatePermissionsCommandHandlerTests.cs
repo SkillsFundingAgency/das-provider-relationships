@@ -77,12 +77,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     e.GrantedOperations == f.Command.GrantedOperations &&
                     e.Updated == f.AccountProviderLegalEntity.Updated));
         }
-        
-        [Test]
-        public Task Handle_WhenHandlingCreateOrUpdatePermissionsCommand_ThenShouldReturnAccountLegalEntityId()
-        {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), (f, r) => r.Should().Be(f.AccountProviderLegalEntity.Id));
-        }
     }
 
     public class UpdatePermissionsCommandHandlerTestsFixture
@@ -95,7 +89,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public DateTime Now { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public UpdatePermissionsCommand Command { get; set; }
-        public IRequestHandler<UpdatePermissionsCommand, long> Handler { get; set; }
+        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         
         public UpdatePermissionsCommandHandlerTestsFixture()
@@ -118,9 +112,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Handler = new UpdatePermissionsCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
-        public Task<long> Handle()
+        public async Task Handle()
         {
-            return Handler.Handle(Command, CancellationToken.None);
+            await Handler.Handle(Command, CancellationToken.None);
+            await Db.SaveChangesAsync();
         }
 
         public UpdatePermissionsCommandHandlerTestsFixture SetAccountProviderLegalEntity()

@@ -12,7 +12,7 @@
             </h1>
             <div class="govuk-success-summary__body">
                 <p>
-                    You've successfully updated permissions for <span class="govuk-!-font-weight-bold">_</span><br/>
+                    You've successfully updated permissions for <span class="govuk-!-font-weight-bold">@Model.AccountProviderLegalEntity.ProviderName</span><br/>
                     This training provider will receive notification shortly.
                 </p>
             </div>
@@ -31,22 +31,25 @@
                         @Html.ValidationMessageFor(m => m.Choice)
                     </span>
                     <div class="govuk-radios">
+                        @if (Model.AccountLegalEntityCount > 1)
+                        {
+                            <div class="govuk-radios__item">
+                                @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
+                                <label class="govuk-label govuk-radios__label" for="choice-1">
+                                    Set permissions for another organisation
+                                </label>
+                            </div>
+                        }
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="choice-1">
-                                Set permissions for another organisation
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "GoToHomepage", new { id = "choice-2", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "AddTrainingProvider", new { id = "choice-2", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-2">
-                                Go to the Homepage
+                                Add another training provider
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "AddTrainingProvider", new { id = "choice-3", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "GoToHomepage", new { id = "choice-3", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-3">
-                                Add another training provider
+                                Go to the Homepage
                             </label>
                         </div>
                     </div>

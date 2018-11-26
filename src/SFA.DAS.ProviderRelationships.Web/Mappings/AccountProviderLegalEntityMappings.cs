@@ -28,6 +28,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())
                 .ForMember(d => d.Operations, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore());
+
+            CreateMap<GetUpdatedAccountProviderLegalEntityQueryResult, UpdatedAccountProviderLegalEntityViewModel>()
+                .ForMember(d => d.AccountProviderId, o => o.Ignore())
+                .ForMember(d => d.Choice, o => o.Ignore());
         }
     }
 }

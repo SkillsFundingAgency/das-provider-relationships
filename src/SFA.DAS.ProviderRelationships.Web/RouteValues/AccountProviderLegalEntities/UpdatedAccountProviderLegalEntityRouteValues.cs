@@ -9,6 +9,9 @@ namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEnti
         public long? AccountId { get; set; }
 
         [Required]
-        public long? AccountProviderLegalEntityId { get; set; }
+        public long? AccountProviderId { get; set; }
+
+        [Required]
+        public long? AccountLegalEntityId { get; set; }
     }
 }

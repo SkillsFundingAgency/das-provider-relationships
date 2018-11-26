@@ -157,7 +157,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeIndexAction()
+        public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeUrl()
         {
             Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url == $"https://localhost/accounts/ABC123/teams"));

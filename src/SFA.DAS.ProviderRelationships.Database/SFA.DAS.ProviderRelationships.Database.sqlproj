@@ -64,6 +64,7 @@
     <Folder Include="StoredProcedures\" />
     <Folder Include="Scripts\PreDeployment\" />
     <Folder Include="Scripts\PostDeployment\" />
+    <Folder Include="Scripts\Manual\" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeployment\PreDeployment.sql" />
