@@ -15,7 +15,9 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
             config.UseStructureMap(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<AuthenticationRegistry>();
                 //c.AddRegistry<DataRegistry>();
+                //todo: use ReadStoreDataRegistry
                 c.AddRegistry<ApiDataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<EnvironmentRegistry>();
@@ -23,9 +25,9 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();
                 c.AddRegistry<MediatorRegistry>();
-                c.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
-                c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
-                c.AddRegistry<StartupRegistry>();
+//                c.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
+//                c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
+//                c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
         }

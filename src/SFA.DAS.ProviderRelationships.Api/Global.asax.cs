@@ -16,12 +16,12 @@ namespace SFA.DAS.ProviderRelationships.Api
             GlobalConfiguration.Configure(WebApiConfig.Register);
             IoC.Initialize(GlobalConfiguration.Configuration);
             TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
-            GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
+            //GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_End()
         {
-            GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StopAsync().GetAwaiter().GetResult();
+            //GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StopAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_Error(object sender, EventArgs e)
