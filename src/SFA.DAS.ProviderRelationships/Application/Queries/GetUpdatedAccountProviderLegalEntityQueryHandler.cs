@@ -34,9 +34,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 return null;
             }
             
-            var accountLegalEntityCount = await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
+            var accountLegalEntitiesCount = await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
             
-            return new GetUpdatedAccountProviderLegalEntityQueryResult(accountProviderLegalEntity, accountLegalEntityCount);
+            return new GetUpdatedAccountProviderLegalEntityQueryResult(accountProviderLegalEntity, accountLegalEntitiesCount);
         }
     }
 }
