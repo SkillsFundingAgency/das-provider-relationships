@@ -34,9 +34,25 @@
             <tbody class="govuk-table__body">
                 @foreach (var accountLegalEntity in Model.AccountLegalEntities)
                 {
+                    var operations = Model.GetOperationsByAccountLegalEntityId(accountLegalEntity.Id);
+                    
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell">@accountLegalEntity.Name</td>
-                        <td class="govuk-table__cell">No permissions set</td>
+                        <td class="govuk-table__cell">
+                            @if (operations.Any())
+                            {
+                                <ul>
+                                    @foreach (var operation in operations)
+                                    {
+                                        <li>@operation.GetDescription()</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                @:No permissions set
+                            }
+                        </td>
                         <td class="govuk-table__cell"><a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a></td>
                     </tr>
                 }
