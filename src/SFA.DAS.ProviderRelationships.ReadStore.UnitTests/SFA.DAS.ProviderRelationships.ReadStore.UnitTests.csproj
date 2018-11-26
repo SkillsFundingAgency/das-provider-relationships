@@ -14,6 +14,7 @@
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.1" />
         <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.1" />
         <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
