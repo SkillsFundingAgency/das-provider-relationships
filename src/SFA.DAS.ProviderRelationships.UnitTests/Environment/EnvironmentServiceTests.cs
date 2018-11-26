@@ -33,22 +33,41 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         {
             Run(f => f.SetCurrent(current), f => f.IsCurrent(toCheck), (f, r) => r.Should().Be(expected));
         }
+        
+        [Test]
+        public void WhenGetVariableCalledAndAVariableExists_ThenShouldReturnCorrectValue()
+        {
+            Run(f => f.SetVariable(f.ExpectedKey, f.ExpectedValue), f => f.GetVariable(f.ExpectedKey), (f, r) => r.Should().Be(f.ExpectedValue));
+        }
     }
 
     public class EnvironmentTestsFixture
     {
         public EnvironmentService EnvironmentService { get; set; }
         public NameValueCollection AppSettings { get; set; }
+        public string ExpectedKey { get; set; }
+        public string ExpectedValue { get; set; }
+        public string ExpectedPrefix { get; set; }
         
         public EnvironmentTestsFixture()
         {
             AppSettings = new NameValueCollection();
+            ExpectedKey = "keyone";
+            ExpectedValue = "valueone";
+            ExpectedPrefix = "AppSettings_";
+            EnvironmentService = new EnvironmentService();
         }
 
-        public void SetCurrent(DasEnv environment)
+        public EnvironmentTestsFixture SetCurrent(DasEnv environment)
         {
             System.Environment.SetEnvironmentVariable("AppSettings_EnvironmentName", environment.ToString());
-            EnvironmentService = new EnvironmentService();
+            return this;
+        }
+
+        public EnvironmentTestsFixture SetVariable(string key, string value)
+        {
+            System.Environment.SetEnvironmentVariable(ExpectedPrefix + key, value);
+            return this;
         }
 
         public DasEnv Current()
@@ -59,6 +78,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Environment
         public bool IsCurrent(params DasEnv[] environment)
         {
             return EnvironmentService.IsCurrent(environment);
-        }        
+        }
+
+        public string GetVariable(string variableName)
+        {
+            return EnvironmentService.GetVariable(variableName);
+        }
     }
 }
