@@ -4,7 +4,6 @@ using System.Web.Http;
 using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Startup;
 using WebApi.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api
@@ -16,12 +15,10 @@ namespace SFA.DAS.ProviderRelationships.Api
             GlobalConfiguration.Configure(WebApiConfig.Register);
             IoC.Initialize(GlobalConfiguration.Configuration);
             TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
-            //GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_End()
         {
-            //GlobalConfiguration.Configuration.DependencyResolver.GetService<IStartup>().StopAsync().GetAwaiter().GetResult();
         }
 
         protected void Application_Error(object sender, EventArgs e)
