@@ -167,9 +167,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
 
-            if (model?.AccountLegalEntities.Count == 1)
+            if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {
-                return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountLegalEntityId = model.AccountLegalEntities[0].Id, AccountProviderId = model.AccountProvider.Id });
+                return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
             
             return View(model);

@@ -12,6 +12,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -214,7 +215,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
 
                 model.AccountProvider.Should().BeSameAs(f.GetAccountProviderQueryResult.AccountProvider);
-                model.AccountLegalEntities.Should().BeEquivalentTo(f.GetAccountProviderQueryResult.AccountLegalEntities);
             });
         }
 
@@ -224,8 +224,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Get") &&
                 a.RouteValues["Controller"].Equals("AccountProviderLegalEntities") &&
-                a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountLegalEntities[0].Id) &&
-                a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id)));
+                a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&
+                a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.AccountLegalEntities[0].Id)));
         }
     }
 
@@ -419,15 +419,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountProviderDto
                 {
                     Id = 2,
-                    ProviderName = "Foo"
-                },
-                Enumerable.Range(3, accountLegalEntitiesCount ?? 2)
-                    .Select(i => new AccountLegalEntityBasicDto
-                    {
-                        Id = i,
-                        Name = i.ToString()
-                    })
-                    .ToList());
+                    ProviderName = "Foo",
+                    AccountLegalEntities = Enumerable.Range(3, accountLegalEntitiesCount ?? 2)
+                        .Select(i => new AccountLegalEntityDto
+                        {
+                            Id = i,
+                            Name = i.ToString(),
+                            Operations = new List<Operation>
+                            {
+                                Operation.CreateCohort
+                            }
+                        })
+                        .ToList()
+                });
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             

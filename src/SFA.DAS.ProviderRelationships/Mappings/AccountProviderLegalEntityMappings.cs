@@ -1,3 +1,4 @@
+using System.Linq;
 using AutoMapper;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Models;
@@ -11,7 +12,8 @@ namespace SFA.DAS.ProviderRelationships.Mappings
             CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityBasicDto>()
                 .ForMember(d => d.ProviderName, o => o.MapFrom(s => s.AccountProvider.Provider.Name));
                 
-            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityDto>();
+            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityDto>()
+                .ForMember(d => d.Operations, o => o.MapFrom(s => s.Permissions.Select(p => p.Operation)));
         }
     }
 }

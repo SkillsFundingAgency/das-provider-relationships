@@ -49,13 +49,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     {
                         Id = f.AccountProviderLegalEntity.Id,
                         AccountLegalEntityId = f.AccountLegalEntity.Id,
-                        Permissions = new List<PermissionDto>
+                        Operations = new List<Operation>
                         {
-                            new PermissionDto
-                            {
-                                Id = f.Permission.Id,
-                                Operation = f.Permission.Operation
-                            }
+                            f.Permission.Operation
                         }
                     });
                 

@@ -32,17 +32,15 @@
                 </tr>
             </thead>
             <tbody class="govuk-table__body">
-                @foreach (var accountLegalEntity in Model.AccountLegalEntities)
+                @foreach (var accountLegalEntity in Model.AccountProvider.AccountLegalEntities)
                 {
-                    var operations = Model.GetOperationsByAccountLegalEntityId(accountLegalEntity.Id);
-                    
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell das-table__cell--vertical-align-top">@accountLegalEntity.Name</td>
                         <td class="govuk-table__cell">
-                            @if (operations.Any())
+                            @if (accountLegalEntity.Operations.Any())
                             {
                             <ul class="govuk-list das-list--comma-after govuk-body govuk-!-margin-bottom-0">
-                                @foreach (var operation in operations)
+                                @foreach (var operation in accountLegalEntity.Operations)
                                 {
                                     <li>@operation.GetDescription()</li>
                                 }

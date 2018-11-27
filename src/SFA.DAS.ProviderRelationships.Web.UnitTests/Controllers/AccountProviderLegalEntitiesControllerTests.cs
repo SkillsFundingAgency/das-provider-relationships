@@ -197,12 +197,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountLegalEntityBasicDto(),
                 new AccountProviderLegalEntityDto
                 {
-                    Permissions = new List<PermissionDto>
+                    Operations = new List<Operation>
                     {
-                        new PermissionDto
-                        {
-                            Operation = Operation.CreateCohort
-                        }
+                        Operation.CreateCohort
                     }
                 },
                 2);
@@ -260,12 +257,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountLegalEntityBasicDto(),
                 new AccountProviderLegalEntityDto
                 {
-                    Permissions = new List<PermissionDto>
+                    Operations = new List<Operation>
                     {
-                        new PermissionDto
-                        {
-                            Operation = Operation.CreateCohort
-                        }
+                        Operation.CreateCohort
                     }
                 },
                 2);

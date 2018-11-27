@@ -34,13 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
                 return null;
             }
 
-            var accountLegalEntities = await _db.Value.AccountLegalEntities
-                .Where(ale => ale.Account.Id == request.AccountId)
-                .OrderBy(ale => ale.Name)
-                .ProjectTo<AccountLegalEntityBasicDto>(_configurationProvider)
-                .ToListAsync(cancellationToken);
-
-            return new GetAccountProviderQueryResult(accountProvider, accountLegalEntities);
+            return new GetAccountProviderQueryResult(accountProvider);
         }
     }
 }
