@@ -34,6 +34,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
         public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters) // , CancellationToken cancellationToken)
         {
+            //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
+            //todo: in general, include error response in body, something like {ErrorCode: x, ErrorMessage: ""}
+
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
             // it might not be most performant though
             // could store bad results and only return them if we don't find the provider

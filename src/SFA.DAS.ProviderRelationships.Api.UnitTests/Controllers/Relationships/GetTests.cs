@@ -24,8 +24,6 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenValidUkprnAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
         {
             return RunAsync(f => f.CallGet(), 
-//                (f, r) => r.Should().NotBeNull()
-//                    .And.Match<OkNegotiatedContentResult<RelationshipsResponse>>(ok => ok.Content.Relationships != null));
                 (f, r) =>
                 {
                     r.Should().NotBeNull();
@@ -34,8 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
                 });
         }
 
-        //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
-        //todo: in general, include error response in body, something like {ErrorCode: x, ErrorMessage: ""}
         [Test]
         public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
         {
@@ -51,8 +47,10 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         }
 
         [Test]
-        public void WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
+        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
         {
+            return RunAsync(f => f.SetOperation("Vasectomy"), f => f.CallGet(),
+                                (f, r) => r.Should().NotBeNull().And.BeOfType<BadRequestResult>());
         }
     }
 
