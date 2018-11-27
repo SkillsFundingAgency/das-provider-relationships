@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using MediatR;
@@ -30,7 +31,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// operation: Filter relationships to only those which have this permission
         /// </param>
         [Route]
-        public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters)
+        //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
+        public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters) // , CancellationToken cancellationToken)
         {
             // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
             // it might not be most performant though
@@ -58,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
                 return BadRequest();
             
-            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, operation));
+            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, operation)); //, cancellationToken);
 
             return Ok(new RelationshipsResponse {Relationships = result.Relationships});
         }
