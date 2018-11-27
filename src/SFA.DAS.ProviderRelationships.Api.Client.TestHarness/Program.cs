@@ -41,17 +41,18 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                     var relationshipsRepository = container.GetInstance<IRelationshipsRepository>();
 
                     var relationship = new Relationship(
-                        ukprn: 2001877,
-                        accountId: 11222,
-                        accountLegalEntityId: 113333,
-                        accountProviderId: 111234,
-                        operations:new HashSet<Operation>(),
+                        accountId: 1,
+                        accountLegalEntityId: 3,
+                        accountProviderId: 4,
+                        accountProviderLegalEntityId: 34,
+                        ukprn: 12345678,
+                        grantedOperations: new HashSet<Operation>(),
                         created: DateTime.UtcNow.AddDays(-1),
-                        messageId: "85234231-4975-4ded-a167-a996009eb90e");
+                        messageId: "ede68da8-4874-414f-b5fd-1fe31cb0b8dc");
 
                     await relationshipsRepository.Add(relationship);
 
-                    relationship.UpdatePermissions(new HashSet<Operation> { Operation.CreateCohort }, DateTime.UtcNow, "0d901e4f-05ef-4ebc-82d4-a99600a27f55");
+                    relationship.UpdatePermissions(new HashSet<Operation> { Operation.CreateCohort }, DateTime.UtcNow, "5135744e-4247-474f-8b6a-602b1702e32c");
 
                     await relationshipsRepository.Update(relationship);
 

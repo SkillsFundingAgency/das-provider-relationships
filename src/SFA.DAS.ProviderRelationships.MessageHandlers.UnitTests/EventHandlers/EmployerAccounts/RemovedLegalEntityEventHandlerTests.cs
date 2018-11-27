@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<RemoveAccountLegalEntityCommand>(c =>
                 c.AccountId == f.Message.AccountId &&
                 c.AccountLegalEntityId == f.Message.AccountLegalEntityId &&
-                c.Created == f.Message.Created), CancellationToken.None), Times.Once));
+                c.Removed == f.Message.Created), CancellationToken.None), Times.Once));
         }
     }
 

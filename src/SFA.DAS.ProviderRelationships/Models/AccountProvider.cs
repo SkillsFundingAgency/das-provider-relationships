@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountProvider : Entity
     {
-        public virtual long Id { get; protected set; }
-        public virtual Account Account { get; protected set; }
-        public virtual long AccountId { get; protected set; }
-        public virtual Provider Provider { get; protected set; }
-        public virtual long ProviderUkprn { get; protected set; }
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
-        public virtual ICollection<AccountProviderLegalEntity> AccountProviderLegalEntities { get; protected set; } = new List<AccountProviderLegalEntity>();
-        
+        public long Id { get; private set; }
+        public Account Account { get; private set; }
+        public long AccountId { get; private set; }
+        public Provider Provider { get; private set; }
+        public long ProviderUkprn { get; private set; }
+        public DateTime Created { get; private set; }
+        public IEnumerable<AccountProviderLegalEntity> AccountProviderLegalEntities => _accountProviderLegalEntities;
+
+        private readonly List<AccountProviderLegalEntity> _accountProviderLegalEntities = new List<AccountProviderLegalEntity>();
+
         public AccountProvider(Account account, Provider provider, User user)
         {
             Account = account;
@@ -25,9 +28,23 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created));
         }
-        
-        protected AccountProvider()
+
+        private AccountProvider()
         {
+        }
+
+        public void UpdatePermissions(AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
+        {
+            var accountProviderLegalEntity = _accountProviderLegalEntities.SingleOrDefault(aple => aple.AccountLegalEntityId == accountLegalEntity.Id);
+
+            if (accountProviderLegalEntity == null)
+            {
+                _accountProviderLegalEntities.Add(new AccountProviderLegalEntity(this, accountLegalEntity, user, grantedOperations));
+            }
+            else
+            {
+                accountProviderLegalEntity.UpdatePermissions(user, grantedOperations);
+            }
         }
     }
 }

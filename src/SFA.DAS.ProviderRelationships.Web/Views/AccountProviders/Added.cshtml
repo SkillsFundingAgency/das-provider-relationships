@@ -11,13 +11,12 @@
                 Training provider added
             </h1>
             <div class="govuk-success-summary__body">
-                <p>You've successfully added <span class="govuk-!-font-weight-bold">@Model.AccountProvider.Provider.Name</span></p>
+                <p>You've successfully added <span class="govuk-!-font-weight-bold">@Model.AccountProvider.ProviderName</span></p>
             </div>
         </div>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.AccountProviderId)
             <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-0">

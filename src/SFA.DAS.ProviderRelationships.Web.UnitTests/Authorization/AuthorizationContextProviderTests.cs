@@ -9,7 +9,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
-using SFA.DAS.ProviderRelationships.Web.Routing;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
@@ -94,7 +94,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
 
             var routeData = new RouteData();
             
-            routeData.Values[RouteDataKeys.AccountHashedId] = AccountHashedId;
+            routeData.Values[RouteValueKeys.AccountHashedId] = AccountHashedId;
             
             HttpContext.Setup(c => c.Request.RequestContext.RouteData).Returns(routeData);
             HashingService.Setup(h => h.DecodeValue(AccountHashedId)).Returns(AccountId);
@@ -108,7 +108,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
 
             var routeData = new RouteData();
             
-            routeData.Values[RouteDataKeys.AccountHashedId] = AccountHashedId;
+            routeData.Values[RouteValueKeys.AccountHashedId] = AccountHashedId;
             
             HttpContext.Setup(c => c.Request.RequestContext.RouteData).Returns(routeData);
             HashingService.Setup(h => h.DecodeValue(AccountHashedId)).Throws<Exception>();

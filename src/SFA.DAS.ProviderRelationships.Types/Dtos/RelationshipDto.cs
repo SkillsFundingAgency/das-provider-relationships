@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Types.Dtos
         public long EmployerAccountLegalEntityId { get; set; }
         public string EmployerAccountLegalEntityPublicHashedId { get; set; }
         public string EmployerAccountLegalEntityName { get; set; }
-        public int EmployerAccountProviderId { get; set; }
+        public long EmployerAccountProviderId { get; set; }
         public long Ukprn { get; set; }
     }
 }

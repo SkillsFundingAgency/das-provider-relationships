@@ -1,7 +1,7 @@
 using System;
 using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Urls;
-using SFA.DAS.ProviderRelationships.Web.Routing;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Filters
 {
@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var employerUrls = _employerUrls();
-            var accountHashedId = (string)filterContext.RouteData.Values[RouteDataKeys.AccountHashedId];
+            var accountHashedId = (string)filterContext.RouteData.Values[RouteValueKeys.AccountHashedId];
             
             employerUrls.Initialize(accountHashedId);
             

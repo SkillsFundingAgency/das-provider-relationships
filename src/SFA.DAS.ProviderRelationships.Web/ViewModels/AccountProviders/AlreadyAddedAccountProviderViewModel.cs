@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
     public class AlreadyAddedAccountProviderViewModel
     {
-        public AddedAccountProviderDto AccountProvider { get; set; }
+        public AccountProviderBasicDto AccountProvider { get; set; }
 
         [Required]
         public long? AccountProviderId { get; set; }

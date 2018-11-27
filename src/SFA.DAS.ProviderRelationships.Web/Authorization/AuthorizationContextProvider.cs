@@ -7,7 +7,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.ProviderRelationships.Web.Routing;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization
 {
@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
 
         private (string HashedId, long? Id) GetAccountValues()
         {
-            if (!_httpContext.Request.RequestContext.RouteData.Values.TryGetValue(RouteDataKeys.AccountHashedId, out var accountHashedId))
+            if (!_httpContext.Request.RequestContext.RouteData.Values.TryGetValue(RouteValueKeys.AccountHashedId, out var accountHashedId))
             {
                 return (null, null);
             }

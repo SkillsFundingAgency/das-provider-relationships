@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Routing;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -15,6 +14,7 @@ using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Testing;
 
@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class AccountProvidersControllerTests : FluentTest<AccountProvidersControllerTestsFixture>
     {
         [Test]
-        public Task Index_WhenGettingIndexAction_ThenShouldReturnView()
+        public Task Index_WhenGettingIndexAction_ThenShouldReturnIndexView()
         {
             return RunAsync(f => f.Index(), (f, r) =>
             {
@@ -90,7 +90,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldAddAccountProvider()
+        public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldSendAddAccountProviderCommand()
         {
             return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(
                 It.Is<AddAccountProviderCommand>(c => 
@@ -157,7 +157,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeIndexAction()
+        public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeUrl()
         {
             Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url == $"https://localhost/accounts/ABC123/teams"));
@@ -203,7 +203,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Get_WhenGettingGetAction_ThenShouldReturnShowView()
+        public Task Get_WhenAccountHasMultipleAccountLegalEntities_ThenShouldReturnGetView()
         {
             return RunAsync(f => f.Get(), (f, r) =>
             {
@@ -215,6 +215,24 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 model.AccountLegalEntities.Should().BeEquivalentTo(f.GetAccountProviderQueryResult.AccountLegalEntities);
             });
         }
+
+        [Test]
+        public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
+        {
+            return RunAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Get") &&
+                a.RouteValues["Controller"].Equals("AccountProviderLegalEntities") &&
+                a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountLegalEntities[0].Id) &&
+                a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id)));
+        }
+
+        [Test]
+        public Task Get_WhenAccountHasSingleAccountLegalEntityAndReferrerIsSetPermissions_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
+        {
+            return RunAsync(f => f.Get(1, "SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Index") &&
+                a.RouteValues["Controller"] == null));
+        }
     }
 
     public class AccountProvidersControllerTestsFixture
@@ -224,7 +242,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
-        public RequestContext RequestContext { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
         public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
         public FindProviderToAddQueryResult FindProvidersQueryResult { get; set; }
@@ -243,10 +260,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProvidersControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<AccountProviderMappings>()).CreateMapper();
+            Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
-            RequestContext = new RequestContext();
-
             AccountProvidersController = new AccountProvidersController(Mediator.Object, Mapper, EmployerUrls.Object);
         }
 
@@ -303,7 +318,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = 12345678
             };
             
-            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(new ProviderDto
+            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(new ProviderBasicDto
             {
                 Ukprn = 12345678,
                 Name = "Foo"
@@ -339,14 +354,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
             {
                 Id = 2,
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678,
-                    Name = "Foo"
-                }
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
             });
 
             Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
@@ -376,14 +388,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AddedAccountProviderDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
             {
                 Id = 2,
-                Provider = new ProviderDto
-                {
-                    Ukprn = 12345678,
-                    Name = "Foo"
-                }
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
             });
 
             Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AlreadyAddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
@@ -402,12 +411,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderViewModel);
         }
 
-        public Task<ActionResult> Get()
+        public Task<ActionResult> Get(int? accountLegalEntities = null, string referrer = null)
         {
             GetAccountProviderRouteValues = new GetAccountProviderRouteValues
             {
                 AccountId = 1,
-                AccountProviderId = 2
+                AccountProviderId = 2,
+                Referrer = referrer
             };
             
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
@@ -416,19 +426,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     Id = 2,
                     ProviderName = "Foo"
                 },
-                new List<AccountLegalEntityDto>
-                {
-                    new AccountLegalEntityDto
+                Enumerable.Range(3, accountLegalEntities ?? 2)
+                    .Select(i => new AccountLegalEntityBasicDto
                     {
-                        Id = 3,
-                        Name = "Foo Ltd"
-                    },
-                    new AccountLegalEntityDto
-                    {
-                        Id = 4,
-                        Name = "Bar Ltd"
-                    }
-                });
+                        Id = i,
+                        Name = i.ToString()
+                    })
+                    .ToList());
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             
