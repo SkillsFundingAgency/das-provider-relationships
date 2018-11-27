@@ -49,18 +49,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(),
-                (f, r) =>
-                {
-                    r.Should().NotBeNull();
-                    r.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new RelationshipDto[0]));
-                });
+            return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
-        [Test, Ignore("for now")]
+        [Test]
         public Task Handle_WhenUkprnIsFoundAndRelationshipHasNotGotPermissionForSuppliedOperation_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
         {
-            throw new NotImplementedException();
+            return RunAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
         [Test, Ignore("for now")]
@@ -145,6 +140,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.Accounts.First().RemoveAccountLegalEntity(Db.AccountLegalEntities.First(), new DateTime(2018, 11, 26));
             Db.SaveChanges();
             return this;
+        }
+        
+        public GetRelationshipsWithPermissionQueryHandlerTestsFixture RemovePermission()
+        {
+            Db.Permissions.RemoveRange(Db.Permissions);
+            Db.SaveChanges();
+            return this;
+        }
+
+        public void AssertEmptyResult(GetRelationshipsWithPermissionQueryResult result)
+        {
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new RelationshipDto[0]));
         }
     }
 }
