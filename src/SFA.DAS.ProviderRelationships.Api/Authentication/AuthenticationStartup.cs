@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
             //todo: roles (check MA)
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {
-                Tenant = _providerRelationshipsConfiguration.idaTenant,
+                Tenant = _providerRelationshipsConfiguration.Tenant,
                 //https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-dotnet-webapi
                 //todo: EAS uses TokenValidationParameters from System.IdentityModel.Tokens.Jwt package
 //                TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
                 TokenValidationParameters = new TokenValidationParameters
                 {
                     RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-                    ValidAudience = _providerRelationshipsConfiguration.idaAudience
+                    ValidAudience = _providerRelationshipsConfiguration.Audience
                 }
             });
         }

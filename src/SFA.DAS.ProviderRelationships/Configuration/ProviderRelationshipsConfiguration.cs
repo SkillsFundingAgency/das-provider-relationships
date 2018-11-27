@@ -19,12 +19,8 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ServiceBusConnectionString { get; set; }
         public IdentityServerConfiguration Identity { get; set; }
 
-        //todo: add these to das-employer-config with correct values
-        //https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-dotnet-webapi
-        //ida:Audience is the App ID URI of the application that you entered in the Azure portal.
-        
-        public string idaAudience { get; set; }
-        public string idaTenant { get; set; }
+        public string Audience { get; set; }
+        public string Tenant { get; set; }
         
         public string NServiceBusLicense
         {
