@@ -42,23 +42,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             //IHttpActionResult errorResult = null;
 
             // we could accept non-nullable, but we might want to return all relationships
-            if (parameters.ukprn == null)
+            if (parameters.Ukprn == null)
             {
                 // logically this would return all relationships (filtered by operation if supplied)
                 throw new HttpResponseException(HttpStatusCode.NotImplemented);
             }
             
-            if (parameters.operation == null)
+            if (parameters.Operation == null)
             //if (request.Operation) // mvc handles not matching. use request but with string??
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
                 throw new HttpResponseException(HttpStatusCode.NotImplemented);
             }
 
-            if (!Enum.TryParse(parameters.operation, true, out Operation operation))
+            if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
                 return BadRequest();
             
-            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.ukprn.Value, operation));
+            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, operation));
 
             return Ok(new RelationshipsResponse {Relationships = result.Relationships});
         }

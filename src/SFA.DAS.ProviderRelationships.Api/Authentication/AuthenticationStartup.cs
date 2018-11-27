@@ -1,4 +1,3 @@
-using Microsoft.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security.ActiveDirectory;
 using Owin;
@@ -29,6 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {
                 Tenant = _providerRelationshipsConfiguration.idaTenant,
+                //https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-dotnet-webapi
                 //todo: EAS uses TokenValidationParameters from System.IdentityModel.Tokens.Jwt package
 //                TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
 // https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/wiki/Migrating-from-Katana-(OWIN)-3.x-to-4.x

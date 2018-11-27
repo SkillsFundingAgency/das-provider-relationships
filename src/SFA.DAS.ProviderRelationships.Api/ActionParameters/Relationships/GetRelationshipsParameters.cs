@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships
 
     public class GetRelationshipsParameters
     {
-        public long? ukprn { get; set; }
-        public string operation { get; set; } // can we get model binder to go straight to enum. also rename
+        public long? Ukprn { get; set; }
+        public string Operation { get; set; } // can we get model binder to go straight to enum. also rename
     }
 }
