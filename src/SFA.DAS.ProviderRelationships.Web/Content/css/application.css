@@ -641,3 +641,15 @@ li.menu-link.sub-menu-open ul {
 .govuk-\!-text-align-center {
     text-align: center;
 }
+
+.das-table__cell--vertical-align-top {
+    vertical-align: top;
+}
+
+.das-list--comma-after li:after {
+    content: ", ";
+}
+
+.das-list--comma-after li:last-child:after {
+    content: "";
+}
