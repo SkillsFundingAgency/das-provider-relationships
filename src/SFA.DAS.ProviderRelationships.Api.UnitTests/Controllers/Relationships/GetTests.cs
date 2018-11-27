@@ -41,12 +41,13 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
                 (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
-            //NotBeNull().And.Match<OkNegotiatedContentResult<RelationshipsResponse>>(x => x.Content != null));
         }
         
         [Test]
-        public void WhenOperationIsMissing_ThenShouldReturnNotImplemented()
+        public Task WhenOperationIsMissing_ThenShouldReturnNotImplemented()
         {
+            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
+                (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
         }
 
         [Test]
