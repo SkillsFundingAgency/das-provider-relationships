@@ -15,8 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
                 IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/xxx",
                 Tenant = "citizenazuresfabisgov.onmicrosoft.com"
             });
-            
-            });
         }
     }
 }
