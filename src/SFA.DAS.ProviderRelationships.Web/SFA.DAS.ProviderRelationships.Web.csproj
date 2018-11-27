@@ -65,6 +65,9 @@
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.2.10" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.2.10" />
     <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.2.10" />
+    <PackageReference Include="SFA.DAS.AutoConfiguration">
+      <Version>1.0.7</Version>
+    </PackageReference>
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -112,7 +115,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Authorization\AuthorizationContextProvider.cs" />
-    <Compile Include="Configuration\ProviderRelationshipsWebConfiguration.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
