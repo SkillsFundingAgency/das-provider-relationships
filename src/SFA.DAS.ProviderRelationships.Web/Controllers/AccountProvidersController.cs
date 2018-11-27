@@ -10,6 +10,8 @@ using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Validation.Mvc;
 
@@ -90,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "Confirm":
-                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.UserRef.Value, model.Ukprn.Value);
+                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
                     var accountProviderId = await _mediator.Send(command);
 
                     return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
@@ -120,7 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 case "GoToHomepage":
@@ -149,7 +151,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 default:
@@ -164,6 +166,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
+
+            if (model != null && model.AccountLegalEntities.Count == 1)
+            {
+                return routeValues.Referrer == "SetPermissions"
+                    ? RedirectToAction("Index")
+                    : RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountLegalEntityId = model.AccountLegalEntities[0].Id, AccountProviderId = model.AccountProvider.Id });
+            }
             
             return View(model);
         }

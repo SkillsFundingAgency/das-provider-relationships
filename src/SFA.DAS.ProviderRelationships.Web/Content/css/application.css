@@ -474,7 +474,6 @@ li.menu-link.sub-menu-open ul {
 }
 
 /*** Healthcheck Styles ***/
-
 .govuk-table__cell--center, .govuk-table__header--center {
     text-align: center;
 }
@@ -632,4 +631,13 @@ li.menu-link.sub-menu-open ul {
 
 .govuk-info-summary__list a:focus, .govuk-success-summary__list a:focus {
     color: #0b0c0c
+}
+
+/**Float right permissions table **/
+.das-permissions-fieldset--float-right {
+    float: right;
+}
+
+.govuk-\!-text-align-center {
+    text-align: center;
 }

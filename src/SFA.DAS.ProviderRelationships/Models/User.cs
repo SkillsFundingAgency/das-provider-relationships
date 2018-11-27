@@ -2,14 +2,14 @@ using System;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    public class User
+    public class User : Entity
     {
-        public virtual Guid Ref { get; protected set; }
-        public virtual string Email { get; protected set; }
-        public virtual string FirstName { get; protected set; }
-        public virtual string LastName { get; protected set; }
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
+        public Guid Ref { get; private set; }
+        public string Email { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Updated { get; private set; }
 
         public User(Guid @ref, string email, string firstName, string lastName)
         {
@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Created = DateTime.UtcNow;
         }
 
-        protected User()
+        private User()
         {
         }
 

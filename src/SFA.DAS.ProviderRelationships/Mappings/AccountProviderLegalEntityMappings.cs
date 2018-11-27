@@ -8,7 +8,10 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public AccountProviderLegalEntityMappings()
         {
-            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntitySummaryDto>();
+            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityBasicDto>()
+                .ForMember(d => d.ProviderName, o => o.MapFrom(s => s.AccountProvider.Provider.Name));
+                
+            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityDto>();
         }
     }
 }

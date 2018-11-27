@@ -5,15 +5,17 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AccountLegalEntity : Entity
     {
-        public virtual long Id { get; protected set; }
-        public virtual string PublicHashedId { get; protected set; }
-        public virtual Account Account { get; protected set; }
-        public virtual long AccountId { get; protected set; }
-        public virtual string Name { get; protected set; }
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
-        public virtual DateTime? Deleted { get; protected set; }
-        public virtual ICollection<AccountProviderLegalEntity> AccountProviderLegalEntities { get; protected set; } = new List<AccountProviderLegalEntity>();
+        public long Id { get; private set; }
+        public string PublicHashedId { get; private set; }
+        public Account Account { get; private set; }
+        public long AccountId { get; private set; }
+        public string Name { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Updated { get; private set; }
+        public DateTime? Deleted { get; private set; }
+        public IEnumerable<AccountProviderLegalEntity> AccountProviderLegalEntities => _accountProviderLegalEntities;
+
+        private readonly List<AccountProviderLegalEntity> _accountProviderLegalEntities = new List<AccountProviderLegalEntity>();
 
         internal AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
         {
@@ -25,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Created = created;
         }
 
-        protected AccountLegalEntity()
+        private AccountLegalEntity()
         {
         }
 
@@ -33,6 +35,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             if (IsUpdatedNameDateChronological(updated) && IsUpdatedNameDifferent(name))
             {
+                EnsureAccountLegalEntityHasNotBeenDeleted();
+                
                 Name = name;
                 Updated = updated;
             }
@@ -40,37 +44,29 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         internal void Delete(DateTime deleted)
         {
-            if (IsDeleteDateChronological(deleted))
-            {
-                EnsureAccountLegalEntityHasNotAlreadyBeenDeleted();
+            EnsureAccountLegalEntityHasNotBeenDeleted();
 
-                foreach (var accountProviderLegalEntity in AccountProviderLegalEntities)
-                {
-                    accountProviderLegalEntity.Delete();
-                }
-                
-                AccountProviderLegalEntities.Clear();
-                
-                Deleted = deleted;
+            foreach (var accountProviderLegalEntity in _accountProviderLegalEntities)
+            {
+                accountProviderLegalEntity.Delete(deleted);
             }
+            
+            _accountProviderLegalEntities.Clear();
+            
+            Deleted = deleted;
         }
 
-        private void EnsureAccountLegalEntityHasNotAlreadyBeenDeleted()
+        private void EnsureAccountLegalEntityHasNotBeenDeleted()
         {
             if (Deleted != null)
             {
-                throw new InvalidOperationException("Requires account legal entity has not already been deleted");
+                throw new InvalidOperationException("Requires account legal entity has not been deleted");
             }
-        }
-
-        private bool IsDeleteDateChronological(DateTime deleted)
-        {
-            return Deleted == null || deleted > Deleted.Value;
         }
 
         private bool IsUpdatedNameDateChronological(DateTime updated)
         {
-            return Updated == null || updated > Updated.Value;
+            return (Updated == null || updated > Updated.Value) && (Deleted == null || updated > Deleted.Value);
         }
 
         private bool IsUpdatedNameDifferent(string name)

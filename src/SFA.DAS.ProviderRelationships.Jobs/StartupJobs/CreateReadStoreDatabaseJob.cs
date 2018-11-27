@@ -41,7 +41,11 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                     {
                         new UniqueKey
                         {
-                            Paths = new Collection<string> { "/accountProviderId", "/accountLegalEntityId" }
+                            Paths = new Collection<string> { "/accountProviderLegalEntityId" }
+                        },
+                        new UniqueKey
+                        {
+                            Paths = new Collection<string> { "/accountLegalEntityId" }
                         }
                     }
                 }

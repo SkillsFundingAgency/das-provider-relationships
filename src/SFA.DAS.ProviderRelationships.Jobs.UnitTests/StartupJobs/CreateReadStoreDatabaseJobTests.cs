@@ -26,8 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs
                 It.Is<DocumentCollection>(d => 
                     d.Id == DocumentSettings.CollectionName &&
                     d.PartitionKey.Paths.Contains("/ukprn") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountProviderId") &&
-                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountLegalEntityId")
+                    d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountProviderLegalEntityId")
                 ), null), Times.Once));
         }
     }

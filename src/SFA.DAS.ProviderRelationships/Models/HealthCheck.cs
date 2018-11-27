@@ -6,15 +6,15 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class HealthCheck : Entity
     {
-        public virtual int Id { get; protected set; }
-        public virtual User User { get; protected set; }
-        public virtual Guid UserRef { get; protected set; }
-        public virtual DateTime SentApprenticeshipInfoServiceApiRequest { get; protected set; }
-        public virtual DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; protected set; }
-        public virtual DateTime SentProviderRelationshipsApiRequest { get; protected set; }
-        public virtual DateTime? ReceivedProviderRelationshipsApiResponse { get; protected set; }
-        public virtual DateTime PublishedProviderRelationshipsEvent { get; protected set; }
-        public virtual DateTime? ReceivedProviderRelationshipsEvent { get; protected set; }
+        public int Id { get; private set; }
+        public User User { get; private set; }
+        public Guid UserRef { get; private set; }
+        public DateTime SentApprenticeshipInfoServiceApiRequest { get; private set; }
+        public DateTime? ReceivedApprenticeshipInfoServiceApiResponse { get; private set; }
+        public DateTime SentProviderRelationshipsApiRequest { get; private set; }
+        public DateTime? ReceivedProviderRelationshipsApiResponse { get; private set; }
+        public DateTime PublishedProviderRelationshipsEvent { get; private set; }
+        public DateTime? ReceivedProviderRelationshipsEvent { get; private set; }
 
         public HealthCheck(User user)
         {
@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             UserRef = user.Ref;
         }
 
-        protected HealthCheck()
+        private HealthCheck()
         {
         }
         

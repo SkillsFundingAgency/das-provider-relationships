@@ -13,7 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
         [Test]
         public void GetDescription_WhenGettingDescription_ThenShouldReturnDescription()
         {
-            Run(f => Operation.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Create Cohort"));
+            Run(f => Operation.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Create cohort"));
         }
     }
 }

@@ -23,10 +23,10 @@
         <PackageReference Include="NLog.Schema" Version="4.5.10" />
         <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.NServiceBus" Version="6.0.4" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="6.0.4" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.0.9" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="4.0.9" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="6.0.7" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="6.0.7" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.0.13" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="4.0.13" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
     </ItemGroup>

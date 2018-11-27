@@ -21,8 +21,3 @@ IF (
 BEGIN
     :r .\SeedDevData.sql
 END
-
-IF (@@servername LIKE '%-test-%')
-BEGIN
-    :r .\SeedTestData.sql
-END

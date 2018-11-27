@@ -6,13 +6,16 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class Account : Entity
     {
-        public virtual long Id { get; protected set; }
-        public virtual string PublicHashedId { get; protected set; }
-        public virtual string Name { get; protected set; }
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
-        public virtual ICollection<AccountLegalEntity> AccountLegalEntities { get; protected set; } = new List<AccountLegalEntity>();
-        public virtual ICollection<AccountProvider> AccountProviders { get; protected set; } = new List<AccountProvider>();
+        public long Id { get; private set; }
+        public string PublicHashedId { get; private set; }
+        public string Name { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Updated { get; private set; }
+        public IEnumerable<AccountLegalEntity> AccountLegalEntities => _accountLegalEntities;
+        public IEnumerable<AccountProvider> AccountProviders => _accountProviders;
+        
+        private readonly List<AccountLegalEntity> _accountLegalEntities = new List<AccountLegalEntity>();
+        private readonly List<AccountProvider> _accountProviders = new List<AccountProvider>();
 
         public Account(long id, string publicHashedId, string name, DateTime created)
         {
@@ -22,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Created = created;
         }
 
-        protected Account()
+        private Account()
         {
         }
 
@@ -32,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             var accountLegalEntity = new AccountLegalEntity(this, accountLegalEntityId, accountLegalEntityPublicHashedId, name, added);
             
-            AccountLegalEntities.Add(accountLegalEntity);
+            _accountLegalEntities.Add(accountLegalEntity);
 
             return accountLegalEntity;
         }
@@ -52,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
             var accountProvider = new AccountProvider(this, provider, user);
             
-            AccountProviders.Add(accountProvider);
+            _accountProviders.Add(accountProvider);
 
             return accountProvider;
         }
@@ -66,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private void EnsureAccountLegalEntityHasBeenAdded(AccountLegalEntity accountLegalEntity)
         {
-            if (AccountLegalEntities.All(ale => ale.Id != accountLegalEntity.Id))
+            if (_accountLegalEntities.All(ale => ale.Id != accountLegalEntity.Id))
             {
                 throw new InvalidOperationException("Requires account legal entity has been added");
             }
@@ -74,7 +77,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private void EnsureAccountLegalEntityHasNotAlreadyBeenAdded(long accountLegalEntityId)
         {
-            if (AccountLegalEntities.Any(ale => ale.Id == accountLegalEntityId))
+            if (_accountLegalEntities.Any(ale => ale.Id == accountLegalEntityId))
             {
                 throw new InvalidOperationException("Requires account legal entity has not already been added");
             }
@@ -82,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private void EnsureProviderHasNotAlreadyBeenAdded(Provider provider)
         {
-            if (AccountProviders.Any(ap => ap.ProviderUkprn == provider.Ukprn))
+            if (_accountProviders.Any(ap => ap.ProviderUkprn == provider.Ukprn))
             {
                 throw new InvalidOperationException("Requires provider has not already been added");
             }

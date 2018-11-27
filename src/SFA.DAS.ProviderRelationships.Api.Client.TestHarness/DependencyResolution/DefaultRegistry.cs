@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
+﻿using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
+using SFA.DAS.ProviderRelationships.ReadStore.Configuration;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution
@@ -7,6 +8,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
     {
         public DefaultRegistry()
         {
+            For<ProviderRelationshipsApiClientConfiguration>().Use(() => new ProviderRelationshipsApiClientConfiguration
+            {
+                ApiBaseUrl = "https://localhost:44308",
+                ClientId = "xxx",
+                ClientSecret = "xxx",
+                IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/xxx",
+                Tenant = "citizenazuresfabisgov.onmicrosoft.com"
+            });
+            
             For<ProviderRelationshipsReadStoreConfiguration>().Use(() => new ProviderRelationshipsReadStoreConfiguration
             {
                 Uri = "https://localhost:8081",
