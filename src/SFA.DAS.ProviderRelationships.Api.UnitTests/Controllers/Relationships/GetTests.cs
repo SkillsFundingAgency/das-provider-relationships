@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -36,23 +37,11 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
         //todo: in general, include error response in body, something like {ErrorCode: x, ErrorMessage: ""}
         [Test]
-        public void WhenValidUkprnAndOperationIsSuppliedAndRelationshipExistsForProviderAndTheyDoNotHavePermissionForOperation_ThenShouldReturnNotFound()
+        public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
         {
-        }
-        
-        [Test]
-        public void WhenValidUkprnAndOperationIsSuppliedAndRelationshipDoesNotExistsForProvider_ThenShouldReturnNotFound()
-        {
-        }
-        
-        [Test]
-        public void WhenValidUkprnAndOperationIsSuppliedAndProviderDoesntExist_ThenShouldReturnNotFound()
-        {
-        }
-        
-        [Test]
-        public void WhenUkprIsMissing_ThenShouldReturnNotImplemented()
-        {
+            return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
+                (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
+            //NotBeNull().And.Match<OkNegotiatedContentResult<RelationshipsResponse>>(x => x.Content != null));
         }
         
         [Test]
@@ -96,6 +85,18 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public async Task<IHttpActionResult> CallGet()
         {
             return await RelationshipsController.Get(GetRelationshipsParameters); //, CancellationToken.None);
+        }
+
+        public GetTestsFixture SetUkprn(long? ukprn)
+        {
+            GetRelationshipsParameters.Ukprn = ukprn;
+            return this;
+        }
+        
+        public GetTestsFixture SetOperation(string operation)
+        {
+            GetRelationshipsParameters.Operation = operation;
+            return this;
         }
     }
 }
