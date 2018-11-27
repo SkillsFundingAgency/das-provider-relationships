@@ -2,12 +2,12 @@ namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class RelationshipDto
     {
-        public long EmployerAccountId { get; set; }
-        public string EmployerAccountPublicHashedId { get; set; }
-        public string EmployerAccountName { get; set; }
-        public long EmployerAccountLegalEntityId { get; set; }
-        public string EmployerAccountLegalEntityPublicHashedId { get; set; }
-        public string EmployerAccountLegalEntityName { get; set; }
-        public long EmployerAccountProviderId { get; set; }
+        public long AccountId { get; set; }
+        public string AccountPublicHashedId { get; set; }
+        public string AccountName { get; set; }
+        public long AccountLegalEntityId { get; set; }
+        public string AccountLegalEntityPublicHashedId { get; set; }
+        public string AccountLegalEntityName { get; set; }
+        public long AccountProviderId { get; set; }
     }
 }

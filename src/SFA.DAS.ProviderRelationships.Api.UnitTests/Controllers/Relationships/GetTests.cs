@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 using FluentAssertions;
 using MediatR;
 using Moq;
@@ -19,9 +20,17 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
     public class GetTests : FluentTest<GetTestsFixture>
     {
         [Test]
-        public Task WhenValidUkprnAndOperationIsSuppliedAndRelationshipExistsForProviderAndTheyHavePermissionForOperation_ThenShouldReturnCorrectRelationship()
+        public Task WhenValidUkprnAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
         {
-            return RunAsync(f => f.CallGet(), (f, r) => r.Should().NotBeNull());
+            return RunAsync(f => f.CallGet(), 
+//                (f, r) => r.Should().NotBeNull()
+//                    .And.Match<OkNegotiatedContentResult<RelationshipsResponse>>(ok => ok.Content.Relationships != null));
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
+                    r.Should().BeOfType<OkNegotiatedContentResult<RelationshipsResponse>>();
+                    ((OkNegotiatedContentResult<RelationshipsResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                });
         }
 
         //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
@@ -74,7 +83,9 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
 
             Mediator = new Mock<IMediator>();
 
-            Result = new GetRelationshipsWithPermissionQueryResult(new RelationshipDto[0]);
+            Result = new GetRelationshipsWithPermissionQueryResult(new [] {
+                new RelationshipDto {AccountId = 41L, AccountLegalEntityId = 4131L, AccountLegalEntityName = "AccountLegalEntityName", AccountLegalEntityPublicHashedId = "ALEPHI", AccountName = "AccountName", AccountProviderId = 491L, AccountPublicHashedId = "ACCPHI" }
+            });
             
             Mediator.Setup(m => m.Send(It.Is<GetRelationshipsWithPermissionQuery>(q => q.Ukprn == GetRelationshipsParameters.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result);

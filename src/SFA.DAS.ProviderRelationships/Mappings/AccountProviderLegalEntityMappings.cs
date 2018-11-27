@@ -15,13 +15,13 @@ namespace SFA.DAS.ProviderRelationships.Mappings
             CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityDto>();
 
             CreateMap<AccountProviderLegalEntity, RelationshipDto>()
-                .ForMember(d => d.EmployerAccountId, o => o.MapFrom(s => s.AccountProvider.Account.Id))
-                .ForMember(d => d.EmployerAccountPublicHashedId, o => o.MapFrom(s => s.AccountProvider.Account.PublicHashedId))
-                .ForMember(d => d.EmployerAccountName, o => o.MapFrom(s => s.AccountProvider.Account.Name))
-                .ForMember(d => d.EmployerAccountProviderId, o => o.MapFrom(s => s.AccountProvider.Id))
-                .ForMember(d => d.EmployerAccountLegalEntityId, o => o.MapFrom(s => s.AccountLegalEntity.Id))
-                .ForMember(d => d.EmployerAccountLegalEntityPublicHashedId, o => o.MapFrom(s => s.AccountLegalEntity.PublicHashedId))
-                .ForMember(d => d.EmployerAccountLegalEntityName, o => o.MapFrom(s => s.AccountLegalEntity.Name));
+                .ForMember(d => d.AccountId, o => o.MapFrom(s => s.AccountProvider.Account.Id))
+                .ForMember(d => d.AccountPublicHashedId, o => o.MapFrom(s => s.AccountProvider.Account.PublicHashedId))
+                .ForMember(d => d.AccountName, o => o.MapFrom(s => s.AccountProvider.Account.Name))
+                .ForMember(d => d.AccountProviderId, o => o.MapFrom(s => s.AccountProvider.Id))
+                .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(s => s.AccountLegalEntity.Id))
+                .ForMember(d => d.AccountLegalEntityPublicHashedId, o => o.MapFrom(s => s.AccountLegalEntity.PublicHashedId))
+                .ForMember(d => d.AccountLegalEntityName, o => o.MapFrom(s => s.AccountLegalEntity.Name));
         }
     }
 }

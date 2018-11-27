@@ -32,13 +32,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 r.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new[] {
                     new RelationshipDto
                     {
-                        EmployerAccountId = f.Account.Id,
-                        EmployerAccountPublicHashedId = f.Account.PublicHashedId,
-                        EmployerAccountName = f.Account.Name,
-                        EmployerAccountProviderId = f.AccountProvider.Id,
-                        EmployerAccountLegalEntityId = f.AccountLegalEntity.Id,
-                        EmployerAccountLegalEntityPublicHashedId = f.AccountLegalEntity.PublicHashedId,
-                        EmployerAccountLegalEntityName = f.AccountLegalEntity.Name
+                        AccountId = f.Account.Id,
+                        AccountPublicHashedId = f.Account.PublicHashedId,
+                        AccountName = f.Account.Name,
+                        AccountProviderId = f.AccountProvider.Id,
+                        AccountLegalEntityId = f.AccountLegalEntity.Id,
+                        AccountLegalEntityPublicHashedId = f.AccountLegalEntity.PublicHashedId,
+                        AccountLegalEntityName = f.AccountLegalEntity.Name
                     }
                 }));
             });
