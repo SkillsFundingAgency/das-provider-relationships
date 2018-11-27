@@ -15,6 +15,7 @@ using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
+using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
@@ -45,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             });
         }
 
-        [Test, Ignore("needs latest master")]
+        [Test]
         public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(),
@@ -139,6 +140,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetRelationshipsWithPermissionQueryHandlerTestsFixture SetAccountLegalEntityDeleted()
         {
+            // need to new up one of these, so it's static Events is there
+            new UnitOfWorkContext();
             Db.Accounts.First().RemoveAccountLegalEntity(Db.AccountLegalEntities.First(), new DateTime(2018, 11, 26));
             Db.SaveChanges();
             return this;

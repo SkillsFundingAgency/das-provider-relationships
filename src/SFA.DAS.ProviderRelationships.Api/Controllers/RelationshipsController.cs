@@ -12,7 +12,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
     [RoutePrefix("relationships")]
-    [AuthorizeRemoteOnly]
+    [AuthorizeRemoteOnly(Roles = "Read")]
     public class RelationshipsController : ApiController
     {
         private readonly IMediator _mediator;
