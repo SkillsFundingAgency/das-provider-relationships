@@ -53,17 +53,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
-        public Task Handle_WhenUkprnIsFoundAndRelationshipHasNotGotPermissionForSuppliedOperation_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
+        public Task Handle_WhenUkprnIsFoundAndRelationshipHasNotGotPermissionForSuppliedOperation_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
-        [Test, Ignore("for now")]
-        public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnSumfink()
+        [Test]
+        public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+            return RunAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
-
         
         [Test, Ignore("for now")]
         public Task Handle_WhenHandlingRelationshipsWithPermissionQueryAndUkprnIsNotFound_ThenShouldReturnSumfink()
