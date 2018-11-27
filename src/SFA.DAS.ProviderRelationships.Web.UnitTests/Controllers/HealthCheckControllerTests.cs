@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
-using SFA.DAS.ProviderRelationships.Web.Mappings;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 using SFA.DAS.Testing;
 
@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HealthCheckControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfile<HealthCheckMappings>()).CreateMapper();
+            Mapper = new MapperConfiguration(c => {}).CreateMapper();
             HealthCheckController = new HealthCheckController(Mediator.Object, Mapper);
         }
 

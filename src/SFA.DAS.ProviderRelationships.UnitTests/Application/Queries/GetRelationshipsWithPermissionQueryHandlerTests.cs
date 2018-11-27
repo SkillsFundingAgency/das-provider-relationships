@@ -104,16 +104,27 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         
         public GetRelationshipsWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
         {
-            Account = new AccountBuilder().WithId(4660117L);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 4660117L);
             
-            AccountProvider = new AccountProviderBuilder()
-                .WithId(49L)
-                .WithAccountId(Account.Id)
-                .WithProviderUkprn(Query.Ukprn);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, 49L)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap =>ap.ProviderUkprn, Query.Ukprn);
 
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(413L).WithName("Legal Entity Name").WithAccountId(Account.Id);
-            AccountProviderLegalEntity = new AccountProviderLegalEntityBuilder().WithId(5).WithAccountProviderId(AccountProvider.Id).WithAccountLegalEntityId(AccountLegalEntity.Id);
-            Permission = new PermissionBuilder().WithId(3).WithAccountProviderLegalEntityId(AccountProviderLegalEntity.Id).WithOperation(Query.Operation);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale =>ale.Id,413L)
+                .Set(ale => ale.Name, "Legal Entity Name")
+                .Set(ale => ale.AccountId, Account.Id);
+            
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                .Set(aple =>aple.Id, 5)
+                .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
+            
+            Permission = EntityActivator.CreateInstance<Permission>()
+                .Set(p => p.Id, 3)
+                .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
+                .Set(p => p.Operation, Query.Operation);
             
             //todo: if these don't clone, we should
             Db.Accounts.Add(Account);

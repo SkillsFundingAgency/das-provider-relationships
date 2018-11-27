@@ -5,12 +5,12 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     internal class DocumentMetadata
     {
         [JsonProperty("schemaType")]
-        public string SchemaType { get; set; }
+        public string SchemaType { get; }
 
         [JsonProperty("schemaVersion")]
-        public short SchemaVersion { get; set; }
+        public short SchemaVersion { get; }
 
-        public DocumentMetadata(short schemaVersion, string schemaType)
+        public DocumentMetadata(string schemaType, short schemaVersion)
         {
             SchemaType = schemaType;
             SchemaVersion = schemaVersion;

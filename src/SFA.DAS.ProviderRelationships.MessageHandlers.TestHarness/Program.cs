@@ -15,12 +15,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 
                 await startup.StartAsync();
                 
-                //var scenario = container.GetInstance<PublishAllEvents>();
-                var scenario = container.GetInstance<PublishAccountProviderLegalEvents>();
+                var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
+                var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
 
                 try
                 {
-                    await scenario.Run();
+                    await publishEmployerAccountsEventsScenario.Run();
+                    await publishProviderRelationshipsEventsScenario.Run();
                 }
                 finally
                 {

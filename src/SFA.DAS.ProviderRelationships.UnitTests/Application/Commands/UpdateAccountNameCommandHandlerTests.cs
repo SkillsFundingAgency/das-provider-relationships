@@ -54,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             OriginalAccountName = "Foo";
             Now = DateTime.UtcNow;
-            Account = new AccountBuilder().WithId(1).WithName(OriginalAccountName);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1).Set(a => a.Name, OriginalAccountName);
             Command = new UpdateAccountNameCommand(Account.Id, "Bar", Now.AddHours(-1));
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
 
@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public UpdateAccountNameCommandHandlerTestsFixture SetAccountUpdatedAfterCommand()
         {
-            Account.SetPropertyTo(a => a.Updated, Now);
+            Account.Set(a => a.Updated, Now);
             Db.SaveChanges();
             
             return this;

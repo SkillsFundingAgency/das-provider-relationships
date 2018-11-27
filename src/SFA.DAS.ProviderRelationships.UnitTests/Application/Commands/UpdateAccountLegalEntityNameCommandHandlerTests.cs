@@ -54,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             OriginalAccountLegalEntityName = "Foo";
             Now = DateTime.UtcNow;
-            AccountLegalEntity = new AccountLegalEntityBuilder().WithId(1).WithName(OriginalAccountLegalEntityName);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 1).Set(ale => ale.Name, OriginalAccountLegalEntityName);
             Command = new UpdateAccountLegalEntityNameCommand(AccountLegalEntity.Id, "Bar", Now.AddHours(-1));
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
 
@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public UpdateAccountLegalEntityNameCommandHandlerTestsFixture SetAccountLegalEntityUpdatedAfterCommand()
         {
-            AccountLegalEntity.SetPropertyTo(a => a.Updated, Now);
+            AccountLegalEntity.Set(a => a.Updated, Now);
             Db.SaveChanges();
             
             return this;

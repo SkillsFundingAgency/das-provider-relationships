@@ -37,8 +37,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             HealthChecks = new List<HealthCheck>
             {
-                new HealthCheckBuilder().WithId(1),
-                new HealthCheckBuilder().WithId(2)
+                EntityActivator.CreateInstance<HealthCheck>().Set(h => h.Id, 1),
+                EntityActivator.CreateInstance<HealthCheck>().Set(h => h.Id, 2)
             };
             
             Command = new ReceiveProviderRelationshipsHealthCheckEventCommand(HealthChecks[1].Id);

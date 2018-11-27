@@ -26,12 +26,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return RunAsync(f => f.SetAccountProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetAddedAccountProviderQueryResult>(r2 =>
                     r2.AccountProvider.Id == f.AccountProvider.Id &&
-                    r2.AccountProvider.Provider.Ukprn == f.Provider.Ukprn &&
-                    r2.AccountProvider.Provider.Name == f.Provider.Name));
+                    r2.AccountProvider.ProviderUkprn == f.Provider.Ukprn &&
+                    r2.AccountProvider.ProviderName == f.Provider.Name));
         }
 
         [Test]
-        public Task Handle_WhenHandlingAGetAddedProviderQueryAndAProviderIsNotFound_ThenShouldReturnNull()
+        public Task Handle_WhenHandlingGetAddedProviderQueryAndProviderIsNotFound_ThenShouldReturnNull()
         {
             return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
@@ -52,11 +52,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Query = new GetAddedAccountProviderQuery(1, 2);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             
-            ConfigurationProvider = new MapperConfiguration(c =>
-            {
-                c.AddProfile<AccountProviderMappings>();
-                c.AddProfile<ProviderMappings>();
-            });
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
             
             Handler = new GetAddedAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
@@ -68,13 +64,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedAccountProviderQueryHandlerTestsFixture SetAccountProvider()
         {
-            Account = new AccountBuilder().WithId(Query.AccountId);
-            Provider = new ProviderBuilder().WithUkprn(12345678);
-            
-            AccountProvider = new AccountProviderBuilder()
-                .WithId(Query.AccountProviderId)
-                .WithAccountId(Account.Id)
-                .WithProviderUkprn(Provider.Ukprn);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
+            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
 
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

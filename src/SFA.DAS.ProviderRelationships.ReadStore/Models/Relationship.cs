@@ -8,95 +8,119 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
     internal class Relationship : Document
     {
-        [JsonProperty("ukprn")]
-        public long Ukprn { get; protected set; }
-
-        [JsonProperty("accountProviderId")]
-        public int AccountProviderId { get; protected set; }
-
         [JsonProperty("accountId")]
-        public long AccountId { get; protected set; }
+        public long AccountId { get; private set; }
 
         [JsonProperty("accountLegalEntityId")]
-        public long AccountLegalEntityId { get; protected set; }
+        public long AccountLegalEntityId { get; private set; }
+
+        [JsonProperty("accountProviderId")]
+        public long AccountProviderId { get; private set; }
+
+        [JsonProperty("accountProviderLegalEntityId")]
+        public long AccountProviderLegalEntityId { get; private set; }
+
+        [JsonProperty("ukprn")]
+        public long Ukprn { get; private set; }
 
         [JsonProperty("operations")]
-        public IEnumerable<Operation> Operations { get; protected set; } = new HashSet<Operation>();
+        public IEnumerable<Operation> Operations { get; private set; } = new HashSet<Operation>();
 
         [JsonProperty("outboxData")]
-        public IEnumerable<OutboxMessage> OutboxData  => _outboxData;
+        public IEnumerable<OutboxMessage> OutboxData => _outboxData;
+
+        [JsonProperty("created")]
+        public DateTime Created { get; private set; }
 
         [JsonProperty("updated")]
-        public DateTime Updated { get; protected set; }
+        public DateTime? Updated { get; private set; }
 
         [JsonProperty("deleted")]
-        public DateTime? Deleted { get; protected set; }
+        public DateTime? Deleted { get; private set; }
 
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long ukprn, int accountProviderId, long accountId, long accountLegalEntityId, 
-            HashSet<Operation> operations, string messageId, DateTime created)
+        public Relationship(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, HashSet<Operation> grantedOperations, DateTime created, string messageId)
             : base(1, "relationship")
         {
-            Ukprn = ukprn;
-            AccountProviderId = accountProviderId;
+            Id = Guid.NewGuid();
             AccountId = accountId;
             AccountLegalEntityId = accountLegalEntityId;
-            Operations = operations;
-            Updated = created;
+            AccountProviderId = accountProviderId;
+            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+            Ukprn = ukprn;
+            Operations = grantedOperations;
+            Created = created;
 
-            AddMessageToOutbox(messageId, created);
-
-            Id = Guid.NewGuid();
+            AddOutboxMessage(messageId, created);
         }
 
         [JsonConstructor]
-        protected Relationship()
+        private Relationship()
         {
         }
 
-        public void UpdatePermissions(HashSet<Operation> grants, DateTime updated, string messageId)
+        public void Delete(DateTime deleted, string messageId)
         {
-            ProcessMessage(messageId, updated,
-                () =>
-                {
-                    Operations = grants;
-                    Updated = updated;
-                    Deleted = null;
-                }
-            );
-        }
-
-        private void ProcessMessage(string messageId, DateTime messageCreated, Action action)
-        {
-            if (MessageAlreadyProcessed(messageId))
-                return;
-
-            AddMessageToOutbox(messageId, messageCreated);
-            if (!IsMessageChronological(messageCreated))
+            ProcessMessage(messageId, deleted, () =>
             {
-                return;
+                EnsureRelationshipHasNotBeenDeleted();
+
+                Operations = new HashSet<Operation>();
+                Deleted = deleted;
+            });
+        }
+
+        public void UpdatePermissions(HashSet<Operation> grantedOperations, DateTime updated, string messageId)
+        {
+            ProcessMessage(messageId, updated, () =>
+            {
+                if (IsUpdatedPermissionsDateChronological(updated))
+                {
+                    EnsureRelationshipHasNotBeenDeleted();
+                    
+                    Operations = grantedOperations;
+                    Updated = updated;
+                }
+            });
+        }
+
+        private void AddOutboxMessage(string messageId, DateTime created)
+        {
+            if (messageId is null)
+            {
+                throw new ArgumentNullException(nameof(messageId));
             }
-            action();
-        }
-
-        private bool IsMessageChronological(DateTime messageDateTime)
-        {
-            var deleted = Deleted ?? DateTime.MinValue;
-
-            return messageDateTime > Updated && messageDateTime > deleted;
-        }
-
-        private bool MessageAlreadyProcessed(string messageId)
-        {
-            return OutboxData.Any(x => x.MessageId == messageId);
-        }
-
-        private void AddMessageToOutbox(string messageId, DateTime created)
-        {
-            if (messageId is null) throw new ArgumentNullException(nameof(messageId));
+            
             _outboxData.Add(new OutboxMessage(messageId, created));
+        }
+
+        private void EnsureRelationshipHasNotBeenDeleted()
+        {
+            if (Deleted != null)
+            {
+                throw new InvalidOperationException("Requires relationship has not been deleted");
+            }
+        }
+
+        private bool IsMessageProcessed(string messageId)
+        {
+            return OutboxData.Any(m => m.MessageId == messageId);
+        }
+
+        private bool IsUpdatedPermissionsDateChronological(DateTime updated)
+        {
+            return updated > Created && (Updated == null || updated > Updated.Value) && (Deleted == null || updated > Deleted.Value);
+        }
+
+        private void ProcessMessage(string messageId, DateTime created, Action action)
+        {
+            if (!IsMessageProcessed(messageId))
+            {
+                action();
+                AddOutboxMessage(messageId, created);
+            }
         }
     }
 }

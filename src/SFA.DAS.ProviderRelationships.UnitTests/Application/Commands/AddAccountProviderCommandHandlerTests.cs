@@ -61,17 +61,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);            
-            Account = new AccountBuilder().WithId(1);
-            User = new UserBuilder().WithRef(Guid.NewGuid());
-            Provider = new ProviderBuilder().WithUkprn(12345678);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
+            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
+            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);
 
             Db.Accounts.Add(Account);
             Db.Users.Add(User);
             Db.Providers.Add(Provider);
             Db.SaveChanges();
             
-            Command = new AddAccountProviderCommand(Account.Id, User.Ref, Provider.Ukprn);
+            Command = new AddAccountProviderCommand(Account.Id, Provider.Ukprn, User.Ref);
             Now = DateTime.UtcNow;
             UnitOfWorkContext = new UnitOfWorkContext();
             Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
@@ -84,7 +84,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandHandlerTestsFixture SetAccountProvider()
         {
-            Db.AccountProviders.Add(new AccountProviderBuilder().WithAccountId(Account.Id).WithProviderUkprn(Provider.Ukprn));
+            Db.AccountProviders.Add(EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn));
             Db.SaveChanges();
             
             return this;

@@ -8,6 +8,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
     {
         public DefaultRegistry()
         {
+            For<ProviderRelationshipsApiClientConfiguration>().Use(() => new ProviderRelationshipsApiClientConfiguration
+            {
+                ApiBaseUrl = "https://localhost:44308",
+                ClientId = "xxx",
+                ClientSecret = "xxx",
+                IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/xxx",
+                Tenant = "citizenazuresfabisgov.onmicrosoft.com"
+            });
+            
             For<ProviderRelationshipsReadStoreConfiguration>().Use(() => new ProviderRelationshipsReadStoreConfiguration
             {
                 Uri = "https://localhost:8081",

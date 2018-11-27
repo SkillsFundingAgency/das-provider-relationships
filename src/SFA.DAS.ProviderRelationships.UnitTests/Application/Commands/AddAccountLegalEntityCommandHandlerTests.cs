@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AddAccountLegalEntityCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Account = new AccountBuilder().WithId(1);
+            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();

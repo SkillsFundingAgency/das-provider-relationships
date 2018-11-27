@@ -3,15 +3,17 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    public class Provider
+    public class Provider : Entity
     {
-        public virtual long Ukprn { get; protected set; }
-        public virtual string Name { get; protected set; }
-        public virtual DateTime Created { get; protected set; }
-        public virtual DateTime? Updated { get; protected set; }
-        public virtual ICollection<AccountProvider> AccountProviders { get; protected set; } = new List<AccountProvider>();
-        
-        protected Provider()
+        public long Ukprn { get; private set; }
+        public string Name { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Updated { get; private set; }
+        public IEnumerable<AccountProvider> AccountProviders => _accountProviders;
+
+        private readonly List<AccountProvider> _accountProviders = new List<AccountProvider>();
+
+        private Provider()
         {
         }
     }

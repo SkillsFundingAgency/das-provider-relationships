@@ -83,12 +83,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public CreateOrUpdateUserCommandHandlerTestsFixture SetUser()
         {
-            User = new UserBuilder()
-                .WithRef(CreateOrUpdateUserCommand.Ref)
-                .WithEmail(CreateOrUpdateUserCommand.Email)
-                .WithFirstName(CreateOrUpdateUserCommand.FirstName)
-                .WithLastName(CreateOrUpdateUserCommand.LastName)
-                .WithCreated(Now);
+            User = EntityActivator.CreateInstance<User>()
+                .Set(u => u.Ref, CreateOrUpdateUserCommand.Ref)
+                .Set(u => u.Email, CreateOrUpdateUserCommand.Email)
+                .Set(u => u.FirstName, CreateOrUpdateUserCommand.FirstName)
+                .Set(u => u.LastName, CreateOrUpdateUserCommand.LastName)
+                .Set(u => u.Created, Now);
             
             Db.Users.Add(User);
             Db.SaveChanges();
