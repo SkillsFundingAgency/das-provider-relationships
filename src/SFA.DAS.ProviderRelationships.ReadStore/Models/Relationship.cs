@@ -66,7 +66,8 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             ProcessMessage(messageId, deleted, () =>
             {
                 EnsureRelationshipHasNotBeenDeleted();
-            
+
+                Operations = new HashSet<Operation>();
                 Deleted = deleted;
             });
         }

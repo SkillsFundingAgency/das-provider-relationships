@@ -21,7 +21,11 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenRelationshipHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
-            return RunAsync(f => f.Handle(), f => f.Relationship.Deleted.Should().Be(f.Command.Deleted));
+            return RunAsync(f => f.Handle(), f =>
+            {
+                f.Relationship.Operations.Should().BeEmpty();
+                f.Relationship.Deleted.Should().Be(f.Command.Deleted);
+            });
         }
         
         [Test]
