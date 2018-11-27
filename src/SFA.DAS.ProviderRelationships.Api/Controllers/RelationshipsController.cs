@@ -26,9 +26,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// <summary>
         /// Get relationships with optional (currently mandatory) filters
         /// </summary>
+        /// <remarks>
+        /// It would be nice to return a 404 if there is no provider with the supplied ukprn, but currently we just return an empty set
+        /// </remarks>
         /// <param name="parameters">Members
-        /// ukprn: Filter relationships to only those for this provider
-        /// operation: Filter relationships to only those which have this permission
+        /// Ukprn: Filter relationships to only those for this provider
+        /// Operation: Filter relationships to only those which have this permission
         /// </param>
         [Route]
         //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
@@ -37,33 +40,21 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
             //todo: in general, include error response in body, something like {ErrorCode: x, ErrorMessage: ""}
 
-            // logically it makes sense to return 404 if ukprn is not found even if there is an issue with queryOperation
-            // it might not be most performant though
-            // could store bad results and only return them if we don't find the provider
-            // so instead of throwing exception, store IHttpActionRESULT?
-            // check ukprn exists, if not return 404 not found            
-
-            //? gonna make structure nasty, unless call check method with returns error/operation
-            //IHttpActionResult errorResult = null;
-
             // we could accept non-nullable, but we might want to return all relationships
             if (parameters.Ukprn == null)
             {
                 // logically this would return all relationships (filtered by operation if supplied)
                 throw new HttpResponseException(HttpStatusCode.NotImplemented);
             }
-            
+
+            //operation not supplied or value didn't match enum value
             if (parameters.Operation == null)
-            //if (request.Operation) // mvc handles not matching. use request but with string??
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
                 throw new HttpResponseException(HttpStatusCode.NotImplemented);
             }
-
-            if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
-                return BadRequest();
             
-            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, operation)); //, cancellationToken);
+            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
 
             return Ok(new RelationshipsResponse {Relationships = result.Relationships});
         }

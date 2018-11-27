@@ -1,3 +1,5 @@
+using SFA.DAS.ProviderRelationships.Types.Models;
+
 namespace SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships
 {
     // we could use RelationshipsRequest as the incoming parameter, but we want the interface to support the filters as optional
@@ -6,6 +8,6 @@ namespace SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships
     public class GetRelationshipsParameters
     {
         public long? Ukprn { get; set; }
-        public string Operation { get; set; } // can we get model binder to go straight to enum. also rename
+        public Operation? Operation { get; set; } // can we get model binder to go straight to enum. also rename
     }
 }
