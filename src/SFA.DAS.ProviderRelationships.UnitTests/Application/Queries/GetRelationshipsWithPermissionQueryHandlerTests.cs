@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,6 +43,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     }
                 }));
             });
+        }
+
+        [Test, Ignore("needs latest master")]
+        public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
+        {
+            return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(),
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
+                    r.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new RelationshipDto[0]));
+                });
         }
 
         [Test, Ignore("for now")]
@@ -111,6 +123,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.Permissions.Add(Permission);
             Db.SaveChanges();
             
+            return this;
+        }
+
+        public GetRelationshipsWithPermissionQueryHandlerTestsFixture SetAccountLegalEntityDeleted()
+        {
+            Db.Accounts.First().RemoveAccountLegalEntity(Db.AccountLegalEntities.First(), new DateTime(2018, 11, 26));
+            Db.SaveChanges();
             return this;
         }
     }

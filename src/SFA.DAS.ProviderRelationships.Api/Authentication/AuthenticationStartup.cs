@@ -21,10 +21,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
             _log = log;
         }
 
-        //todo: add idaTenant & idaAudience to das-employer-config
-        
         public void Initialize()
         {
+            //todo: log here, or remove ilog
+            //todo: roles (check MA)
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {
                 Tenant = _providerRelationshipsConfiguration.idaTenant,
