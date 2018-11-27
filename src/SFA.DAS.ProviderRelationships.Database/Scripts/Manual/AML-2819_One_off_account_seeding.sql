@@ -28,7 +28,7 @@ BEGIN TRY
 	select
 	case (ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT) when 1 then 'insert into @Accounts ([AccountId],[PublicHashedId],[Name],[CreatedDate]) values' + char(13) + char(10) else '' end +
 	' (' + convert(varchar,[Id]) + ', ' + '''' + convert(varchar,[PublicHashedId]) + '''' + ', ' + '''' + replace([Name],'''','''''') + '''' + ', ' + '''' + convert(varchar,[CreatedDate],121) + '''' + ')' + 
-	case when ((ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT = 0) OR (ROW_NUMBER() OVER (ORDER BY a.Id) = (select count(1) from [employer_account].[Account]))) then '' else ',' end
+	case when ((ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT = 0) OR (ROW_NUMBER() OVER (ORDER BY a.Id) = (select count(1) from [employer_account].[Account] where HashedId is not null and PublicHashedId is not null))) then '' else ',' end
 	from
 	[employer_account].[Account] a
 	where HashedId is not null 
@@ -47,7 +47,7 @@ BEGIN TRY
 	+ ')'  + 
 	case when
 		((ROW_NUMBER() OVER (ORDER BY ale.Id) % @MAXINSERT = 0)
-		OR (ROW_NUMBER() OVER (ORDER BY ale.Id) = (select count(1) from [employer_account].[AccountLegalEntity] where PublicHashedId is not null)))
+		OR (ROW_NUMBER() OVER (ORDER BY ale.Id) = (select count(1) from [employer_account].[AccountLegalEntity] where PublicHashedId is not null and Deleted is null)))
 	then '' else ',' end
 	from [employer_account].[AccountLegalEntity] ale
 	join [employer_account].[LegalEntity] le on le.Id = ale.LegalEntityId
@@ -76,7 +76,7 @@ BEGIN TRY
 	print ''Completed''
 
 
-	ROLLBACK TRANSACTION
+	COMMIT TRANSACTION
 	'
 
 END TRY
