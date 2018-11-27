@@ -32,8 +32,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 r.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new[] {
                     new RelationshipDto
                     {
-                        //todo: why are we returning what was passed in to us?
-                        Ukprn = f.Query.Ukprn,
                         EmployerAccountId = f.Account.Id,
                         EmployerAccountPublicHashedId = f.Account.PublicHashedId,
                         EmployerAccountName = f.Account.Name,
@@ -62,12 +60,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
         {
             return RunAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
-        }
-        
-        [Test, Ignore("for now")]
-        public Task Handle_WhenHandlingRelationshipsWithPermissionQueryAndUkprnIsNotFound_ThenShouldReturnSumfink()
-        {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 

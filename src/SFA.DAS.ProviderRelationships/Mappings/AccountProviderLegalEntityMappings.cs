@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Mappings
             CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntityDto>();
 
             CreateMap<AccountProviderLegalEntity, RelationshipDto>()
-                .ForMember(d => d.Ukprn, o => o.MapFrom(s => s.AccountProvider.ProviderUkprn))
                 .ForMember(d => d.EmployerAccountId, o => o.MapFrom(s => s.AccountProvider.Account.Id))
                 .ForMember(d => d.EmployerAccountPublicHashedId, o => o.MapFrom(s => s.AccountProvider.Account.PublicHashedId))
                 .ForMember(d => d.EmployerAccountName, o => o.MapFrom(s => s.AccountProvider.Account.Name))
