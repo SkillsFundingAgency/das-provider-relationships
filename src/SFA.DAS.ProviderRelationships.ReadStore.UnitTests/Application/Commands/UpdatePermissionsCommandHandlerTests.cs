@@ -111,7 +111,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             RelationshipsRepository = new Mock<IRelationshipsRepository>();
             Relationships = new List<Relationship>();
 
-            RelationshipsRepository.SetupCreateQueryToReturn(Relationships);
+            RelationshipsRepository.SetupInMemoryCollection(Relationships);
 
             Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object);
             Command = new UpdatePermissionsCommand(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, Operations, Updated, UpdateMessageId);

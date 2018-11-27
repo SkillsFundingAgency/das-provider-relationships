@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
                 DocumentActivator.CreateInstance<Relationship>().Set(r => r.AccountProviderLegalEntityId, 2).Set(r => r.Ukprn, Command.Ukprn)
             };
             
-            RelationshipsRepository.SetupCreateQueryToReturn(Relationships);
+            RelationshipsRepository.SetupInMemoryCollection(Relationships);
             
             Handler = new DeletePermissionsCommandHandler(RelationshipsRepository.Object);
         }
