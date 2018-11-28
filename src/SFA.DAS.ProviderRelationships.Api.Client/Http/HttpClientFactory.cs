@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using SFA.DAS.AutoConfiguration;
 using SFA.DAS.Http;
 using SFA.DAS.Http.TokenGenerators;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
@@ -8,27 +9,24 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
     public class HttpClientFactory : IHttpClientFactory
     {
+        //private readonly IEnvironmentService _environmentService;
         private readonly ProviderRelationshipsApiClientConfiguration _configuration;
 
-        public HttpClientFactory(ProviderRelationshipsApiClientConfiguration configuration)
+        public HttpClientFactory(//IEnvironmentService environmentService,
+            ProviderRelationshipsApiClientConfiguration configuration)
         {
+            //_environmentService = environmentService;
             _configuration = configuration;
         }
 
         public HttpClient CreateHttpClient()
         {
             var httpClientBuilder = new HttpClientBuilder()
-                .WithDefaultHeaders();
+                .WithDefaultHeaders()
+                .WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration));
 
-            // don't want to add dependency on ProviderRelationships for IEnvironment
-//            var environment = container.GetInstance<IEnvironmentService>();
-//            if (environment.IsCurrent(DasEnv.LOCAL))
-//from SFA.DAS.AutoConfiguration
-
-//todo: replace this dangerous #if with environmentservice's environment.IsCurrent(DasEnv.LOCAL) when the package is available
-#if !DEBUG
-            httpClientBuilder.WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration));
-#endif
+            //if (!_environmentService.IsCurrent(DasEnv.LOCAL))
+//            httpClientBuilder.WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration));
 
             var httpClient = httpClientBuilder.Build();
             

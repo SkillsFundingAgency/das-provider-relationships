@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
                 {"EnvironmentName", "LOCAL"}
             };
             
+            //todo: replace IEnvironment with IEnvironmentService
             For<IEnvironment>().Use<Environment.Environment>().Ctor<NameValueCollection>().Is(appSettings).Singleton();
             For<IConfiguration>().Use<ProviderRelationships.Configuration.Configuration>().Ctor<NameValueCollection>().Is(appSettings);
             For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<IConfiguration>().Get<ProviderRelationshipsApiClientConfiguration>("SFA.DAS.ProviderRelationships.Api.Client")).Singleton();
