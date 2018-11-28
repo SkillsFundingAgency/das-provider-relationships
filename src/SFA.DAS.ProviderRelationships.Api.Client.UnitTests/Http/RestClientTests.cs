@@ -42,8 +42,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         public Task WhenCallingGetAndHttpClientReturnsNonSuccess_ThenShouldThrowRestClientException()
         {
             return RunAsync(f => f.SetupHttpClientGetToReturnInternalServerErrorWithStringResponseBody(), f => f.CallGet(null),
-                (f, r) => r.Should().Throw<RestClientException>());
+                (f, r) => r.Should().Throw<RestClientException>()
+                    .Where(ex => ex.StatusCode == HttpStatusCode.InternalServerError
+                                 && ex.ReasonPhrase == "Internal Server Error"
+                                 && Equals(ex.RequestUri, f.RequestUri)
+                                 && ex.ErrorResponse.Contains(f.ResponseString)));
         }
+        
+        //todo: rest of tests
     }
 
     public class RestClientTestsFixture
@@ -56,6 +62,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         public HttpClient HttpClient { get; set; }
         public IRestClient RestClient { get; set; }
+        public Uri RequestUri { get; set; }
         public string ResponseString { get; set; }
         public object ResponseObject { get; set; }
         
@@ -83,10 +90,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         public void SetupHttpClientGetToReturnInternalServerErrorWithStringResponseBody()
         {
             ResponseString = "Error";
+            RequestUri = new Uri($"{HttpClient.BaseAddress}/request", UriKind.Absolute);
             HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
                 Content = new StringContent(ResponseString, Encoding.Default, "text/plain"),
-                RequestMessage = new HttpRequestMessage(HttpMethod.Get, $"{HttpClient.BaseAddress}/request")
+                RequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUri)
             };
         }
 
