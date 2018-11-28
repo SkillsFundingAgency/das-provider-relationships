@@ -9,16 +9,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Queries
 {
     internal class HasRelationshipWithPermissionQueryHandler : IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>
     {
-        private readonly IRelationshipsRepository _relationshipsRepository;
+        private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
 
-        public HasRelationshipWithPermissionQueryHandler(IRelationshipsRepository relationshipsRepository)
+        public HasRelationshipWithPermissionQueryHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository)
         {
-            _relationshipsRepository = relationshipsRepository;
+            _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
         }
         
         public async Task<bool> Handle(HasRelationshipWithPermissionQuery request, CancellationToken cancellationToken)
         {
-            var hasRelationshipWithPermission = await _relationshipsRepository.CreateQuery()
+            var hasRelationshipWithPermission = await _accountProviderLegalEntitiesRepository.CreateQuery()
                 .AnyAsync(p => p.Ukprn == request.Ukprn && p.Deleted == null && p.Operations.Contains(request.Operation), cancellationToken)
                 .ConfigureAwait(false);
 

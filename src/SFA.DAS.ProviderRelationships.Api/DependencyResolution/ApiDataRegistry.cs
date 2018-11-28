@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
             For<IDocumentClient>().Use(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
             For<IProviderRelationshipsDbContextFactory>().Use<ProviderRelationshipsApiDbContextFactory>();
-            For<IRelationshipsRepository>().Use<RelationshipsRepository>();
+            For<IAccountProviderLegalEntitiesRepository>().Use<AccountProviderLegalEntitiesRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => c.GetInstance<IProviderRelationshipsDbContextFactory>().CreateDbContext());
         }
     }

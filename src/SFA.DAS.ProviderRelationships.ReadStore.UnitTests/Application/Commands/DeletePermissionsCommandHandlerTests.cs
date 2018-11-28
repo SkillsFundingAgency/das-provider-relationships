@@ -19,45 +19,45 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
     internal class DeletePermissionsCommandHandlerTests : FluentTest<DeletePermissionsCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenRelationshipHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
+        public Task Handle_WhenAccountProviderLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
             return RunAsync(f => f.Handle(), f =>
             {
-                f.Relationship.Operations.Should().BeEmpty();
-                f.Relationship.Deleted.Should().Be(f.Command.Deleted);
+                f.AccountProviderLegalEntity.Operations.Should().BeEmpty();
+                f.AccountProviderLegalEntity.Deleted.Should().Be(f.Command.Deleted);
             });
         }
         
         [Test]
-        public Task Handle_WhenRelationshipHasAlreadyBeenDeleted_ThenShouldThrowException()
+        public Task Handle_WhenAccountProviderLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetRelationshipDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            return RunAsync(f => f.SetAccountProviderLegalEntityDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
         }
     }
 
     internal class DeletePermissionsCommandHandlerTestsFixture
     {
         public DeletePermissionsCommand Command { get; set; }
-        public Relationship Relationship { get; set; }
+        public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         public IReadStoreRequestHandler<DeletePermissionsCommand, Unit> Handler { get; set; }
-        public Mock<IRelationshipsRepository> RelationshipsRepository { get; set; }
-        public List<Relationship> Relationships { get; set; }
+        public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository { get; set; }
+        public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public DateTime Now { get; set; }
 
         public DeletePermissionsCommandHandlerTestsFixture()
         {
             Now = DateTime.UtcNow;
             Command = new DeletePermissionsCommand(1, 12345678, Now.AddHours(-1), Guid.NewGuid().ToString());
-            Relationship = DocumentActivator.CreateInstance<Relationship>().Set(r => r.AccountProviderLegalEntityId, 1).Set(r => r.Ukprn, Command.Ukprn);
-            RelationshipsRepository = new Mock<IRelationshipsRepository>();
+            AccountProviderLegalEntity = DocumentActivator.CreateInstance<AccountProviderLegalEntity>().Set(r => r.AccountProviderLegalEntityId, 1).Set(r => r.Ukprn, Command.Ukprn);
+            RelationshipsRepository = new Mock<IAccountProviderLegalEntitiesRepository>();
             
-            Relationships = new List<Relationship>
+            AccountProviderLegalEntities = new List<AccountProviderLegalEntity>
             {
-                Relationship,
-                DocumentActivator.CreateInstance<Relationship>().Set(r => r.AccountProviderLegalEntityId, 2).Set(r => r.Ukprn, Command.Ukprn)
+                AccountProviderLegalEntity,
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>().Set(r => r.AccountProviderLegalEntityId, 2).Set(r => r.Ukprn, Command.Ukprn)
             };
             
-            RelationshipsRepository.SetupInMemoryCollection(Relationships);
+            RelationshipsRepository.SetupInMemoryCollection(AccountProviderLegalEntities);
             
             Handler = new DeletePermissionsCommandHandler(RelationshipsRepository.Object);
         }
@@ -67,16 +67,16 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             return Handler.Handle(Command, CancellationToken.None);
         }
 
-        public DeletePermissionsCommandHandlerTestsFixture SetRelationshipDeletedAfterCommand()
+        public DeletePermissionsCommandHandlerTestsFixture SetAccountProviderLegalEntityDeletedAfterCommand()
         {
-            Relationship.Set(ale => ale.Deleted, Now);
+            AccountProviderLegalEntity.Set(ale => ale.Deleted, Now);
             
             return this;
         }
 
-        public DeletePermissionsCommandHandlerTestsFixture SetRelationshipDeletedBeforeCommand()
+        public DeletePermissionsCommandHandlerTestsFixture SetAccountProviderLegalEntityDeletedBeforeCommand()
         {
-            Relationship.Set(ale => ale.Deleted, Command.Deleted.AddHours(-1));
+            AccountProviderLegalEntity.Set(ale => ale.Deleted, Command.Deleted.AddHours(-1));
             
             return this;
         }

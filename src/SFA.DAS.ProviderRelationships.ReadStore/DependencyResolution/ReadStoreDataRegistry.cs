@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
         {
             For<IDocumentClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Named(GetType().FullName).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
-            For<IRelationshipsRepository>().Use<RelationshipsRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
+            For<IAccountProviderLegalEntitiesRepository>().Use<AccountProviderLegalEntitiesRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
         }
     }
 }

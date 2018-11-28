@@ -3,6 +3,6 @@
     public static class DocumentSettings
     {
         public const string DatabaseName = "SFA.DAS.ProviderRelationships.ReadStore.Database";
-        public const string CollectionName = "Relationships";
+        public const string AccountProviderLegalEntitiesCollectionName = "AccountProviderLegalEntities";
     }
 }

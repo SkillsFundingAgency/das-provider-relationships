@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         public Task Handle_WhenDocumentDoesNotExist_ThenShouldCreateDocument()
         {
             return RunAsync(f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<AccountProviderLegalEntity>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderId == f.AccountProviderId &&
                         p.AccountId == f.AccountId &&
@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         {
             return RunAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderId == f.AccountProviderId &&
                         p.AccountId == f.AccountId &&
@@ -56,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         {
             return RunAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Count(o => o.MessageId == f.UpdateMessageId) == 1
                     ), null,
@@ -69,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         {
             return RunAsync(f => f.FindMatchingRelationshipWithUpdateMessageAlreadyProcessed(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Operations.Contains(Operation.CreateCohort) == false
                     ), null,
                     It.IsAny<CancellationToken>())));
@@ -80,7 +80,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         {
             return RunAsync(f => f.FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
-                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<Relationship>(p =>
+                f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Operations.Contains(Operation.CreateCohort) == false &&
                         p.OutboxData.Count() == 2 &&
                         p.OutboxData.Count(o => o.MessageId == f.UpdateMessageId) == 1
@@ -101,15 +101,15 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
         public HashSet<Operation> Operations = new HashSet<Operation> { Operation.CreateCohort };
         public DateTime Created = DateTime.Now.AddMinutes(-10);
         public DateTime Updated = DateTime.Now.AddMinutes(-1);
-        public Mock<IRelationshipsRepository> RelationshipsRepository;
-        public List<Relationship> Relationships;
+        public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository;
+        public List<AccountProviderLegalEntity> Relationships;
         public UpdatePermissionsCommand Command;
         public UpdatePermissionsCommandHandler Handler;
         
         public UpdatePermissionsCommandHandlerTestsFixture()
         {
-            RelationshipsRepository = new Mock<IRelationshipsRepository>();
-            Relationships = new List<Relationship>();
+            RelationshipsRepository = new Mock<IAccountProviderLegalEntitiesRepository>();
+            Relationships = new List<AccountProviderLegalEntity>();
 
             RelationshipsRepository.SetupInMemoryCollection(Relationships);
 
@@ -152,9 +152,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Commands
             return this;
         }
 
-        private Relationship CreateBasicRelationship()
+        private AccountProviderLegalEntity CreateBasicRelationship()
         {
-            return DocumentActivator.CreateInstance<Relationship>()
+            return DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                 .Set(r => r.Ukprn, Ukprn)
                 .Set(r => r.AccountProviderId, AccountProviderId)
                 .Set(r => r.AccountId, AccountId)

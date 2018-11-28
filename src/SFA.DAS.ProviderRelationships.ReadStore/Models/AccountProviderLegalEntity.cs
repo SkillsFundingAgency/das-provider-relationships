@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    internal class Relationship : Document
+    internal class AccountProviderLegalEntity : Document
     {
         [JsonProperty("accountId")]
         public long AccountId { get; private set; }
@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
 
-        public Relationship(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, HashSet<Operation> grantedOperations, DateTime created, string messageId)
+        public AccountProviderLegalEntity(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, HashSet<Operation> grantedOperations, DateTime created, string messageId)
             : base(1, "relationship")
         {
             Id = Guid.NewGuid();
@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
         }
 
         [JsonConstructor]
-        private Relationship()
+        private AccountProviderLegalEntity()
         {
         }
 

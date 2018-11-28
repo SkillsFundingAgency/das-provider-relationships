@@ -8,21 +8,21 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
     internal class DeletePermissionsCommandHandler : IReadStoreRequestHandler<DeletePermissionsCommand, Unit>
     {
-        private readonly IRelationshipsRepository _relationshipsRepository;
+        private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
 
-        public DeletePermissionsCommandHandler(IRelationshipsRepository relationshipsRepository)
+        public DeletePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository)
         {
-            _relationshipsRepository = relationshipsRepository;
+            _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
         }
         
         public async Task<Unit> Handle(DeletePermissionsCommand request, CancellationToken cancellationToken)
         {
-            var relationship = await _relationshipsRepository.CreateQuery().SingleAsync(r => 
+            var accountProviderLegalEntity = await _accountProviderLegalEntitiesRepository.CreateQuery().SingleAsync(r => 
                 r.Ukprn == request.Ukprn && r.AccountProviderLegalEntityId == request.AccountProviderLegalEntityId, cancellationToken);
             
-            relationship.Delete(request.Deleted, request.MessageId);
+            accountProviderLegalEntity.Delete(request.Deleted, request.MessageId);
                 
-            await _relationshipsRepository.Update(relationship, null, cancellationToken);
+            await _accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity, null, cancellationToken);
             
             return Unit.Value;
         }

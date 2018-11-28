@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
             
             var documentCollection = new DocumentCollection
             {
-                Id = DocumentSettings.CollectionName,
+                Id = DocumentSettings.AccountProviderLegalEntitiesCollectionName,
                 PartitionKey = new PartitionKeyDefinition
                 {
                     Paths = new Collection<string>
