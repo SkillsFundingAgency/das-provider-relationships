@@ -1,7 +1,6 @@
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
-using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;

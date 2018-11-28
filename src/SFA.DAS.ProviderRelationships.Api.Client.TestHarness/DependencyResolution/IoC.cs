@@ -1,4 +1,3 @@
-using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using StructureMap;
 

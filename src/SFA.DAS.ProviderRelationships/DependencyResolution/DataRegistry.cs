@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.Azure.Documents;
-using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
