@@ -11,7 +11,6 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
-                c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<StartupRegistry>();

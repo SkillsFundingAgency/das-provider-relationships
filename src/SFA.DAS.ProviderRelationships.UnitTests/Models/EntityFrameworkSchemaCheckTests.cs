@@ -24,7 +24,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
             using (var container = new Container(c =>
             {
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<AutoConfigurationRegistry>();
             }))
             {
                 var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
