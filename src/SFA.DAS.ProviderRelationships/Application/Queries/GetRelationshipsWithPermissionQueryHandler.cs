@@ -26,10 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
         {
             var relationships = await _db.Value.AccountProviderLegalEntities
                 .Where(aple => aple.AccountProvider.ProviderUkprn == request.Ukprn
-                               //todo: ale's HasQueryFilter should make this redundant, but the unit test fails without it - does it work on an inmemorydatabase? https://github.com/aspnet/EntityFrameworkCore/issues/9405
-                               //&& aple.AccountLegalEntity.Deleted == null
                                && aple.Permissions.Any(p => p.Operation == request.Operation))
-                //.OrderBy(?)
                 .Include(aple => aple.AccountProvider)
                     .ThenInclude(ap => ap.Account)
                 .Include(aple => aple.AccountLegalEntity)
