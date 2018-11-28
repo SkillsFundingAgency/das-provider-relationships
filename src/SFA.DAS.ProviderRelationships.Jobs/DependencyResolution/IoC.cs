@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ProviderRelationships.DependencyResolution;
+using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
@@ -12,6 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
+                c.AddRegistry<ReadStoreConfigurationRegistry>();
+                c.AddRegistry<ReadStoreDataRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
