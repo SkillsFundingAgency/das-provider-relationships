@@ -40,6 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
                 (f, r) => r.Should().Match<ErrorResult>(er => 
                     er.HttpStatusCode == HttpStatusCode.NotImplemented
+                    && er.Error != null
                     && er.Error.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
         }
         
@@ -47,7 +48,10 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenOperationIsMissingOrUnknownOperationIsSupplied_ThenShouldReturnNotImplemented()
         {
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-                (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
+                (f, r) => r.Should().Match<ErrorResult>(er => 
+                    er.HttpStatusCode == HttpStatusCode.NotImplemented
+                    && er.Error != null
+                    && er.Error.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
         }
     }
 

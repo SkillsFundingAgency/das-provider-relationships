@@ -7,6 +7,8 @@ using System.Web.Http;
 
 namespace SFA.DAS.ProviderRelationships.Api.HttpErrorResult
 {
+    // there are many ways to handle errors in web.api, so we may want to change this, but for now
+
     public class ErrorResult : IHttpActionResult
     {
         internal readonly HttpStatusCode HttpStatusCode;

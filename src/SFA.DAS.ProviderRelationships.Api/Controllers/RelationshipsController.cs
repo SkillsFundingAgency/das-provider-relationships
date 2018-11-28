@@ -29,32 +29,26 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// It would be nice to return a 404 if there is no provider with the supplied ukprn, but currently we just return an empty set
         /// </remarks>
         /// <param name="parameters">Members
-        /// Ukprn: Filter relationships to only those for this provider
+        /// Ukprn: Filter relationships to only those for this provider (we could accept non-nullable, but we might want to return unfiltered by ukprn)
         /// Operation: Filter relationships to only those which have this permission
         /// </param>
         [Route]
         //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
         public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters) // , CancellationToken cancellationToken)
         {
-            //todo: distinguish between not founds (put error message in response body indicating what was not found)? return empty?
-            //todo: in general, include error response in body, something like {ErrorCode: x, ErrorMessage: ""}
-
-            // we could accept non-nullable, but we might want to return all relationships
             if (parameters.Ukprn == null)
             {
                 // logically this would return all relationships (filtered by operation if supplied)
-
-//todo:extension?
-//many ways to handle errors, so we may want to change this, but for now
-
-                return new ErrorResult(HttpStatusCode.NotImplemented, new Error(RelationshipsErrorCodes.MissingUkprnFilter, "Currently an Ukprn filter needs to be supplied"), Request);
+                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingUkprnFilter,
+                    "Currently an Ukprn filter needs to be supplied");
             }
 
             //operation not supplied or value didn't match enum value
             if (parameters.Operation == null)
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
-                throw new HttpResponseException(HttpStatusCode.NotImplemented);
+                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingOperationFilter,
+                    "Currently an Operation filter needs to be supplied and match an Operation enum value");
             }
             
             var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
