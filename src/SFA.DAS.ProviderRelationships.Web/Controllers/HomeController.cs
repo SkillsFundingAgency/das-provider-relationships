@@ -6,19 +6,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IEnvironmentService _environment;
+        private readonly IEnvironmentService _environmentService;
         private readonly IEmployerUrls _employerUrls;
 
-        public HomeController(IEnvironmentService environment, IEmployerUrls employerUrls)
+        public HomeController(IEnvironmentService environmentService, IEmployerUrls employerUrls)
         {
-            _environment = environment;
+            _environmentService = environmentService;
             _employerUrls = employerUrls;
         }
 
         [Route]
         public ActionResult Index()
         {
-            if (_environment.IsCurrent(DasEnv.LOCAL))
+            if (_environmentService.IsCurrent(DasEnv.LOCAL))
             {
                 return RedirectToAction("Index", "AccountProviders", new { accountHashedId = "JRML7V" });
             }

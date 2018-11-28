@@ -19,8 +19,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var instrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
 
-                var environment = container.GetInstance<IEnvironmentService>();
-                if (environment.IsCurrent(DasEnv.LOCAL))
+                var environmentService = container.GetInstance<IEnvironmentService>();
+                if (environmentService.IsCurrent(DasEnv.LOCAL))
                 {
                     config.UseDevelopmentSettings();
                 }

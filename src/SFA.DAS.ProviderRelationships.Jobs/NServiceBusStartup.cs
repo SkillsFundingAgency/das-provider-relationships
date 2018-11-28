@@ -17,21 +17,21 @@ namespace SFA.DAS.ProviderRelationships.Jobs
     public class NServiceBusStartup : IStartup
     {
         private readonly IContainer _container;
-        private readonly IEnvironmentService _environment;
+        private readonly IEnvironmentService _environmentService;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
 
-        public NServiceBusStartup(IContainer container, IEnvironmentService environment, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
+        public NServiceBusStartup(IContainer container, IEnvironmentService environmentService, ProviderRelationshipsConfiguration providerRelationshipsConfiguration)
         {
             _container = container;
-            _environment = environment;
+            _environmentService = environmentService;
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
         }
         
         public async Task StartAsync()
         {
             var endpointConfiguration = new EndpointConfiguration("SFA.DAS.ProviderRelationships.Jobs")
-                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environment.IsCurrent(DasEnv.LOCAL))
+                .UseAzureServiceBusTransport(() => _providerRelationshipsConfiguration.ServiceBusConnectionString, _environmentService.IsCurrent(DasEnv.LOCAL))
                 .UseLicense(_providerRelationshipsConfiguration.NServiceBusLicense)
                 .UseMessageConventions()
                 .UseSqlServerPersistence(() => _container.GetInstance<DbConnection>())
