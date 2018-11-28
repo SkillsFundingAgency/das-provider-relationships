@@ -21,7 +21,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
-                //todo: remove ReadStoreDataRegistry related
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EmployerFeaturesAuthorizationRegistry>();
                 c.AddRegistry<EmployerRolesAuthorizationRegistry>();

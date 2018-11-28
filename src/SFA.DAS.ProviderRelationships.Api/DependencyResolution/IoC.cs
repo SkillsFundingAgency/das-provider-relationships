@@ -15,8 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
             {
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
-                //c.AddRegistry<DataRegistry>();
-                //todo: use ReadStoreDataRegistry
                 c.AddRegistry<ApiDataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<EnvironmentRegistry>();

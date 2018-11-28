@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
             // don't want to add dependency on ProviderRelationships for IEnvironment
 //            var environment = container.GetInstance<IEnvironmentService>();
 //            if (environment.IsCurrent(DasEnv.LOCAL))
+//from SFA.DAS.AutoConfiguration
 
 //todo: replace this dangerous #if with environmentservice's environment.IsCurrent(DasEnv.LOCAL) when the package is available
 #if !DEBUG
