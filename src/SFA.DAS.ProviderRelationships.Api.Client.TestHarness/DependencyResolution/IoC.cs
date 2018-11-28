@@ -1,3 +1,4 @@
+using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using StructureMap;
 
@@ -9,6 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
         {
             return new Container(c =>
             {
+                c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ProviderRelationshipsApiClientRegistry>();
             });
         }

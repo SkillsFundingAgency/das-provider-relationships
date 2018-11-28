@@ -13,11 +13,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         {
             IncludeRegistry<ReadStoreDataRegistry>();
             IncludeRegistry<ReadStoreMediatorRegistry>();
+            IncludeRegistry<ReadStoreConfigurationRegistry>();
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<HttpClientFactory>();
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
-            
-            For<IAzureTableStorageConnectionAdapter>().Use<AzureTableStorageConnectionAdapter>();
+
             For<ProviderRelationshipsApiClientConfiguration>().Use(c => new ProviderRelationshipsApiClientConfiguration {
                 ApiBaseUrl = "https://localhost:44308/",
                 ClientId = "xxx",

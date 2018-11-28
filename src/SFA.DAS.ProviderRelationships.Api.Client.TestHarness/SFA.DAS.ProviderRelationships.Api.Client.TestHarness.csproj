@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.7" />
+        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.8" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
     </ItemGroup>
 

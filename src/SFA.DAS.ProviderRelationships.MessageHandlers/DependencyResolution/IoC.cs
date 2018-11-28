@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
                 c.AddRegistry<ReadStoreMediatorRegistry>();
+                c.AddRegistry<ReadStoreConfigurationRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
