@@ -26,14 +26,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// Get relationships with optional (currently mandatory) filters
         /// </summary>
         /// <remarks>
-        /// It would be nice to return a 404 if there is no provider with the supplied ukprn, but currently we just return an empty set
+        /// It would be nice to return a 404 if there is no provider with the supplied ukprn, but currently we just return an empty set.
+        /// It would also be nice to cancel on client disconnects, see https://github.com/aspnet/Mvc/issues/5239
         /// </remarks>
-        /// <param name="parameters">Members
-        /// Ukprn: Filter relationships to only those for this provider (we could accept non-nullable, but we might want to return unfiltered by ukprn)
-        /// Operation: Filter relationships to only those which have this permission
+        /// <param name="parameters">GetAccountProviderLegalEntitiesParameters members:
+        /// Ukprn: Filter AccountProviderLegalEntities to only those for this provider (we could accept non-nullable, but we might want to return unfiltered by ukprn)
+        /// Operation: Filter AccountProviderLegalEntities to only those which have this permission
         /// </param>
         [Route]
-        //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
         public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesParameters parameters) // , CancellationToken cancellationToken)
         {
             if (parameters.Ukprn == null)
