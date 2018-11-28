@@ -47,6 +47,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         Value = Operation.CreateCohort
                     }
                 });
+                
+                model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProviderLegalEntityQueryResult.AccountLegalEntitiesCount);
             });
         }
 
@@ -123,7 +125,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<UpdatedAccountProviderLegalEntityViewModel>().Which;
                 
                 model.AccountProviderLegalEntity.Should().BeSameAs(f.GetUpdatedAccountProviderLegalEntityQueryResult.AccountProviderLegalEntity);
-                model.AccountLegalEntityCount.Should().Be(f.GetUpdatedAccountProviderLegalEntityQueryResult.AccountLegalEntityCount);
+                model.AccountLegalEntitiesCount.Should().Be(f.GetUpdatedAccountProviderLegalEntityQueryResult.AccountLegalEntitiesCount);
             });
         }
 
@@ -195,14 +197,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountLegalEntityBasicDto(),
                 new AccountProviderLegalEntityDto
                 {
-                    Permissions = new List<PermissionDto>
+                    Operations = new List<Operation>
                     {
-                        new PermissionDto
-                        {
-                            Operation = Operation.CreateCohort
-                        }
+                        Operation.CreateCohort
                     }
-                });
+                },
+                2);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q => 
                     q.AccountId == GetAccountProviderLegalEntityRouteValues.AccountId &&
@@ -257,14 +257,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountLegalEntityBasicDto(),
                 new AccountProviderLegalEntityDto
                 {
-                    Permissions = new List<PermissionDto>
+                    Operations = new List<Operation>
                     {
-                        new PermissionDto
-                        {
-                            Operation = Operation.CreateCohort
-                        }
+                        Operation.CreateCohort
                     }
-                });
+                },
+                2);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q =>
                     q.AccountId == UpdateAccountProviderLegalEntityRouteValues.AccountId &&

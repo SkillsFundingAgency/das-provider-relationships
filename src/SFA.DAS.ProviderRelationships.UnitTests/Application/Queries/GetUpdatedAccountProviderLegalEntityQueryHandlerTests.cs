@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     r2.AccountProviderLegalEntity.Id == f.AccountProviderLegalEntity.Id &&
                     r2.AccountProviderLegalEntity.ProviderName == f.Provider.Name &&
                     r2.AccountProviderLegalEntity.AccountLegalEntityName == f.AccountLegalEntity.Name &&
-                    r2.AccountLegalEntityCount == f.AccountLegalEntities.Count(ale => ale.AccountId == f.Account.Id)));
+                    r2.AccountLegalEntitiesCount == f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId)));
         }
 
         [Test]

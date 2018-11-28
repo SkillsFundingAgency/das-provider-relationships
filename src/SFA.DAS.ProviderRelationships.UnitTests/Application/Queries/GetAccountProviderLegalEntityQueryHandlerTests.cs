@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -48,15 +49,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     {
                         Id = f.AccountProviderLegalEntity.Id,
                         AccountLegalEntityId = f.AccountLegalEntity.Id,
-                        Permissions = new List<PermissionDto>
+                        Operations = new List<Operation>
                         {
-                            new PermissionDto
-                            {
-                                Id = f.Permission.Id,
-                                Operation = f.Permission.Operation
-                            }
+                            f.Permission.Operation
                         }
                     });
+                
+                r.AccountLegalEntitiesCount.Should().Be(f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId));
             });
         }
 
@@ -81,6 +80,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
+        public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         public Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
@@ -90,9 +90,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
-            
             Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
@@ -107,13 +105,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
             AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, Query.AccountLegalEntityId).Set(ale => ale.Name, "Bar").Set(ale => ale.AccountId, Account.Id);
-            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 4).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
-            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 5).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
+            
+            AccountLegalEntities = new List<AccountLegalEntity>
+            {
+                AccountLegalEntity,
+                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 4).Set(ale => ale.AccountId, Account.Id),
+                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 5).Set(ale => ale.AccountId, 6)
+            };
+            
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 7).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
+            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 8).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
             Db.AccountProviders.Add(AccountProvider);
-            Db.AccountLegalEntities.Add(AccountLegalEntity);
+            Db.AccountLegalEntities.AddRange(AccountLegalEntities);
             Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
             Db.Permissions.Add(Permission);
             Db.SaveChanges();

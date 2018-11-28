@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override async Task Handle(UpdateAccountLegalEntityNameCommand request, CancellationToken cancellationToken)
         {
-            var accountLegalEntity = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
+            var accountLegalEntity = await _db.Value.AccountLegalEntities.IgnoreQueryFilters().SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
             accountLegalEntity.UpdateName(request.Name, request.Created);
         }

@@ -32,12 +32,26 @@
                 </tr>
             </thead>
             <tbody class="govuk-table__body">
-                @foreach (var accountLegalEntity in Model.AccountLegalEntities)
+                @foreach (var accountLegalEntity in Model.AccountProvider.AccountLegalEntities)
                 {
                     <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">@accountLegalEntity.Name</td>
-                        <td class="govuk-table__cell">No permissions set</td>
-                        <td class="govuk-table__cell"><a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a></td>
+                        <td class="govuk-table__cell das-table__cell--vertical-align-top">@accountLegalEntity.Name</td>
+                        <td class="govuk-table__cell">
+                            @if (accountLegalEntity.Operations.Any())
+                            {
+                            <ul class="govuk-list das-list--comma-after govuk-body govuk-!-margin-bottom-0">
+                                @foreach (var operation in accountLegalEntity.Operations)
+                                {
+                                    <li>@operation.GetDescription()</li>
+                                }
+                            </ul>
+                            }
+                            else
+                            {
+                                @:No permissions set
+                            }
+                        </td>
+                        <td class="govuk-table__cell das-table__cell--vertical-align-top"><a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a></td>
                     </tr>
                 }
             </tbody>

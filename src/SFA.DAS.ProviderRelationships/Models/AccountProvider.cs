@@ -35,6 +35,8 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         public void UpdatePermissions(AccountLegalEntity accountLegalEntity, User user, HashSet<Operation> grantedOperations)
         {
+            EnsureAccountLegalEntityHasNotBeenDeleted(accountLegalEntity);
+            
             var accountProviderLegalEntity = _accountProviderLegalEntities.SingleOrDefault(aple => aple.AccountLegalEntityId == accountLegalEntity.Id);
 
             if (accountProviderLegalEntity == null)
@@ -44,6 +46,14 @@ namespace SFA.DAS.ProviderRelationships.Models
             else
             {
                 accountProviderLegalEntity.UpdatePermissions(user, grantedOperations);
+            }
+        }
+
+        private void EnsureAccountLegalEntityHasNotBeenDeleted(AccountLegalEntity accountLegalEntity)
+        {
+            if (accountLegalEntity.Deleted != null)
+            {
+                throw new InvalidOperationException("Requires account legal entity has not been deleted");
             }
         }
     }

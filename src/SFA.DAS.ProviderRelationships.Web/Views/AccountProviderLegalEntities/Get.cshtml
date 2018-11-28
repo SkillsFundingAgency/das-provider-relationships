@@ -7,7 +7,14 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id, Referrer = "SetPermissions" })">Back</a>
+    @if (Model.AccountLegalEntitiesCount > 1)
+    {
+        <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id })">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" href="@Url.Action("Index", "AccountProviders")">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">

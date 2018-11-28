@@ -46,8 +46,35 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">@accountProvider.ProviderName</td>
-                            <td class="govuk-table__cell">No permissions set</td>
-                            <td class="govuk-table__cell"><a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">Set permissions</a></td>
+                            <td class="govuk-table__cell">
+                                @if (accountProvider.AccountProviderLegalEntitiesWithPermissionsCount == 0)
+                                {
+                                    @:No permissions set
+                                }
+                                else
+                                {
+                                    if (Model.AccountLegalEntitiesCount > 1)
+                                    {
+                                        @:Permissions set for @accountProvider.AccountProviderLegalEntitiesWithPermissionsCount organisation@(accountProvider.AccountProviderLegalEntitiesWithPermissionsCount > 1 ? "s" : "")
+                                    }
+                                    else
+                                    {
+                                        @:Permissions set
+                                    }
+                                }
+                            </td>
+                            <td class="govuk-table__cell">
+                                <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">
+                                    @if (accountProvider.AccountProviderLegalEntitiesWithPermissionsCount == 0)
+                                    {
+                                        @:Set permissions
+                                    }
+                                    else
+                                    {
+                                        @:View
+                                    }
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

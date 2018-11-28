@@ -35,31 +35,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name,
-                        AccountProviderLegalEntities = new List<AccountProviderLegalEntityDto>
+                        AccountLegalEntities = new List<AccountLegalEntityDto>
                         {
-                            new AccountProviderLegalEntityDto
+                            new AccountLegalEntityDto
                             {
-                                Id = f.AccountProviderLegalEntity.Id,
-                                AccountLegalEntityId = f.AccountLegalEntity.Id,
-                                Permissions = new List<PermissionDto>
+                                Id = f.AccountLegalEntity.Id,
+                                Name = f.AccountLegalEntity.Name,
+                                Operations = new List<Operation>
                                 {
-                                    new PermissionDto
-                                    {
-                                        Id = f.Permission.Id,
-                                        Operation = f.Permission.Operation
-                                    }
+                                    f.Permission.Operation
                                 }
                             }
-                        }
-                    });
-                
-                r.AccountLegalEntities.Should().NotBeNull().And.BeOfType<List<AccountLegalEntityBasicDto>>()
-                    .And.BeEquivalentTo(new List<AccountLegalEntityBasicDto>
-                    {
-                        new AccountLegalEntityBasicDto
-                        {
-                            Id = f.AccountLegalEntity.Id,
-                            Name = f.AccountLegalEntity.Name
                         }
                     });
             });
