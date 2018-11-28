@@ -21,7 +21,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
-                c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EmployerFeaturesAuthorizationRegistry>();

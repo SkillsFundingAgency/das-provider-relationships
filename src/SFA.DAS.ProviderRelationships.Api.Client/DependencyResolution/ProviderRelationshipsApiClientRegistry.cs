@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using SFA.DAS.AutoConfiguration;
+using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
@@ -11,6 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
     {
         public ProviderRelationshipsApiClientRegistry()
         {
+            IncludeRegistry<AutoConfigurationRegistry>();
             IncludeRegistry<ReadStoreDataRegistry>();
             IncludeRegistry<ReadStoreMediatorRegistry>();
             IncludeRegistry<ReadStoreConfigurationRegistry>();
@@ -18,13 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IHttpClientFactory>().Use<HttpClientFactory>();
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
 
-            For<ProviderRelationshipsApiClientConfiguration>().Use(c => new ProviderRelationshipsApiClientConfiguration {
-                ApiBaseUrl = "https://localhost:44308/",
-                ClientId = "xxx",
-                ClientSecret = "xxx",
-                IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/xxx",
-                Tenant = "citizenazuresfabisgov.onmicrosoft.com"
-            });
+            For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
         }
     }
 }
