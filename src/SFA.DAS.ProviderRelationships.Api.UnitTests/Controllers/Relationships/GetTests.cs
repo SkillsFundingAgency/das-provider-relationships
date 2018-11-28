@@ -29,8 +29,8 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
                 (f, r) =>
                 {
                     r.Should().NotBeNull();
-                    r.Should().BeOfType<OkNegotiatedContentResult<RelationshipsResponse>>();
-                    ((OkNegotiatedContentResult<RelationshipsResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                    r.Should().BeOfType<OkNegotiatedContentResult<AccountProviderLegalEntitiesResponse>>();
+                    ((OkNegotiatedContentResult<AccountProviderLegalEntitiesResponse>)r).Content.Should().BeEquivalentTo(f.Result);
                 });
         }
 
@@ -57,14 +57,14 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
 
     public class GetTestsFixture
     {
-        public GetRelationshipsParameters GetRelationshipsParameters { get; set; }
+        public GetAccountProviderLegalEntitiesParameters GetAccountProviderLegalEntitiesParameters { get; set; }
         public Mock<IMediator> Mediator { get; set; }
-        public RelationshipsController RelationshipsController { get; set; }
-        public GetRelationshipsWithPermissionQueryResult Result { get; set; }
+        public AccountProviderLegalEntitiesController AccountProviderLegalEntitiesController { get; set; }
+        public GetAccountProviderLegalEntitiesWithPermissionQueryResult Result { get; set; }
 
         public GetTestsFixture()
         {
-            GetRelationshipsParameters = new GetRelationshipsParameters
+            GetAccountProviderLegalEntitiesParameters = new GetAccountProviderLegalEntitiesParameters
             {
                 Ukprn = 12345678L,
                 Operation = Operation.CreateCohort
@@ -72,30 +72,30 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
 
             Mediator = new Mock<IMediator>();
 
-            Result = new GetRelationshipsWithPermissionQueryResult(new [] {
-                new RelationshipDto {AccountId = 41L, AccountLegalEntityId = 4131L, AccountLegalEntityName = "AccountLegalEntityName", AccountLegalEntityPublicHashedId = "ALEPHI", AccountName = "AccountName", AccountProviderId = 491L, AccountPublicHashedId = "ACCPHI" }
+            Result = new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new [] {
+                new AccountProviderLegalEntityDto {AccountId = 41L, AccountLegalEntityId = 4131L, AccountLegalEntityName = "AccountLegalEntityName", AccountLegalEntityPublicHashedId = "ALEPHI", AccountName = "AccountName", AccountProviderId = 491L, AccountPublicHashedId = "ACCPHI" }
             });
             
-            Mediator.Setup(m => m.Send(It.Is<GetRelationshipsWithPermissionQuery>(q => q.Ukprn == GetRelationshipsParameters.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
+            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q => q.Ukprn == GetAccountProviderLegalEntitiesParameters.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result);
             
-            RelationshipsController = new RelationshipsController(Mediator.Object);
+            AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object);
         }
 
         public async Task<IHttpActionResult> CallGet()
         {
-            return await RelationshipsController.Get(GetRelationshipsParameters); //, CancellationToken.None);
+            return await AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntitiesParameters); //, CancellationToken.None);
         }
 
         public GetTestsFixture SetUkprn(long? ukprn)
         {
-            GetRelationshipsParameters.Ukprn = ukprn;
+            GetAccountProviderLegalEntitiesParameters.Ukprn = ukprn;
             return this;
         }
         
         public GetTestsFixture SetOperation(Operation? operation)
         {
-            GetRelationshipsParameters.Operation = operation;
+            GetAccountProviderLegalEntitiesParameters.Operation = operation;
             return this;
         }
     }

@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
-    public class RelationshipDto
+    public class AccountProviderLegalEntityDto
     {
         public long AccountId { get; set; }
         public string AccountPublicHashedId { get; set; }

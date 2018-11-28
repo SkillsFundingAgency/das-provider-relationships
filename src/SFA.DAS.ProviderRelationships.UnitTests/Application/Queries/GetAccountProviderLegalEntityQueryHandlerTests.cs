@@ -43,8 +43,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         Name = f.AccountLegalEntity.Name
                     });
                 
-                r.AccountProviderLegalEntity.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntityDto>()
-                    .And.BeEquivalentTo(new AccountProviderLegalEntityDto
+                r.AccountProviderLegalEntitySummary.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntitySummaryDto>()
+                    .And.BeEquivalentTo(new AccountProviderLegalEntitySummaryDto
                     {
                         Id = f.AccountProviderLegalEntity.Id,
                         AccountLegalEntityId = f.AccountLegalEntity.Id,

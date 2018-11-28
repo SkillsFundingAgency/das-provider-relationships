@@ -99,13 +99,13 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionParameters\Relationships\GetRelationshipsParameters.cs" />
+    <Compile Include="ActionParameters\Relationships\GetAccountProviderLegalEntitiesParameters.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\AuthenticationStartup.cs" />
     <Compile Include="Authentication\IAuthenticationStartup.cs" />
     <Compile Include="Authentication\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
-    <Compile Include="Controllers\RelationshipsController.cs" />
+    <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="DependencyResolution\ApiDataRegistry.cs" />
     <Compile Include="DependencyResolution\AuthenticationRegistry.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />

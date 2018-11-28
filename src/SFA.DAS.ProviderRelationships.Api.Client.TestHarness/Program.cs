@@ -47,8 +47,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                     await accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity);
 
                     var apiClient = container.GetInstance<IProviderRelationshipsApiClient>();
-                    var relationshipsRequest = new RelationshipsRequest { Ukprn = accountProviderLegalEntity.Ukprn, Operation = Operation.CreateCohort };
-                    var response = await apiClient.GetRelationshipsWithPermission(relationshipsRequest);
+                    var relationshipsRequest = new AccountProviderLegalEntitiesRequest { Ukprn = accountProviderLegalEntity.Ukprn, Operation = Operation.CreateCohort };
+                    var response = await apiClient.GetAccountProviderLegalEntitiesWithPermission(relationshipsRequest);
 
                     if (response.Relationships.Any())
                     {

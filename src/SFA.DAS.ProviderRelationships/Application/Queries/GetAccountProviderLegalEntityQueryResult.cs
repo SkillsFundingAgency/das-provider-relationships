@@ -6,13 +6,13 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
     {
         public AccountProviderBasicDto AccountProvider { get; }
         public AccountLegalEntityBasicDto AccountLegalEntity { get; }
-        public AccountProviderLegalEntityDto AccountProviderLegalEntity { get; }
+        public AccountProviderLegalEntitySummaryDto AccountProviderLegalEntitySummary { get; }
 
-        public GetAccountProviderLegalEntityQueryResult(AccountProviderBasicDto accountProvider, AccountLegalEntityBasicDto accountLegalEntity, AccountProviderLegalEntityDto accountProviderLegalEntity)
+        public GetAccountProviderLegalEntityQueryResult(AccountProviderBasicDto accountProvider, AccountLegalEntityBasicDto accountLegalEntity, AccountProviderLegalEntitySummaryDto providerLegalEntitySummary)
         {
             AccountProvider = accountProvider;
             AccountLegalEntity = accountLegalEntity;
-            AccountProviderLegalEntity = accountProviderLegalEntity;
+            AccountProviderLegalEntitySummary = providerLegalEntitySummary;
         }
     }
 }

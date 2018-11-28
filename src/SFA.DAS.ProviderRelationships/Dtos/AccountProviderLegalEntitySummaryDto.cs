@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ProviderRelationships.Dtos
 {
-    public class AccountProviderLegalEntityDto
+    public class AccountProviderLegalEntitySummaryDto
     {
         public long Id { get; set; }
         public long AccountLegalEntityId { get; set; }

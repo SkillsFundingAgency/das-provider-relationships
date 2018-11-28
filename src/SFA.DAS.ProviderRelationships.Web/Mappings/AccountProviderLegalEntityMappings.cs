@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                     .Select(o => new OperationViewModel
                     {
                         Value = o,
-                        IsEnabled = s.AccountProviderLegalEntity != null && s.AccountProviderLegalEntity.Permissions.Any(p => p.Operation == o)
+                        IsEnabled = s.AccountProviderLegalEntitySummary != null && s.AccountProviderLegalEntitySummary.Permissions.Any(p => p.Operation == o)
                     })));
             
             CreateMap<GetAccountProviderLegalEntityQueryResult, UpdateAccountProviderLegalEntityViewModel>()

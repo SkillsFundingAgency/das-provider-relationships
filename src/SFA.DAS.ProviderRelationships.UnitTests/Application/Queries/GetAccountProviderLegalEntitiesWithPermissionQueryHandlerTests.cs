@@ -21,16 +21,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
     [Parallelizable]
-    public class GetRelationshipsWithPermissionQueryHandlerTests : FluentTest<GetRelationshipsWithPermissionQueryHandlerTestsFixture>
+    public class GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTests : FluentTest<GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenUkprnIsFoundAndRelationshipHasPermissionForSuppliedOperation_ThenShouldReturnCorrectGetRelationshipsWithPermissionQueryResult()
+        public Task Handle_WhenUkprnIsFoundAndAccountProviderLegalEntityHasPermissionForSuppliedOperation_ThenShouldReturnCorrectGetAccountProviderLegalEntitiesWithPermissionQueryResult()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new[] {
-                    new RelationshipDto
+                r.Should().BeEquivalentTo(new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new[] {
+                    new AccountProviderLegalEntityDto
                     {
                         AccountId = f.Account.Id,
                         AccountPublicHashedId = f.Account.PublicHashedId,
@@ -45,28 +45,28 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
-        public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
+        public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
         [Test]
-        public Task Handle_WhenUkprnIsFoundAndRelationshipHasNotGotPermissionForSuppliedOperation_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
+        public Task Handle_WhenUkprnIsFoundAndAccountProviderLegalEntityHasNotGotPermissionForSuppliedOperation_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
         [Test]
-        public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetRelationshipsWithPermissionQueryResultWithEmptyRelationshipDtos()
+        public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
             return RunAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
     }
 
-    public class GetRelationshipsWithPermissionQueryHandlerTestsFixture
+    public class GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture
     {
-        public GetRelationshipsWithPermissionQueryHandler Handler { get; set; }
-        public GetRelationshipsWithPermissionQuery Query { get; set; }
+        public GetAccountProviderLegalEntitiesWithPermissionQueryHandler Handler { get; set; }
+        public GetAccountProviderLegalEntitiesWithPermissionQuery Query { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public Account Account { get; set; }
@@ -75,21 +75,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         public Permission Permission { get; set; }
 
-        public GetRelationshipsWithPermissionQueryHandlerTestsFixture()
+        public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture()
         {
-            Query = new GetRelationshipsWithPermissionQuery(88888888, Operation.CreateCohort);
+            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, Operation.CreateCohort);
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>());
-            Handler = new GetRelationshipsWithPermissionQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
+            Handler = new GetAccountProviderLegalEntitiesWithPermissionQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
         
-        public Task<GetRelationshipsWithPermissionQueryResult> Handle()
+        public Task<GetAccountProviderLegalEntitiesWithPermissionQueryResult> Handle()
         {
             return Handler.Handle(Query, CancellationToken.None);
         }
         
-        public GetRelationshipsWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
+        public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
         {
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 4660117L);
             
@@ -124,7 +124,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return this;
         }
 
-        public GetRelationshipsWithPermissionQueryHandlerTestsFixture SetAccountLegalEntityDeleted()
+        public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountLegalEntityDeleted()
         {
             // need to new up one of these, so it's static Events is there
             new UnitOfWorkContext();
@@ -133,17 +133,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return this;
         }
         
-        public GetRelationshipsWithPermissionQueryHandlerTestsFixture RemovePermission()
+        public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture RemovePermission()
         {
             Db.Permissions.RemoveRange(Db.Permissions);
             Db.SaveChanges();
             return this;
         }
 
-        public void AssertEmptyResult(GetRelationshipsWithPermissionQueryResult result)
+        public void AssertEmptyResult(GetAccountProviderLegalEntitiesWithPermissionQueryResult result)
         {
             result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(new GetRelationshipsWithPermissionQueryResult(new RelationshipDto[0]));
+            result.Should().BeEquivalentTo(new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new AccountProviderLegalEntityDto[0]));
         }
     }
 }

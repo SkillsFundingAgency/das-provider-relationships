@@ -26,9 +26,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
     public class ProviderRelationshipsApiClientTests : FluentTest<ProviderRelationshipsApiClientTestsFixture>
     {
         [Test]
-        public Task GetRelationshipsWithPermission_WhenRelationshipsDoNotExist_ThenShouldReturnNoRelationships()
+        public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesDoNotExist_ThenShouldReturnNoAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.GetRelationshipsWithPermission(), (f, r) =>
+            return RunAsync(f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Relationships.Should().BeEmpty();
@@ -36,12 +36,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         }
         
         [Test]
-        public Task GetRelationshipsWithPermission_WhenRelationshipsExist_ThenShouldReturnRelationships()
+        public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesExist_ThenShouldReturnAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.AddRelationshipsToRelationshipsResponse(), f => f.GetRelationshipsWithPermission(), (f, r) =>
+            return RunAsync(f => f.AddRelationshipsToRelationshipsResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Should().BeEquivalentTo(f.RelationshipsResponse);
+                r.Should().BeEquivalentTo(f.AccountProviderLegalEntitiesResponse);
             });
         }
         
@@ -79,6 +79,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
     public class ProviderRelationshipsApiClientTestsFixture
     {
         public PermissionRequest PermissionRequest { get; set; }
+        public AccountProviderLegalEntitiesRequest AccountProviderLegalEntitiesRequest { get; set; }
         public RelationshipsRequest RelationshipsRequest { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
@@ -87,13 +88,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public IRestClient RestClient { get; set; }
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         internal Mock<IReadStoreMediator> Mediator { get; set; }
-        public RelationshipsResponse RelationshipsResponse { get; set; }
-        public List<RelationshipDto> Relationships { get; set; }
+        public AccountProviderLegalEntitiesResponse AccountProviderLegalEntitiesResponse { get; set; }
+        public List<AccountProviderLegalEntityDto> Relationships { get; set; }
 
         public ProviderRelationshipsApiClientTestsFixture()
         {
-            RelationshipsResponse = new RelationshipsResponse {Relationships = new List<RelationshipDto>()};
-            Relationships = new List<RelationshipDto>();
+            AccountProviderLegalEntitiesResponse = new AccountProviderLegalEntitiesResponse {Relationships = new List<AccountProviderLegalEntityDto>()};
+            Relationships = new List<AccountProviderLegalEntityDto>();
             CancellationToken = CancellationToken.None;
             HttpMessageHandler = new FakeHttpMessageHandler();
             HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
@@ -105,15 +106,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(RestClient, Mediator.Object);
         }
 
-        public Task<RelationshipsResponse> GetRelationshipsWithPermission()
+        public Task<AccountProviderLegalEntitiesResponse> GetAccountProviderLegalEntitiesWithPermission()
         {
-            RelationshipsRequest = new RelationshipsRequest
+            AccountProviderLegalEntitiesRequest = new AccountProviderLegalEntitiesRequest
             {
                 Ukprn = 11111111,
                 Operation = Operation.CreateCohort
             };
             
-            return ProviderRelationshipsApiClient.GetRelationshipsWithPermission(RelationshipsRequest, CancellationToken);
+            return ProviderRelationshipsApiClient.GetAccountProviderLegalEntitiesWithPermission(AccountProviderLegalEntitiesRequest, CancellationToken);
         }
 
         public Task<bool> HasPermission()
@@ -133,6 +134,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
         public Task<bool> HasRelationshipWithPermission()
         {
+            AccountProviderLegalEntitiesRequest = new AccountProviderLegalEntitiesRequest
+            {
+                Ukprn = 11111111,
+                Operation = Operation.CreateCohort
+            };
+
             RelationshipsRequest = new RelationshipsRequest
             {
                 Ukprn = 11111111,
@@ -154,8 +161,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         {
             Relationships.AddRange(new []
             {
-                new RelationshipDto(),
-                new RelationshipDto()
+                new AccountProviderLegalEntityDto(),
+                new AccountProviderLegalEntityDto()
             });
             
             return this;
@@ -163,10 +170,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         
         public ProviderRelationshipsApiClientTestsFixture AddRelationshipsToRelationshipsResponse()
         {
-            RelationshipsResponse.Relationships = new []
+            AccountProviderLegalEntitiesResponse.Relationships = new []
             {
-                new RelationshipDto(),
-                new RelationshipDto()
+                new AccountProviderLegalEntityDto(),
+                new AccountProviderLegalEntityDto()
             };
 
             SetupHttpClientGetToReturnRelationshipsResponse();
@@ -189,7 +196,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         private void SetupHttpClientGetToReturnRelationshipsResponse()
         {
             //todo: for test inject hard-coded string instead?
-            var stringBody = JsonConvert.SerializeObject(RelationshipsResponse);
+            var stringBody = JsonConvert.SerializeObject(AccountProviderLegalEntitiesResponse);
             HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage { Content = new StringContent(stringBody, Encoding.Default, "application/json") };
         }
     }

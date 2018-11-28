@@ -11,13 +11,13 @@ using SFA.DAS.ProviderRelationships.Types.ErrorCodes;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
-    [RoutePrefix("relationships")]
+    [RoutePrefix("AccountProviderLegalEntities")]
     [AuthorizeRemoteOnly(Roles = "Read")]
-    public class RelationshipsController : ApiController
+    public class AccountProviderLegalEntitiesController : ApiController
     {
         private readonly IMediator _mediator;
 
-        public RelationshipsController(IMediator mediator)
+        public AccountProviderLegalEntitiesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// </param>
         [Route]
         //todo: cancel on client disconnects: https://github.com/aspnet/Mvc/issues/5239
-        public async Task<IHttpActionResult> Get([FromUri] GetRelationshipsParameters parameters) // , CancellationToken cancellationToken)
+        public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesParameters parameters) // , CancellationToken cancellationToken)
         {
             if (parameters.Ukprn == null)
             {
@@ -51,9 +51,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                     "Currently an Operation filter needs to be supplied and match an Operation enum value");
             }
             
-            var result = await _mediator.Send(new GetRelationshipsWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
+            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
 
-            return Ok(new RelationshipsResponse {Relationships = result.Relationships});
+            return Ok(new AccountProviderLegalEntitiesResponse {Relationships = result.Relationships});
         }
     }
 }
