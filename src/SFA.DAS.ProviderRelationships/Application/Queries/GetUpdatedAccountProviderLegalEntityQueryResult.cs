@@ -5,12 +5,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
     public class GetUpdatedAccountProviderLegalEntityQueryResult
     {
         public AccountProviderLegalEntityBasicDto AccountProviderLegalEntity { get; }
-        public int AccountLegalEntityCount { get; }
+        public int AccountLegalEntitiesCount { get; }
 
-        public GetUpdatedAccountProviderLegalEntityQueryResult(AccountProviderLegalEntityBasicDto accountProviderLegalEntity, int accountLegalEntityCount)
+        public GetUpdatedAccountProviderLegalEntityQueryResult(AccountProviderLegalEntityBasicDto accountProviderLegalEntity, int accountLegalEntitiesCount)
         {
             AccountProviderLegalEntity = accountProviderLegalEntity;
-            AccountLegalEntityCount = accountLegalEntityCount;
+            AccountLegalEntitiesCount = accountLegalEntitiesCount;
         }
     }
 }

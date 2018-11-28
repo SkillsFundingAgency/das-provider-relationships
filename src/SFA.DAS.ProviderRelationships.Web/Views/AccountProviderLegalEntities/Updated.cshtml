@@ -31,7 +31,7 @@
                         @Html.ValidationMessageFor(m => m.Choice)
                     </span>
                     <div class="govuk-radios">
-                        @if (Model.AccountLegalEntityCount > 1)
+                        @if (Model.AccountLegalEntitiesCount > 1)
                         {
                             <div class="govuk-radios__item">
                                 @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })

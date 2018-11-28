@@ -5,11 +5,13 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetAccountProvidersQueryResult
     {
-        public IEnumerable<AccountProviderSummaryDto> AccountProviders { get; }
+        public List<AccountProviderSummaryDto> AccountProviders { get; }
+        public int AccountLegalEntitiesCount { get; }
 
-        public GetAccountProvidersQueryResult(IEnumerable<AccountProviderSummaryDto> accountProviders)
+        public GetAccountProvidersQueryResult(List<AccountProviderSummaryDto> accountProviders, int accountLegalEntitiesCount)
         {
             AccountProviders = accountProviders;
+            AccountLegalEntitiesCount = accountLegalEntitiesCount;
         }
     }
 }

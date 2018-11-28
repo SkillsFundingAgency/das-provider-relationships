@@ -21,9 +21,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             var account = await _db.Value.Accounts.SingleAsync(a => a.Id == request.AccountId, cancellationToken);
             
             var accountLegalEntity = await _db.Value.AccountLegalEntities
+                .IgnoreQueryFilters()
                 .Include(ale => ale.AccountProviderLegalEntities)
                 .ThenInclude(aple => aple.AccountProvider)
-                .SingleAsync(ale => ale.Id == request.AccountLegalEntityId && ale.AccountId == request.AccountId, cancellationToken);
+                .SingleAsync(ale => ale.Id == request.AccountLegalEntityId, cancellationToken);
             
             account.RemoveAccountLegalEntity(accountLegalEntity, request.Removed);
         }

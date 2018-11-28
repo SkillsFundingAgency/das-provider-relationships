@@ -8,6 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
     {
         public AccountProviderBasicDto AccountProvider { get; set; }
         public AccountLegalEntityBasicDto AccountLegalEntity { get; set; }
+        public int AccountLegalEntitiesCount { get; set; }
 
         [Required]
         public long? AccountProviderId { get; set; }
