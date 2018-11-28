@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Provider Relationships Api Client TestHarness");
 
             Task.Run(Test).Wait();
 

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace SFA.DAS.ProviderRelationships.Dtos
 {
     public class AccountProviderSummaryDto

@@ -1,4 +1,7 @@
 ﻿using System.Net.Http;
+using SFA.DAS.AutoConfiguration;
+using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using StructureMap;
@@ -9,11 +12,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
     {
         public ProviderRelationshipsApiClientRegistry()
         {
+            IncludeRegistry<AutoConfigurationRegistry>();
+            IncludeRegistry<ReadStoreConfigurationRegistry>();
             IncludeRegistry<ReadStoreDataRegistry>();
             IncludeRegistry<ReadStoreMediatorRegistry>();
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<HttpClientFactory>();
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
+            For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
         }
     }
 }
