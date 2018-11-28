@@ -19,7 +19,6 @@
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.6" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
-        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.8" />
         <PackageReference Include="SFA.DAS.Http" Version="1.2.4" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
     </ItemGroup>
