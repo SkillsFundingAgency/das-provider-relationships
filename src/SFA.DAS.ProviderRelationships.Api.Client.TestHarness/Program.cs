@@ -23,21 +23,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             Console.ReadLine();
         }
 
-        private const string VariablePrefix = "AppSettings_";
-
-        private static void SetupEnvironmentVariables()
-        {
-            Environment.SetEnvironmentVariable(VariablePrefix + EnvironmentVariableNames.Environment, "LOCAL");
-            Environment.SetEnvironmentVariable(VariablePrefix + EnvironmentVariableNames.ConfigurationStorageConnectionString, "UseDevelopmentStorage=true");
-        }
-
         private static async Task Test()
         {
             using (var container = IoC.Initialize())
             {
                 try
                 {
-                    SetupEnvironmentVariables();
                     var relationshipsRepository = container.GetInstance<IRelationshipsRepository>();
 
                     var relationship = new Relationship(
