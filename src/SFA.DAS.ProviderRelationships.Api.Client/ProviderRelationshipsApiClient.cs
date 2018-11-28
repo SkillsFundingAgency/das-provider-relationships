@@ -28,8 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.EmployerAccountLegalEntityId, request.Operation), cancellationToken);
         }
 
-        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request,
-            CancellationToken cancellationToken = default)
+        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
         {
             return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
         }
