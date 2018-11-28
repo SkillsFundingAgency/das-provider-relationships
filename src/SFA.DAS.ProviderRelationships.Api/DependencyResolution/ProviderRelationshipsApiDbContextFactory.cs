@@ -21,9 +21,9 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
 
         public ProviderRelationshipsDbContext CreateDbContext()
         {
-            //todo: new factory for api. remove nservice bus, inject in config, create connection. remove usetransaction
-
-            //todo: inject container and locate DbConnection instead?
+            // in theory, this should work, but we get a transaction related exception 
+            //var sqlConnection = _container.GetInstance<DbConnection>();
+            
             var sqlConnection = new SqlConnection(_providerRelationshipsConfiguration.DatabaseConnectionString);
             
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
