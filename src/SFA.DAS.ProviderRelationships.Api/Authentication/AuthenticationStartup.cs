@@ -23,15 +23,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
 
         public void Initialize()
         {
-            //todo: log here, or remove ilog
-            //todo: roles (check MA)
+            _log.Info($"Initializing Azure AD Bearer Authentication with Tenant:{_providerRelationshipsConfiguration.Tenant}, Audience:{_providerRelationshipsConfiguration.Audience}");
+
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {
                 Tenant = _providerRelationshipsConfiguration.Tenant,
-                //https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-dotnet-webapi
-                //todo: EAS uses TokenValidationParameters from System.IdentityModel.Tokens.Jwt package
-//                TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
-// https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/wiki/Migrating-from-Katana-(OWIN)-3.x-to-4.x
                 TokenValidationParameters = new TokenValidationParameters
                 {
                     RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
