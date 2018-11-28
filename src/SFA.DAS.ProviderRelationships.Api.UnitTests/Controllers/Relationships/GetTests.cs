@@ -9,8 +9,10 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships;
 using SFA.DAS.ProviderRelationships.Api.Controllers;
+using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
+using SFA.DAS.ProviderRelationships.Types.ErrorCodes;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
@@ -36,7 +38,9 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
+                (f, r) => r.Should().Match<ErrorResult>(er => 
+                    er.HttpStatusCode == HttpStatusCode.NotImplemented
+                    && er.Error.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
         }
         
         [Test]
@@ -45,13 +49,6 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
                 (f, r) => r.Should().Throw<HttpResponseException>().Where(e => e.Response.StatusCode == HttpStatusCode.NotImplemented));
         }
-
-//        [Test]
-//        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
-//        {
-//            return RunAsync(f => f.SetOperation((Operation)4), f => f.CallGet(),
-//                                (f, r) => r.Should().NotBeNull().And.BeOfType<BadRequestResult>());
-//        }
     }
 
     public class GetTestsFixture
