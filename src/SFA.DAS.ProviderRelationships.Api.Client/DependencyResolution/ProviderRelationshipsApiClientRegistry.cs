@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using SFA.DAS.AutoConfiguration;
+using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using StructureMap;
@@ -18,6 +19,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<ITableStorageConfigurationService>().Use<TableStorageConfigurationService>();
             For<IEnvironmentService>().Use<EnvironmentService>();
             For<IAzureTableStorageConnectionAdapter>().Use<AzureTableStorageConnectionAdapter>();
+            For<ProviderRelationshipsApiClientConfiguration>().Use(c => new ProviderRelationshipsApiClientConfiguration {
+                ApiBaseUrl = "https://localhost:44308/",
+                ClientId = "xxx",
+                ClientSecret = "xxx",
+                IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/xxx",
+                Tenant = "citizenazuresfabisgov.onmicrosoft.com"
+            });
         }
     }
 }
