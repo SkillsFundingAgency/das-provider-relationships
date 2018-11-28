@@ -31,14 +31,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             return RunAsync(f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Relationships.Should().BeEmpty();
+                r.AccountProviderLegalEntities.Should().BeEmpty();
             });
         }
         
         [Test]
         public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesExist_ThenShouldReturnAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.AddRelationshipsToRelationshipsResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
+            return RunAsync(f => f.AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Should().BeEquivalentTo(f.AccountProviderLegalEntitiesResponse);
@@ -93,7 +93,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
         public ProviderRelationshipsApiClientTestsFixture()
         {
-            AccountProviderLegalEntitiesResponse = new AccountProviderLegalEntitiesResponse {Relationships = new List<AccountProviderLegalEntityDto>()};
+            AccountProviderLegalEntitiesResponse = new AccountProviderLegalEntitiesResponse {AccountProviderLegalEntities = new List<AccountProviderLegalEntityDto>()};
             Relationships = new List<AccountProviderLegalEntityDto>();
             CancellationToken = CancellationToken.None;
             HttpMessageHandler = new FakeHttpMessageHandler();
@@ -101,7 +101,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             RestClient = new RestClient(HttpClient);
             Mediator = new Mock<IReadStoreMediator>();
             
-            SetupHttpClientGetToReturnRelationshipsResponse();
+            SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
             
             ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(RestClient, Mediator.Object);
         }
@@ -168,15 +168,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             return this;
         }
         
-        public ProviderRelationshipsApiClientTestsFixture AddRelationshipsToRelationshipsResponse()
+        public ProviderRelationshipsApiClientTestsFixture AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse()
         {
-            AccountProviderLegalEntitiesResponse.Relationships = new []
+            AccountProviderLegalEntitiesResponse.AccountProviderLegalEntities = new []
             {
                 new AccountProviderLegalEntityDto(),
                 new AccountProviderLegalEntityDto()
             };
 
-            SetupHttpClientGetToReturnRelationshipsResponse();
+            SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
             
             return this;
         }
@@ -193,7 +193,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             return this;
         }
 
-        private void SetupHttpClientGetToReturnRelationshipsResponse()
+        private void SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse()
         {
             //todo: for test inject hard-coded string instead?
             var stringBody = JsonConvert.SerializeObject(AccountProviderLegalEntitiesResponse);

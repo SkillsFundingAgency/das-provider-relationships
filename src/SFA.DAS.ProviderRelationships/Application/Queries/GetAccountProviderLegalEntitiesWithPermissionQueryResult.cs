@@ -5,12 +5,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries
 {
     public class GetAccountProviderLegalEntitiesWithPermissionQueryResult
     {
-        // we could c&p the RelationshipDto into this projects Dtos and then map (for clean separation), but not sure that gives us anything atm
-        public IEnumerable<AccountProviderLegalEntityDto> Relationships { get; }
+        public IEnumerable<AccountProviderLegalEntityDto> AccountProviderLegalEntities { get; }
 
-        public GetAccountProviderLegalEntitiesWithPermissionQueryResult(IEnumerable<AccountProviderLegalEntityDto> relationships)
+        public GetAccountProviderLegalEntitiesWithPermissionQueryResult(IEnumerable<AccountProviderLegalEntityDto> accountProviderLegalEntities)
         {
-            Relationships = relationships;
+            AccountProviderLegalEntities = accountProviderLegalEntities;
         }
     }
 }

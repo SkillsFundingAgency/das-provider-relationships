@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             
             var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
 
-            return Ok(new AccountProviderLegalEntitiesResponse {Relationships = result.Relationships});
+            return Ok(new AccountProviderLegalEntitiesResponse {AccountProviderLegalEntities = result.AccountProviderLegalEntities});
         }
     }
 }
