@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.DependencyResolution;
+﻿using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.ProviderRelationships.DependencyResolution;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
@@ -10,6 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
             return new Container(c =>
             {
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
+                c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EnvironmentRegistry>();

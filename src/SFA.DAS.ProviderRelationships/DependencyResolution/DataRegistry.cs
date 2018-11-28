@@ -19,9 +19,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IProviderRelationshipsDbContextFactory>().Use<ProviderRelationshipsDbContextFactory>();
             For<IRelationshipsRepository>().Use<RelationshipsRepository>();
             For<ProviderRelationshipsDbContext>().Use(c => c.GetInstance<IProviderRelationshipsDbContextFactory>().CreateDbContext());
-            For<ITableStorageConfigurationService>().Use<TableStorageConfigurationService>();
-            For<IEnvironmentService>().Use<EnvironmentService>();
-            For<IAzureTableStorageConnectionAdapter>().Use<AzureTableStorageConnectionAdapter>();
         }
     }
 }
