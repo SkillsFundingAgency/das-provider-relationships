@@ -12,7 +12,7 @@ using SFA.DAS.ProviderRelationships.Api.Controllers;
 using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
-using SFA.DAS.ProviderRelationships.Types.ErrorCodes;
+using SFA.DAS.ProviderRelationships.Types.Errors;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
@@ -40,8 +40,8 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
                 (f, r) => r.Should().Match<ErrorResult>(er => 
                     er.HttpStatusCode == HttpStatusCode.NotImplemented
-                    && er.Error != null
-                    && er.Error.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
+                    && er.ErrorResponse != null
+                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
         }
         
         [Test]
@@ -50,8 +50,8 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
                 (f, r) => r.Should().Match<ErrorResult>(er => 
                     er.HttpStatusCode == HttpStatusCode.NotImplemented
-                    && er.Error != null
-                    && er.Error.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
+                    && er.ErrorResponse != null
+                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
         }
     }
 

@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Types.ErrorCodes
+namespace SFA.DAS.ProviderRelationships.Types.Errors
 {
     public static class RelationshipsErrorCodes
     {

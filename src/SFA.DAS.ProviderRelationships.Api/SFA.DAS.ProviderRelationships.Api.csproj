@@ -109,7 +109,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HttpErrorResult\Error.cs" />
     <Compile Include="HttpErrorResult\ErrorResult.cs" />
     <Compile Include="HttpErrorResult\HttpRequestMessageExtensions.cs" />
     <Compile Include="Logging\LoggingContext.cs" />

@@ -4,19 +4,20 @@ using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using SFA.DAS.ProviderRelationships.Types.Errors;
 
 namespace SFA.DAS.ProviderRelationships.Api.HttpErrorResult
 {
     public class ErrorResult : IHttpActionResult
     {
         internal readonly HttpStatusCode HttpStatusCode;
-        internal readonly Error Error;
+        internal readonly ErrorResponse ErrorResponse;
         internal readonly HttpRequestMessage Request;
 
-        public ErrorResult(HttpStatusCode httpStatusCode, Error error, HttpRequestMessage request)
+        public ErrorResult(HttpStatusCode httpStatusCode, ErrorResponse errorResponse, HttpRequestMessage request)
         {
             HttpStatusCode = httpStatusCode;
-            Error = error;
+            ErrorResponse = errorResponse;
             Request = request;
         }
         
@@ -24,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Api.HttpErrorResult
         {
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode)
             {
-                Content = new ObjectContent<Error>(Error, new JsonMediaTypeFormatter()),
+                Content = new ObjectContent<ErrorResponse>(ErrorResponse, new JsonMediaTypeFormatter()),
                 RequestMessage = Request
             });
         }

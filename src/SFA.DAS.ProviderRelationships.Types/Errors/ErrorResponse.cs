@@ -1,11 +1,11 @@
-namespace SFA.DAS.ProviderRelationships.Api.HttpErrorResult
+namespace SFA.DAS.ProviderRelationships.Types.Errors
 {
-    public class Error
+    public class ErrorResponse
     {
         public string ErrorCode { get; }
         public string Message { get; }
         
-        public Error(string errorCode = null, string message = null)
+        public ErrorResponse(string errorCode = null, string message = null)
         {
             ErrorCode = errorCode;
             Message = message;

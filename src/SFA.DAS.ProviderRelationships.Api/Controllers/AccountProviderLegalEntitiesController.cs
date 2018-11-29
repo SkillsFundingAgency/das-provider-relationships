@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Api.Authentication;
 using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
-using SFA.DAS.ProviderRelationships.Types.ErrorCodes;
+using SFA.DAS.ProviderRelationships.Types.Errors;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
