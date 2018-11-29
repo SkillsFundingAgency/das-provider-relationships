@@ -2,10 +2,8 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
@@ -51,15 +49,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
                                  && ex.ErrorResponse.Contains(f.ResponseString)));
         }
 
-// GetAsync isn't virtual so Moq gives up
-//        [Test]
-//        public Task WhenCallingGetAndQueryDataIsSupplied_ThenUriCalledShouldContainTheQueryData()
-//        {
-//            return RunAsync(f => f.SetupMockHttpClient(),
-//                f => f.CallGet(new {QueryParam1 = "qp1", QueryParam2 = "qp2"}),
-//                (f, r) => f.MockHttpClient.Verify(mhc => mhc.GetAsync(It.Is<Uri>(u => u.ToString() == ""), It.IsAny<CancellationToken>())));
-//        }
-        
         [Test]
         public Task WhenCallingGetAndQueryDataIsSupplied_ThenUriCalledShouldContainTheQueryData()
         {
@@ -78,7 +67,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         public HttpClient HttpClient { get; set; }
-        public Mock<HttpClient> MockHttpClient { get; set; }
         public IRestClient RestClient { get; set; }
         public Uri RequestUri { get; set; }
         public string ResponseString { get; set; }
@@ -89,16 +77,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
             HttpMessageHandler = new FakeHttpMessageHandler();
             HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://example.com") };
             RestClient = new RestClient(HttpClient);
-        }
-
-        public void SetupMockHttpClient()
-        {
-            MockHttpClient = new Mock<HttpClient>();
-
-            MockHttpClient.Setup(mhc => mhc.GetAsync(It.IsAny<Uri>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
-            
-            RestClient = new RestClient(MockHttpClient.Object);
         }
         
         public void SetupHttpClientGetToReturnSuccessWithStringResponseBody()
