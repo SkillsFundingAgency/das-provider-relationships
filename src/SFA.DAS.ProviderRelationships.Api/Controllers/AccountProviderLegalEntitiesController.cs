@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Types.ErrorCodes;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
-    [RoutePrefix("AccountProviderLegalEntities")]
+    [RoutePrefix("accountproviderlegalentities")]
     [AuthorizeRemoteOnly(Roles = "Read")]
     public class AccountProviderLegalEntitiesController : ApiController
     {
