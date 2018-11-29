@@ -9,10 +9,14 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public AccountLegalEntityMappings()
         {
+            long accountProviderId = 0;
+            
             CreateMap<AccountLegalEntity, AccountLegalEntityBasicDto>();
 
             CreateMap<AccountLegalEntity, AccountLegalEntityDto>()
-                .ForMember(d => d.Operations, o => o.MapFrom(s => s.AccountProviderLegalEntities.SelectMany(aple => aple.Permissions.Select(p => p.Operation))));
+                .ForMember(d => d.Operations, o => o.MapFrom(s => s.AccountProviderLegalEntities
+                    .Where(aple => aple.AccountProviderId == accountProviderId)
+                    .SelectMany(aple => aple.Permissions.Select(p => p.Operation))));
         }
     }
 }
