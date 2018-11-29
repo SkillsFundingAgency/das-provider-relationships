@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
-    //todo: unit tests for this
     public class RestClient : IRestClient
     {
         private readonly HttpClient _httpClient;
