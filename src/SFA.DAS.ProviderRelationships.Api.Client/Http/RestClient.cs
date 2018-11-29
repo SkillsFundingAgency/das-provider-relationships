@@ -52,7 +52,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         
         private string AddQueryString(string uri, object queryData)
         {
-            //todo: querystringhelper supports icollection props, we don't need that yet though
             var queryDataDictionary = queryData.GetType().GetProperties()
                 .ToDictionary(x => x.Name, x => x.GetValue(queryData)?.ToString() ?? string.Empty);
             return QueryHelpers.AddQueryString(uri, queryDataDictionary);
