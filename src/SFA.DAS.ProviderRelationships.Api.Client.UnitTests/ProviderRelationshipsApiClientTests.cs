@@ -195,7 +195,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
         private void SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse()
         {
-            //todo: for test inject hard-coded string instead?
             var stringBody = JsonConvert.SerializeObject(AccountProviderLegalEntitiesResponse);
             HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage { Content = new StringContent(stringBody, Encoding.Default, "application/json") };
         }
