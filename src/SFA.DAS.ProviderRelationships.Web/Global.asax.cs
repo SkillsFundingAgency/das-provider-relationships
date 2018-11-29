@@ -8,6 +8,7 @@ using System.Web.Routing;
 using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
+using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.Web
@@ -33,10 +34,10 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            var exception = Server.GetLastError();
+            var ex = Server.GetLastError();
             var logger = DependencyResolver.Current.GetService<ILog>();
 
-            logger.Error(exception, "Application error");
+            logger.Error(ex, ex.GetAggregateMessage());
         }
     }
 }

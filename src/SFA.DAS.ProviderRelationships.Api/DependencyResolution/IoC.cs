@@ -17,7 +17,6 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
                 c.AddRegistry<AuthenticationRegistry>();
                 c.AddRegistry<ApiDataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
-                c.AddRegistry<EnvironmentRegistry>();
                 c.AddRegistry<HashingRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();

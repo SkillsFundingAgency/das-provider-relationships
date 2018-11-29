@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Data;
+﻿using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
@@ -12,9 +13,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
         {
             return new Container(c =>
             {
+                c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
-                c.AddRegistry<EnvironmentRegistry>();
                 c.AddRegistry<HarnessDataRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();

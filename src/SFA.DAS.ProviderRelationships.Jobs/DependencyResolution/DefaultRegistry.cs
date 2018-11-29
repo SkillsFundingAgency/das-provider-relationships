@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
@@ -10,13 +13,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
     {
         public DefaultRegistry()
         {
+            For<ILoggerFactory>().Use(() => new LoggerFactory().AddApplicationInsights(ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"], null).AddNLog()).Singleton();
             For<ProviderRelationshipsDbContext>().Use(c => GetDbContext(c));
         }
 
         private ProviderRelationshipsDbContext GetDbContext(IContext context)
         {
             var connectionString = context.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString;
-            //todo: UseLoggerFactory
+
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseSqlServer(connectionString)
                 .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));

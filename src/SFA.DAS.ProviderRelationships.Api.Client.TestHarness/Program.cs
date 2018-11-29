@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Provider Relationships Api Client TestHarness");
 
             Task.Run(Test).Wait();
 
@@ -50,9 +50,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                     var relationshipsRequest = new AccountProviderLegalEntitiesRequest { Ukprn = accountProviderLegalEntity.Ukprn, Operation = Operation.CreateCohort };
                     var response = await apiClient.GetAccountProviderLegalEntitiesWithPermission(relationshipsRequest);
 
-                    if (response.Relationships.Any())
+                    if (response.AccountProviderLegalEntities.Any())
                     {
-                        Console.WriteLine($"Provider with UKPRN {relationshipsRequest.Ukprn} has relationship with {relationshipsRequest.Operation} permission");
+                        Console.WriteLine($"Provider with UKPRN {relationshipsRequest.Ukprn} has AccountProviderLegalEntities with {relationshipsRequest.Operation} permission");
                     }
                 }
                 catch (Exception ex)

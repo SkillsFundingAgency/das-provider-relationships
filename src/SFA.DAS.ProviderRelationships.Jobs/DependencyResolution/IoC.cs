@@ -13,8 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
+                c.AddRegistry<ReadStoreConfigurationRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
-                c.AddRegistry<EnvironmentRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });

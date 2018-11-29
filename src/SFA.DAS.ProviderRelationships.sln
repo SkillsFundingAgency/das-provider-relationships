@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api", "SFA.DAS.ProviderRelationships.Api\SFA.DAS.ProviderRelationships.Api.csproj", "{CCBEC137-2904-4046-9968-CCBF6EE2415A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@ using System.Web.Http;
 using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Extensions;
 using WebApi.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api
@@ -23,10 +24,10 @@ namespace SFA.DAS.ProviderRelationships.Api
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            var exception = Server.GetLastError();
+            var ex = Server.GetLastError();
             var logger = GlobalConfiguration.Configuration.DependencyResolver.GetService<ILog>();
 
-            logger.Error(exception, "Application error");
+            logger.Error(ex, ex.GetAggregateMessage());
         }
     }
 }

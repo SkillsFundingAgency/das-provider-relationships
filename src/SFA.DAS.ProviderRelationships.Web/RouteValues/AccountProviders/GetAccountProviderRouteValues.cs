@@ -10,8 +10,5 @@ namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
 
         [Required]
         public long? AccountProviderId { get; set; }
-        
-        [RegularExpression("SetPermissions")]
-        public string Referrer { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-using SFA.DAS.CosmosDb;
+﻿using SFA.DAS.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Configuration
 {

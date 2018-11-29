@@ -3,10 +3,10 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Dtos
 {
-    public class AccountProviderLegalEntitySummaryDto
+    public class AccountLegalEntityDto
     {
         public long Id { get; set; }
-        public long AccountLegalEntityId { get; set; }
+        public string Name { get; set; }
         public List<Operation> Operations { get; set; }
     }
 }

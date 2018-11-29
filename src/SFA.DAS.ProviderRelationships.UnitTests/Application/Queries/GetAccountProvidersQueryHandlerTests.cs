@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -34,6 +36,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name
                     });
+                
+                r.AccountLegalEntitiesCount.Should().Be(f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId));
             });
         }
 
@@ -55,6 +59,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
+        public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
 
@@ -64,7 +69,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
-            
             Handler = new GetAccountProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 
@@ -78,10 +82,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
             Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 2).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
-
+          
+            AccountLegalEntities = new List<AccountLegalEntity>
+            {
+                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 3).Set(ale => ale.AccountId, Account.Id),
+                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 4).Set(ale => ale.AccountId, Account.Id),
+                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 5).Set(ale => ale.AccountId, 2)
+            };
+            
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
             Db.AccountProviders.Add(AccountProvider);
+            Db.AccountLegalEntities.AddRange(AccountLegalEntities);
             Db.SaveChanges();
 
             return this;
