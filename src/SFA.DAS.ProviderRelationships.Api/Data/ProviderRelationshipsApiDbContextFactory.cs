@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.DependencyResolution;
 
-namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Api.Data
 {
     public class ProviderRelationshipsApiDbContextFactory : IProviderRelationshipsDbContextFactory
     {
@@ -21,9 +20,6 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
 
         public ProviderRelationshipsDbContext CreateDbContext()
         {
-            // in theory, this should work, but we get a transaction related exception 
-            //var sqlConnection = _container.GetInstance<DbConnection>();
-            
             var sqlConnection = new SqlConnection(_providerRelationshipsConfiguration.DatabaseConnectionString);
             
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()

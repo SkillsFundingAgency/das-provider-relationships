@@ -1,5 +1,5 @@
+using SFA.DAS.ProviderRelationships.Api.Data;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.DependencyResolution;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution

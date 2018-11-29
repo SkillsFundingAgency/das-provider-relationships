@@ -5,10 +5,9 @@ using Microsoft.Extensions.Logging;
 using NServiceBus.Persistence;
 using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
-using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.UnitOfWork;
 
-namespace SFA.DAS.ProviderRelationships.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Data
 {
     public class ProviderRelationshipsDbContextFactory : IProviderRelationshipsDbContextFactory
     {

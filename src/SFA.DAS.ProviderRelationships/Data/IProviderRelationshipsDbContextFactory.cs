@@ -1,6 +1,4 @@
-using SFA.DAS.ProviderRelationships.Data;
-
-namespace SFA.DAS.ProviderRelationships.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Data
 {
     public interface IProviderRelationshipsDbContextFactory
     {
