@@ -41,11 +41,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         private async Task<HttpResponseMessage> GetResponse(Uri uri, object queryData = null, CancellationToken cancellationToken = default)
         {
             if (queryData != null)
+            {
                 uri = new Uri(AddQueryString(uri.ToString(), queryData), UriKind.RelativeOrAbsolute);
-            
+            }
+
             var response = await _httpClient.GetAsync(uri, cancellationToken);
             if (!response.IsSuccessStatusCode)
+            {
                 throw await RestClientException.Create(response);
+            }
 
             return response;
         }
