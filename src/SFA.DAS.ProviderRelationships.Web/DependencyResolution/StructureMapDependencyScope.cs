@@ -25,6 +25,8 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
 
     using NLog.Logger;
     
+    using SFA.DAS.ProviderRelationships.Extensions;
+    
     using StructureMap;
 	
     /// <summary>
@@ -111,7 +113,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
             } catch (Exception ex) {
                 var logger = Container.TryGetInstance<ILog>();
                 
-                logger?.Error(ex, $"{nameof(DoGetAllInstances)} error");
+                logger?.Error(ex, ex.GetAggregateMessage());
 
                 throw;
             }
@@ -131,7 +133,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution {
             } catch (Exception ex) {
                 var logger = container.TryGetInstance<ILog>();
                 
-                logger?.Error(ex, $"{nameof(DoGetInstance)} error");
+                logger?.Error(ex, ex.GetAggregateMessage());
 
                 throw;
             }
