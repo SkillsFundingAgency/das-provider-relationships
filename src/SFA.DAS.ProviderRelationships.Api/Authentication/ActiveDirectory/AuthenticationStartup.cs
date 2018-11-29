@@ -2,9 +2,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security.ActiveDirectory;
 using Owin;
 using SFA.DAS.NLog.Logger;
+using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 
-namespace SFA.DAS.ProviderRelationships.Api.Authentication
+namespace SFA.DAS.ProviderRelationships.Api.Authentication.ActiveDirectory
 {
     public class AuthenticationStartup : IAuthenticationStartup
     {
@@ -21,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
             _log = log;
         }
 
-        public void Initialize()
+        public void Initialise()
         {
             _log.Info($"Initializing Azure AD Bearer Authentication with Tenant:{_providerRelationshipsConfiguration.Tenant}, Audience:{_providerRelationshipsConfiguration.Audience}");
 

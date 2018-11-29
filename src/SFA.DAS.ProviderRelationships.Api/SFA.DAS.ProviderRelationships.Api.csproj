@@ -97,8 +97,7 @@
   <ItemGroup>
     <Compile Include="ActionParameters\Relationships\GetAccountProviderLegalEntitiesParameters.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\AuthenticationStartup.cs" />
-    <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="Authentication\ActiveDirectory\AuthenticationStartup.cs" />
     <Compile Include="Authentication\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />

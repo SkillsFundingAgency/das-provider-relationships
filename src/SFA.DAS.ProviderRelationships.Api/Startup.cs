@@ -4,7 +4,7 @@ using Microsoft.Owin;
 using WebApi.StructureMap;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api;
-using SFA.DAS.ProviderRelationships.Api.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication;
 using StructureMap;
 using StructureMap.Pipeline;
 
@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Api
             authenticationStartupArgs.Set(app);
   
             var authenticationStartup = container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
-            authenticationStartup.Initialize();
+            authenticationStartup.Initialise();
         }
     }
 }
