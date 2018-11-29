@@ -12,8 +12,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         public Uri RequestUri { get; }
         public string ErrorResponse { get; }
 
-        // note, no proper serialization support yet
-
         public RestClientException(HttpResponseMessage httpResponseMessage, string errorResponse)
             : base(GenerateMessage(httpResponseMessage, errorResponse))
         {
