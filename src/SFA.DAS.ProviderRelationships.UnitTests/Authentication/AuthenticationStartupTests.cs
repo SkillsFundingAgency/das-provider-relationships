@@ -4,7 +4,7 @@ using Moq;
 using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.Testing;
 using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.AuthenticationStartupTestsFixture;
 

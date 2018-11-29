@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication

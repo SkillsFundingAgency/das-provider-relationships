@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
 

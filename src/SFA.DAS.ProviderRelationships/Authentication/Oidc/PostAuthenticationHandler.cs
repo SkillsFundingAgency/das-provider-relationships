@@ -5,7 +5,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.UnitOfWork;
 
-namespace SFA.DAS.ProviderRelationships.Authentication
+namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
     public class PostAuthenticationHandler : IPostAuthenticationHandler
     {

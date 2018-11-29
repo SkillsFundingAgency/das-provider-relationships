@@ -9,7 +9,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.OidcMiddleware;
 
-namespace SFA.DAS.ProviderRelationships.Authentication
+namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
     /// <remarks>
     /// Works with DAS' implementation of OpenID Connect Provider (https://github.com/SkillsFundingAgency/das-employerusers)

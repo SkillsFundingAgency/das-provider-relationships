@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {

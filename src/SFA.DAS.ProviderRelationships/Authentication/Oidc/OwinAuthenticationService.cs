@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Web;
 
-namespace SFA.DAS.ProviderRelationships.Authentication
+namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
     public class OwinAuthenticationService : IAuthenticationService
     {

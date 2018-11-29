@@ -3,7 +3,7 @@ using System.Net;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.Testing;
 

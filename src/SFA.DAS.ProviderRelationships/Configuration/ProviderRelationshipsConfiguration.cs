@@ -1,4 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Authentication;
+﻿using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Urls;
 

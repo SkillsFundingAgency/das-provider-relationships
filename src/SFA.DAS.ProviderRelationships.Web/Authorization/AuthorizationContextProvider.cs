@@ -5,7 +5,7 @@ using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerRoles;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 

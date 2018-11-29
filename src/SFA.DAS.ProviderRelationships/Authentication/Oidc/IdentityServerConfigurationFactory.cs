@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.EmployerUsers.WebClientComponents;
 
-namespace SFA.DAS.ProviderRelationships.Authentication
+namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
     public class IdentityServerConfigurationFactory : ConfigurationFactory
     {
