@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 
         public async Task<AccountProviderLegalEntitiesResponse> GetAccountProviderLegalEntitiesWithPermission(AccountProviderLegalEntitiesRequest request, CancellationToken cancellationToken = default)
         {
-            return await _restClient.Get<AccountProviderLegalEntitiesResponse>("accountproviderlegalentities", request);
+            return await _restClient.Get<AccountProviderLegalEntitiesResponse>("accountproviderlegalentities", request, cancellationToken);
         }
 
         public Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default)
