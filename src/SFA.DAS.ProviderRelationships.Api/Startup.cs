@@ -5,7 +5,6 @@ using WebApi.StructureMap;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
-using SFA.DAS.ProviderRelationships.Api.DependencyResolution;
 using StructureMap;
 using StructureMap.Pipeline;
 
@@ -25,7 +24,8 @@ namespace SFA.DAS.ProviderRelationships.Api
             var authenticationStartupArgs = new ExplicitArguments();
             authenticationStartupArgs.Set(app);
   
-            container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs).Initialize();
+            var authenticationStartup = container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
+            authenticationStartup.Initialize();
         }
     }
 }
