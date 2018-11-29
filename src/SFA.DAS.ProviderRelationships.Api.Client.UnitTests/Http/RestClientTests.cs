@@ -2,8 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
@@ -48,8 +50,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
                                  && Equals(ex.RequestUri, f.RequestUri)
                                  && ex.ErrorResponse.Contains(f.ResponseString)));
         }
+
+// GetAsync isn't virtual so Moq gives up
+//        [Test]
+//        public Task WhenCallingGetAndQueryDataIsSupplied_ThenUriCalledShouldContainTheQueryData()
+//        {
+//            return RunAsync(f => f.SetupMockHttpClient(),
+//                f => f.CallGet(new {QueryParam1 = "qp1", QueryParam2 = "qp2"}),
+//                (f, r) => f.MockHttpClient.Verify(mhc => mhc.GetAsync(It.Is<Uri>(u => u.ToString() == ""), It.IsAny<CancellationToken>())));
+//        }
         
-        //todo: rest of tests
+        [Test]
+        public Task WhenCallingGetAndQueryDataIsSupplied_ThenUriCalledShouldContainTheQueryData()
+        {
+            return RunAsync(f => f.SetupHttpClientGetToReturnSuccessWithStringResponseBody(),
+                f => f.CallGet(new {QueryParam1 = "qp1", QueryParam2 = "qp2"}),
+                (f, r) => f.HttpMessageHandler.HttpRequestMessage.RequestUri.Should().Be($"{f.HttpClient.BaseAddress}?QueryParam1=qp1&QueryParam2=qp2"));
+        }
     }
 
     public class RestClientTestsFixture
@@ -61,6 +78,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         public HttpClient HttpClient { get; set; }
+        public Mock<HttpClient> MockHttpClient { get; set; }
         public IRestClient RestClient { get; set; }
         public Uri RequestUri { get; set; }
         public string ResponseString { get; set; }
@@ -73,6 +91,16 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
             RestClient = new RestClient(HttpClient);
         }
 
+        public void SetupMockHttpClient()
+        {
+            MockHttpClient = new Mock<HttpClient>();
+
+            MockHttpClient.Setup(mhc => mhc.GetAsync(It.IsAny<Uri>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+            
+            RestClient = new RestClient(MockHttpClient.Object);
+        }
+        
         public void SetupHttpClientGetToReturnSuccessWithStringResponseBody()
         {
             ResponseString = "Test";
@@ -89,7 +117,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
 
         public void SetupHttpClientGetToReturnInternalServerErrorWithStringResponseBody()
         {
-            ResponseString = "Error";
+            ResponseString = "Some sort of error description";
             RequestUri = new Uri($"{HttpClient.BaseAddress}/request", UriKind.Absolute);
             HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
@@ -102,7 +130,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         {
             return await RestClient.Get("https://example.com", queryData);
         }
-        
+
         public async Task<ExampleResponseObject> CallGetObject(object queryData)
         {
             return await RestClient.Get<ExampleResponseObject>("https://example.com", queryData);
