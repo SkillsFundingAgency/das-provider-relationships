@@ -97,12 +97,11 @@
     <Compile Include="ActionParameters\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesParameters.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\AzureActiveDirectory\AuthenticationStartup.cs" />
+    <Compile Include="Authentication\AzureActiveDirectory\DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="Data\ProviderRelationshipsApiDbContextFactory.cs" />
-    <Compile Include="DependencyResolution\ApiDataRegistry.cs" />
-    <Compile Include="DependencyResolution\AuthenticationRegistry.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="Global.asax.cs">

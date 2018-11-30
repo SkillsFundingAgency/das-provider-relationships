@@ -1,14 +1,12 @@
 ﻿using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.ProviderRelationships.Authentication;
-using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Authentication.Oidc.DependencyResolution
 {
-    public class AuthenticationRegistry : Registry
+    public class OidcAuthenticationRegistry : Registry
     {
-        public AuthenticationRegistry()
+        public OidcAuthenticationRegistry()
         {
             For<ConfigurationFactory>().Use<IdentityServerConfigurationFactory>();
             For<IAuthenticationUrls>().Use<AuthenticationUrls>();
