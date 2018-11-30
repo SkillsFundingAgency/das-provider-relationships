@@ -33,31 +33,25 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         }
 
         [Test]
-        public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
+        public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
                 (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), "Currently an Ukprn filter needs to be supplied"));
         }
         
-//        [Test]
-//        public Task WhenOperationIsMissing_ThenShouldReturnNotImplemented()
-//        {
-//            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-//                (f, r) => r.Should().Match<ErrorResult>(er => 
-//                    er.HttpStatusCode == HttpStatusCode.NotImplemented
-//                    && er.ErrorResponse != null
-//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
-//        }
-//        
-//        [Test]
-//        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
-//        {
-//            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
-//                (f, r) => r.Should().Match<ErrorResult>(er => 
-//                    er.HttpStatusCode == HttpStatusCode.BadRequest
-//                    && er.ErrorResponse != null
-//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.UnknownOperationFilter));
-//        }
+        [Test]
+        public Task WhenOperationIsMissing_ThenShouldReturnBadRequest()
+        {
+            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Operation), "Currently an Operation filter needs to be supplied"));
+        }
+        
+        [Test]
+        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
+        {
+            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Operation), "The Operation filter value supplied is not recognised as an Operation"));
+        }
     }
 
     public class GetTestsFixture
@@ -110,10 +104,10 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             result.Should().BeOfType<InvalidModelStateResult>();
             var modelStateDictionary = ((InvalidModelStateResult) result).ModelState;
             modelStateDictionary.Count.Should().Be(1);
-            modelStateDictionary.Keys.First().Should().Be(nameof(GetAccountProviderLegalEntitiesParameters.Ukprn));
+            modelStateDictionary.Keys.First().Should().Be(propertyName);
             var modelState = modelStateDictionary.Values.First();
             modelState.Errors.Count.Should().Be(1);
-            modelState.Errors.First().ErrorMessage.Should().Be("Currently an Ukprn filter needs to be supplied");
+            modelState.Errors.First().ErrorMessage.Should().Be(message);
         }
     }
 }
