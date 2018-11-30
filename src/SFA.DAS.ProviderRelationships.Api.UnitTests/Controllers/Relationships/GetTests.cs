@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using System.Web.Http.ModelBinding;
 using FluentAssertions;
 using MediatR;
 using Moq;
@@ -14,7 +11,6 @@ using SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEnt
 using SFA.DAS.ProviderRelationships.Api.Controllers;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
-using SFA.DAS.ProviderRelationships.Types.Errors;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
