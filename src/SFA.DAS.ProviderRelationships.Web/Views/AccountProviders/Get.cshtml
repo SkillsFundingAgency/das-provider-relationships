@@ -14,7 +14,7 @@
     <div class="govuk-grid-column-full">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
             @Model.AccountProvider.ProviderName
-            <span class="govuk-caption-m govuk-!-font-weight-bold govuk-!-margin-bottom-8">UKPRN @Model.AccountProvider.ProviderUkprn</span>
+            <span class="govuk-caption-m govuk-!-margin-bottom-8">UKPRN @Model.AccountProvider.ProviderUkprn</span>
         </h1>
     </div>
     <div class="govuk-grid-column-two-thirds">
@@ -39,12 +39,12 @@
                         <td class="govuk-table__cell">
                             @if (accountLegalEntity.Operations.Any())
                             {
-                            <ul class="govuk-list das-list--comma-after govuk-body govuk-!-margin-bottom-0">
-                                @foreach (var operation in accountLegalEntity.Operations)
-                                {
-                                    <li>@operation.GetDescription()</li>
-                                }
-                            </ul>
+                                <ul class="govuk-list das-list--comma-after govuk-body govuk-!-margin-bottom-0">
+                                    @foreach (var operation in accountLegalEntity.Operations)
+                                    {
+                                        <li>@operation.GetDescription()</li>
+                                    }
+                                </ul>
                             }
                             else
                             {
