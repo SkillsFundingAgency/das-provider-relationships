@@ -1,5 +1,5 @@
 
-namespace SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships
+namespace SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEntities
 {
     public class GetAccountProviderLegalEntitiesParameters
     {

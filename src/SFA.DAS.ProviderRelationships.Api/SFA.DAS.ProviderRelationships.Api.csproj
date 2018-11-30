@@ -95,7 +95,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionParameters\Relationships\GetAccountProviderLegalEntitiesParameters.cs" />
+    <Compile Include="ActionParameters\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesParameters.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\ActiveDirectory\AuthenticationStartup.cs" />
     <Compile Include="Authentication\AuthorizeRemoteOnlyAttribute.cs" />

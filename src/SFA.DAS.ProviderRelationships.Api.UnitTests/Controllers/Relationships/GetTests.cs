@@ -1,15 +1,17 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using System.Web.Http.ModelBinding;
 using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships;
+using SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Api.Controllers;
-using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Errors;
@@ -38,31 +40,40 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => r.Should().Match<ErrorResult>(er => 
-                    er.HttpStatusCode == HttpStatusCode.NotImplemented
-                    && er.ErrorResponse != null
-                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
+                (f, r) =>
+                {
+                    f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), "Currently an Ukprn filter needs to be supplied");
+                });
+//                    ((InvalidModelStateResult)r).ModelState.Should().BeEquivalentTo(new Dictionary<string,ModelState>
+//                    {
+//                        {nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), new ModelState {}}
+//                    });
+//                    r.Should().Match<InvalidModelStateResult>(r => r.ModelState.);
+//                };//er => 
+//                    er.HttpStatusCode == HttpStatusCode.NotImplemented
+//                    && er.ErrorResponse != null
+//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
         }
         
-        [Test]
-        public Task WhenOperationIsMissing_ThenShouldReturnNotImplemented()
-        {
-            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-                (f, r) => r.Should().Match<ErrorResult>(er => 
-                    er.HttpStatusCode == HttpStatusCode.NotImplemented
-                    && er.ErrorResponse != null
-                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
-        }
-        
-        [Test]
-        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
-        {
-            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
-                (f, r) => r.Should().Match<ErrorResult>(er => 
-                    er.HttpStatusCode == HttpStatusCode.BadRequest
-                    && er.ErrorResponse != null
-                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.UnknownOperationFilter));
-        }
+//        [Test]
+//        public Task WhenOperationIsMissing_ThenShouldReturnNotImplemented()
+//        {
+//            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
+//                (f, r) => r.Should().Match<ErrorResult>(er => 
+//                    er.HttpStatusCode == HttpStatusCode.NotImplemented
+//                    && er.ErrorResponse != null
+//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
+//        }
+//        
+//        [Test]
+//        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
+//        {
+//            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
+//                (f, r) => r.Should().Match<ErrorResult>(er => 
+//                    er.HttpStatusCode == HttpStatusCode.BadRequest
+//                    && er.ErrorResponse != null
+//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.UnknownOperationFilter));
+//        }
     }
 
     public class GetTestsFixture
@@ -94,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
 
         public async Task<IHttpActionResult> CallGet()
         {
-            return await AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntitiesParameters); //, CancellationToken.None);
+            return await AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntitiesParameters, CancellationToken.None);
         }
 
         public GetTestsFixture SetUkprn(long? ukprn)
@@ -107,6 +118,18 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         {
             GetAccountProviderLegalEntitiesParameters.Operation = operation;
             return this;
+        }
+
+        public void AssertSingleModelError(object result, string propertyName, string message)
+        {
+            result.Should().NotBeNull();
+            result.Should().BeOfType<InvalidModelStateResult>();
+            var modelStateDictionary = ((InvalidModelStateResult) result).ModelState;
+            modelStateDictionary.Count.Should().Be(1);
+            modelStateDictionary.Keys.First().Should().Be(nameof(GetAccountProviderLegalEntitiesParameters.Ukprn));
+            var modelState = modelStateDictionary.Values.First();
+            modelState.Errors.Count.Should().Be(1);
+            modelState.Errors.First().ErrorMessage.Should().Be("Currently an Ukprn filter needs to be supplied");
         }
     }
 }

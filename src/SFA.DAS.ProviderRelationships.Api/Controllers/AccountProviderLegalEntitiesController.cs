@@ -1,14 +1,12 @@
 using System;
-using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Api.ActionParameters.Relationships;
+using SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
-using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
-using SFA.DAS.ProviderRelationships.Types.Errors;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
@@ -36,29 +34,34 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// Operation: Filter AccountProviderLegalEntities to only those which have this permission
         /// </param>
         [Route]
-        public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesParameters parameters) // , CancellationToken cancellationToken)
+        public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesParameters parameters, CancellationToken cancellationToken)
         {
             if (parameters.Ukprn == null)
             {
                 // logically this would return all relationships (filtered by operation if supplied)
-                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingUkprnFilter,
-                    "Currently an Ukprn filter needs to be supplied");
+                ModelState.AddModelError(nameof(parameters.Ukprn), "Currently an Ukprn filter needs to be supplied");
+                //return Request.CreateResponse(HttpStatusCode.BadRequest, new {code = "x"});
+                return BadRequest(ModelState);
             }
 
             if (parameters.Operation == null)
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
-                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingOperationFilter,
-                    "Currently an Operation filter needs to be supplied");
+//                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingOperationFilter,
+//                    "Currently an Operation filter needs to be supplied");
+                ModelState.AddModelError(nameof(parameters.Operation), "Currently an Operation filter needs to be supplied");
+                return BadRequest(ModelState);
             }
 
             if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
             {
-                return Request.ErrorResult(HttpStatusCode.BadRequest, RelationshipsErrorCodes.UnknownOperationFilter,
-                    "The Operation filter value supplied is not recognised as an Operation");
+//                return Request.ErrorResult(HttpStatusCode.BadRequest, RelationshipsErrorCodes.UnknownOperationFilter,
+//                    "The Operation filter value supplied is not recognised as an Operation");
+                ModelState.AddModelError(nameof(parameters.Operation), "The Operation filter value supplied is not recognised as an Operation");
+                return BadRequest(ModelState);
             }
 
-            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, operation)); //, cancellationToken);
+            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, operation), cancellationToken);
 
             return Ok(new GetAccountProviderLegalEntitiesWithPermissionResponse {AccountProviderLegalEntities = result.AccountProviderLegalEntities});
         }
