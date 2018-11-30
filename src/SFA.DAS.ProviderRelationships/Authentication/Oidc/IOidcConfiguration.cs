@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
-    public interface IIdentityServerConfiguration
+    public interface IOidcConfiguration
     {
         string AccountActivationUrl { get; }
         string AuthorizeEndpoint { get; }

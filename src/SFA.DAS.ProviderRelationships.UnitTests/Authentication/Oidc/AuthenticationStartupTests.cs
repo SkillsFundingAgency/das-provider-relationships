@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
             // perhaps unit testing AuthenticationStartup has a poor effort:benefit ratio!
 
             var mockAppBuilder = new Mock<IAppBuilder>();
-            var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
+            var mockIdentityServerConfig = new Mock<IOidcConfiguration>();
             var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
             var mockPostAuthenticationHandler = new Mock<IPostAuthenticationHandler>();
 

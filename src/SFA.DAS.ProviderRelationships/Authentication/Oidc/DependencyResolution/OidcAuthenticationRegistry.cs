@@ -8,11 +8,11 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Oidc.DependencyResolution
     {
         public OidcAuthenticationRegistry()
         {
-            For<ConfigurationFactory>().Use<IdentityServerConfigurationFactory>();
+            For<ConfigurationFactory>().Use<OidcConfigurationFactory>();
             For<IAuthenticationUrls>().Use<AuthenticationUrls>();
             For<IAuthenticationService>().Use<OwinAuthenticationService>();
             For<IAuthenticationStartup>().Use<AuthenticationStartup>();
-            For<IIdentityServerConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Identity).Singleton();
+            For<IOidcConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Oidc).Singleton();
             For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();
         }
     }

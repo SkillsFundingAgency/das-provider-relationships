@@ -67,12 +67,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
     public class AuthenticationUrlsTestsFixture
     {
         public AuthenticationUrls AuthenticationUrls { get; set; }
-        public Mock<IIdentityServerConfiguration> IdentityServerConfiguration { get; set; }
+        public Mock<IOidcConfiguration> IdentityServerConfiguration { get; set; }
         public Mock<IAuthenticationService> AuthenticationService { get; set; }
 
         public AuthenticationUrlsTestsFixture()
         {
-            IdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
+            IdentityServerConfiguration = new Mock<IOidcConfiguration>();
             AuthenticationService = new Mock<IAuthenticationService>();
             AuthenticationUrls = new AuthenticationUrls(IdentityServerConfiguration.Object, AuthenticationService.Object);
         }

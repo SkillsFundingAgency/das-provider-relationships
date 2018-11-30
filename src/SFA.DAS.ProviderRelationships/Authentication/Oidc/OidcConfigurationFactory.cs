@@ -2,11 +2,11 @@
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 {
-    public class IdentityServerConfigurationFactory : ConfigurationFactory
+    public class OidcConfigurationFactory : ConfigurationFactory
     {
-        private readonly IIdentityServerConfiguration _config;
+        private readonly IOidcConfiguration _config;
 
-        public IdentityServerConfigurationFactory(IIdentityServerConfiguration config)
+        public OidcConfigurationFactory(IOidcConfiguration config)
         {
             _config = config;
         }

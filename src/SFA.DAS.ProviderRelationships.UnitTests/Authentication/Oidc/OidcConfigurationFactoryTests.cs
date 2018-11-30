@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
 {
     [TestFixture]
     [Parallelizable]
-    public class IdentityServerConfigurationFactoryTests : FluentTest<IdentityServerConfigurationFactoryTestsFixture>
+    public class OidcConfigurationFactoryTests : FluentTest<IdentityServerConfigurationFactoryTestsFixture>
     {
         [TestCase("https://test2-login.apprenticeships.sfa.bis.gov.uk/account/confirm", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity", "/account/confirm")]
         [TestCase("https://example.com/account/confirm", "https://example.com", "/account/confirm")]
@@ -25,24 +25,24 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
 
     public class IdentityServerConfigurationFactoryTestsFixture
     {
-        private readonly IdentityServerConfigurationFactory _identityServerConfigurationFactory;
-        private readonly Mock<IIdentityServerConfiguration> _mockIdentityServerConfiguration;
+        private readonly Mock<IOidcConfiguration> _oidcConfiguration;
+        private readonly OidcConfigurationFactory _oidcConfigurationFactory;
 
         public IdentityServerConfigurationFactoryTestsFixture()
         {
-            _mockIdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
-            _identityServerConfigurationFactory = new IdentityServerConfigurationFactory(_mockIdentityServerConfiguration.Object);
+            _oidcConfiguration = new Mock<IOidcConfiguration>();
+            _oidcConfigurationFactory = new OidcConfigurationFactory(_oidcConfiguration.Object);
         }
 
         public void Arrange(string baseAddress, string accountActivationUrl)
         {
-            _mockIdentityServerConfiguration.Setup(isc => isc.BaseAddress).Returns(baseAddress);
-            _mockIdentityServerConfiguration.Setup(isc => isc.AccountActivationUrl).Returns(accountActivationUrl);
+            _oidcConfiguration.Setup(isc => isc.BaseAddress).Returns(baseAddress);
+            _oidcConfiguration.Setup(isc => isc.AccountActivationUrl).Returns(accountActivationUrl);
         }
 
         public ConfigurationContext Act()
         {
-            return _identityServerConfigurationFactory.Get();
+            return _oidcConfigurationFactory.Get();
         }
     }
 }
