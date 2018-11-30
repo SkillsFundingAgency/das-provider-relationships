@@ -5,7 +5,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
+namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
 {
     [TestFixture]
     [Parallelizable]

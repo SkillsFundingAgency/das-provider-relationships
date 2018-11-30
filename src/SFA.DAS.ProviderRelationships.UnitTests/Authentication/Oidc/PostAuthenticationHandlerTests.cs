@@ -13,7 +13,7 @@ using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork;
 using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
+namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
 {
     [TestFixture]
     [Parallelizable]
