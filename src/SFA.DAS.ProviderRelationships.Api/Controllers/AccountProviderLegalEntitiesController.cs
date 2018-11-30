@@ -5,6 +5,7 @@ using System.Web.Http;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
+using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;

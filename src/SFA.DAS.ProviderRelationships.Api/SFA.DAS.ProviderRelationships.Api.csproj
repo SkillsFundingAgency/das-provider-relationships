@@ -98,7 +98,7 @@
     <Compile Include="ActionParameters\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesParameters.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\ActiveDirectory\AuthenticationStartup.cs" />
-    <Compile Include="Authentication\AuthorizeRemoteOnlyAttribute.cs" />
+    <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="Data\ProviderRelationshipsApiDbContextFactory.cs" />
