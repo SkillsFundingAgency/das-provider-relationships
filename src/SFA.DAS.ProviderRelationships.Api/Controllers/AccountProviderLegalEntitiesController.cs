@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -8,6 +9,7 @@ using SFA.DAS.ProviderRelationships.Api.HttpErrorResult;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Errors;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
@@ -43,15 +45,20 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                     "Currently an Ukprn filter needs to be supplied");
             }
 
-            //operation not supplied or value didn't match enum value
             if (parameters.Operation == null)
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
                 return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingOperationFilter,
-                    "Currently an Operation filter needs to be supplied and match an Operation enum value");
+                    "Currently an Operation filter needs to be supplied");
             }
-            
-            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, parameters.Operation.Value)); //, cancellationToken);
+
+            if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
+            {
+                return Request.ErrorResult(HttpStatusCode.BadRequest, RelationshipsErrorCodes.UnknownOperationFilter,
+                    "The Operation filter value supplied is not recognised as an Operation");
+            }
+
+            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, operation)); //, cancellationToken);
 
             return Ok(new GetAccountProviderLegalEntitiesWithPermissionResponse {AccountProviderLegalEntities = result.AccountProviderLegalEntities});
         }

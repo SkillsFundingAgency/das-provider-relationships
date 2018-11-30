@@ -45,13 +45,23 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         }
         
         [Test]
-        public Task WhenOperationIsMissingOrUnknownOperationIsSupplied_ThenShouldReturnNotImplemented()
+        public Task WhenOperationIsMissing_ThenShouldReturnNotImplemented()
         {
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
                 (f, r) => r.Should().Match<ErrorResult>(er => 
                     er.HttpStatusCode == HttpStatusCode.NotImplemented
                     && er.ErrorResponse != null
                     && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingOperationFilter));
+        }
+        
+        [Test]
+        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
+        {
+            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
+                (f, r) => r.Should().Match<ErrorResult>(er => 
+                    er.HttpStatusCode == HttpStatusCode.BadRequest
+                    && er.ErrorResponse != null
+                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.UnknownOperationFilter));
         }
     }
 
@@ -67,7 +77,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             GetAccountProviderLegalEntitiesParameters = new GetAccountProviderLegalEntitiesParameters
             {
                 Ukprn = 12345678L,
-                Operation = Operation.CreateCohort
+                Operation = "CreateCohort"
             };
 
             Mediator = new Mock<IMediator>();
@@ -93,7 +103,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return this;
         }
         
-        public GetTestsFixture SetOperation(Operation? operation)
+        public GetTestsFixture SetOperation(string operation)
         {
             GetAccountProviderLegalEntitiesParameters.Operation = operation;
             return this;
