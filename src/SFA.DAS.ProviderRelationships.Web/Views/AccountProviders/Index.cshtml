@@ -53,19 +53,19 @@
                                 }
                                 else
                                 {
-                                    if (Model.AccountLegalEntitiesCount > 1)
+                                    if (Model.AccountLegalEntitiesCount == 1)
                                     {
-                                        @:Permissions set for @accountProvider.AccountProviderLegalEntitiesWithPermissionsCount organisation@(accountProvider.AccountProviderLegalEntitiesWithPermissionsCount > 1 ? "s" : "")
+                                        @:Permissions set
                                     }
                                     else
                                     {
-                                        @:Permissions set
+                                        @:Permissions set for @accountProvider.AccountProviderLegalEntitiesWithPermissionsCount organisation@(accountProvider.AccountProviderLegalEntitiesWithPermissionsCount > 1 ? "s" : "")
                                     }
                                 }
                             </td>
                             <td class="govuk-table__cell">
                                 <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">
-                                    @if (accountProvider.AccountProviderLegalEntitiesWithPermissionsCount == 0)
+                                    @if (Model.AccountLegalEntitiesCount == 1)
                                     {
                                         @:Set permissions
                                     }

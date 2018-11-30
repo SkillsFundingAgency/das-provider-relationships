@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public ActionResult Get(GetAccountProviderLegalEntityViewModel model)
         {
-            TempData.Add(model.Operations);
+            TempData.Set(model.Operations);
             
             return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
