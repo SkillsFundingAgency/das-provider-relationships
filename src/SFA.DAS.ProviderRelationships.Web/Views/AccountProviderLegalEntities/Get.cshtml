@@ -7,13 +7,13 @@
 
 @section breadcrumb
 {
-    @if (Model.AccountLegalEntitiesCount > 1)
+    @if (Model.AccountLegalEntitiesCount == 1)
     {
-        <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id })">Back</a>
+        <a class="govuk-back-link" href="@Url.Action("Index", "AccountProviders")">Back</a>
     }
     else
     {
-        <a class="govuk-back-link" href="@Url.Action("Index", "AccountProviders")">Back</a>
+        <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id })">Back</a>
     }
 }
 
