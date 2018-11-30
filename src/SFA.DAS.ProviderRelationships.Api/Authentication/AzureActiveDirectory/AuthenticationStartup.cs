@@ -5,7 +5,7 @@ using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 
-namespace SFA.DAS.ProviderRelationships.Api.Authentication.ActiveDirectory
+namespace SFA.DAS.ProviderRelationships.Api.Authentication.AzureActiveDirectory
 {
     public class AuthenticationStartup : IAuthenticationStartup
     {
@@ -13,7 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication.ActiveDirectory
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private readonly ILog _log;
         
-        public AuthenticationStartup(IAppBuilder app,
+        public AuthenticationStartup(
+            IAppBuilder app,
             ProviderRelationshipsConfiguration providerRelationshipsConfiguration,
             ILog log)
         {
@@ -24,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication.ActiveDirectory
 
         public void Initialise()
         {
-            _log.Info($"Initializing Azure AD Bearer Authentication with Tenant:{_providerRelationshipsConfiguration.Tenant}, Audience:{_providerRelationshipsConfiguration.Audience}");
+            _log.Info($"Initializing Azure AD Bearer Authentication with Tenant '{_providerRelationshipsConfiguration.Tenant}', Audience '{_providerRelationshipsConfiguration.Audience}'");
 
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {

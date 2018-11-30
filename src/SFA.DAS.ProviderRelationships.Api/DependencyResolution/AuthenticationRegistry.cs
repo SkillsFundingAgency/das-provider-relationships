@@ -1,3 +1,4 @@
+using SFA.DAS.ProviderRelationships.Api.Authentication.AzureActiveDirectory;
 using StructureMap;
 using SFA.DAS.ProviderRelationships.Authentication;
 
@@ -7,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
     {
         public AuthenticationRegistry()
         {
-            For<IAuthenticationStartup>().Use<Authentication.ActiveDirectory.AuthenticationStartup>();
+            For<IAuthenticationStartup>().Use<AuthenticationStartup>();
         }
     }
 }
