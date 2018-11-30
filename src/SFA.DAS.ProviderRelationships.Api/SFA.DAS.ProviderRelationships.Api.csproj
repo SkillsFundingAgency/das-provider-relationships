@@ -94,7 +94,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionParameters\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesParameters.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\AzureActiveDirectory\AuthenticationStartup.cs" />
     <Compile Include="Authentication\AzureActiveDirectory\DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />

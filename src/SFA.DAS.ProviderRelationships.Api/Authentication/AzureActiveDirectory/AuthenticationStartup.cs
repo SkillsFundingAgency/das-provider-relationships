@@ -4,7 +4,6 @@ using Owin;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Authentication.AzureActiveDirectory;
-using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Api.Authentication.AzureActiveDirectory
 {
