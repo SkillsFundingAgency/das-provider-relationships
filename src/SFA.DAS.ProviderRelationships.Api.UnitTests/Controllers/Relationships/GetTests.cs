@@ -40,19 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenUkprIsMissing_ThenShouldReturnNotImplemented()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) =>
-                {
-                    f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), "Currently an Ukprn filter needs to be supplied");
-                });
-//                    ((InvalidModelStateResult)r).ModelState.Should().BeEquivalentTo(new Dictionary<string,ModelState>
-//                    {
-//                        {nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), new ModelState {}}
-//                    });
-//                    r.Should().Match<InvalidModelStateResult>(r => r.ModelState.);
-//                };//er => 
-//                    er.HttpStatusCode == HttpStatusCode.NotImplemented
-//                    && er.ErrorResponse != null
-//                    && er.ErrorResponse.ErrorCode == RelationshipsErrorCodes.MissingUkprnFilter));
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), "Currently an Ukprn filter needs to be supplied"));
         }
         
 //        [Test]
