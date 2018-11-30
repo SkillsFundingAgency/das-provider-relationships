@@ -29,8 +29,8 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
                 (f, r) =>
                 {
                     r.Should().NotBeNull();
-                    r.Should().BeOfType<OkNegotiatedContentResult<AccountProviderLegalEntitiesResponse>>();
-                    ((OkNegotiatedContentResult<AccountProviderLegalEntitiesResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                    r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
+                    ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
                 });
         }
 

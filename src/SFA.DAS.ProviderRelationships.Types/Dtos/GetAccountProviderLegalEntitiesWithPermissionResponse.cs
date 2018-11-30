@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
-    public class AccountProviderLegalEntitiesResponse
+    public class GetAccountProviderLegalEntitiesWithPermissionResponse
     {
         public IEnumerable<AccountProviderLegalEntityDto> AccountProviderLegalEntities { get; set; }
     }

@@ -18,17 +18,18 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             _mediator = mediator;
         }
 
-        public async Task<AccountProviderLegalEntitiesResponse> GetAccountProviderLegalEntitiesWithPermission(AccountProviderLegalEntitiesRequest request, CancellationToken cancellationToken = default)
+        public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(
+                GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
         {
-            return await _restClient.Get<AccountProviderLegalEntitiesResponse>("accountproviderlegalentities", request, cancellationToken);
+            return await _restClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
         }
 
-        public Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default)
+        public Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default)
         {
-            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.EmployerAccountLegalEntityId, request.Operation), cancellationToken);
+            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.AccountLegalEntityId, request.Operation), cancellationToken);
         }
 
-        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
+        public Task<bool> HasRelationshipWithPermission(HasRelationshipWithPermissionRequest request, CancellationToken cancellationToken = default)
         {
             return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
         }
