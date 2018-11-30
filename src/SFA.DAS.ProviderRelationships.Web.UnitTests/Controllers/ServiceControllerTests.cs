@@ -9,6 +9,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
     [TestFixture]
+    [Parallelizable]
     public class ServiceControllerTests : FluentTest<ServiceControllerTestsFixture>
     {
         [Test]

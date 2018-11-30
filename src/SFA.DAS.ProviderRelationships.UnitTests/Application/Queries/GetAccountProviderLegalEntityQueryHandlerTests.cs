@@ -20,6 +20,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
+    [Parallelizable]
     public class GetAccountProviderLegalEntityQueryHandlerTests : FluentTest<GetAccountProviderLegalEntityQueryHandlerFixture>
     {
         [Test]

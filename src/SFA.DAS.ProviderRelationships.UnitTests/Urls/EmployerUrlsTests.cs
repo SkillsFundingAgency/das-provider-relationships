@@ -10,6 +10,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
 {
     [TestFixture]
+    [Parallelizable]
     public class EmployerUrlsTests : FluentTest<EmployerUrlsTestsFixture>
     {
         [TestCaseSource(nameof(_noAccountHashedIdTestCases))]

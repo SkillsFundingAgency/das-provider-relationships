@@ -6,6 +6,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
+    [Parallelizable]
     public class FindProviderToAddQueryResultTests : FluentTest<object>
     {
         [Test]
