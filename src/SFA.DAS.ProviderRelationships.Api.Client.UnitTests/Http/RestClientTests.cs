@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         public Task WhenCallingGetAndHttpClientReturnsNonSuccess_ThenShouldThrowRestClientException()
         {
             return RunAsync(f => f.SetupHttpClientGetToReturnInternalServerErrorWithStringResponseBody(), f => f.CallGet(null),
-                (f, r) => r.Should().Throw<RestClientException>()
+                (f, r) => r.Should().Throw<RestHttpClientException>()
                     .Where(ex => ex.StatusCode == HttpStatusCode.InternalServerError
                                  && ex.ReasonPhrase == "Internal Server Error"
                                  && Equals(ex.RequestUri, f.RequestUri)
@@ -67,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         public HttpClient HttpClient { get; set; }
-        public IRestClient RestClient { get; set; }
+        public IRestHttpClient RestHttpClient { get; set; }
         public Uri RequestUri { get; set; }
         public string ResponseString { get; set; }
         public object ResponseObject { get; set; }
@@ -76,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
         {
             HttpMessageHandler = new FakeHttpMessageHandler();
             HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://example.com") };
-            RestClient = new RestClient(HttpClient);
+            RestHttpClient = new RestHttpClient(HttpClient);
         }
         
         public void SetupHttpClientGetToReturnSuccessWithStringResponseBody()
@@ -106,12 +106,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Http
 
         public async Task<string> CallGet(object queryData)
         {
-            return await RestClient.Get("https://example.com", queryData);
+            return await RestHttpClient.Get("https://example.com", queryData);
         }
 
         public async Task<ExampleResponseObject> CallGetObject(object queryData)
         {
-            return await RestClient.Get<ExampleResponseObject>("https://example.com", queryData);
+            return await RestHttpClient.Get<ExampleResponseObject>("https://example.com", queryData);
         }
     }
 }

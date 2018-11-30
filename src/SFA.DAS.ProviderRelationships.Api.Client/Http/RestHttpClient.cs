@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
-    public class RestClient : IRestClient
+    public class RestHttpClient : IRestHttpClient
     {
         private readonly HttpClient _httpClient;
         
-        public RestClient(HttpClient httpClient)
+        public RestHttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
             var response = await _httpClient.GetAsync(uri, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
-                throw await RestClientException.Create(response);
+                throw await RestHttpClientException.Create(response);
             }
 
             return response;

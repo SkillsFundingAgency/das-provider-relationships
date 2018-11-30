@@ -72,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [Test]
         public Task HealthCheck_WhenHealthCheckFails_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<RestClientException>());
+            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<RestHttpClientException>());
         }
     }
 
@@ -85,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
         public HttpClient HttpClient { get; set; }
 
-        public IRestClient RestClient { get; set; }
+        public IRestHttpClient RestHttpClient { get; set; }
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         internal Mock<IReadStoreMediator> Mediator { get; set; }
         public GetAccountProviderLegalEntitiesWithPermissionResponse GetAccountProviderLegalEntitiesWithPermissionResponse { get; set; }
@@ -98,12 +98,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             CancellationToken = CancellationToken.None;
             HttpMessageHandler = new FakeHttpMessageHandler();
             HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
-            RestClient = new RestClient(HttpClient);
+            RestHttpClient = new RestHttpClient(HttpClient);
             Mediator = new Mock<IReadStoreMediator>();
             
             SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
             
-            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(RestClient, Mediator.Object);
+            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(RestHttpClient, Mediator.Object);
         }
 
         public Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission()

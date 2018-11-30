@@ -9,19 +9,19 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 {
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
-        private readonly IRestClient _restClient;
+        private readonly IRestHttpClient _restHttpClient;
         private readonly IReadStoreMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IRestClient restClient, IReadStoreMediator mediator)
+        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient, IReadStoreMediator mediator)
         {
-            _restClient = restClient;
+            _restHttpClient = restHttpClient;
             _mediator = mediator;
         }
 
         public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(
                 GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
         {
-            return await _restClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
+            return await _restHttpClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
         }
 
         public Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default)
@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 
         public Task HealthCheck()
         {
-            return _restClient.Get("healthcheck");
+            return _restHttpClient.Get("healthcheck");
         }
     }
 }

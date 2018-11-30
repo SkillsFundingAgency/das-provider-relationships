@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
-    public class RestClientException : Exception
+    public class RestHttpClientException : Exception
     {
         public HttpStatusCode StatusCode { get; }
         public string ReasonPhrase { get; }
         public Uri RequestUri { get; }
         public string ErrorResponse { get; }
 
-        public RestClientException(HttpResponseMessage httpResponseMessage, string errorResponse)
+        public RestHttpClientException(HttpResponseMessage httpResponseMessage, string errorResponse)
             : base(GenerateMessage(httpResponseMessage, errorResponse))
         {
             StatusCode = httpResponseMessage.StatusCode;
@@ -22,9 +22,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
         }
         
         // assumes response content hasn't already been read
-        public static async Task<RestClientException> Create(HttpResponseMessage httpResponseMessage)
+        public static async Task<RestHttpClientException> Create(HttpResponseMessage httpResponseMessage)
         {
-            return new RestClientException(httpResponseMessage, await httpResponseMessage.Content.ReadAsStringAsync());
+            return new RestHttpClientException(httpResponseMessage, await httpResponseMessage.Content.ReadAsStringAsync());
         }
 
         private static string GenerateMessage(HttpResponseMessage httpResponseMessage, string errorResponse)
