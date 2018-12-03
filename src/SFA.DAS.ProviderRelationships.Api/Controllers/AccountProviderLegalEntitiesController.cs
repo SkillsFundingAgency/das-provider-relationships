@@ -36,31 +36,27 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         [Route]
         public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesParameters parameters, CancellationToken cancellationToken)
         {
+            var operation = Operation.CreateCohort;
+            
             if (parameters.Ukprn == null)
             {
                 // logically this would return all relationships (filtered by operation if supplied)
                 ModelState.AddModelError(nameof(parameters.Ukprn), "Currently an Ukprn filter needs to be supplied");
-                //return Request.CreateResponse(HttpStatusCode.BadRequest, new {code = "x"});
-                return BadRequest(ModelState);
             }
 
             if (parameters.Operation == null)
             {
                 // logically this would return all relationships (filtered by ukprn if supplied)
-//                return Request.ErrorResult(HttpStatusCode.NotImplemented, RelationshipsErrorCodes.MissingOperationFilter,
-//                    "Currently an Operation filter needs to be supplied");
                 ModelState.AddModelError(nameof(parameters.Operation), "Currently an Operation filter needs to be supplied");
-                return BadRequest(ModelState);
             }
-
-            if (!Enum.TryParse(parameters.Operation, true, out Operation operation))
+            else if (!Enum.TryParse(parameters.Operation, true, out operation))
             {
-//                return Request.ErrorResult(HttpStatusCode.BadRequest, RelationshipsErrorCodes.UnknownOperationFilter,
-//                    "The Operation filter value supplied is not recognised as an Operation");
                 ModelState.AddModelError(nameof(parameters.Operation), "The Operation filter value supplied is not recognised as an Operation");
-                return BadRequest(ModelState);
             }
 
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
             var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(parameters.Ukprn.Value, operation), cancellationToken);
 
             return Ok(new GetAccountProviderLegalEntitiesWithPermissionResponse {AccountProviderLegalEntities = result.AccountProviderLegalEntities});
