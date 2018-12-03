@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
@@ -17,27 +20,28 @@ using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 {
+    //todo: i'd be tempted to split this into 2 separate tests: 1 for methods that go to the read store, and 1 that goes to the web.api
     [TestFixture]
     [Parallelizable]
     public class ProviderRelationshipsApiClientTests : FluentTest<ProviderRelationshipsApiClientTestsFixture>
     {
         [Test]
-        public Task GetRelationshipsWithPermission_WhenRelationshipsDoNotExist_ThenShouldReturnNoRelationships()
+        public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesDoNotExist_ThenShouldReturnNoAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.GetRelationshipsWithPermission(), (f, r) =>
+            return RunAsync(f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Relationships.Should().BeEmpty();
+                r.AccountProviderLegalEntities.Should().BeEmpty();
             });
         }
         
         [Test]
-        public Task GetRelationshipsWithPermission_WhenRelationshipsExist_ThenShouldReturnRelationships()
+        public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesExist_ThenShouldReturnAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.AddRelationships(), f => f.GetRelationshipsWithPermission(), (f, r) =>
+            return RunAsync(f => f.AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.Relationships.Should().NotBeEmpty().And.BeSameAs(f.Relationships);
+                r.Should().BeEquivalentTo(f.GetAccountProviderLegalEntitiesWithPermissionResponse);
             });
         }
         
@@ -68,73 +72,84 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [Test]
         public Task HealthCheck_WhenHealthCheckFails_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<HttpRequestException>());
+            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<RestHttpClientException>());
         }
     }
 
     public class ProviderRelationshipsApiClientTestsFixture
     {
-        public PermissionRequest PermissionRequest { get; set; }
-        public RelationshipsRequest RelationshipsRequest { get; set; }
+        public HasPermissionRequest HasPermissionRequest { get; set; }
+        public GetAccountProviderLegalEntitiesWithPermissionRequest GetAccountProviderLegalEntitiesWithPermissionRequest { get; set; }
+        public HasRelationshipWithPermissionRequest HasRelationshipWithPermissionRequest { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
-        public HttpClient Client { get; set; }
+        public HttpClient HttpClient { get; set; }
+
+        public IRestHttpClient RestHttpClient { get; set; }
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         internal Mock<IReadStoreMediator> Mediator { get; set; }
-        public List<RelationshipDto> Relationships { get; set; }
+        public GetAccountProviderLegalEntitiesWithPermissionResponse GetAccountProviderLegalEntitiesWithPermissionResponse { get; set; }
+        public List<AccountProviderLegalEntityDto> Relationships { get; set; }
 
         public ProviderRelationshipsApiClientTestsFixture()
         {
-            Relationships = new List<RelationshipDto>();
+            GetAccountProviderLegalEntitiesWithPermissionResponse = new GetAccountProviderLegalEntitiesWithPermissionResponse {AccountProviderLegalEntities = new List<AccountProviderLegalEntityDto>()};
+            Relationships = new List<AccountProviderLegalEntityDto>();
             CancellationToken = CancellationToken.None;
             HttpMessageHandler = new FakeHttpMessageHandler();
-            Client = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
+            HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
+            RestHttpClient = new RestHttpClient(HttpClient);
             Mediator = new Mock<IReadStoreMediator>();
             
-            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(Client, Mediator.Object);
+            SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
+            
+            ProviderRelationshipsApiClient = new ProviderRelationshipsApiClient(RestHttpClient, Mediator.Object);
         }
 
-        public Task<RelationshipsResponse> GetRelationshipsWithPermission()
+        public Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission()
         {
-            RelationshipsRequest = new RelationshipsRequest
+            GetAccountProviderLegalEntitiesWithPermissionRequest = new GetAccountProviderLegalEntitiesWithPermissionRequest
             {
                 Ukprn = 11111111,
                 Operation = Operation.CreateCohort
             };
             
-            Mediator.Setup(m => m.Send(It.Is<GetRelationshipWithPermissionQuery>(q => q.Ukprn == RelationshipsRequest.Ukprn && q.Operation == RelationshipsRequest.Operation), CancellationToken))
-                .ReturnsAsync(new GetRelationshipWithPermissionQueryResult { Relationships = Relationships });
-            
-            return ProviderRelationshipsApiClient.GetRelationshipsWithPermission(RelationshipsRequest, CancellationToken);
+            return ProviderRelationshipsApiClient.GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest, CancellationToken);
         }
 
         public Task<bool> HasPermission()
         {
-            PermissionRequest = new PermissionRequest
+            HasPermissionRequest = new HasPermissionRequest
             {
                 Ukprn = 11111111,
-                EmployerAccountLegalEntityId = 1,
+                AccountLegalEntityId = 1,
                 Operation = Operation.CreateCohort
             };
             
-            Mediator.Setup(m => m.Send(It.Is<HasPermissionQuery>(q => q.Ukprn == PermissionRequest.Ukprn && q.EmployerAccountLegalEntityId == PermissionRequest.EmployerAccountLegalEntityId && q.Operation == PermissionRequest.Operation), CancellationToken))
+            Mediator.Setup(m => m.Send(It.Is<HasPermissionQuery>(q => q.Ukprn == HasPermissionRequest.Ukprn && q.EmployerAccountLegalEntityId == HasPermissionRequest.AccountLegalEntityId && q.Operation == HasPermissionRequest.Operation), CancellationToken))
                 .ReturnsAsync(() => Relationships.Any());
             
-            return ProviderRelationshipsApiClient.HasPermission(PermissionRequest, CancellationToken);
+            return ProviderRelationshipsApiClient.HasPermission(HasPermissionRequest, CancellationToken);
         }
 
         public Task<bool> HasRelationshipWithPermission()
         {
-            RelationshipsRequest = new RelationshipsRequest
+            GetAccountProviderLegalEntitiesWithPermissionRequest = new GetAccountProviderLegalEntitiesWithPermissionRequest
+            {
+                Ukprn = 11111111,
+                Operation = Operation.CreateCohort
+            };
+
+            HasRelationshipWithPermissionRequest = new HasRelationshipWithPermissionRequest
             {
                 Ukprn = 11111111,
                 Operation = Operation.CreateCohort
             };
             
-            Mediator.Setup(m => m.Send(It.Is<HasRelationshipWithPermissionQuery>(q => q.Ukprn == RelationshipsRequest.Ukprn && q.Operation == RelationshipsRequest.Operation), CancellationToken))
+            Mediator.Setup(m => m.Send(It.Is<HasRelationshipWithPermissionQuery>(q => q.Ukprn == HasRelationshipWithPermissionRequest.Ukprn && q.Operation == HasRelationshipWithPermissionRequest.Operation), CancellationToken))
                 .ReturnsAsync(() => Relationships.Any());
             
-            return ProviderRelationshipsApiClient.HasRelationshipWithPermission(RelationshipsRequest, CancellationToken);
+            return ProviderRelationshipsApiClient.HasRelationshipWithPermission(HasRelationshipWithPermissionRequest, CancellationToken);
         }
 
         public Task HealthCheck()
@@ -146,18 +161,42 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         {
             Relationships.AddRange(new []
             {
-                new RelationshipDto(),
-                new RelationshipDto()
+                new AccountProviderLegalEntityDto(),
+                new AccountProviderLegalEntityDto()
             });
             
             return this;
         }
-
-        public ProviderRelationshipsApiClientTestsFixture SetHealthCheckFailure()
+        
+        public ProviderRelationshipsApiClientTestsFixture AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse()
         {
-            HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("") };
+            GetAccountProviderLegalEntitiesWithPermissionResponse.AccountProviderLegalEntities = new []
+            {
+                new AccountProviderLegalEntityDto(),
+                new AccountProviderLegalEntityDto()
+            };
+
+            SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
             
             return this;
+        }
+        
+        public ProviderRelationshipsApiClientTestsFixture SetHealthCheckFailure()
+        {
+            HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent("Kaboom"),
+                ReasonPhrase = "Internal server error",
+                RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/healthcheck")
+            };
+            
+            return this;
+        }
+
+        private void SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse()
+        {
+            var stringBody = JsonConvert.SerializeObject(GetAccountProviderLegalEntitiesWithPermissionResponse);
+            HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage { Content = new StringContent(stringBody, Encoding.Default, "application/json") };
         }
     }
 }

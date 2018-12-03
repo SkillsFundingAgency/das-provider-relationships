@@ -7,7 +7,7 @@ using NUnit.Framework;
 using SFA.DAS.Authorization;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.HashingService;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.Testing;

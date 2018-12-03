@@ -28,9 +28,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             {
                 try
                 {
-                    var relationshipsRepository = container.GetInstance<IRelationshipsRepository>();
+                    var accountProviderLegalEntitiesRepository = container.GetInstance<IAccountProviderLegalEntitiesRepository>();
 
-                    var relationship = new Relationship(
+                    var accountProviderLegalEntity = new AccountProviderLegalEntity(
                         accountId: 1,
                         accountLegalEntityId: 3,
                         accountProviderId: 4,
@@ -40,19 +40,19 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                         created: DateTime.UtcNow.AddDays(-1),
                         messageId: "ede68da8-4874-414f-b5fd-1fe31cb0b8dc");
 
-                    await relationshipsRepository.Add(relationship);
+                    await accountProviderLegalEntitiesRepository.Add(accountProviderLegalEntity);
 
-                    relationship.UpdatePermissions(new HashSet<Operation> { Operation.CreateCohort }, DateTime.UtcNow, "5135744e-4247-474f-8b6a-602b1702e32c");
+                    accountProviderLegalEntity.UpdatePermissions(new HashSet<Operation> { Operation.CreateCohort }, DateTime.UtcNow, "5135744e-4247-474f-8b6a-602b1702e32c");
 
-                    await relationshipsRepository.Update(relationship);
+                    await accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity);
 
                     var apiClient = container.GetInstance<IProviderRelationshipsApiClient>();
-                    var relationshipsRequest = new RelationshipsRequest { Ukprn = relationship.Ukprn, Operation = Operation.CreateCohort };
-                    var response = await apiClient.GetRelationshipsWithPermission(relationshipsRequest);
+                    var relationshipsRequest = new GetAccountProviderLegalEntitiesWithPermissionRequest { Ukprn = accountProviderLegalEntity.Ukprn, Operation = Operation.CreateCohort };
+                    var response = await apiClient.GetAccountProviderLegalEntitiesWithPermission(relationshipsRequest);
 
-                    if (response.Relationships.Any())
+                    if (response.AccountProviderLegalEntities.Any())
                     {
-                        Console.WriteLine($"Provider with UKPRN {relationshipsRequest.Ukprn} has relationship with {relationshipsRequest.Operation} permission");
+                        Console.WriteLine($"Provider with UKPRN {relationshipsRequest.Ukprn} has AccountProviderLegalEntities with {relationshipsRequest.Operation} permission");
                     }
                 }
                 catch (Exception ex)

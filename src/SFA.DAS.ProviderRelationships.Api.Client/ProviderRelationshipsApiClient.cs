@@ -1,46 +1,42 @@
-﻿using System.Net.Http;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.Http;
+using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
 {
-    public class ProviderRelationshipsApiClient : ApiClientBase, IProviderRelationshipsApiClient
+    public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
+        private readonly IRestHttpClient _restHttpClient;
         private readonly IReadStoreMediator _mediator;
 
-        public ProviderRelationshipsApiClient(HttpClient client, IReadStoreMediator mediator)
-            : base(client)
+        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient, IReadStoreMediator mediator)
         {
+            _restHttpClient = restHttpClient;
             _mediator = mediator;
         }
 
-        public async Task<RelationshipsResponse> GetRelationshipsWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
+        public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(
+                GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken).ConfigureAwait(false);
-            
-            return new RelationshipsResponse
-            {
-                Relationships = result.Relationships
-            };
+            return await _restHttpClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
         }
 
-        public Task<bool> HasPermission(PermissionRequest request, CancellationToken cancellationToken = default)
+        public Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default)
         {
-            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.EmployerAccountLegalEntityId, request.Operation), cancellationToken);
+            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.AccountLegalEntityId, request.Operation), cancellationToken);
         }
 
-        public Task<bool> HasRelationshipWithPermission(RelationshipsRequest request, CancellationToken cancellationToken = default)
+        public Task<bool> HasRelationshipWithPermission(HasRelationshipWithPermissionRequest request, CancellationToken cancellationToken = default)
         {
             return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
         }
 
         public Task HealthCheck()
         {
-            return GetAsync("healthcheck");
+            return _restHttpClient.Get("healthcheck");
         }
     }
 }

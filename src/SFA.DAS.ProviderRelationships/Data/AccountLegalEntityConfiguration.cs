@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             builder.Property(ale => ale.PublicHashedId).IsRequired().HasColumnType("char(6)");
             builder.Property(ale => ale.Name).IsRequired().HasColumnType("nvarchar(100)");
             builder.HasOne(ale => ale.Account).WithMany(a => a.AccountLegalEntities).Metadata.DeleteBehavior = DeleteBehavior.Restrict;
-            builder.HasQueryFilter(p => p.Deleted == null);
+            builder.HasQueryFilter(ale => ale.Deleted == null);
         }
     }
 }

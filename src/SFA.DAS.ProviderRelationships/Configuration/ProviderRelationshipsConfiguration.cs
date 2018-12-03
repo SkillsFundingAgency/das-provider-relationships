@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Authentication;
+﻿using SFA.DAS.ProviderRelationships.Authentication.AzureActiveDirectory;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Urls;
 
@@ -6,6 +7,8 @@ namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class ProviderRelationshipsConfiguration : IEmployerUrlsConfiguration
     {
+        public AzureActiveDirectoryConfiguration AzureActiveDirectory { get; set; }
+        public OidcConfiguration Oidc { get; set; }
         public string AllowedHashstringCharacters { get; set; }
         public string Hashstring { get; set; }
         public string DatabaseConnectionString { get; set; }
@@ -17,7 +20,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string EmployerRecruitBaseUrl { get; set; }
         public string EmployerUsersBaseUrl { get; set; }
         public string ServiceBusConnectionString { get; set; }
-        public IdentityServerConfiguration Identity { get; set; }
 
         public string NServiceBusLicense
         {

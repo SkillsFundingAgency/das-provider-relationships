@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
@@ -60,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
             User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
             Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);

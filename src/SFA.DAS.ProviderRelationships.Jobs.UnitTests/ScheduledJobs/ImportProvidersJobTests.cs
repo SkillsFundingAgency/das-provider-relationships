@@ -16,6 +16,7 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
 {
     [TestFixture]
+    [Parallelizable]
     public class ImportProvidersJobTests : FluentTest<ImportProvidersJobTestsFixture>
     {
         [Test]

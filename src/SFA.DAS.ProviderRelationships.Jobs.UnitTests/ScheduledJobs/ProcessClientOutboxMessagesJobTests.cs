@@ -8,6 +8,7 @@ using ProcessClientOutboxMessagesJob = SFA.DAS.ProviderRelationships.Jobs.Schedu
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
 {
     [TestFixture]
+    [Parallelizable]
     public class ProcessClientOutboxMessagesJobTests : FluentTest<ProcessClientOutboxMessagesJobTestsFixture>
     {
         [Test]

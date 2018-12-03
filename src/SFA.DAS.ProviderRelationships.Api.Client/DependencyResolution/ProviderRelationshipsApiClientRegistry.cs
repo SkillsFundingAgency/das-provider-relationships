@@ -17,8 +17,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             IncludeRegistry<ReadStoreDataRegistry>();
             IncludeRegistry<ReadStoreMediatorRegistry>();
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
-            For<IHttpClientFactory>().Use<HttpClientFactory>();
-            For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
+            For<IHttpClientFactory>().Use<Http.HttpClientFactory>();
+            For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
+            For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
             For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
         }
     }

@@ -3,13 +3,14 @@ using System.Net;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
 {
     [TestFixture]
+    [Parallelizable]
     public class EmployerUrlsTests : FluentTest<EmployerUrlsTestsFixture>
     {
         [TestCaseSource(nameof(_noAccountHashedIdTestCases))]
@@ -92,12 +93,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Urls
     {
         public EmployerUrls EmployerUrls { get; set; }
         public Mock<IEmployerUrlsConfiguration> EmployerUrlsConfiguration { get; set; }
-        public Mock<IIdentityServerConfiguration> IdentityServerConfiguration { get; set; }
+        public Mock<IOidcConfiguration> IdentityServerConfiguration { get; set; }
         
         public EmployerUrlsTestsFixture()
         {
             EmployerUrlsConfiguration = new Mock<IEmployerUrlsConfiguration>();
-            IdentityServerConfiguration = new Mock<IIdentityServerConfiguration>();
+            IdentityServerConfiguration = new Mock<IOidcConfiguration>();
 
             IdentityServerConfiguration.Setup(c => c.ClientId).Returns("abc123");
             

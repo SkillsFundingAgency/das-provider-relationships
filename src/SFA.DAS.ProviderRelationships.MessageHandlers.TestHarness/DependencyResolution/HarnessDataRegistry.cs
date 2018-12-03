@@ -1,6 +1,7 @@
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using StructureMap;
@@ -17,7 +18,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
 
         private ProviderRelationshipsDbContext GetDbContext(IContext context)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(context.GetInstance<DbConnection>());
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseSqlServer(context.GetInstance<DbConnection>())
+                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            
             return new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
     }
