@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
             CreateMap<AccountProvider, AccountProviderBasicDto>();
             
             CreateMap<AccountProvider, AccountProviderDto>()
-                .ForMember(d => d.AccountLegalEntities, o => o.MapFrom(s => s.Account.AccountLegalEntities));
+                .ForMember(d => d.AccountLegalEntities, o => o.MapFrom(s => s.Account.AccountLegalEntities.OrderBy(ale => ale.Name)));
             
             CreateMap<AccountProvider, AccountProviderSummaryDto>()
                 .ForMember(d => d.AccountProviderLegalEntitiesWithPermissionsCount, o => o.MapFrom(s => s.AccountProviderLegalEntities.Count(aple => aple.Permissions.Any())));
