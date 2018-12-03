@@ -60,7 +60,6 @@
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -95,15 +94,14 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionParameters\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesParameters.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\ActiveDirectory\AuthenticationStartup.cs" />
-    <Compile Include="Authentication\AuthorizeRemoteOnlyAttribute.cs" />
+    <Compile Include="Authentication\AzureActiveDirectory\AuthenticationStartup.cs" />
+    <Compile Include="Authentication\AzureActiveDirectory\DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
+    <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="Data\ProviderRelationshipsApiDbContextFactory.cs" />
-    <Compile Include="DependencyResolution\ApiDataRegistry.cs" />
-    <Compile Include="DependencyResolution\AuthenticationRegistry.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="Global.asax.cs">

@@ -1,4 +1,5 @@
 using System.Web.Http;
+using SFA.DAS.ProviderRelationships.Api.Authentication.AzureActiveDirectory.DependencyResolution;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using WebApi.StructureMap;
 
@@ -10,9 +11,8 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
         {
             config.UseStructureMap(c =>
             {
+                c.AddRegistry<AzureActiveDirectoryAuthenticationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
-                c.AddRegistry<AuthenticationRegistry>();
-                c.AddRegistry<ApiDataRegistry>();
                 c.AddRegistry<HashingRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();

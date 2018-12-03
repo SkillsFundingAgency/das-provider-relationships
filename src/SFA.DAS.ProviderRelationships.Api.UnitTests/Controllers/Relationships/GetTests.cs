@@ -7,8 +7,8 @@ using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.ActionParameters.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Api.Controllers;
+using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -36,34 +36,34 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Ukprn), "Currently an Ukprn filter needs to be supplied"));
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently an Ukprn filter needs to be supplied"));
         }
         
         [Test]
         public Task WhenOperationIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Operation), "Currently an Operation filter needs to be supplied"));
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
         }
         
         [Test]
         public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesParameters.Operation), "The Operation filter value supplied is not recognised as an Operation"));
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "The Operation filter value supplied is not recognised as an Operation"));
         }
     }
 
     public class GetTestsFixture
     {
-        public GetAccountProviderLegalEntitiesParameters GetAccountProviderLegalEntitiesParameters { get; set; }
+        public GetAccountProviderLegalEntitiesRouteValues GetAccountProviderLegalEntitiesRouteValues { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public AccountProviderLegalEntitiesController AccountProviderLegalEntitiesController { get; set; }
         public GetAccountProviderLegalEntitiesWithPermissionQueryResult Result { get; set; }
 
         public GetTestsFixture()
         {
-            GetAccountProviderLegalEntitiesParameters = new GetAccountProviderLegalEntitiesParameters
+            GetAccountProviderLegalEntitiesRouteValues = new GetAccountProviderLegalEntitiesRouteValues
             {
                 Ukprn = 12345678L,
                 Operation = "CreateCohort"
@@ -75,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
                 new AccountProviderLegalEntityDto {AccountId = 41L, AccountLegalEntityId = 4131L, AccountLegalEntityName = "AccountLegalEntityName", AccountLegalEntityPublicHashedId = "ALEPHI", AccountName = "AccountName", AccountProviderId = 491L, AccountPublicHashedId = "ACCPHI" }
             });
             
-            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q => q.Ukprn == GetAccountProviderLegalEntitiesParameters.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
+            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q => q.Ukprn == GetAccountProviderLegalEntitiesRouteValues.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result);
             
             AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object);
@@ -83,18 +83,18 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
 
         public async Task<IHttpActionResult> CallGet()
         {
-            return await AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntitiesParameters, CancellationToken.None);
+            return await AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntitiesRouteValues, CancellationToken.None);
         }
 
         public GetTestsFixture SetUkprn(long? ukprn)
         {
-            GetAccountProviderLegalEntitiesParameters.Ukprn = ukprn;
+            GetAccountProviderLegalEntitiesRouteValues.Ukprn = ukprn;
             return this;
         }
         
         public GetTestsFixture SetOperation(string operation)
         {
-            GetAccountProviderLegalEntitiesParameters.Operation = operation;
+            GetAccountProviderLegalEntitiesRouteValues.Operation = operation;
             return this;
         }
 

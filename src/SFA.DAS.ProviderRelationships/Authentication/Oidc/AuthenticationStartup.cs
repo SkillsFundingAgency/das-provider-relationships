@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
     public class AuthenticationStartup : IAuthenticationStartup
     {
         private readonly IAppBuilder _app;
-        private readonly IIdentityServerConfiguration _config;
+        private readonly IOidcConfiguration _config;
         private readonly IAuthenticationUrls _authenticationUrls;
         private readonly IPostAuthenticationHandler _postAuthenticationHandler;
         private readonly ConfigurationFactory _configurationFactory;
@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Authentication.Oidc
 
         public AuthenticationStartup(
             IAppBuilder app,
-            IIdentityServerConfiguration config,
+            IOidcConfiguration config,
             IAuthenticationUrls authenticationUrls,
             IPostAuthenticationHandler postAuthenticationHandler,
             ConfigurationFactory configurationFactory,

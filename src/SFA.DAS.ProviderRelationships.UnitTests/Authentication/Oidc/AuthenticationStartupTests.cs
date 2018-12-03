@@ -1,14 +1,13 @@
 ﻿using System.Security.Claims;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 using Owin;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 using SFA.DAS.Testing;
-using Fix = SFA.DAS.ProviderRelationships.UnitTests.Authentication.AuthenticationStartupTestsFixture;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
+namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication.Oidc
 {
     [TestFixture]
     [Parallelizable]
@@ -39,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Authentication
             // perhaps unit testing AuthenticationStartup has a poor effort:benefit ratio!
 
             var mockAppBuilder = new Mock<IAppBuilder>();
-            var mockIdentityServerConfig = new Mock<IIdentityServerConfiguration>();
+            var mockIdentityServerConfig = new Mock<IOidcConfiguration>();
             var mockAuthenticationUrls = new Mock<IAuthenticationUrls>();
             var mockPostAuthenticationHandler = new Mock<IPostAuthenticationHandler>();
 

@@ -243,7 +243,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             if (grantedOperations.Any())
             {
-                AccountProviderLegalEntitiesController.TempData.Add(grantedOperations
+                AccountProviderLegalEntitiesController.TempData.Set(grantedOperations
                 .Select(o => new OperationViewModel
                 {
                     Value = o,
