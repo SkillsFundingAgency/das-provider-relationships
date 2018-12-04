@@ -51,8 +51,13 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                 }
             };
             
+            var requestOptions = new RequestOptions
+            {
+                OfferThroughput = 1000
+            };
+            
             await _documentClient.CreateDatabaseIfNotExistsAsync(database);
-            await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection);
+            await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection, requestOptions);
         }
     }
 }
