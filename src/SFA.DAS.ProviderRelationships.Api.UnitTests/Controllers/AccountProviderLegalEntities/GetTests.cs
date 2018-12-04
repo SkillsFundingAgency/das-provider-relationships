@@ -14,7 +14,7 @@ using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
+namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProviderLegalEntities
 {
     [TestFixture]
     [Parallelizable]
@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently an Ukprn filter needs to be supplied"));
+                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied"));
         }
         
         [Test]
@@ -44,13 +44,6 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
         {
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
                 (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
-        }
-        
-        [Test]
-        public Task WhenUnknownOperationIsSupplied_ThenShouldReturnBadRequest()
-        {
-            return RunAsync(f => f.SetOperation("SqueezeCohort"), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "The Operation filter value supplied is not recognised as an Operation"));
         }
     }
 
@@ -66,7 +59,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             GetAccountProviderLegalEntitiesRouteValues = new GetAccountProviderLegalEntitiesRouteValues
             {
                 Ukprn = 12345678L,
-                Operation = "CreateCohort"
+                Operation = Operation.CreateCohort
             };
 
             Mediator = new Mock<IMediator>();
@@ -92,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Relationships
             return this;
         }
         
-        public GetTestsFixture SetOperation(string operation)
+        public GetTestsFixture SetOperation(Operation? operation)
         {
             GetAccountProviderLegalEntitiesRouteValues.Operation = operation;
             return this;
