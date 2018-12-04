@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(CreateAccountCommand request)
         {
-            var account = new Account(request.AccountId, request.PublicHashedId, request.Name, request.Created);
+            var account = new Account(request.AccountId, request.HashedId, request.PublicHashedId, request.Name, request.Created);
             
             _db.Value.Accounts.Add(account);
         }
