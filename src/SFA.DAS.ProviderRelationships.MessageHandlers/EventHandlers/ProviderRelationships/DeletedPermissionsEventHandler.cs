@@ -17,6 +17,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 
         public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
         {
+            //todo audit
+
             return _mediator.Send(new DeletePermissionsCommand(message.AccountProviderLegalEntityId, message.Ukprn, message.Deleted, context.MessageId));
         }
     }

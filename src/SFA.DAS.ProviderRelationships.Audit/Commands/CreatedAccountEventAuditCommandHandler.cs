@@ -18,16 +18,6 @@ namespace SFA.DAS.ProviderRelationships.Audit.Commands
         {
             var entity = request.MapToEntity();
             _db.Value.CreatedAccountEventAudits.Add(entity);
-            //try
-            //{
-            //    _db.Value.SaveChanges();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //    throw;
-            //}
-            
         }
     }
 }

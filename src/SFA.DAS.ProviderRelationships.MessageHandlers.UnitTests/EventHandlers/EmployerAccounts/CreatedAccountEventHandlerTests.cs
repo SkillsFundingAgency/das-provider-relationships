@@ -7,6 +7,7 @@ using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Audit.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.Testing;
 
@@ -25,6 +26,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 c.PublicHashedId == f.Message.PublicHashedId &&
                 c.Name == f.Message.Name &&
                 c.Created == f.Message.Created), CancellationToken.None), Times.Once));
+        }
+
+        [Test]
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendAuditCommand()
+        {
+            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreatedAccountEventAuditCommand>(c =>
+                c.AccountId == f.Message.AccountId &&
+                c.UserRef == f.Message.UserRef &&
+                c.UserName == f.Message.UserName &&
+                c.Name == f.Message.Name &&
+                c.PublicHashedId == f.Message.PublicHashedId), CancellationToken.None), Times.Once));
         }
     }
 

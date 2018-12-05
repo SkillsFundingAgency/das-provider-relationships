@@ -17,6 +17,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 
         public Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
+            //todo audit
+
             return _mediator.Send(new UpdatePermissionsCommand(
                 message.AccountId,
                 message.AccountLegalEntityId,
