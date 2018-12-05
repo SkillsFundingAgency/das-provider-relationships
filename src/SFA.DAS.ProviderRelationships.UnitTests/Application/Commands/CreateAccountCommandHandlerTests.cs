@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
@@ -23,6 +24,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault(a => a.Id == f.Command.AccountId).Should().NotBeNull()
                 .And.Match<Account>(a => 
                     a.Id == f.Command.AccountId &&
+                    a.HashedId == f.Command.HashedId &&
                     a.PublicHashedId == f.Command.PublicHashedId &&
                     a.Name == f.Command.Name &&
                     a.Created == f.Command.Created));
@@ -34,12 +36,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public ProviderRelationshipsDbContext Db { get; set; }
         public CreateAccountCommand Command { get; set; }
         public IRequestHandler<CreateAccountCommand, Unit> Handler { get; set; }
-        public Account Account { get; set; }
         
         public CreateAccountCommandHandlerTestFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            Command = new CreateAccountCommand(1, "AAA123", "Foo", DateTime.UtcNow);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Command = new CreateAccountCommand(1, "AAA111", "AAA222", "Foo", DateTime.UtcNow);
             Handler = new CreateAccountCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 

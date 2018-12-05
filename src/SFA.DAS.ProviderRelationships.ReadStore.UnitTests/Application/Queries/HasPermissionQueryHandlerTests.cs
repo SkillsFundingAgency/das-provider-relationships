@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenPermissionIsGranted_ThenShouldReturnTrue()
         {
-            return RunAsync(f => f.AddRelationships(), f => f.Handle(), (f, r) => r.Should().BeTrue());
+            return RunAsync(f => f.AddAccountProviderLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeTrue());
         }
     }
 
@@ -38,17 +38,17 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Queries
         internal HasPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         internal IReadStoreRequestHandler<HasPermissionQuery, bool> Handler { get; set; }
-        internal Mock<IRelationshipsRepository> PermissionsRepository { get; set; }
-        internal IOrderedQueryable<Relationship> DocumentQuery { get; set; }
-        internal List<Relationship> Permissions { get; set; }
+        internal Mock<IAccountProviderLegalEntitiesRepository> PermissionsRepository { get; set; }
+        internal IOrderedQueryable<AccountProviderLegalEntity> DocumentQuery { get; set; }
+        internal List<AccountProviderLegalEntity> Permissions { get; set; }
 
         public HasPermissionQueryHandlerTestsFixture()
         {
             Query = new HasPermissionQuery(11111111, 1, Operation.CreateCohort);
             CancellationToken = CancellationToken.None;
-            PermissionsRepository = new Mock<IRelationshipsRepository>();
-            Permissions = new List<Relationship>();
-            DocumentQuery = new FakeDocumentQuery<Relationship>(Permissions);
+            PermissionsRepository = new Mock<IAccountProviderLegalEntitiesRepository>();
+            Permissions = new List<AccountProviderLegalEntity>();
+            DocumentQuery = new FakeDocumentQuery<AccountProviderLegalEntity>(Permissions);
 
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
@@ -60,35 +60,35 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.UnitTests.Application.Queries
             return Handler.Handle(Query, CancellationToken);
         }
         
-        public HasPermissionQueryHandlerTestsFixture AddRelationships()
+        public HasPermissionQueryHandlerTestsFixture AddAccountProviderLegalEntities()
         {
             Permissions.AddRange(new []
             {
-                DocumentActivator.CreateInstance<Relationship>()
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                     .Set(r => r.AccountId, 1)
                     .Set(r => r.AccountLegalEntityId, 1)
                     .Set(r => r.AccountProviderId, 1)
                     .Set(r => r.Ukprn, 11111111)
                     .Add(r => r.Operations, Operation.CreateCohort),
-                DocumentActivator.CreateInstance<Relationship>()
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                     .Set(r => r.AccountId, 1)
                     .Set(r => r.AccountLegalEntityId, 2)
                     .Set(r => r.AccountProviderId, 1)
                     .Set(r => r.Ukprn, 11111111)
                     .Add(r => r.Operations, Operation.CreateCohort),
-                DocumentActivator.CreateInstance<Relationship>()
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                     .Set(r => r.AccountId, 2)
                     .Set(r => r.AccountLegalEntityId, 3)
                     .Set(r => r.AccountProviderId, 2)
                     .Set(r => r.Ukprn, 22222222)
                     .Add(r => r.Operations, Operation.CreateCohort),
-                DocumentActivator.CreateInstance<Relationship>()
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                     .Set(r => r.AccountId, 3)
                     .Set(r => r.AccountLegalEntityId, 4)
                     .Set(r => r.AccountProviderId, 3)
                     .Set(r => r.Ukprn, 22222222)
                     .Add(r => r.Operations, Operation.CreateCohort),
-                DocumentActivator.CreateInstance<Relationship>()
+                DocumentActivator.CreateInstance<AccountProviderLegalEntity>()
                     .Set(r => r.AccountId, 4)
                     .Set(r => r.AccountLegalEntityId, 5)
                     .Set(r => r.AccountProviderId, 4)

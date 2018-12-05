@@ -7,6 +7,7 @@ namespace SFA.DAS.ProviderRelationships.Models
     public class Account : Entity
     {
         public long Id { get; private set; }
+        public string HashedId { get; private set; }
         public string PublicHashedId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; }
@@ -17,9 +18,10 @@ namespace SFA.DAS.ProviderRelationships.Models
         private readonly List<AccountLegalEntity> _accountLegalEntities = new List<AccountLegalEntity>();
         private readonly List<AccountProvider> _accountProviders = new List<AccountProvider>();
 
-        public Account(long id, string publicHashedId, string name, DateTime created)
+        public Account(long id, string hashedId, string publicHashedId, string name, DateTime created)
         {
             Id = id;
+            HashedId = hashedId;
             PublicHashedId = publicHashedId;
             Name = name;
             Created = created;

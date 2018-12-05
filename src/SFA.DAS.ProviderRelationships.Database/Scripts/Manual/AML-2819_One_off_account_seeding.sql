@@ -19,15 +19,15 @@ SET NOCOUNT ON
 declare @MAXINSERT int = 1000 --insert values() batch size (cannot be more than 1000)
 
 --Some table var declarations
-print 'declare @Accounts table ([AccountId] bigint,[PublicHashedId] nvarchar(100),[Name] nvarchar(100),[CreatedDate] datetime)'
+print 'declare @Accounts table ([AccountId] bigint,[HashedId] nvarchar(100),[PublicHashedId] nvarchar(100),[Name] nvarchar(100),[CreatedDate] datetime)'
 print 'declare @AccountLegalEntities table ([AccountLegalEntityId] bigint,[AccountLegalEntityPublicHashedId] nvarchar(6),[AccountId] bigint,[Name] nvarchar(100),[Created] datetime)'
 
 BEGIN TRY
 
 	--Accounts
 	select
-	case (ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT) when 1 then 'insert into @Accounts ([AccountId],[PublicHashedId],[Name],[CreatedDate]) values' + char(13) + char(10) else '' end +
-	' (' + convert(varchar,[Id]) + ', ' + '''' + convert(varchar,[PublicHashedId]) + '''' + ', ' + '''' + replace([Name],'''','''''') + '''' + ', ' + '''' + convert(varchar,[CreatedDate],121) + '''' + ')' + 
+	case (ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT) when 1 then 'insert into @Accounts ([AccountId],[HashedId],[PublicHashedId],[Name],[CreatedDate]) values' + char(13) + char(10) else '' end +
+	' (' + convert(varchar,[Id]) + ', ' + '''' + convert(varchar,[HashedId]) + '''' + ', ' + '''' + convert(varchar,[PublicHashedId]) + '''' + ', ' + '''' + replace([Name],'''','''''') + '''' + ', ' + '''' + convert(varchar,[CreatedDate],121) + '''' + ')' + 
 	case when ((ROW_NUMBER() OVER (ORDER BY a.Id) % @MAXINSERT = 0) OR (ROW_NUMBER() OVER (ORDER BY a.Id) = (select count(1) from [employer_account].[Account] where HashedId is not null and PublicHashedId is not null))) then '' else ',' end
 	from
 	[employer_account].[Account] a
@@ -59,8 +59,8 @@ BEGIN TRY
 	print '
 	BEGIN TRANSACTION
 
-	insert into Accounts ([Id], [PublicHashedId], [Name], [Created])
-	select a.[AccountId], a.[PublicHashedId], a.[Name], a.[CreatedDate] from @Accounts a
+	insert into Accounts ([Id], [HashedId], [PublicHashedId], [Name], [Created])
+	select a.[AccountId], a.[HashedId], a.[PublicHashedId], a.[Name], a.[CreatedDate] from @Accounts a
 	left join Accounts e on e.[Id] = a.[AccountId]
 	where e.[Id] is null --skip existing
 	print ''Inserted '' + convert(varchar,@@ROWCOUNT) + '' Accounts''

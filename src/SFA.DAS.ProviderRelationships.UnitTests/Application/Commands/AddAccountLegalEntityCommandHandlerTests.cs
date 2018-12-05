@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
@@ -32,6 +33,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         }
     }
 
+    //todo: we could do with a base class for these command test fixtures
     public class AddAccountLegalEntityCommandHandlerTestsFixture
     {
         public ProviderRelationshipsDbContext Db { get; set; }
@@ -41,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         
         public AddAccountLegalEntityCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
 
             Db.Accounts.Add(Account);

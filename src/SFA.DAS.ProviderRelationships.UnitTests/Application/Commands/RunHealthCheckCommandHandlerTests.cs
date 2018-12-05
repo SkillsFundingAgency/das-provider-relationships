@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Apprenticeships.Api.Types.Providers;
@@ -43,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public RunHealthCheckCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
             RunHealthCheckCommand = new RunHealthCheckCommand(User.Ref);
             UnitOfWorkContext = new UnitOfWorkContext();

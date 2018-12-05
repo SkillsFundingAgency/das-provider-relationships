@@ -26,7 +26,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
                 PublicHashedId = message.PublicHashedId
             });
 
-            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.PublicHashedId, message.Name, message.Created));
+	    return _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId, message.Name, message.Created));
+
         }
     }
 }

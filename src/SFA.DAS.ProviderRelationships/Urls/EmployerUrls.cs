@@ -1,19 +1,19 @@
 using System;
 using System.Net;
-using SFA.DAS.ProviderRelationships.Authentication;
+using SFA.DAS.ProviderRelationships.Authentication.Oidc;
 
 namespace SFA.DAS.ProviderRelationships.Urls
 {
     public class EmployerUrls : IEmployerUrls
     {
         private readonly IEmployerUrlsConfiguration _employerUrlsConfiguration;
-        private readonly IIdentityServerConfiguration _identityServerConfiguration;
+        private readonly IOidcConfiguration _oidcConfiguration;
         private string _accountHashedId;
 
-        public EmployerUrls(IEmployerUrlsConfiguration employerUrlsConfiguration, IIdentityServerConfiguration identityServerConfiguration)
+        public EmployerUrls(IEmployerUrlsConfiguration employerUrlsConfiguration, IOidcConfiguration oidcConfiguration)
         {
             _employerUrlsConfiguration = employerUrlsConfiguration;
-            _identityServerConfiguration = identityServerConfiguration;
+            _oidcConfiguration = oidcConfiguration;
         }
 
         public void Initialize(string accountHashedId)
@@ -78,7 +78,7 @@ namespace SFA.DAS.ProviderRelationships.Urls
         public string ChangeEmail() => Users("account/changeemail", Portal("service/email/change"));
         public string ChangePassword() => Users("account/changepassword", Portal("service/password/change"));
 
-        private string Users(string path, string returnUrl) => Action(_employerUrlsConfiguration.EmployerUsersBaseUrl, $"{path}?clientId={_identityServerConfiguration.ClientId}&returnurl={WebUtility.UrlEncode(returnUrl)}");
+        private string Users(string path, string returnUrl) => Action(_employerUrlsConfiguration.EmployerUsersBaseUrl, $"{path}?clientId={_oidcConfiguration.ClientId}&returnurl={WebUtility.UrlEncode(returnUrl)}");
         
         #endregion Users
         

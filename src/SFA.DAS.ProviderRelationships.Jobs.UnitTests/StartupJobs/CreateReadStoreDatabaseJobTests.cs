@@ -22,12 +22,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs
         [Test]
         public Task Run_WhenRunningCreateReadStoreDatabaseJob_ThenShouldCreateReadStorePermissionsCollection()
         {
-            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DocumentSettings.DatabaseName),
+            return RunAsync(f => f.Run(), f => f.DocumentClient.Verify(c => c.CreateDocumentCollectionIfNotExistsAsync(
+                UriFactory.CreateDatabaseUri(DocumentSettings.DatabaseName),
                 It.Is<DocumentCollection>(d => 
-                    d.Id == DocumentSettings.CollectionName &&
+                    d.Id == DocumentSettings.AccountProviderLegalEntitiesCollectionName &&
                     d.PartitionKey.Paths.Contains("/ukprn") &&
                     d.UniqueKeyPolicy.UniqueKeys[0].Paths.Contains("/accountProviderLegalEntityId")
-                ), null), Times.Once));
+                ),
+                It.Is<RequestOptions>(r => r.OfferThroughput == 1000)), Times.Once));
         }
     }
 

@@ -58,16 +58,12 @@
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
     <PackageReference Include="Microsoft.Owin" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
-    <PackageReference Include="SFA.DAS.Authorization" Version="0.3.1" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.3.1" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="0.3.1" />
-    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.3.1" />
-    <PackageReference Include="SFA.DAS.AutoConfiguration">
-      <Version>1.0.12</Version>
-    </PackageReference>
+    <PackageReference Include="SFA.DAS.Authorization" Version="1.0.4" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.0.4" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="1.0.4" />
+    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="1.0.4" />
+    <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.12" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />

@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
                 .WithDefaultHeaders()
                 .WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_configuration))
                 .Build();
-
+            
             httpClient.BaseAddress = new Uri(_configuration.ApiBaseUrl);
 
             return httpClient;

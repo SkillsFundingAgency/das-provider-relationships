@@ -9,21 +9,21 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
 {
     internal class UpdatePermissionsCommandHandler : IReadStoreRequestHandler<UpdatePermissionsCommand, Unit>
     {
-        private readonly IRelationshipsRepository _relationshipsRepository;
+        private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
 
-        public UpdatePermissionsCommandHandler(IRelationshipsRepository relationshipsRepository)
+        public UpdatePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository)
         {
-            _relationshipsRepository = relationshipsRepository;
+            _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
         }
         
         public async Task<Unit> Handle(UpdatePermissionsCommand request, CancellationToken cancellationToken)
         {
-            var relationship = await _relationshipsRepository.CreateQuery().SingleOrDefaultAsync(r => 
+            var accountProviderLegalEntity = await _accountProviderLegalEntitiesRepository.CreateQuery().SingleOrDefaultAsync(r => 
                 r.Ukprn == request.Ukprn && r.AccountProviderLegalEntityId == request.AccountProviderLegalEntityId, cancellationToken);
 
-            if (relationship == null)
+            if (accountProviderLegalEntity == null)
             {
-                relationship = new Relationship(
+                accountProviderLegalEntity = new AccountProviderLegalEntity(
                     request.AccountId,
                     request.AccountLegalEntityId,
                     request.AccountProviderId,
@@ -33,13 +33,13 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands
                     request.Updated,
                     request.MessageId);
                 
-                await _relationshipsRepository.Add(relationship, null, cancellationToken);
+                await _accountProviderLegalEntitiesRepository.Add(accountProviderLegalEntity, null, cancellationToken);
             }
             else
             {
-                relationship.UpdatePermissions(request.GrantedOperations, request.Updated, request.MessageId);
+                accountProviderLegalEntity.UpdatePermissions(request.GrantedOperations, request.Updated, request.MessageId);
                 
-                await _relationshipsRepository.Update(relationship, null, cancellationToken);
+                await _accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity, null, cancellationToken);
             }
 
             return Unit.Value;
