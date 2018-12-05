@@ -21,12 +21,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             const long accountId = 10;
             const string accountPublicHashedId = "ACCPUB";
             const string originalAccountName = "Account Name";
-            const string updatedAccountName = "New Account Name";
-            const long legalEntityId = 20;
-            const long accountLegalEntityId = 1020;
-            const string accountLegalEntityPublicHashedId = "ALEPUB";
-            const string originalAccountLegalEntityName = "Legal Entity";
-            const string updatedAccountLegalEntityName = "New Legal Entity";
+            //const string updatedAccountName = "New Account Name";
+            //const long legalEntityId = 20;
+            //const long accountLegalEntityId = 1020;
+            //const string accountLegalEntityPublicHashedId = "ALEPUB";
+            //const string originalAccountLegalEntityName = "Legal Entity";
+            //const string updatedAccountLegalEntityName = "New Legal Entity";
 
             await _messageSession.Publish(new CreatedAccountEvent
             {
@@ -38,51 +38,51 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new ChangedAccountNameEvent
-            {
-                AccountId = accountId,
-                PreviousName = originalAccountName,
-                CurrentName = updatedAccountName,
-                UserName = userName,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
+            //await _messageSession.Publish(new ChangedAccountNameEvent
+            //{
+            //    AccountId = accountId,
+            //    PreviousName = originalAccountName,
+            //    CurrentName = updatedAccountName,
+            //    UserName = userName,
+            //    UserRef = userRef,
+            //    Created = DateTime.UtcNow
+            //});
             
-            await _messageSession.Publish(new AddedLegalEntityEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId,
-                OrganisationName = originalAccountLegalEntityName,
-                AccountId = accountId,
-                LegalEntityId = legalEntityId,
-                AgreementId = 2,
-                UserName = userName,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
+            //await _messageSession.Publish(new AddedLegalEntityEvent
+            //{
+            //    AccountLegalEntityId = accountLegalEntityId,
+            //    AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId,
+            //    OrganisationName = originalAccountLegalEntityName,
+            //    AccountId = accountId,
+            //    LegalEntityId = legalEntityId,
+            //    AgreementId = 2,
+            //    UserName = userName,
+            //    UserRef = userRef,
+            //    Created = DateTime.UtcNow
+            //});
 
-            await _messageSession.Publish(new UpdatedLegalEntityEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                Name = updatedAccountLegalEntityName,
-                Address = "New LE Address",
-                UserName = userName,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
+            //await _messageSession.Publish(new UpdatedLegalEntityEvent
+            //{
+            //    AccountLegalEntityId = accountLegalEntityId,
+            //    Name = updatedAccountLegalEntityName,
+            //    Address = "New LE Address",
+            //    UserName = userName,
+            //    UserRef = userRef,
+            //    Created = DateTime.UtcNow
+            //});
             
-            await _messageSession.Publish(new RemovedLegalEntityEvent
-            {
-                AccountLegalEntityId = accountLegalEntityId,
-                OrganisationName = updatedAccountLegalEntityName,
-                AccountId = accountId,
-                LegalEntityId = legalEntityId,
-                AgreementId = 2, 
-                AgreementSigned = true,
-                UserName = userName,
-                UserRef = userRef,
-                Created = DateTime.UtcNow
-            });
+            //await _messageSession.Publish(new RemovedLegalEntityEvent
+            //{
+            //    AccountLegalEntityId = accountLegalEntityId,
+            //    OrganisationName = updatedAccountLegalEntityName,
+            //    AccountId = accountId,
+            //    LegalEntityId = legalEntityId,
+            //    AgreementId = 2, 
+            //    AgreementSigned = true,
+            //    UserName = userName,
+            //    UserRef = userRef,
+            //    Created = DateTime.UtcNow
+            //});
         }
     }
 }

@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Audit", "SFA.DAS.ProviderRelationships.Audit\SFA.DAS.ProviderRelationships.Audit.csproj", "{916F2EE6-C653-4717-990E-4E685A57FF15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,10 @@ Global
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{916F2EE6-C653-4717-990E-4E685A57FF15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{916F2EE6-C653-4717-990E-4E685A57FF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{916F2EE6-C653-4717-990E-4E685A57FF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{916F2EE6-C653-4717-990E-4E685A57FF15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

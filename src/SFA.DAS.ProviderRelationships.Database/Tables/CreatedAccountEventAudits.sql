@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[CreatedAccountEventAudits]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [AccountId] BIGINT NOT NULL, 
+    [PublicHashedId] NVARCHAR(MAX) NOT NULL, 
+    [Name] NVARCHAR(MAX) NOT NULL, 
+    [UserName] NVARCHAR(MAX) NOT NULL, 
+    [UserRef] UNIQUEIDENTIFIER NOT NULL, 
+    [TimeLogged] DATETIME NOT NULL
+)

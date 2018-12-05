@@ -91,5 +91,6 @@
     <Build Include="Tables\AccountLegalEntities.sql" />
     <Build Include="Tables\Permissions.sql" />
     <Build Include="Tables\Providers.sql" />
+    <Build Include="Tables\CreatedAccountEventAudits.sql" />
   </ItemGroup>
 </Project>

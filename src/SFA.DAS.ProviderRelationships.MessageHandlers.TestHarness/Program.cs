@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
@@ -9,24 +10,32 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
     {
         public static async Task Main()
         {
-            using (var container = IoC.Initialize())
+            try
             {
-                var startup = container.GetInstance<IStartup>();
-
-                await startup.StartAsync();
-                
-                var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
-                var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
-
-                try
+                using (var container = IoC.Initialize())
                 {
-                    await publishEmployerAccountsEventsScenario.Run();
-                    await publishProviderRelationshipsEventsScenario.Run();
+                    var startup = container.GetInstance<IStartup>();
+
+                    await startup.StartAsync();
+
+                    var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
+                    var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
+
+                    try
+                    {
+                        await publishEmployerAccountsEventsScenario.Run();
+                        //await publishProviderRelationshipsEventsScenario.Run();
+                    }
+                    finally
+                    {
+                        await startup.StopAsync();
+                    }
                 }
-                finally
-                {
-                    await startup.StopAsync();
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }
