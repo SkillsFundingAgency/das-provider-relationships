@@ -93,10 +93,11 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\AuthenticationStartup.cs" />
+    <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\AzureActiveDirectory\AuthenticationStartup.cs" />
-    <Compile Include="Authentication\AzureActiveDirectory\DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />

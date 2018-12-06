@@ -58,6 +58,8 @@
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
     <PackageReference Include="Microsoft.Owin" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
     <PackageReference Include="SFA.DAS.Authorization" Version="1.0.4" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.0.4" />
@@ -110,6 +112,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
+    <Compile Include="Authentication\AuthenticationStartup.cs" />
+    <Compile Include="Authentication\AuthenticationUrls.cs" />
+    <Compile Include="Authentication\IAuthenticationService.cs" />
+    <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="Authentication\IAuthenticationUrls.cs" />
+    <Compile Include="Authentication\IPostAuthenticationHandler.cs" />
+    <Compile Include="Authentication\OidcConfigurationFactory.cs" />
+    <Compile Include="Authentication\OwinAuthenticationService.cs" />
+    <Compile Include="Authentication\PostAuthenticationHandler.cs" />
     <Compile Include="Authorization\AuthorizationContextProvider.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -119,6 +130,7 @@
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
+    <Compile Include="DependencyResolution\OidcAuthenticationRegistry.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
@@ -145,6 +157,8 @@
     <Compile Include="RouteValues\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="RouteValues\RouteValueKeys.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Urls\EmployerUrls.cs" />
+    <Compile Include="Urls\IEmployerUrls.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\OperationViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />

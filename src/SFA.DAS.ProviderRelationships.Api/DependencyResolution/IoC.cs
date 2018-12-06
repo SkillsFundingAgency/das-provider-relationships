@@ -1,5 +1,4 @@
 using System.Web.Http;
-using SFA.DAS.ProviderRelationships.Api.Authentication.AzureActiveDirectory.DependencyResolution;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using WebApi.StructureMap;
 
