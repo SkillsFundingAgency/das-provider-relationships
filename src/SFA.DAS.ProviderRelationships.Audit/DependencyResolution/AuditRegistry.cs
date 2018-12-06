@@ -9,6 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Audit.DependencyResolution
         public AuditRegistry()
         {
             For<IRequestHandler<CreatedAccountEventAuditCommand, Unit>>().Use<CreatedAccountEventAuditCommandHandler>();
+            For<IRequestHandler<UpdatedPermissionsEventAuditCommand, Unit>>().Use<UpdatedPermissionsEventAuditCommandHandler>();
         }
     }
 }
