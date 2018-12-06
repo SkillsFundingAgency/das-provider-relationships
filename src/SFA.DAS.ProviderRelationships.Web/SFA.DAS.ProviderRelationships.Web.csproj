@@ -63,7 +63,7 @@
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.0.4" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerRoles" Version="1.0.4" />
     <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="1.0.4" />
-    <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.12" />
+    <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.1.1" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -158,10 +158,10 @@
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="403.html" />
-    <Content Include="404.html" />
-    <Content Include="Error.html" />
+    <Content Include="Content\htm\403.html" />
+    <Content Include="Content\htm\404.html" />
     <Content Include="Content\css\application.css" />
+    <Content Include="Content\htm\Error.html" />
     <Content Include="Content\js\application.js" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\govuk-apple-touch-icon-152x152.png" />

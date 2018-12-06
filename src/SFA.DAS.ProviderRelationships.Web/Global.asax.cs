@@ -22,6 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             BinderConfig.RegisterBinders(ModelBinders.Binders);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            MvcHandler.DisableMvcResponseHeader = true;
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"];
             DependencyResolver.Current.GetService<IStartup>().StartAsync().GetAwaiter().GetResult();
