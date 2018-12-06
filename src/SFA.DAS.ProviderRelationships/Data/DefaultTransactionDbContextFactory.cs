@@ -3,16 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Api.Data
+namespace SFA.DAS.ProviderRelationships.Data
 {
-    public class ProviderRelationshipsApiDbContextFactory : IProviderRelationshipsDbContextFactory
+    public class DefaultTransactionDbContextFactory : IProviderRelationshipsDbContextFactory
     {
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ProviderRelationshipsApiDbContextFactory(ProviderRelationshipsConfiguration providerRelationshipsConfiguration, ILoggerFactory loggerFactory)
+        public DefaultTransactionDbContextFactory(ProviderRelationshipsConfiguration providerRelationshipsConfiguration, ILoggerFactory loggerFactory)
         {
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
             _loggerFactory = loggerFactory;
@@ -25,7 +24,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Data
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseLoggerFactory(_loggerFactory)
                 .UseSqlServer(sqlConnection)
-                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+                .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            
             return new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
     }
