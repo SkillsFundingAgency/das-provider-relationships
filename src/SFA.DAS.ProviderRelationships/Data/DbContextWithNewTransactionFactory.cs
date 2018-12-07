@@ -6,12 +6,12 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
-    public class DefaultTransactionDbContextFactory : IProviderRelationshipsDbContextFactory
+    public class DbContextWithNewTransactionFactory : IProviderRelationshipsDbContextFactory
     {
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private readonly ILoggerFactory _loggerFactory;
 
-        public DefaultTransactionDbContextFactory(ProviderRelationshipsConfiguration providerRelationshipsConfiguration, ILoggerFactory loggerFactory)
+        public DbContextWithNewTransactionFactory(ProviderRelationshipsConfiguration providerRelationshipsConfiguration, ILoggerFactory loggerFactory)
         {
             _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
             _loggerFactory = loggerFactory;

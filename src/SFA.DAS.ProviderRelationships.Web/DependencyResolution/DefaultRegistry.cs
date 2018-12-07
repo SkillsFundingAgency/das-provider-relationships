@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<IEmployerUrls>().Use<EmployerUrls>();
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();
-            For<IProviderRelationshipsDbContextFactory>().Use<ExternalTransactionDbContextFactory>();
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
 
             Scan(s =>
             {

@@ -9,12 +9,12 @@ using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
-    public class ExternalTransactionDbContextFactory : IProviderRelationshipsDbContextFactory
+    public class DbContextWithNServiceBusTransactionFactory : IProviderRelationshipsDbContextFactory
     {
         private readonly IUnitOfWorkContext _unitOfWorkContext;
         private readonly ILoggerFactory _loggerFactory;
 
-        public ExternalTransactionDbContextFactory(IUnitOfWorkContext unitOfWorkContext, ILoggerFactory loggerFactory)
+        public DbContextWithNServiceBusTransactionFactory(IUnitOfWorkContext unitOfWorkContext, ILoggerFactory loggerFactory)
         {
             _unitOfWorkContext = unitOfWorkContext;
             _loggerFactory = loggerFactory;

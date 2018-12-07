@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
         public DefaultRegistry()
         {
             For<ILoggerFactory>().Use(() => new LoggerFactory().AddApplicationInsights(ConfigurationManager.AppSettings["APPINSIGHTS_INSTRUMENTATIONKEY"], null).AddNLog()).Singleton();
-            For<IProviderRelationshipsDbContextFactory>().Use<ExternalTransactionDbContextFactory>();
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
         {
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
-            For<IProviderRelationshipsDbContextFactory>().Use<DefaultTransactionDbContextFactory>();
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNewTransactionFactory>();
         }
 
         private ILoggingContext GetLoggingContext(IContext context)

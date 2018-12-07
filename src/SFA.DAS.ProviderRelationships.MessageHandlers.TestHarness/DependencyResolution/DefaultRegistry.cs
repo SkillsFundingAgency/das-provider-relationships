@@ -7,7 +7,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
     {
         public DefaultRegistry()
         {
-            For<IProviderRelationshipsDbContextFactory>().Use<DefaultTransactionDbContextFactory>();
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNewTransactionFactory>();
         }
     }
 }
