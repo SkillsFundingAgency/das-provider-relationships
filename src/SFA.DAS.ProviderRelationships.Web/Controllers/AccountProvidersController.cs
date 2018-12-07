@@ -5,7 +5,7 @@ using AutoMapper;
 using MediatR;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries;
 using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Validation;

@@ -1,7 +1,7 @@
 using System;
 using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountLegalEntityName
 {
     public class UpdateAccountLegalEntityNameCommand : IRequest
     {

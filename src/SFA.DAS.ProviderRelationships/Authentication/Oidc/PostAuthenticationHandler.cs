@@ -2,7 +2,7 @@ using System;
 using System.Security.Claims;
 using MediatR;
 using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.Authentication.Oidc

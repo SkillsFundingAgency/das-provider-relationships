@@ -4,7 +4,7 @@ using MediatR;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser
 {
     public class CreateOrUpdateUserCommandHandler : RequestHandler<CreateOrUpdateUserCommand>
     {

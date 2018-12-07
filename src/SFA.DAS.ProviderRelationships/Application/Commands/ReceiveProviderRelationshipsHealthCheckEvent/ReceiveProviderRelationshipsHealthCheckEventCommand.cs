@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.ReceiveProviderRelationshipsHealthCheckEvent
 {
     public class ReceiveProviderRelationshipsHealthCheckEventCommand : IRequest
     {

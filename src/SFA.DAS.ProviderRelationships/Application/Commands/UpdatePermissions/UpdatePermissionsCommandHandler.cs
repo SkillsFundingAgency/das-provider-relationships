@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions
 {
     public class UpdatePermissionsCommandHandler : AsyncRequestHandler<UpdatePermissionsCommand>
     {

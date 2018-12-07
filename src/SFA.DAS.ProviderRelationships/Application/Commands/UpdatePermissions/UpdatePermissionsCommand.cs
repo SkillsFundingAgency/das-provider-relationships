@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions
 {
     public class UpdatePermissionsCommand : IRequest
     {
