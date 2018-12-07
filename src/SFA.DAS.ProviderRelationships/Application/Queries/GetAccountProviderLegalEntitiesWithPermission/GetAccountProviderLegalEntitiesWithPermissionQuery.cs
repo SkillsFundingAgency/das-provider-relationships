@@ -1,7 +1,7 @@
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission
 {
     public class GetAccountProviderLegalEntitiesWithPermissionQuery : IRequest<GetAccountProviderLegalEntitiesWithPermissionQueryResult>
     {

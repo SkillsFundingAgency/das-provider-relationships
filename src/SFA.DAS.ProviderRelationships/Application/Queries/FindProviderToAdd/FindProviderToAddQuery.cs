@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd
 {
     public class FindProviderToAddQuery : IRequest<FindProviderToAddQueryResult>
     {

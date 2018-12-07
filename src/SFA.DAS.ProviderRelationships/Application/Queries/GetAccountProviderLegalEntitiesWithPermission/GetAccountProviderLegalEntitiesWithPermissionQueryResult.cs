@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission
 {
     public class GetAccountProviderLegalEntitiesWithPermissionQueryResult
     {

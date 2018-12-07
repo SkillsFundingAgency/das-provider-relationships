@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Mappings;

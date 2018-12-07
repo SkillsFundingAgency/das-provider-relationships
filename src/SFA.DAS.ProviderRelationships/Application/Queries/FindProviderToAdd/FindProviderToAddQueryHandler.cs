@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd
 {
     public class FindProviderToAddQueryHandler : IRequestHandler<FindProviderToAddQuery, FindProviderToAddQueryResult>
     {

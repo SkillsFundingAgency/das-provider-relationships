@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity
 {
     public class GetUpdatedAccountProviderLegalEntityQuery : IRequest<GetUpdatedAccountProviderLegalEntityQueryResult>
     {

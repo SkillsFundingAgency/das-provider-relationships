@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 

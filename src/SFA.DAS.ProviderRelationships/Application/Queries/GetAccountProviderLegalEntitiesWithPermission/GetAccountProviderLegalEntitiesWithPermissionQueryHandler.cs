@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission
 {
     public class GetAccountProviderLegalEntitiesWithPermissionQueryHandler : IRequestHandler<GetAccountProviderLegalEntitiesWithPermissionQuery, GetAccountProviderLegalEntitiesWithPermissionQueryResult>
     {

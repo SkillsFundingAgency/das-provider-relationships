@@ -4,7 +4,7 @@ using System.Web.Http;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers

@@ -9,32 +9,32 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Dtos;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
 {
-    public class GetAddedAccountProviderQueryHandler : IRequestHandler<GetAddedAccountProviderQuery, GetAddedAccountProviderQueryResult>
+    public class GetAccountProviderQueryHandler : IRequestHandler<GetAccountProviderQuery, GetAccountProviderQueryResult>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
 
-        public GetAddedAccountProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
+        public GetAccountProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
         {
             _db = db;
             _configurationProvider = configurationProvider;
         }
 
-        public async Task<GetAddedAccountProviderQueryResult> Handle(GetAddedAccountProviderQuery request, CancellationToken cancellationToken)
+        public async Task<GetAccountProviderQueryResult> Handle(GetAccountProviderQuery request, CancellationToken cancellationToken)
         {
             var accountProvider = await _db.Value.AccountProviders
                 .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
-                .ProjectTo<AccountProviderBasicDto>(_configurationProvider)
+                .ProjectTo<AccountProviderDto>(_configurationProvider, new { accountProviderId = request.AccountProviderId })
                 .SingleOrDefaultAsync(cancellationToken);
             
             if (accountProvider == null)
             {
                 return null;
             }
-            
-            return new GetAddedAccountProviderQueryResult(accountProvider);
+
+            return new GetAccountProviderQueryResult(accountProvider);
         }
     }
 }

@@ -8,7 +8,8 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+
+using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
