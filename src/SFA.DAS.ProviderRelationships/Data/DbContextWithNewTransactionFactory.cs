@@ -1,32 +1,31 @@
-using System.Data.SqlClient;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
     public class DbContextWithNewTransactionFactory : IProviderRelationshipsDbContextFactory
     {
-        private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
+        private readonly DbConnection _dbConnection;
         private readonly ILoggerFactory _loggerFactory;
 
-        public DbContextWithNewTransactionFactory(ProviderRelationshipsConfiguration providerRelationshipsConfiguration, ILoggerFactory loggerFactory)
+        public DbContextWithNewTransactionFactory(DbConnection dbConnection, ILoggerFactory loggerFactory)
         {
-            _providerRelationshipsConfiguration = providerRelationshipsConfiguration;
+            _dbConnection = dbConnection;
             _loggerFactory = loggerFactory;
         }
 
         public ProviderRelationshipsDbContext CreateDbContext()
         {
-            var sqlConnection = new SqlConnection(_providerRelationshipsConfiguration.DatabaseConnectionString);
-            
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseLoggerFactory(_loggerFactory)
-                .UseSqlServer(sqlConnection)
+                .UseSqlServer(_dbConnection)
                 .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
             
-            return new ProviderRelationshipsDbContext(optionsBuilder.Options);
+            var dbContext = new ProviderRelationshipsDbContext(optionsBuilder.Options);
+
+            return dbContext;
         }
     }
 }

@@ -1,10 +1,8 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using NServiceBus.Persistence;
-using SFA.DAS.NServiceBus.ClientOutbox;
-using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
+using SFA.DAS.NServiceBus.SqlServer;
 using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.ProviderRelationships.Data
@@ -22,18 +20,17 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         public ProviderRelationshipsDbContext CreateDbContext()
         {
-            var clientSession = _unitOfWorkContext.Find<IClientOutboxTransaction>();
-            var serverSession = _unitOfWorkContext.Find<SynchronizedStorageSession>();
-            var sqlSession = clientSession?.GetSqlSession() ?? serverSession?.GetSqlSession() ?? throw new Exception("Cannot find the SQL session");
+            var synchronizedStorageSession = _unitOfWorkContext.Find<SynchronizedStorageSession>();
+            var sqlStorageSession = synchronizedStorageSession.GetSqlStorageSession();
             
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                 .UseLoggerFactory(_loggerFactory)
-                .UseSqlServer(sqlSession.Connection)
+                .UseSqlServer(sqlStorageSession.Connection)
                 .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
             
             var dbContext = new ProviderRelationshipsDbContext(optionsBuilder.Options);
             
-            dbContext.Database.UseTransaction(sqlSession.Transaction);
+            dbContext.Database.UseTransaction(sqlStorageSession.Transaction);
 
             return dbContext;
         }
