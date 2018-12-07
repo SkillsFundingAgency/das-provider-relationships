@@ -30,8 +30,18 @@ namespace SFA.DAS.ProviderRelationships.Audit.Commands
 
         protected override void Handle(UpdatedPermissionsEventAuditCommand request)
         {
-            var entity = request.MapToEntity();
-            _db.Value.UpdatedPermissionsEventAudits.Add(entity);
+            try
+            {
+                var entity = request.MapToEntity();
+                _db.Value.UpdatedPermissionsEventAudits.Add(entity);
+                _db.Value.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
             
         }
     }

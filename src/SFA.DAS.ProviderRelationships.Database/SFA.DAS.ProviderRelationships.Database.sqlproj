@@ -93,5 +93,9 @@
     <Build Include="Tables\Providers.sql" />
     <Build Include="Tables\CreatedAccountEventAudits.sql" />
     <Build Include="Tables\UpdatedPermissionsEventAudits.sql" />
+    <Build Include="Tables\DeletedPermissionsEventAudits.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="SFA.DAS.ProviderRelationships.Database.refactorlog" />
   </ItemGroup>
 </Project>

@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
     public class UpdatedPermissionsEventAuditCommandHandlerTests : FluentTest<UpdatedPermissionsEventAuditCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingCreatedAccountEventAuditCommand_ThenShouldCreateAuditRecord()
+        public Task Handle_WhenHandlingUpdatedPermissionsEventAuditCommand_ThenShouldCreateAuditRecord()
         {
             return RunAsync(f => f.Handle(), f => f.Db.UpdatedPermissionsEventAudits.SingleOrDefault(a => a.UserRef == f.Command.UserRef).Should().NotBeNull()
                 .And.Match<UpdatedPermissionsEventAudit>(a =>

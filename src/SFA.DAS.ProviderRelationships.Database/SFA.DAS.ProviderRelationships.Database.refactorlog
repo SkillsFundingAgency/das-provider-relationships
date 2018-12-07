@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="b446fa15-f3d0-408f-9051-b78e2ddee165" ChangeDateTime="12/07/2018 11:02:56">
+    <Property Name="ElementName" Value="[dbo].[DeletedPermissionsEventAudits].[Delete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DeletedPermissionsEventAudits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Deleted" />
+  </Operation>
+</Operations>

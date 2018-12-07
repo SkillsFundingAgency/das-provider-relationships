@@ -34,4 +34,15 @@ namespace SFA.DAS.ProviderRelationships.Data
             builder.Property(e => e.GrantedOperations).HasColumnType("nvarchar(255)");
         }
     }
+
+    public class DeletedPermissionsEventAuditConfiguration : IEntityTypeConfiguration<DeletedPermissionsEventAudit>
+    {
+        public void Configure(EntityTypeBuilder<DeletedPermissionsEventAudit> builder)
+        {
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Ukprn).IsRequired().HasColumnType("bigint");
+            builder.Property(e => e.Deleted).IsRequired().HasColumnType("datetime");
+            builder.Property(e => e.TimeLogged).IsRequired().HasColumnType("datetime");
+        }
+    }
 }
