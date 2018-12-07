@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
 
         public void Initialize()
         {
-            _logger.Info($"Initializing Azure Active Directory Authentication with Tenant '{_config.Tenant}', Audience '{_config.Audience}'");
+            _logger.Info($"Initializing Azure Active Directory Bearer Authentication with Tenant '{_config.Tenant}', Audience '{_config.Audience}'");
             
             _app.UseWindowsAzureActiveDirectoryBearerAuthentication(new WindowsAzureActiveDirectoryBearerAuthenticationOptions
             {
