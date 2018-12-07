@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Dtos
+namespace SFA.DAS.ProviderRelationships.DtosShared
 {
     public class AccountProviderBasicDto
     {

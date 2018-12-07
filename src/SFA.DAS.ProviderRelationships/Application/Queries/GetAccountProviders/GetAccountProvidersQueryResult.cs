@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
 {

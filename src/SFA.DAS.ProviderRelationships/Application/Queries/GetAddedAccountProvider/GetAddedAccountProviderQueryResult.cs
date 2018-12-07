@@ -1,4 +1,4 @@
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.DtosShared;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider
 {

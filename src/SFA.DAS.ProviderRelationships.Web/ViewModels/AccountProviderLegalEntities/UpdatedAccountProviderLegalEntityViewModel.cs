@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {

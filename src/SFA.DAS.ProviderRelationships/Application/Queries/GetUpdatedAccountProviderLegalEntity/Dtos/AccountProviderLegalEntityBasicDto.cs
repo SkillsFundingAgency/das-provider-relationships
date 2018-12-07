@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Dtos
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos
 {
     public class AccountProviderLegalEntityBasicDto
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SFA.DAS.ProviderRelationships.Dtos
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos
 {
     public class AccountProviderDto
     {

@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Mappings

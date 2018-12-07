@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Dtos
+﻿namespace SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos
 {
     public class ProviderBasicDto
     {
