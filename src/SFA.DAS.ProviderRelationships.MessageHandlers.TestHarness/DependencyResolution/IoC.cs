@@ -15,8 +15,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
             {
                 c.AddRegistry<AutoConfigurationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<DataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
-                c.AddRegistry<HarnessDataRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<MapperRegistry>();
                 c.AddRegistry<MediatorRegistry>();

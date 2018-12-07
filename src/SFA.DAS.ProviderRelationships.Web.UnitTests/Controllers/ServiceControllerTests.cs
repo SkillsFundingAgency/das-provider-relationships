@@ -2,7 +2,7 @@ using System.Web.Mvc;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Authentication.Oidc;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
 

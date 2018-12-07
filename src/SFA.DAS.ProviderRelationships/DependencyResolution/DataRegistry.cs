@@ -11,7 +11,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public DataRegistry()
         {
             For<DbConnection>().Use(c => new SqlConnection(c.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString));
-            For<IProviderRelationshipsDbContextFactory>().Use<ProviderRelationshipsDbContextFactory>();
             For<ProviderRelationshipsDbContext>().Use(c => c.GetInstance<IProviderRelationshipsDbContextFactory>().CreateDbContext());
         }
     }

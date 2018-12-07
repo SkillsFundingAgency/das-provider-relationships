@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.AutoConfiguration;
-using SFA.DAS.ProviderRelationships.Urls;
+using SFA.DAS.ProviderRelationships.Web.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
