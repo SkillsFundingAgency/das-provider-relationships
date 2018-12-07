@@ -54,6 +54,7 @@
     <Compile Include="Commands\DeletedPermissionsEventAuditCommand.cs" />
     <Compile Include="Commands\DeletedPermissionsEventAuditCommandHandler.cs" />
     <Compile Include="Commands\UpdatedPermissionsEventAuditCommand.cs" />
+    <Compile Include="DataAccess\MapperExtensions\DeletedPermissionsEventAuditMapperExtensions.cs" />
     <Compile Include="DataAccess\MapperExtensions\UpdatedPermissionsEventAuditMapperExtensions.cs" />
     <Compile Include="DependencyResolution\AuditRegistry.cs" />
     <Compile Include="Commands\CreatedAccountEventAuditCommand.cs" />

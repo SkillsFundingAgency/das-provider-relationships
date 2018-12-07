@@ -10,32 +10,24 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
     {
         public static async Task Main()
         {
-            try
+            using (var container = IoC.Initialize())
             {
-                using (var container = IoC.Initialize())
+                var startup = container.GetInstance<IStartup>();
+
+                await startup.StartAsync();
+
+                var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
+                var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
+
+                try
                 {
-                    var startup = container.GetInstance<IStartup>();
-
-                    await startup.StartAsync();
-
-                    var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
-                    var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
-
-                    try
-                    {
-                        await publishEmployerAccountsEventsScenario.Run();
-                        //await publishProviderRelationshipsEventsScenario.Run();
-                    }
-                    finally
-                    {
-                        await startup.StopAsync();
-                    }
+                    await publishEmployerAccountsEventsScenario.Run();
+                    await publishProviderRelationshipsEventsScenario.Run();
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
+                finally
+                {
+                    await startup.StopAsync();
+                }
             }
         }
     }
