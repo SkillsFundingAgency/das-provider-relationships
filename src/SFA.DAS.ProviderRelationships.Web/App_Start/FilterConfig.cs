@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Filters;
+using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.UnitOfWork.Mvc;
 using SFA.DAS.Validation.Mvc;
 
