@@ -28,4 +28,8 @@
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ReadStore\Application\Queries" />
+    </ItemGroup>
+
 </Project>

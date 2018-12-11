@@ -1,6 +1,6 @@
-﻿using SFA.DAS.ProviderRelationships.Data;
+﻿using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
-using SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using StructureMap;

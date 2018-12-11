@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client

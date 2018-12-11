@@ -46,4 +46,8 @@
         <Reference Include="System.Web" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ReadStore\Application" />
+    </ItemGroup>
+
 </Project>

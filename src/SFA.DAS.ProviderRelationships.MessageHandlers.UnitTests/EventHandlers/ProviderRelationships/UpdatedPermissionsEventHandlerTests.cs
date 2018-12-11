@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 

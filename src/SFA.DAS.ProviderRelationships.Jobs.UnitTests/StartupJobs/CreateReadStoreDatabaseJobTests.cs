@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
+using SFA.DAS.ProviderRelationships.Types.ReadStore.Data;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.StartupJobs

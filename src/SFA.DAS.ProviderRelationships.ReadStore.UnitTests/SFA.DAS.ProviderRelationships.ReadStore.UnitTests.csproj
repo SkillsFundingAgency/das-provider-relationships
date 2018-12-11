@@ -21,4 +21,8 @@
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Builders" />
+    </ItemGroup>
+
 </Project>

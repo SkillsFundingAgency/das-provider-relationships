@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using NServiceBus;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
