@@ -1,6 +1,6 @@
-﻿using SFA.DAS.CosmosDb;
+using SFA.DAS.CosmosDb;
 
-namespace SFA.DAS.ProviderRelationships.Types.ReadStore.Configuration
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     //todo: main config will contain one of these
     //todo: types now has a reference to SFA.DAS.CosmosDb!

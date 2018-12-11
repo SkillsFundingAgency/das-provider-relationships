@@ -8,9 +8,10 @@ using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Has
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
-using SFA.DAS.ProviderRelationships.Types.ReadStore.Configuration;
-using SFA.DAS.ProviderRelationships.Types.ReadStore.Data;
 using StructureMap;
+using DocumentClientFactory = SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data.DocumentClientFactory;
+using IDocumentClientFactory = SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data.IDocumentClientFactory;
+using ProviderRelationshipsReadStoreConfiguration = SFA.DAS.ProviderRelationships.Api.Client.Configuration.ProviderRelationshipsReadStoreConfiguration;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 {

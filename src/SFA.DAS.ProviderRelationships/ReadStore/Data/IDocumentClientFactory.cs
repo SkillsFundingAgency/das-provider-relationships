@@ -1,6 +1,6 @@
 using Microsoft.Azure.Documents;
 
-namespace SFA.DAS.ProviderRelationships.Types.ReadStore.Data
+namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     public interface IDocumentClientFactory
     {

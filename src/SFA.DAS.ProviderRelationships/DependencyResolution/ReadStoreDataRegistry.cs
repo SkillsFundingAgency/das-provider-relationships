@@ -1,7 +1,6 @@
 //todo: delete?
 using Microsoft.Azure.Documents;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.Types.ReadStore.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution

@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Types.ReadStore.Data
+namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     public static class DocumentSettings
     {

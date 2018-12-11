@@ -2,7 +2,6 @@
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Types.ReadStore.Configuration;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
