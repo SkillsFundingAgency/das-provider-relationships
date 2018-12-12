@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
-//using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
-//using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using AccountProviderLegalEntityDto = SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Dtos.AccountProviderLegalEntityDto;
 
