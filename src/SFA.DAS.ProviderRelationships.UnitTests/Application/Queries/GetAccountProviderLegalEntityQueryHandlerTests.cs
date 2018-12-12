@@ -31,8 +31,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             {
                 r.Should().NotBeNull();
                 
-                r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderBasicDto>()
-                    .And.BeEquivalentTo(new AccountProviderBasicDto
+                r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderDto>()
+                    .And.BeEquivalentTo(new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,

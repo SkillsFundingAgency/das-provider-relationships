@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Dtos
 {
-    public class AccountProviderBasicDto
+    public class AccountProviderDto
     {
         public long Id { get; set; }
         public long ProviderUkprn { get; set; }

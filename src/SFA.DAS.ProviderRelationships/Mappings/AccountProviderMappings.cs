@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public AccountProviderMappings()
         {
-            CreateMap<AccountProvider, AccountProviderBasicDto>();
+            CreateMap<AccountProvider, AccountProviderDto>();
             
             CreateMap<AccountProvider, Application.Queries.GetAccountProvider.Dtos.AccountProviderDto>()
                 .ForMember(d => d.AccountLegalEntities, o => o.MapFrom(s => s.Account.AccountLegalEntities.OrderBy(ale => ale.Name)));

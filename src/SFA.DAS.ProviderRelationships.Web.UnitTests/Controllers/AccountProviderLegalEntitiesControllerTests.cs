@@ -194,7 +194,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
-                new AccountProviderBasicDto(),
+                new AccountProviderDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
@@ -254,7 +254,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             }
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
-                new AccountProviderBasicDto(),
+                new AccountProviderDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {

@@ -355,7 +355,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderDto
             {
                 Id = 2,
                 ProviderUkprn = 12345678,
@@ -389,7 +389,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountProviderId = 2
             };
             
-            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderBasicDto
+            GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new AccountProviderDto
             {
                 Id = 2,
                 ProviderUkprn = 12345678,

@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         {
             var accountProvider = await _db.Value.AccountProviders
                 .Where(ap => ap.AccountId == request.AccountId && ap.Id == request.AccountProviderId)
-                .ProjectTo<AccountProviderBasicDto>(_configurationProvider)
+                .ProjectTo<AccountProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
             
             var accountLegalEntity = await _db.Value.AccountLegalEntities

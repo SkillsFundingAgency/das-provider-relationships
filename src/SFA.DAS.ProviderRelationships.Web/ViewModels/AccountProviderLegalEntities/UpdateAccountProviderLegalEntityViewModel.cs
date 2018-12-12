@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
 {
     public class UpdateAccountProviderLegalEntityViewModel : IAuthorizationContextModel
     {
-        public AccountProviderBasicDto AccountProvider { get; set; }
+        public AccountProviderDto AccountProvider { get; set; }
         public AccountLegalEntityDto AccountLegalEntity { get; set; }
 
         [Required]
