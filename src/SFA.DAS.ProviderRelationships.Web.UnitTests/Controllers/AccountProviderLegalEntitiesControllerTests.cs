@@ -197,7 +197,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
                 new AccountProviderBasicDto(),
-                new AccountLegalEntityBasicDto(),
+                new AccountLegalEntityDto(),
                 new AccountProviderLegalEntitySummaryDto
                 {
                     Operations = new List<Operation>
@@ -257,7 +257,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
                 new AccountProviderBasicDto(),
-                new AccountLegalEntityBasicDto(),
+                new AccountLegalEntityDto(),
                 new AccountProviderLegalEntitySummaryDto
                 {
                     Operations = new List<Operation>
