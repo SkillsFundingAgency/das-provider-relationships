@@ -319,7 +319,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetProviderToAddQueryResult = new GetProviderToAddQueryResult(
-                new Application.Queries.GetProviderToAdd.Dtos.ProviderBasicDto
+                new Application.Queries.GetProviderToAdd.Dtos.ProviderDto
                 {
                     Ukprn = 12345678,
                     Name = "Foo"

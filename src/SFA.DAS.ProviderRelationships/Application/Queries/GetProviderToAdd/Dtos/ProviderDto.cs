@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos
 {
-    public class ProviderBasicDto
+    public class ProviderDto
     {
         public long Ukprn { get; set; }
         public string Name { get; set; }

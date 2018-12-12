@@ -4,9 +4,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd
 {
     public class GetProviderToAddQueryResult
     {
-        public ProviderBasicDto Provider { get; }
+        public ProviderDto Provider { get; }
 
-        public GetProviderToAddQueryResult(ProviderBasicDto provider)
+        public GetProviderToAddQueryResult(ProviderDto provider)
         {
             Provider = provider;
         }

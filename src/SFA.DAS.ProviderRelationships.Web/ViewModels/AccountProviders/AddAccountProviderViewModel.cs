@@ -7,7 +7,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
     public class AddAccountProviderViewModel : IAuthorizationContextModel
     {
-        public ProviderBasicDto Provider { get; set; }
+        public ProviderDto Provider { get; set; }
         
         [Required]
         public long? AccountId { get; set; }

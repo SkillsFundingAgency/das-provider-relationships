@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd
         {
             var provider = await _db.Value.Providers
                 .Where(p => p.Ukprn == request.Ukprn)
-                .ProjectTo<ProviderBasicDto>(_configurationProvider)
+                .ProjectTo<ProviderDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
             return provider == null ? null : new GetProviderToAddQueryResult(provider);
