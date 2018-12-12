@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos
 {
-    public class AccountProviderSummaryDto
+    public class AccountProviderDto
     {
         public long Id { get; set; }
         public string ProviderName { get; set; }

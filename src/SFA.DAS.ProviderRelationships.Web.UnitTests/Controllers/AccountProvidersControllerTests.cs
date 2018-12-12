@@ -12,12 +12,9 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
@@ -274,9 +271,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(
-                new List<AccountProviderSummaryDto>
+                new List<Application.Queries.GetAccountProviders.Dtos.AccountProviderDto>
                 {
-                    new AccountProviderSummaryDto
+                    new Application.Queries.GetAccountProviders.Dtos.AccountProviderDto
                     {
                         Id = 2,
                         ProviderName = "Foo"
@@ -321,11 +318,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = 12345678
             };
             
-            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(new ProviderBasicDto
-            {
-                Ukprn = 12345678,
-                Name = "Foo"
-            });
+            GetProviderToAddQueryResult = new GetProviderToAddQueryResult(
+                new Application.Queries.GetProviderToAdd.Dtos.ProviderBasicDto
+                {
+                    Ukprn = 12345678,
+                    Name = "Foo"
+                });
 
             Mediator.Setup(m => m.Send(It.Is<GetProviderToAddQuery>(q => q.Ukprn == AddAccountProviderRouteValues.Ukprn), CancellationToken.None)).ReturnsAsync(GetProviderToAddQueryResult);
 
@@ -423,12 +421,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
-                new AccountProviderDto
+                new Application.Queries.GetAccountProvider.Dtos.AccountProviderDto
                 {
                     Id = 2,
                     ProviderName = "Foo",
                     AccountLegalEntities = Enumerable.Range(3, accountLegalEntitiesCount ?? 2)
-                        .Select(i => new AccountLegalEntityDto
+                        .Select(i => new Application.Queries.GetAccountProvider.Dtos.AccountLegalEntityDto
                         {
                             Id = i,
                             Name = i.ToString(),

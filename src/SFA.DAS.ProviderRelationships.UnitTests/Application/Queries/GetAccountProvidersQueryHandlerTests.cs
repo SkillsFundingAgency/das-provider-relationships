@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 r.Should().NotBeNull();
                 
                 r.AccountProviders.Should().NotBeNull().And.BeEquivalentTo(
-                    new AccountProviderSummaryDto
+                    new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name
