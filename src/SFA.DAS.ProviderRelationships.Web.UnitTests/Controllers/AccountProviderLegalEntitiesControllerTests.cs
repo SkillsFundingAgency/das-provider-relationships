@@ -11,9 +11,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
@@ -197,8 +195,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
                 new AccountProviderBasicDto(),
-                new AccountLegalEntityDto(),
-                new AccountProviderLegalEntityDto
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
                     Operations = new List<Operation>
                     {
@@ -257,8 +255,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
                 new AccountProviderBasicDto(),
-                new AccountLegalEntityDto(),
-                new AccountProviderLegalEntityDto
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
                     Operations = new List<Operation>
                     {
@@ -309,7 +307,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetUpdatedAccountProviderLegalEntityQueryResult = new GetUpdatedAccountProviderLegalEntityQueryResult(
-                new AccountProviderLegalEntityBasicDto
+                new Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
                     Id = 4,
                     ProviderName = "Foo",

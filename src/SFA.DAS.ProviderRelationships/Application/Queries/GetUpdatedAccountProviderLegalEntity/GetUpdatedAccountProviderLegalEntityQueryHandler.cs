@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountPro
         {
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Where(aple => aple.AccountProviderId == request.AccountProviderId && aple.AccountLegalEntityId == request.AccountLegalEntityId && aple.AccountProvider.AccountId == request.AccountId)
-                .ProjectTo<AccountProviderLegalEntityBasicDto>(_configurationProvider)
+                .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (accountProviderLegalEntity == null)

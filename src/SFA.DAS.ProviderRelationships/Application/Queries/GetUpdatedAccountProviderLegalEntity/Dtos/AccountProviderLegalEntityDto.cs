@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos
 {
-    public class AccountProviderLegalEntityBasicDto
+    public class AccountProviderLegalEntityDto
     {
         public long Id { get; set; }
         public string ProviderName { get; set; }
