@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
-using AccountProviderLegalEntityDto = SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Dtos.AccountProviderLegalEntityDto;
+using AccountProviderLegalEntityDto = SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models.AccountProviderLegalEntityDto;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
 {

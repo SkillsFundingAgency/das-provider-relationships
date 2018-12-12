@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Dtos
+namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models
 {
     //todo: make these internal if poss
     //todo: interface so the original and copy don't get out of sync. interface in types
