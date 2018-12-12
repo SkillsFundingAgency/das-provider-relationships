@@ -18,7 +18,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
-using SFA.DAS.ProviderRelationships.DtosShared;
+using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;

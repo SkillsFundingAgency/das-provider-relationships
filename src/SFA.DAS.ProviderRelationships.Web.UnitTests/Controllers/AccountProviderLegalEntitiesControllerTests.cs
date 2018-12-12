@@ -14,7 +14,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos;
-using SFA.DAS.ProviderRelationships.DtosShared;
+using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
