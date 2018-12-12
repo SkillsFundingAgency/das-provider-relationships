@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
             
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Where(aple => aple.AccountProviderId == request.AccountProviderId && aple.AccountLegalEntityId == request.AccountLegalEntityId)
-                .ProjectTo<AccountProviderLegalEntitySummaryDto>(_configurationProvider)
+                .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
             
             var accountLegalEntitiesCount = await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);

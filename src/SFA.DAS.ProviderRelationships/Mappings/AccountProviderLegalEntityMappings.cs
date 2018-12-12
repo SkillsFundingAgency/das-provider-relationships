@@ -1,6 +1,5 @@
 using System.Linq;
 using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
@@ -19,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
                 .ForMember(d => d.AccountPublicHashedId, o => o.MapFrom(s => s.AccountProvider.Account.PublicHashedId))
                 .ForMember(d => d.AccountName, o => o.MapFrom(s => s.AccountProvider.Account.Name));
                 
-            CreateMap<AccountProviderLegalEntity, AccountProviderLegalEntitySummaryDto>()
+            CreateMap<AccountProviderLegalEntity, Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto>()
                 .ForMember(d => d.Operations, o => o.MapFrom(s => s.Permissions.Select(p => p.Operation)));
         }
     }
