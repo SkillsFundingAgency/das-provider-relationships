@@ -1,35 +1,11 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html class="govuk-template" lang="en">
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- TODO .Net - make  UA-83918739-9 configurable, UA-83918739-9 for pre-prod, UA‌-83918739-10 for Prod throughout following script tag-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83918739-9"></script>
-    <!-- TODO .Net - make  UA-83918739-9 configurable, UA-83918739-9 for pre-prod, UA‌-83918739-10 for Prod throughout following script tag-->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'UA‌-83918739-9');
-    </script>
-    <!-- End global site tag (gtag.js) - Google Analytics -->
-
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - Provider relationships</title>
+    <title>@ViewBag.Title - Provider Relationships</title>
     <meta name="theme-color" content="#0b0c0c" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:image" content="/Content/lib/govuk-frontend/dist/assets/images/govuk-opengraph-image.png" />
-
-    <!-- Google Tag Manager -->
-    <script>
-        (function (w, d, s, l, i) {
-            wl‌ = wl‌ || []‌; wl.push(
-                { 'gtm.start': new Date().getTime(), event: 'gtm.js' }
-            ); var f = d.getElementsByTagName(s)0,
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KWQBWGJ');</script>
-    <!-- End Google Tag Manager -->
-
     <link rel="apple-touch-icon" sizes="180x180" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-180x180.png" />
     <link rel="apple-touch-icon" sizes="167x167" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-167x167.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-152x152.png" />
@@ -37,7 +13,7 @@
     <link rel="mask-icon" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-mask-icon.svg" color="#0b0c0c" />
     <link rel="shortcut icon" href="/Content/lib/govuk-frontend/dist/assets/images/favicon.ico" type="image/x-icon" />
     <!--[if !IE 8]><!-->
-    <link href="/Content/lib/govuk-frontend/dist/govuk-frontend-2.0.0.min.css" rel="stylesheet" />
+        <link href="/Content/lib/govuk-frontend/dist/govuk-frontend-2.0.0.min.css" rel="stylesheet" />
     <!--<![endif]-->
     <!--[if IE 8]>
         <link href="/Content/lib/govuk-frontend/dist/govuk-frontend-ie8-2.0.0.min.css" rel="stylesheet" />
@@ -46,13 +22,10 @@
         <script src="/Content/lib/govuk-frontend/dist/html5-shiv/html5shiv.js"></script>
     <![endif]-->
     <link href="/Content/css/application.css" rel="stylesheet" />
+    @Html.Partial("_GoogleAnalyticsHead")
 </head>
 <body class="govuk-template__body">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWQBWGJ" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    @Html.Partial("_GoogleAnalyticsBody")
     <script>
         document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>

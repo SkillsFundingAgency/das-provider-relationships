@@ -122,6 +122,7 @@
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
+    <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
@@ -198,6 +199,8 @@
     <Content Include="Views\AccountProviders\Index.cshtml" />
     <Content Include="Views\AccountProviders\Find.cshtml" />
     <Content Include="Views\AccountProviders\Get.cshtml" />
+    <Content Include="Views\Shared\_GoogleAnalyticsBody.cshtml" />
+    <Content Include="Views\Shared\_GoogleAnalyticsHead.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
