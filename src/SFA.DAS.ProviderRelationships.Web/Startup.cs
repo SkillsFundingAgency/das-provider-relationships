@@ -1,9 +1,9 @@
 ﻿using Owin;
 using Microsoft.Owin;
 using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Authentication;
 using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using StructureMap.Pipeline;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             
             var authenticationStartup = container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
             
-            authenticationStartup.Initialise();
+            authenticationStartup.Initialize();
         }
     }
 }

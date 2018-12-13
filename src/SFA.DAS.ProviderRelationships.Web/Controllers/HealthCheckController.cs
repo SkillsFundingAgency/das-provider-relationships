@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerFeature.ProviderRelationships)]
+    [DasAuthorize]
     [RoutePrefix("healthcheck")]
     public class HealthCheckController : Controller
     {

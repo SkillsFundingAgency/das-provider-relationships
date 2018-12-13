@@ -1,7 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Authentication.AzureActiveDirectory;
-using SFA.DAS.ProviderRelationships.Authentication.Oidc;
-using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.ProviderRelationships.Urls;
+﻿using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {

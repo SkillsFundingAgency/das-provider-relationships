@@ -17,9 +17,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
-        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.0.12" />
+        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="1.1.1" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.1" />
-        <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.1" />
         <PackageReference Include="StructureMap" Version="4.7.0" />
     </ItemGroup>
 

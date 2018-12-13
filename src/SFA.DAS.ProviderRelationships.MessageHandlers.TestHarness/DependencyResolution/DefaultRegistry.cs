@@ -1,4 +1,5 @@
-﻿using StructureMap;
+﻿using SFA.DAS.ProviderRelationships.Data;
+using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution
 {
@@ -6,6 +7,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
     {
         public DefaultRegistry()
         {
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNewTransactionFactory>();
         }
     }
 }

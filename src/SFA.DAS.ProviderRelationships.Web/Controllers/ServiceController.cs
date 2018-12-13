@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SFA.DAS.ProviderRelationships.Authentication.Oidc;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {

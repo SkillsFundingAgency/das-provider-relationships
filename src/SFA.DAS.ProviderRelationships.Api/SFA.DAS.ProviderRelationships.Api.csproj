@@ -68,7 +68,6 @@
     <PackageReference Include="StructureMap" Version="4.7.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
     <PackageReference Include="WebApi.StructureMap" Version="1.0.21" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -94,14 +93,14 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\AuthenticationStartup.cs" />
+    <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\AzureActiveDirectory\AuthenticationStartup.cs" />
-    <Compile Include="Authentication\AzureActiveDirectory\DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
-    <Compile Include="Data\ProviderRelationshipsApiDbContextFactory.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="Global.asax.cs">
