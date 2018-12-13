@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
