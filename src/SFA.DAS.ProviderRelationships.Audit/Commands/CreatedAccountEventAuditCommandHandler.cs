@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Audit.DataAccess.MapperExtensions;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Audit.Commands
 {
@@ -16,8 +16,21 @@ namespace SFA.DAS.ProviderRelationships.Audit.Commands
 
         protected override void Handle(CreatedAccountEventAuditCommand request)
         {
-            var entity = request.MapToEntity();
+            var entity = MapToEntity(request);
             _db.Value.CreatedAccountEventAudits.Add(entity);
+        }
+
+        private static CreatedAccountEventAudit MapToEntity(CreatedAccountEventAuditCommand command)
+        {
+            return new CreatedAccountEventAudit {
+                Name = command.Name,
+                AccountId = command.AccountId,
+                PublicHashedId = command.PublicHashedId,
+                UserName = command.UserName,
+                UserRef = command.UserRef,
+                TimeLogged = DateTime.UtcNow,
+                HashedId = command.HashedId
+            };
         }
     }
 }

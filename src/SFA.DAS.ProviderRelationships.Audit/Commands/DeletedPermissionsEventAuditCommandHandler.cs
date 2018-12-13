@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Audit.DataAccess.MapperExtensions;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Audit.Commands
 {
@@ -17,8 +17,18 @@ namespace SFA.DAS.ProviderRelationships.Audit.Commands
 
         protected override void Handle(DeletedPermissionsEventAuditCommand request)
         {
-            var entity = request.MapToEntity();
+            var entity = MapToEntity(request);
             _db.Value.DeletedPermissionsEventAudits.Add(entity);
+        }
+
+        private static DeletedPermissionsEventAudit MapToEntity(DeletedPermissionsEventAuditCommand command)
+        {
+            return new DeletedPermissionsEventAudit {
+                Ukprn = command.Ukprn,
+                AccountProviderLegalEntityId = command.AccountProviderLegalEntityId,
+                Deleted = command.Deleted,
+                TimeLogged = DateTime.UtcNow
+            };
         }
     }
 }
