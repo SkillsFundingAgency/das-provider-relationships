@@ -7,7 +7,6 @@ using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands;
-using SFA.DAS.ProviderRelationships.Audit.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.Testing;
 

@@ -3,7 +3,7 @@ using MediatR;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.Audit.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
     public class DeletedPermissionsEventAuditCommandHandler : RequestHandler<DeletedPermissionsEventAuditCommand>
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using NServiceBus;
-using SFA.DAS.ProviderRelationships.Audit.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;

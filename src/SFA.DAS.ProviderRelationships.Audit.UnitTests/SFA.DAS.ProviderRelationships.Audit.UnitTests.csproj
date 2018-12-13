@@ -20,7 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Audit\SFA.DAS.ProviderRelationships.Audit.csproj" />
       <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 

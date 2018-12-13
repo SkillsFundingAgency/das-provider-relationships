@@ -8,13 +8,13 @@ using MediatR;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Audit.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
 using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
+using UpdatePermissionsCommand = SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissionsCommand;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
 {

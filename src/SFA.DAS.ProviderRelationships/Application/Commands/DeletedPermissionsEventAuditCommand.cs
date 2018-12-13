@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Audit.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
     public class DeletedPermissionsEventAuditCommand : IRequest
     {
