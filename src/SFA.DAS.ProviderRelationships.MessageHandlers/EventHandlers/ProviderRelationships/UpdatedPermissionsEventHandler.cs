@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Audit.Commands;
@@ -23,18 +21,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 
         public Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
-            _mediator.Send(new UpdatedPermissionsEventAuditCommand {
-                UserRef = message.UserRef,
-                GrantedOperations = message.GrantedOperations.ToList(),
-                AccountId = message.AccountId,
-                Updated = message.Updated,
-                AccountLegalEntityId = message.AccountLegalEntityId,
-                AccountProviderLegalEntityId = message.AccountProviderLegalEntityId,
-                AccountProviderId = message.AccountProviderId,
-                Ukprn = message.Ukprn
-            });
+            return Task.WhenAll(
+                _mediator.Send(new UpdatedPermissionsEventAuditCommand(message.AccountId,
+                    message.AccountLegalEntityId,
+                    message.AccountProviderId, message.AccountProviderLegalEntityId, message.Ukprn, message.UserRef,
+                    message.GrantedOperations, message.Updated)),
 
-            return _readStoreMediator.Send(new UpdatePermissionsCommand(
+                _readStoreMediator.Send(new UpdatePermissionsCommand(
                 message.AccountId,
                 message.AccountLegalEntityId,
                 message.AccountProviderId,
@@ -42,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                 message.Ukprn,
                 message.GrantedOperations,
                 message.Updated,
-                context.MessageId));
+                context.MessageId)));
         }
     }
 }

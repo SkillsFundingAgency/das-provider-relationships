@@ -10,5 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Audit.Commands
         public string Name { get; set; }
         public string UserName { get; set; }
         public Guid UserRef { get; set; }
+        public string HashedId { get; set; }
     }
 }

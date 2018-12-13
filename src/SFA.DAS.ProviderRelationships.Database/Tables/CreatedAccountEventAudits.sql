@@ -2,9 +2,10 @@
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [AccountId] BIGINT NOT NULL, 
-    [PublicHashedId] NVARCHAR(MAX) NOT NULL, 
-    [Name] NVARCHAR(MAX) NOT NULL, 
-    [UserName] NVARCHAR(MAX) NOT NULL, 
+    [PublicHashedId] CHAR(6) NOT NULL, 
+    [Name] NVARCHAR(100) NOT NULL, 
+    [UserName] NVARCHAR(100) NOT NULL, 
     [UserRef] UNIQUEIDENTIFIER NOT NULL, 
-    [TimeLogged] DATETIME NOT NULL
+    [TimeLogged] DATETIME2 NOT NULL, 
+    [HashedId] CHAR(6) NOT NULL
 )

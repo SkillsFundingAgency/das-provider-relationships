@@ -38,7 +38,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new ChangedAccountNameEvent {
+            await _messageSession.Publish(new ChangedAccountNameEvent
+            {
                 AccountId = accountId,
                 PreviousName = originalAccountName,
                 CurrentName = updatedAccountName,
@@ -47,7 +48,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new AddedLegalEntityEvent {
+            await _messageSession.Publish(new AddedLegalEntityEvent
+            {
                 AccountLegalEntityId = accountLegalEntityId,
                 AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId,
                 OrganisationName = originalAccountLegalEntityName,
@@ -59,7 +61,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new UpdatedLegalEntityEvent {
+            await _messageSession.Publish(new UpdatedLegalEntityEvent
+            {
                 AccountLegalEntityId = accountLegalEntityId,
                 Name = updatedAccountLegalEntityName,
                 Address = "New LE Address",
@@ -68,7 +71,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 Created = DateTime.UtcNow
             });
 
-            await _messageSession.Publish(new RemovedLegalEntityEvent {
+            await _messageSession.Publish(new RemovedLegalEntityEvent
+            {
                 AccountLegalEntityId = accountLegalEntityId,
                 OrganisationName = updatedAccountLegalEntityName,
                 AccountId = accountId,

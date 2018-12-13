@@ -15,7 +15,8 @@ namespace SFA.DAS.ProviderRelationships.Audit.DataAccess.MapperExtensions
                 PublicHashedId = command.PublicHashedId,
                 UserName = command.UserName,
                 UserRef = command.UserRef,
-                TimeLogged = DateTime.UtcNow
+                TimeLogged = DateTime.UtcNow,
+                HashedId = command.HashedId
             };
         }
     }

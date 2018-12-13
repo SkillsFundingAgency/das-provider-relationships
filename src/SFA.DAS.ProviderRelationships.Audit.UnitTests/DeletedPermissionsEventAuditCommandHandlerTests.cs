@@ -39,11 +39,7 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
         public DeletedPermissionsEventAuditCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new DeletedPermissionsEventAuditCommand {
-                AccountProviderLegalEntityId = 118,
-                Ukprn = 256894321,
-                Deleted = DateTime.Parse("2018-11-11")
-            };
+            Command = new DeletedPermissionsEventAuditCommand(118, 256894321, DateTime.Parse("2018-11-11"));
             Handler = new DeletedPermissionsEventAuditCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 

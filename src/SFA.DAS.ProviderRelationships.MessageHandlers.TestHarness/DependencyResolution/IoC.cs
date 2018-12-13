@@ -23,8 +23,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyRe
                 c.AddRegistry<MediatorRegistry>();
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
                 c.AddRegistry<StartupRegistry>();
-                c.AddRegistry<DefaultRegistry>();
                 c.AddRegistry<AuditRegistry>();
+                c.AddRegistry<DefaultRegistry>();
             });
         }
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
@@ -13,5 +11,6 @@ namespace SFA.DAS.ProviderRelationships.Models
         public string UserName { get; set; }
         public Guid UserRef { get; set; }
         public DateTime TimeLogged { get; set; }
+        public string HashedId { get; set; }
     }
 }

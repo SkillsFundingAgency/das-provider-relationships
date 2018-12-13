@@ -27,7 +27,8 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
                     a.AccountId == f.Command.AccountId &&
                     a.Name == f.Command.Name &&
                     a.PublicHashedId == f.Command.PublicHashedId &&
-                    a.UserRef == f.Command.UserRef));
+                    a.UserRef == f.Command.UserRef &&
+                    a.HashedId == f.Command.HashedId));
         }
     }
 
@@ -40,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
         public CreatedAccountEventAuditCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new CreatedAccountEventAuditCommand{ AccountId = 112, Name = "Bobo", UserRef = Guid.NewGuid(), UserName = "User One", PublicHashedId = "hashedid11111" };
+            Command = new CreatedAccountEventAuditCommand{ AccountId = 112, Name = "Bobo", UserRef = Guid.NewGuid(), UserName = "User One", PublicHashedId = "hashedid11111", HashedId = "38jfkd"};
             Handler = new CreatedAccountEventAuditCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 

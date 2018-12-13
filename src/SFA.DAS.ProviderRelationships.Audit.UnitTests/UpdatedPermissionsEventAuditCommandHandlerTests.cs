@@ -46,9 +46,10 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
         public UpdatedPermissionsEventAuditCommandHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new UpdatedPermissionsEventAuditCommand { AccountId = 112, AccountLegalEntityId = 114, AccountProviderId = 116, AccountProviderLegalEntityId = 118, Ukprn = 256894321, UserRef = Guid.NewGuid(), GrantedOperations = new List<Operation> {
-                Operation.CreateCohort
-            }, Updated = DateTime.Parse("2018-11-11")};
+            Command = new UpdatedPermissionsEventAuditCommand(112, 114, 116, 118, 256894321, Guid.NewGuid(),
+                new HashSet<Operation> {
+                    Operation.CreateCohort
+                }, DateTime.Parse("2018-11-11"));
             Handler = new UpdatedPermissionsEventAuditCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
@@ -65,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.Audit.UnitTests
             foreach (var operation in operations)
             {
                 if(!first) { result += ","; }
-                result += operation.ToString();
+                result += ((short)operation).ToString();
                 first = false;
             }
             return result;
