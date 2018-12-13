@@ -39,6 +39,13 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 accountProviderLegalEntityId,
                 ukprn,
                 DateTime.UtcNow));
+
+            await _messageSession.Publish(new AddedAccountProviderEvent(
+                accountProviderId,
+                accountId,
+                ukprn,
+                userRef,
+                DateTime.UtcNow));
         }
     }
 }

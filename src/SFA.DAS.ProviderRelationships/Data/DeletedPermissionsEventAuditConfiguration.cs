@@ -8,10 +8,10 @@ namespace SFA.DAS.ProviderRelationships.Data
     {
         public void Configure(EntityTypeBuilder<DeletedPermissionsEventAudit> builder)
         {
-            //builder.HasKey(e => e.Id);
-            builder.Property(e => e.Ukprn).IsRequired();
-            builder.Property(e => e.Deleted).IsRequired();
-            builder.Property(e => e.TimeLogged).IsRequired();
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Ukprn).IsRequired().HasColumnType("bigint");
+            builder.Property(e => e.Deleted).IsRequired().HasColumnType("datetime2");
+            builder.Property(e => e.TimeLogged).IsRequired().HasColumnType("datetime2");
         }
     }
 }
