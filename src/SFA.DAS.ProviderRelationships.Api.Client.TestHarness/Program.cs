@@ -25,8 +25,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                 {
                     var getAccountProviderLegalEntitiesWithPermissionScenario =
                         container.GetInstance<GetAccountProviderLegalEntitiesWithPermissionScenario>();
-
                     await getAccountProviderLegalEntitiesWithPermissionScenario.Run();
+
+                    var hasPermissionScenario = container.GetInstance<HasPermissionScenario>();
+                    await hasPermissionScenario.Run();
                 }
                 catch (Exception ex)
                 {
