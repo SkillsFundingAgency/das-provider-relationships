@@ -8,6 +8,6 @@
     [Ukprn] BIGINT NOT NULL, 
     [UserRef] UNIQUEIDENTIFIER NOT NULL, 
     [GrantedOperations] NVARCHAR(255) NOT NULL, 
-    [Updated] DATETIME NOT NULL, 
-    [TimeLogged] DATETIME NOT NULL
+    [Updated] DATETIME2 NOT NULL, 
+    [TimeLogged] DATETIME2 NOT NULL
 )
