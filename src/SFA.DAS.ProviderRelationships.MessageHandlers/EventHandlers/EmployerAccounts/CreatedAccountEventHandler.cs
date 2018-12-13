@@ -17,19 +17,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 
         public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            return Task.WhenAll(
-                _mediator.Send(new CreatedAccountEventAuditCommand() {
-                    AccountId = message.AccountId,
-                    UserRef = message.UserRef,
-                    UserName = message.UserName,
-                    Name = message.Name,
-                    PublicHashedId = message.PublicHashedId,
-                    HashedId = message.HashedId
-                }),
-                _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
-                    message.Name, message.Created)));
-
-
+            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
+                message.Name, message.Created));
         }
     }
 }

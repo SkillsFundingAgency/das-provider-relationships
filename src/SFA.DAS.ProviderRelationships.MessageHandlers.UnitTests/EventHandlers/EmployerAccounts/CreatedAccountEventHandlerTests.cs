@@ -26,17 +26,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 c.Name == f.Message.Name &&
                 c.Created == f.Message.Created), CancellationToken.None), Times.Once));
         }
-
-        [Test]
-        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendAuditCommand()
-        {
-            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreatedAccountEventAuditCommand>(c =>
-                c.AccountId == f.Message.AccountId &&
-                c.UserRef == f.Message.UserRef &&
-                c.UserName == f.Message.UserName &&
-                c.Name == f.Message.Name &&
-                c.PublicHashedId == f.Message.PublicHashedId), CancellationToken.None), Times.Once));
-        }
     }
 
     public class CreatedAccountEventHandlerTestsFixture
