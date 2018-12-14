@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.UnitOfWork.Mvc;
@@ -15,6 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             filters.AddUnauthorizedAccessExceptionFilter();
             filters.AddUnitOfWorkFilter();
             filters.AddValidationFilter();
+            filters.Add(new GoogleAnalyticsViewBagFilter(() => DependencyResolver.Current.GetService<GoogleAnalyticsConfiguration>()));
             filters.Add(new UrlsViewBagFilter(() => DependencyResolver.Current.GetService<IEmployerUrls>()));
         }
     }

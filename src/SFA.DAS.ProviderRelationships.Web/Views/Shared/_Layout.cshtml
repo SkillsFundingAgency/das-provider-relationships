@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html class="govuk-template" lang="en">
     <head>
         <meta charset="utf-8" />
@@ -22,8 +22,10 @@
             <script src="/Content/lib/govuk-frontend/dist/html5-shiv/html5shiv.js"></script>
         <![endif]-->
         <link href="/Content/css/application.css" rel="stylesheet" />
+        @Html.Partial("_GoogleAnalyticsHead")
     </head>
     <body class="govuk-template__body">
+        @Html.Partial("_GoogleAnalyticsBody")
         <script>
             document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
         </script>

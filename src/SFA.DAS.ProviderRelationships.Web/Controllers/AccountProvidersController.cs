@@ -73,7 +73,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
 
             return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
-
         }
 
         [HttpNotFoundForNullModel]
