@@ -9,7 +9,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Controllers;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Mappings
@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
     {
         public ProviderMappings()
         {
-            CreateMap<Provider, ProviderBasicDto>();
+            CreateMap<Provider, ProviderDto>();
         }
     }
 }

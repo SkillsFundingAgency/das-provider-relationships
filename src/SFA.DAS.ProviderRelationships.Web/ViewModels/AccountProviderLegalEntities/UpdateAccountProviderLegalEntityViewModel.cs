@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
     public class UpdateAccountProviderLegalEntityViewModel : IAuthorizationContextModel
     {
-        public AccountProviderBasicDto AccountProvider { get; set; }
-        public AccountLegalEntityBasicDto AccountLegalEntity { get; set; }
+        public AccountProviderDto AccountProvider { get; set; }
+        public AccountLegalEntityDto AccountLegalEntity { get; set; }
 
         [Required]
         public long? AccountId { get; set; }
