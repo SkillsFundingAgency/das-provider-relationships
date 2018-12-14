@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             builder.Property(e => e.AccountProviderId).IsRequired().HasColumnType("bigint");
             builder.Property(e => e.AccountProviderLegalEntityId).IsRequired().HasColumnType("bigint");
             builder.Property(e => e.Ukprn).IsRequired().HasColumnType("bigint");
-            builder.Property(e => e.GrantedOperations).HasColumnType("nvarchar(max)");
+            builder.Property(e => e.GrantedOperations).IsRequired().HasColumnType("nvarchar(max)");
         }
     }
 }
