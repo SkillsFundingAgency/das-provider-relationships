@@ -12,9 +12,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             Console.WriteLine("Provider Relationships Api Client TestHarness");
 
             Task.Run(Test).Wait();
-
-            Console.WriteLine("Press ENTER to finish");
-            Console.ReadLine();
         }
 
         //todo: readonly connection string for client

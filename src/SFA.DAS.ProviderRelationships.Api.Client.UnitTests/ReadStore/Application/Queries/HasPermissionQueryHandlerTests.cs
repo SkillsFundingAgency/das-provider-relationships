@@ -10,8 +10,6 @@ using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Has
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models;
-//using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Builders;
-//using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
@@ -67,33 +65,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
             Permissions.AddRange(new []
             {
                 DocumentActivator.CreateInstance<AccountProviderLegalEntityDto>()
-                    .Set(r => r.AccountId, 1)
                     .Set(r => r.AccountLegalEntityId, 1)
-                    .Set(r => r.AccountProviderId, 1)
                     .Set(r => r.Ukprn, 11111111)
                     .Add(r => r.Operations, Operation.CreateCohort),
                 DocumentActivator.CreateInstance<AccountProviderLegalEntityDto>()
-                    .Set(r => r.AccountId, 1)
                     .Set(r => r.AccountLegalEntityId, 2)
-                    .Set(r => r.AccountProviderId, 1)
                     .Set(r => r.Ukprn, 11111111)
                     .Add(r => r.Operations, Operation.CreateCohort),
                 DocumentActivator.CreateInstance<AccountProviderLegalEntityDto>()
-                    .Set(r => r.AccountId, 2)
                     .Set(r => r.AccountLegalEntityId, 3)
-                    .Set(r => r.AccountProviderId, 2)
                     .Set(r => r.Ukprn, 22222222)
                     .Add(r => r.Operations, Operation.CreateCohort),
                 DocumentActivator.CreateInstance<AccountProviderLegalEntityDto>()
-                    .Set(r => r.AccountId, 3)
                     .Set(r => r.AccountLegalEntityId, 4)
-                    .Set(r => r.AccountProviderId, 3)
                     .Set(r => r.Ukprn, 22222222)
                     .Add(r => r.Operations, Operation.CreateCohort),
                 DocumentActivator.CreateInstance<AccountProviderLegalEntityDto>()
-                    .Set(r => r.AccountId, 4)
                     .Set(r => r.AccountLegalEntityId, 5)
-                    .Set(r => r.AccountProviderId, 4)
                     .Set(r => r.Ukprn, 11111111)
                     .Add(r => r.Operations, Operation.CreateCohort)
             });
