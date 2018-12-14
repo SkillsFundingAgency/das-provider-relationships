@@ -9,7 +9,8 @@ using SFA.DAS.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
-    public abstract class ReadOnlyDocumentRepository<TDocument> : IReadOnlyDocumentRepository<TDocument> where TDocument : class, IDocument
+    public abstract class ReadOnlyDocumentRepository<TDocument> : IReadOnlyDocumentRepository<TDocument>
+        //where TDocument : class //, IDocument
     {
         private readonly IDocumentClient _documentClient;
         private readonly string _databaseName;
@@ -40,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
             {
                 if (ex.StatusCode == HttpStatusCode.NotFound)
                 {
-                    return null;
+                    return default;
                 }
 
                 throw;

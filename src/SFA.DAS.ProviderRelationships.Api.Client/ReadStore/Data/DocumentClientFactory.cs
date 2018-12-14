@@ -5,7 +5,6 @@ using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
-    //todo: dupe the 3 files in this folder
     public class DocumentClientFactory : IDocumentClientFactory
     {
         private readonly ProviderRelationshipsReadStoreConfiguration _configuration;
@@ -17,6 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 
         public IDocumentClient CreateDocumentClient()
         {
+            //todo: more appropriate retry policy for read-only
             var connectionPolicy = new ConnectionPolicy
             {
                 RetryOptions =
