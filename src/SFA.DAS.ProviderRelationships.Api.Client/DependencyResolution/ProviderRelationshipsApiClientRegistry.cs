@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 //            IncludeRegistry<ReadStoreDataRegistry>();
             For<IDocumentClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Named(GetType().FullName).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
-            For<IAccountProviderLegalEntitiesRepository>().Use<AccountProviderLegalEntitiesRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
+            For<IAccountProviderLegalEntitiesRepository>().Use<ReadOnlyAccountProviderLegalEntitiesRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
 
 
 //todo: do mediator registrations by convention
