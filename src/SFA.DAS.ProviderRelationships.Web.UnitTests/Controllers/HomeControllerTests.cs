@@ -3,8 +3,8 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.AutoConfiguration;
-using SFA.DAS.ProviderRelationships.Urls;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers

@@ -6,7 +6,7 @@ using Moq;
 using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.Testing;
 
@@ -21,6 +21,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateAccountCommand>(c => 
                 c.AccountId == f.Message.AccountId &&
+                c.HashedId == f.Message.HashedId &&
                 c.PublicHashedId == f.Message.PublicHashedId &&
                 c.Name == f.Message.Name &&
                 c.Created == f.Message.Created), CancellationToken.None), Times.Once));
@@ -40,7 +41,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             Message = new CreatedAccountEvent
             {
                 AccountId = 1,
-                PublicHashedId = "AAA123",
+                HashedId = "AAA111",
+                PublicHashedId = "AAA222",
                 Name = "Foo",
                 Created = DateTime.UtcNow
             };

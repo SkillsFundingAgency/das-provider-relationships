@@ -8,7 +8,8 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Mappings;
@@ -30,23 +31,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             {
                 r.Should().NotBeNull();
                 
-                r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderBasicDto>()
-                    .And.BeEquivalentTo(new AccountProviderBasicDto
+                r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderDto>()
+                    .And.BeEquivalentTo(new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name
                     });
                 
-                r.AccountLegalEntity.Should().NotBeNull().And.BeOfType<AccountLegalEntityBasicDto>()
-                    .And.BeEquivalentTo(new AccountLegalEntityBasicDto
+                r.AccountLegalEntity.Should().NotBeNull().And.BeOfType<AccountLegalEntityDto>()
+                    .And.BeEquivalentTo(new AccountLegalEntityDto
                     {
                         Id = f.AccountLegalEntity.Id,
                         Name = f.AccountLegalEntity.Name
                     });
                 
-                r.AccountProviderLegalEntitySummary.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntitySummaryDto>()
-                    .And.BeEquivalentTo(new AccountProviderLegalEntitySummaryDto
+                r.AccountProviderLegalEntity.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntityDto>()
+                    .And.BeEquivalentTo(new AccountProviderLegalEntityDto
                     {
                         Id = f.AccountProviderLegalEntity.Id,
                         AccountLegalEntityId = f.AccountLegalEntity.Id,

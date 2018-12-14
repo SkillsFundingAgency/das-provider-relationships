@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
     public class GetAccountProviderLegalEntityViewModel
     {
-        public AccountProviderBasicDto AccountProvider { get; set; }
-        public AccountLegalEntityBasicDto AccountLegalEntity { get; set; }
+        public AccountProviderDto AccountProvider { get; set; }
+        public AccountLegalEntityDto AccountLegalEntity { get; set; }
         public int AccountLegalEntitiesCount { get; set; }
 
         [Required]
