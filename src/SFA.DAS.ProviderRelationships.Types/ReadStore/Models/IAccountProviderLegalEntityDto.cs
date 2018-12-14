@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models
+namespace SFA.DAS.ProviderRelationships.Types.ReadStore.Models
 {
     //todo: when this is implemented by both docs, what should it be called?
     public interface IAccountProviderLegalEntityDto

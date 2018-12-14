@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Types.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
-    public class AccountProviderLegalEntity : Document
+    public class AccountProviderLegalEntity : Document, IAccountProviderLegalEntityDto
     {
         [JsonProperty("accountId")]
         public long AccountId { get; private set; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Types.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models
 {
