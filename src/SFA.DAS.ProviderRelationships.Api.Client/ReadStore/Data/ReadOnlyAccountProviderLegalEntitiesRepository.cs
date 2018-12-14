@@ -3,8 +3,6 @@ using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
-//    internal class ReadOnlyAccountProviderLegalEntitiesRepository : ReadOnlyDocumentRepository<IAccountProviderLegalEntityDto>, IAccountProviderLegalEntitiesRepository
-
     internal class ReadOnlyAccountProviderLegalEntitiesRepository : ReadOnlyDocumentRepository<AccountProviderLegalEntityDto>, IAccountProviderLegalEntitiesRepository
     {
         public ReadOnlyAccountProviderLegalEntitiesRepository(IDocumentClient documentClient)
