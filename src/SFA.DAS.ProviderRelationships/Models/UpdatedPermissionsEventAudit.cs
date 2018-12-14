@@ -4,20 +4,9 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class UpdatedPermissionsEventAudit : Entity
     {
-        public Guid Id { get; set; }
-        public long AccountId { get; }
-        public long AccountLegalEntityId { get; }
-        public long AccountProviderId { get; }
-        public long AccountProviderLegalEntityId { get; }
-        public long Ukprn { get; }
-        public Guid UserRef { get; }
-        public string GrantedOperations { get; }
-        public DateTime Updated { get; }
-        public DateTime TimeLogged { get; }
-
-        public UpdatedPermissionsEventAudit(DateTime timeLogged, DateTime updated, string grantedOperations, Guid userRef, long ukprn, long accountProviderLegalEntityId, long accountProviderId, long accountLegalEntityId, long accountId)
+        public UpdatedPermissionsEventAudit(DateTime logged, DateTime updated, string grantedOperations, Guid userRef, long ukprn, long accountProviderLegalEntityId, long accountProviderId, long accountLegalEntityId, long accountId)
         {
-            TimeLogged = timeLogged;
+            Logged = logged;
             Updated = updated;
             GrantedOperations = grantedOperations;
             UserRef = userRef;
@@ -27,5 +16,16 @@ namespace SFA.DAS.ProviderRelationships.Models
             AccountLegalEntityId = accountLegalEntityId;
             AccountId = accountId;
         }
+
+        public long Id { get; set; }
+        public long AccountId { get; }
+        public long AccountLegalEntityId { get; }
+        public long AccountProviderId { get; }
+        public long AccountProviderLegalEntityId { get; }
+        public long Ukprn { get; }
+        public Guid UserRef { get; }
+        public string GrantedOperations { get; }
+        public DateTime Updated { get; }
+        public DateTime Logged { get; }
     }
 }

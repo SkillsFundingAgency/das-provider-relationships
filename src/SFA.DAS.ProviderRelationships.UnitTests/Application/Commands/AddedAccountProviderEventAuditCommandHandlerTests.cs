@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     a.ProviderUkprn == f.Command.ProviderUkprn &&
                     a.UserRef == f.Command.UserRef &&
                     a.Added == f.Command.Added &&
-                    a.TimeLogged > DateTime.UtcNow.AddHours(-1)));
+                    a.Logged > DateTime.UtcNow.AddHours(-1)));
         }
     }
 

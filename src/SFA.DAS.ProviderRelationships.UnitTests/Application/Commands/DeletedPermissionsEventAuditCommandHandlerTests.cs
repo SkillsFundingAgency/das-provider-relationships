@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     a.AccountProviderLegalEntityId == f.Command.AccountProviderLegalEntityId &&
                     a.Ukprn == f.Command.Ukprn &&
                     a.Deleted == f.Command.Deleted &&
-                    a.TimeLogged > DateTime.UtcNow.AddHours(-1)));
+                    a.Logged > DateTime.UtcNow.AddHours(-1)));
         }
     }
 

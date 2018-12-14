@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     a.UserRef == f.Command.UserRef &&
                     a.GrantedOperations == f.ConstructOperationsAudit(f.Command.GrantedOperations) &&
                     a.Updated == f.Command.Updated &&
-                    a.TimeLogged > DateTime.UtcNow.AddHours(-1)));
+                    a.Logged > DateTime.UtcNow.AddHours(-1)));
         }
     }
 

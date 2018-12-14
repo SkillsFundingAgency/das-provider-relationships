@@ -16,20 +16,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(AddedAccountProviderEventAuditCommand request)
         {
-            var entity = MapToEntity(request);
-            _db.Value.AddedAccountProviderEventAudits.Add(entity);
-        }
-
-        private static AddedAccountProviderEventAudit MapToEntity(AddedAccountProviderEventAuditCommand command)
-        {
-            return new AddedAccountProviderEventAudit {
-                AccountProviderId = command.AccountProviderId,
-                AccountId = command.AccountId,
-                ProviderUkprn = command.ProviderUkprn,
-                UserRef = command.UserRef,
-                Added = command.Added,
-                TimeLogged = DateTime.UtcNow
-            };
+            _db.Value.AddedAccountProviderEventAudits.Add(new AddedAccountProviderEventAudit(request.AccountProviderId,
+                request.AccountId, request.ProviderUkprn, request.UserRef, request.Added, DateTime.UtcNow));
         }
     }
 }

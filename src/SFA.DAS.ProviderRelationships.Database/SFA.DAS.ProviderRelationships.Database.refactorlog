@@ -7,4 +7,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Deleted" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="32301a4a-c805-432f-8d66-379046c68965" ChangeDateTime="12/14/2018 11:29:35">
+    <Property Name="ElementName" Value="[dbo].[AddedAccountProviderEventAudits].[TimeLogged]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AddedAccountProviderEventAudits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Logged" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6e41a834-297e-44af-976e-9684e97a4d92" ChangeDateTime="12/14/2018 11:29:43">
+    <Property Name="ElementName" Value="[dbo].[DeletedPermissionsEventAudits].[TimeLogged]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DeletedPermissionsEventAudits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Logged" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6f4e0e45-df6d-42e9-bc9d-ced1c52f6611" ChangeDateTime="12/14/2018 11:29:50">
+    <Property Name="ElementName" Value="[dbo].[UpdatedPermissionsEventAudits].[TimeLogged]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UpdatedPermissionsEventAudits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Logged" />
+  </Operation>
 </Operations>

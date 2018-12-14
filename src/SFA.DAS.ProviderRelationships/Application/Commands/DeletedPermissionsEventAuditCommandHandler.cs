@@ -17,18 +17,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(DeletedPermissionsEventAuditCommand request)
         {
-            var entity = MapToEntity(request);
-            _db.Value.DeletedPermissionsEventAudits.Add(entity);
-        }
-
-        private static DeletedPermissionsEventAudit MapToEntity(DeletedPermissionsEventAuditCommand command)
-        {
-            return new DeletedPermissionsEventAudit {
-                Ukprn = command.Ukprn,
-                AccountProviderLegalEntityId = command.AccountProviderLegalEntityId,
-                Deleted = command.Deleted,
-                TimeLogged = DateTime.UtcNow
-            };
+            _db.Value.DeletedPermissionsEventAudits.Add(new DeletedPermissionsEventAudit(
+                request.AccountProviderLegalEntityId, request.Ukprn, request.Deleted, DateTime.UtcNow));
         }
     }
 }

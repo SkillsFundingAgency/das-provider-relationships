@@ -18,16 +18,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(UpdatedPermissionsEventAuditCommand request)
         {
-            var entity = MapToEntity(request);
-            _db.Value.UpdatedPermissionsEventAudits.Add(entity);
-        }
-
-        private static UpdatedPermissionsEventAudit MapToEntity(UpdatedPermissionsEventAuditCommand command)
-        {
-            return new UpdatedPermissionsEventAudit(DateTime.UtcNow, command.Updated,
-                ConstructOperationsAudit(command.GrantedOperations), command.UserRef, command.Ukprn,
-                command.AccountProviderLegalEntityId, command.AccountProviderId, command.AccountLegalEntityId,
-                command.AccountId);
+            _db.Value.UpdatedPermissionsEventAudits.Add(new UpdatedPermissionsEventAudit(DateTime.UtcNow,
+                request.Updated, ConstructOperationsAudit(request.GrantedOperations), request.UserRef, request.Ukprn,
+                request.AccountProviderLegalEntityId, request.AccountProviderId, request.AccountLegalEntityId,
+                request.AccountId));
         }
 
         private static string ConstructOperationsAudit(IEnumerable<Operation> operations)

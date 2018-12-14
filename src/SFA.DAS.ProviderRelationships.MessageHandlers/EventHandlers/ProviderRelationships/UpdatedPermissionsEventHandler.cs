@@ -28,14 +28,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.GrantedOperations, message.Updated)),
 
                 _readStoreMediator.Send(new UpdatePermissionsCommand(
-                message.AccountId,
-                message.AccountLegalEntityId,
-                message.AccountProviderId,
-                message.AccountProviderLegalEntityId,
-                message.Ukprn,
-                message.GrantedOperations,
-                message.Updated,
-                context.MessageId)));
+                    message.AccountId,
+                    message.AccountLegalEntityId,
+                    message.AccountProviderId,
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.GrantedOperations,
+                    message.Updated,
+                    context.MessageId)));
         }
     }
 }

@@ -4,12 +4,22 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class AddedAccountProviderEventAudit
     {
-        public Guid Id { get; set; }
-        public long AccountProviderId { get; set; }
-        public long AccountId { get; set; }
-        public long ProviderUkprn { get; set; }
-        public Guid UserRef { get; set; }
-        public DateTime Added { get; set; }
-        public DateTime TimeLogged { get; set; }
+        public AddedAccountProviderEventAudit(long accountProviderId, long accountId, long providerUkprn, Guid userRef, DateTime added, DateTime logged)
+        {
+            AccountProviderId = accountProviderId;
+            AccountId = accountId;
+            ProviderUkprn = providerUkprn;
+            UserRef = userRef;
+            Added = added;
+            Logged = logged;
+        }
+
+        public long Id { get; set; }
+        public long AccountProviderId { get; }
+        public long AccountId { get; }
+        public long ProviderUkprn { get; }
+        public Guid UserRef { get; }
+        public DateTime Added { get; }
+        public DateTime Logged { get; }
     }
 }

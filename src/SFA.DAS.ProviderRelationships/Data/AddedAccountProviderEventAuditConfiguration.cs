@@ -14,6 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             builder.Property(e => e.ProviderUkprn).IsRequired().HasColumnType("bigint");
             builder.Property(e => e.UserRef).IsRequired();
             builder.Property(e => e.Added).IsRequired().HasColumnType("datetime2");
+            builder.Property(e => e.Logged).IsRequired().HasColumnType("datetime2");
         }
     }
 }
