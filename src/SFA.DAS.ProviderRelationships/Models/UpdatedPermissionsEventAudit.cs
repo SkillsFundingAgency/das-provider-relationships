@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Models
@@ -25,26 +26,13 @@ namespace SFA.DAS.ProviderRelationships.Models
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
             Ukprn = ukprn;
             UserRef = userRef;
-            GrantedOperations = ConstructOperationsAudit(grantedOperations);
+            GrantedOperations = string.Join(",", grantedOperations.Cast<short>());
             Updated = updated;
             Logged = DateTime.UtcNow;
         }
 
         private UpdatedPermissionsEventAudit()
         {
-        }
-
-        private static string ConstructOperationsAudit(IEnumerable<Operation> operations)
-        {
-            var first = true;
-            var result = string.Empty;
-            foreach (var operation in operations)
-            {
-                if (!first) { result += ","; }
-                result += ((short)operation).ToString();
-                first = false;
-            }
-            return result;
         }
     }
 }
