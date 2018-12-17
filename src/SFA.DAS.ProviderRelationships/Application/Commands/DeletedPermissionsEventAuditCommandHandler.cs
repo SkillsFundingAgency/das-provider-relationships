@@ -14,11 +14,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             _db = db;
         }
 
-
         protected override void Handle(DeletedPermissionsEventAuditCommand request)
         {
-            _db.Value.DeletedPermissionsEventAudits.Add(new DeletedPermissionsEventAudit(
-                request.AccountProviderLegalEntityId, request.Ukprn, request.Deleted, DateTime.UtcNow));
+            var audit = new DeletedPermissionsEventAudit(request.AccountProviderLegalEntityId, request.Ukprn, request.Deleted);
+            
+            _db.Value.DeletedPermissionsEventAudits.Add(audit);
         }
     }
 }

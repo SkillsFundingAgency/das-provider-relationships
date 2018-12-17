@@ -6,42 +6,33 @@ namespace SFA.DAS.ProviderRelationships.Models
 {
     public class UpdatedPermissionsEventAudit : Entity
     {
-        public UpdatedPermissionsEventAudit(DateTime logged, DateTime updated, IEnumerable<Operation> grantedOperations, Guid userRef, long ukprn, long accountProviderLegalEntityId, long accountProviderId, long accountLegalEntityId, long accountId)
+        public long Id { get; private set; }
+        public long AccountId { get; private set; }
+        public long AccountLegalEntityId { get; private set; }
+        public long AccountProviderId { get; private set; }
+        public long AccountProviderLegalEntityId { get; private set; }
+        public long Ukprn { get; private set; }
+        public Guid UserRef { get; private set; }
+        public string GrantedOperations { get; private set; }
+        public DateTime Updated { get; private set; }
+        public DateTime Logged { get; private set; }
+        
+        public UpdatedPermissionsEventAudit(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, Guid userRef, HashSet<Operation> grantedOperations, DateTime updated)
         {
-            Logged = logged;
-            Updated = updated;
+            AccountId = accountId;
+            AccountLegalEntityId = accountLegalEntityId;
+            AccountProviderId = accountProviderId;
+            AccountProviderLegalEntityId = accountProviderLegalEntityId;
+            Ukprn = ukprn;
+            UserRef = userRef;
             GrantedOperations = ConstructOperationsAudit(grantedOperations);
-            UserRef = userRef;
-            Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
-            AccountProviderId = accountProviderId;
-            AccountLegalEntityId = accountLegalEntityId;
-            AccountId = accountId;
-        }
-
-        public UpdatedPermissionsEventAudit(DateTime logged, DateTime updated, string grantedOperations, Guid userRef, long ukprn, long accountProviderLegalEntityId, long accountProviderId, long accountLegalEntityId, long accountId)
-        {
-            Logged = logged;
             Updated = updated;
-            GrantedOperations = grantedOperations;
-            UserRef = userRef;
-            Ukprn = ukprn;
-            AccountProviderLegalEntityId = accountProviderLegalEntityId;
-            AccountProviderId = accountProviderId;
-            AccountLegalEntityId = accountLegalEntityId;
-            AccountId = accountId;
+            Logged = DateTime.UtcNow;
         }
 
-        public long Id { get; set; }
-        public long AccountId { get; }
-        public long AccountLegalEntityId { get; }
-        public long AccountProviderId { get; }
-        public long AccountProviderLegalEntityId { get; }
-        public long Ukprn { get; }
-        public Guid UserRef { get; }
-        public string GrantedOperations { get; }
-        public DateTime Updated { get; }
-        public DateTime Logged { get; }
+        private UpdatedPermissionsEventAudit()
+        {
+        }
 
         private static string ConstructOperationsAudit(IEnumerable<Operation> operations)
         {

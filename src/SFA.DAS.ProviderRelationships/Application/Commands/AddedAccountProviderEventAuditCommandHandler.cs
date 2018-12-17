@@ -16,8 +16,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(AddedAccountProviderEventAuditCommand request)
         {
-            _db.Value.AddedAccountProviderEventAudits.Add(new AddedAccountProviderEventAudit(request.AccountProviderId,
-                request.AccountId, request.ProviderUkprn, request.UserRef, request.Added, DateTime.UtcNow));
+            var audit = new AddedAccountProviderEventAudit(request.AccountProviderId, request.AccountId, request.ProviderUkprn, request.UserRef, request.Added);
+            
+            _db.Value.AddedAccountProviderEventAudits.Add(audit);
         }
     }
 }

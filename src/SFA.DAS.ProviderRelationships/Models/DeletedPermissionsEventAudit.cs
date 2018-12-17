@@ -2,20 +2,24 @@
 
 namespace SFA.DAS.ProviderRelationships.Models
 {
-    public class DeletedPermissionsEventAudit
+    public class DeletedPermissionsEventAudit : Entity
     {
-        public DeletedPermissionsEventAudit(long accountProviderLegalEntityId, long ukprn, DateTime deleted, DateTime logged)
+        public long Id { get; private set;  }
+        public long AccountProviderLegalEntityId { get; private set; }
+        public long Ukprn { get; private set; }
+        public DateTime Deleted { get; private set; }
+        public DateTime Logged { get; private set; }
+        
+        public DeletedPermissionsEventAudit(long accountProviderLegalEntityId, long ukprn, DateTime deleted)
         {
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
             Ukprn = ukprn;
             Deleted = deleted;
-            Logged = logged;
+            Logged = DateTime.UtcNow;
         }
 
-        public long Id { get; set; }
-        public long AccountProviderLegalEntityId { get; }
-        public long Ukprn { get; }
-        public DateTime Deleted { get; }
-        public DateTime Logged { get; }
+        private DeletedPermissionsEventAudit()
+        {
+        }
     }
 }

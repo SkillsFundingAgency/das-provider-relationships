@@ -22,11 +22,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
         public Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
             return Task.WhenAll(
-                _mediator.Send(new UpdatedPermissionsEventAuditCommand(message.AccountId,
+                _mediator.Send(new UpdatedPermissionsEventAuditCommand(
+                    message.AccountId,
                     message.AccountLegalEntityId,
-                    message.AccountProviderId, message.AccountProviderLegalEntityId, message.Ukprn, message.UserRef,
-                    message.GrantedOperations, message.Updated)),
-
+                    message.AccountProviderId,
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.UserRef,
+                    message.GrantedOperations,
+                    message.Updated)),
                 _readStoreMediator.Send(new UpdatePermissionsCommand(
                     message.AccountId,
                     message.AccountLegalEntityId,

@@ -16,10 +16,17 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 
         protected override void Handle(UpdatedPermissionsEventAuditCommand request)
         {
-            _db.Value.UpdatedPermissionsEventAudits.Add(new UpdatedPermissionsEventAudit(DateTime.UtcNow,
-                request.Updated, request.GrantedOperations, request.UserRef, request.Ukprn,
-                request.AccountProviderLegalEntityId, request.AccountProviderId, request.AccountLegalEntityId,
-                request.AccountId));
+            var audit = new UpdatedPermissionsEventAudit(
+                request.AccountId,
+                request.AccountLegalEntityId,
+                request.AccountProviderId,
+                request.AccountProviderLegalEntityId,
+                request.Ukprn,
+                request.UserRef,
+                request.GrantedOperations,
+                request.Updated);
+            
+            _db.Value.UpdatedPermissionsEventAudits.Add(audit);
         }
     }
 }

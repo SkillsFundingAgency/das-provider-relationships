@@ -22,11 +22,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
         public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
         {
             return Task.WhenAll(
-                _mediator.Send(new DeletedPermissionsEventAuditCommand(message.AccountProviderLegalEntityId,
-                    message.Ukprn, message.Deleted)),
-
-                _readStoreMediator.Send(new DeletePermissionsCommand(message.AccountProviderLegalEntityId,
-                    message.Ukprn, message.Deleted, context.MessageId)));
+                _mediator.Send(new DeletedPermissionsEventAuditCommand(
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.Deleted)),
+                _readStoreMediator.Send(new DeletePermissionsCommand(
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.Deleted,
+                    context.MessageId)));
         }
     }
 }
