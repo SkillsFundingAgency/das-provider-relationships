@@ -3,12 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CosmosDb.Testing;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
     {
         internal HasPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
-        internal IReadStoreRequestHandler<HasPermissionQuery, bool> Handler { get; set; }
+        internal IRequestHandler<HasPermissionQuery, bool> Handler { get; set; }
         internal Mock<IAccountProviderLegalEntitiesRepository> PermissionsRepository { get; set; }
         internal IOrderedQueryable<AccountProviderLegalEntityDto> DocumentQuery { get; set; }
         internal List<AccountProviderLegalEntityDto> Permissions { get; set; }

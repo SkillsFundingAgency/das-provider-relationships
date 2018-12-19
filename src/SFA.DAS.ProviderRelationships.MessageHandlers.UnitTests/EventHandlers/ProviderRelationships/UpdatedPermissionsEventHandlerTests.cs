@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public Task Handle_WhenHandlingEvent_ThenShouldSendUpdatePermissionsCommand()
         {
             return RunAsync(f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object),
-                f => f.ReadStoreMediator.Verify(x => x.Send(It.Is<UpdatePermissionsCommand>(p =>
+                f => f.Mediator.Verify(x => x.Send(It.Is<UpdatePermissionsCommand>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
                         p.GrantedOperations == f.GrantedOperations &&
@@ -45,17 +45,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public HashSet<Operation> GrantedOperations = new HashSet<Operation>();
         public DateTime Created = DateTime.Now.AddMinutes(-1);
         public Mock<IMessageHandlerContext> MessageHandlerContext;
-        public Mock<IReadStoreMediator> ReadStoreMediator;
+        public Mock<IMediator> Mediator;
         public UpdatedPermissionsEventHandler Handler;
 
         public UpdatedPermissionsEventHandlerTestsFixture()
         {
-            ReadStoreMediator = new Mock<IReadStoreMediator>();
+            Mediator = new Mock<IMediator>();
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
             MessageHandlerContext.Setup(x => x.MessageId).Returns(MessageId);
             
             Message = new UpdatedPermissionsEvent(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, UserRef, GrantedOperations, Created);
-            Handler = new UpdatedPermissionsEventHandler(ReadStoreMediator.Object);
+            Handler = new UpdatedPermissionsEventHandler(Mediator.Object);
         }
     }
 }

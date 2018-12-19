@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
+using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions
 {
-    public class UpdatePermissionsCommand : IReadStoreRequest<Unit>
+    public class UpdatePermissionsCommand : IRequest
     {
         public long AccountId { get; }
         public long AccountLegalEntityId { get; }

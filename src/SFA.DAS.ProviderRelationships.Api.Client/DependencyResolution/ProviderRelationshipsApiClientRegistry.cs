@@ -1,14 +1,13 @@
 ﻿using System.Net.Http;
 using Microsoft.Azure.Documents;
+using MediatR;
+using StructureMap;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
-using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 {
@@ -24,10 +23,19 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 
 //todo: do mediator registrations by convention
 //            IncludeRegistry<ReadStoreMediatorRegistry>();
-            For<ReadStoreServiceFactory>().Use<ReadStoreServiceFactory>(c => c.GetInstance);
-            For<IReadStoreMediator>().Use<ReadStoreMediator>();
-            For<IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
-            For<IReadStoreRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
+            //For<ReadStoreServiceFactory>().Use<ReadStoreServiceFactory>(c => c.GetInstance);
+            For<IMediator>().Use<Mediator>();
+            For<ServiceFactory>().Use<ServiceFactory>(ctx => ctx.GetInstance);
+//            For<IReadStoreMediator>().Use<ReadStoreMediator>();
+//            For<IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
+//            For<IReadStoreRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
+
+            Scan(s =>
+            {
+                s.AssemblyContainingType<HasPermissionQueryHandler>();
+                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+                //s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+            });
 
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<Http.HttpClientFactory>();

@@ -1,5 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Data;
+﻿using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
@@ -22,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution
                 c.AddRegistry<NServiceBusUnitOfWorkRegistry>();
                 c.AddRegistry<ReadStoreConfigurationRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
-                c.AddRegistry<ReadStoreMediatorRegistry>();
+                //sc.AddRegistry<ReadStoreMediatorRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });

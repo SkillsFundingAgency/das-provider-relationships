@@ -1,9 +1,9 @@
 using System;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
+using MediatR;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions
 {
-    public class DeletePermissionsCommand : IReadStoreRequest<Unit>
+    public class DeletePermissionsCommand : IRequest
     {
         public long AccountProviderLegalEntityId { get; }
         public long Ukprn { get; }

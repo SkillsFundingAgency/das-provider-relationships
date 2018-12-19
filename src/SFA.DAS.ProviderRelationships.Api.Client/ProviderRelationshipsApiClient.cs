@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
@@ -11,9 +11,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
         private readonly IRestHttpClient _restHttpClient;
-        private readonly IReadStoreMediator _mediator;
+        private readonly IMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient, IReadStoreMediator mediator)
+        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient, IMediator mediator)
         {
             _restHttpClient = restHttpClient;
             _mediator = mediator;

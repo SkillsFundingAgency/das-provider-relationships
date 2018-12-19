@@ -1,13 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using SFA.DAS.CosmosDb;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions
 {
-    public class UpdatePermissionsCommandHandler : IReadStoreRequestHandler<UpdatePermissionsCommand, Unit>
+    public class UpdatePermissionsCommandHandler : AsyncRequestHandler<UpdatePermissionsCommand>
     {
         private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
 
@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePer
             _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
         }
         
-        public async Task<Unit> Handle(UpdatePermissionsCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(UpdatePermissionsCommand request, CancellationToken cancellationToken)
         {
             var accountProviderLegalEntity = await _accountProviderLegalEntitiesRepository.CreateQuery().SingleOrDefaultAsync(r => 
                 r.Ukprn == request.Ukprn && r.AccountProviderLegalEntityId == request.AccountProviderLegalEntityId, cancellationToken);
@@ -41,8 +41,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePer
                 
                 await _accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity, null, cancellationToken);
             }
-
-            return Unit.Value;
         }
     }
 }

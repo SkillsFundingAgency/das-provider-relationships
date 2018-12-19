@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
@@ -35,14 +35,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public string MessageId { get; set; }
         public Mock<IMessageHandlerContext> MessageHandlerContext { get; set; }
         public IHandleMessages<DeletedPermissionsEvent> Handler { get; set; }
-        public Mock<IReadStoreMediator> Mediator { get; set; }
+        public Mock<IMediator> Mediator { get; set; }
         
         public DeletedPermissionsEventHandlerTestsFixture()
         {
             Message = new DeletedPermissionsEvent(1, 12345678, DateTime.UtcNow);
             MessageId = Guid.NewGuid().ToString();
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
-            Mediator = new Mock<IReadStoreMediator>();
+            Mediator = new Mock<IMediator>();
 
             MessageHandlerContext.Setup(c => c.MessageId).Returns(MessageId);
             

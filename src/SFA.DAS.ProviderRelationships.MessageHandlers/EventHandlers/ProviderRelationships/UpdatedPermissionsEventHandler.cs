@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 
@@ -8,9 +8,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 {
     public class UpdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissionsEvent>
     {
-        private readonly IReadStoreMediator _mediator;
+        private readonly IMediator _mediator;
 
-        public UpdatedPermissionsEventHandler(IReadStoreMediator mediator)
+        public UpdatedPermissionsEventHandler(IMediator mediator)
         {
             _mediator = mediator;
         }

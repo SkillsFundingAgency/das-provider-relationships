@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             Scan(s =>
             {
                 s.AssemblyContainingType<RunHealthCheckCommandHandler>();
-                s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+                //s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
                 s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
             });
         }

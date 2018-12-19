@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
     {
         public DeletePermissionsCommand Command { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public IReadStoreRequestHandler<DeletePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<DeletePermissionsCommand, Unit> Handler { get; set; }
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository { get; set; }
         public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public DateTime Now { get; set; }

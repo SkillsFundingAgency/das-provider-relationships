@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using MediatR;
 using NServiceBus;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 
@@ -8,9 +8,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 {
     public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissionsEvent>
     {
-        private readonly IReadStoreMediator _mediator;
+        private readonly IMediator _mediator;
 
-        public DeletedPermissionsEventHandler(IReadStoreMediator mediator)
+        public DeletedPermissionsEventHandler(IMediator mediator)
         {
             _mediator = mediator;
         }

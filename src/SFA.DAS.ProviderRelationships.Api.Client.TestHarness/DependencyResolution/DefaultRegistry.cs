@@ -12,6 +12,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
                 // well-known AuthKey of the emulator
                 AuthKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
             }).Singleton();
+            
+            For<AzureAdClientConfiguration>().Use(() => new AzureAdClientConfiguration {
+                ApiBaseUrl = "https://example.com"
+            }).Singleton();
         }
     }
 }

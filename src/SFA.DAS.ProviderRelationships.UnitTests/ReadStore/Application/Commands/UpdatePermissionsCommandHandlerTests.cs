@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
@@ -103,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository;
         public List<AccountProviderLegalEntity> Relationships;
         public UpdatePermissionsCommand Command;
-        public UpdatePermissionsCommandHandler Handler;
+        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler;
         
         public UpdatePermissionsCommandHandlerTestsFixture()
         {
