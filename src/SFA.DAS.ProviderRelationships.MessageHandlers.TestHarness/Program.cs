@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 var startup = container.GetInstance<IStartup>();
 
                 await startup.StartAsync();
-                
+
                 var publishEmployerAccountsEventsScenario = container.GetInstance<PublishEmployerAccountsEventsScenario>();
                 var publishProviderRelationshipsEventsScenario = container.GetInstance<PublishProviderRelationshipsEventsScenario>();
 
