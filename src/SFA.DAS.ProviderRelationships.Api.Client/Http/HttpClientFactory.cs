@@ -8,9 +8,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 {
     public class HttpClientFactory : IHttpClientFactory
     {
-        private readonly ProviderRelationshipsApiClientConfiguration _configuration;
+        private readonly AzureAdClientConfiguration _configuration;
 
-        public HttpClientFactory(ProviderRelationshipsApiClientConfiguration configuration)
+        public HttpClientFactory(AzureAdClientConfiguration configuration)
         {
             _configuration = configuration;
         }

@@ -34,10 +34,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
-            //todo: main config will contain one of these
-            For<ProviderRelationshipsReadStoreConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsReadStoreConfiguration>());
-
-            For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
+            //todo: how to wrangle these so don't read the config from table storage twice? level of indirection/cache
+            For<ReadStoreConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>().ReadStore);
+            For<AzureAdClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>().AzureAdClient);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
     public class DocumentClientFactory : IDocumentClientFactory
     {
-        private readonly ProviderRelationshipsReadStoreConfiguration _configuration;
+        private readonly ReadStoreConfiguration _configuration;
 
-        public DocumentClientFactory(ProviderRelationshipsReadStoreConfiguration configuration)
+        public DocumentClientFactory(ReadStoreConfiguration configuration)
         {
             _configuration = configuration;
         }
