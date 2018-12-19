@@ -173,6 +173,8 @@
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\lib\jquery\dist\jquery-3.3.1.js" />
+    <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.js" />
     <Content Include="Content\htm\403.html" />
     <Content Include="Content\htm\404.html" />
     <Content Include="Content\css\application.css" />
@@ -196,9 +198,6 @@
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.js" />
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-ie8-2.0.0.min.css" />
     <Content Include="Content\lib\govuk-frontend\dist\VERSION.txt" />
-    <Content Include="Content\lib\jquery\dist\jquery.js" />
-    <Content Include="Content\lib\jquery\dist\jquery.min.js" />
-    <Content Include="Content\lib\jquery\LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -257,7 +256,7 @@
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-498ea8ffe2-v1.eot" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-62cc6f0a28-v1.woff" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-851b10ccdd-v1.woff2" />
-    <Content Include="Content\lib\jquery\dist\jquery.min.map" />
+    <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
