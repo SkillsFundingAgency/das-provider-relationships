@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers
         {
             using (var container = IoC.Initialize())
             {
-                ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+                ServicePointManager.DefaultConnectionLimit = 50;
                 
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var environmentService = container.GetInstance<IEnvironmentService>();
