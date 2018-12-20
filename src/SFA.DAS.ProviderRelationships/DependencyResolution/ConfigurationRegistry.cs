@@ -18,6 +18,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IGoogleAnalyticsConfigurationFactory>().Use<GoogleAnalyticsConfigurationFactory>();
             For<IOidcConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Oidc).Singleton();
             For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsConfiguration>("SFA.DAS.ProviderRelationships")).Singleton();
+            For<SlackConfiguration>().Use(new SlackConfiguration { DasMetricsApiUrl = "https://hooks.slack.com/services/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" });
         }
     }
 }

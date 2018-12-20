@@ -19,6 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             var userRef = Guid.NewGuid();
             const string userName = "Bob Loblaw";
             const long accountId = 10;
+            const string accountHashedId = "ACCINT";
             const string accountPublicHashedId = "ACCPUB";
             const string originalAccountName = "Account Name";
             const string updatedAccountName = "New Account Name";
@@ -31,6 +32,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             await _messageSession.Publish(new CreatedAccountEvent
             {
                 AccountId = accountId,
+                HashedId = accountHashedId,
                 PublicHashedId = accountPublicHashedId,
                 Name = originalAccountName,
                 UserName = userName,
