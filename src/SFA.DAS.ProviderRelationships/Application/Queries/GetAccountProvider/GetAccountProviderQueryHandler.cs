@@ -6,6 +6,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 
@@ -15,11 +17,13 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
+        private readonly IAuthorizationService _authorizationService;
 
-        public GetAccountProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
+        public GetAccountProviderQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider, IAuthorizationService authorizationService)
         {
             _db = db;
             _configurationProvider = configurationProvider;
+            _authorizationService = authorizationService;
         }
 
         public async Task<GetAccountProviderQueryResult> Handle(GetAccountProviderQuery request, CancellationToken cancellationToken)
@@ -33,8 +37,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
             {
                 return null;
             }
+            
+            var isOwner = await _authorizationService.IsAuthorizedAsync(EmployerUserRole.Owner);
 
-            return new GetAccountProviderQueryResult(accountProvider);
+            return new GetAccountProviderQueryResult(accountProvider, isOwner);
         }
     }
 }

@@ -8,7 +8,10 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Moq;
 using NUnit.Framework;
+using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
@@ -42,12 +45,34 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
-        public Task Handle_WhenHandlingGetAddedProvidersQueryNoProvidersAdded_ThenShouldReturnGetAddedProvidersQueryResponseWithEmptyProvidersList()
+        public Task Handle_WhenNoProvidersAdded_ThenShouldReturnGetAddedProvidersQueryResultWithEmptyProvidersList()
         {
             return RunAsync(f => f.Handle(), (f, r) => 
             {
                 r.Should().NotBeNull();
                 r.AccountProviders.Should().NotBeNull().And.BeEmpty();
+            });
+        }
+
+        [Test]
+        public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAddedProvidersQueryResultWithAddProviderOperationUnauthorizedAndAddUpdatePermissionsOperationUnauthorized()
+        {
+            return RunAsync(f => f.Handle(), (f, r) => 
+            {
+                r.Should().NotBeNull();
+                r.IsAddProviderOperationAuthorized.Should().BeFalse();
+                r.IsUpdatePermissionsOperationAuthorized.Should().BeFalse();
+            });
+        }
+
+        [Test]
+        public Task Handle_WhenUserIsOwner_ThenShouldReturnGetAddedProvidersQueryResultWithAddProviderOperationAuthorizedAndUpdatePermissionsOperationAuthorized()
+        {
+            return RunAsync(f => f.SetOwner(), f => f.Handle(), (f, r) => 
+            {
+                r.Should().NotBeNull();
+                r.IsAddProviderOperationAuthorized.Should().BeTrue();
+                r.IsUpdatePermissionsOperationAuthorized.Should().BeTrue();
             });
         }
     }
@@ -62,14 +87,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
+        public Mock<IAuthorizationService> AuthorizationService { get; set; }
 
         public GetAccountProvidersQueryHandlerTestsFixture()
         {
             Query = new GetAccountProvidersQuery(1);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
-            Handler = new GetAccountProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
+            AuthorizationService = new Mock<IAuthorizationService>();
+            Handler = new GetAccountProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider, AuthorizationService.Object);
         }
 
         public Task<GetAccountProvidersQueryResult> Handle()
@@ -96,6 +122,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.AccountLegalEntities.AddRange(AccountLegalEntities);
             Db.SaveChanges();
 
+            return this;
+        }
+
+        public GetAccountProvidersQueryHandlerTestsFixture SetOwner()
+        {
+            AuthorizationService.Setup(a => a.IsAuthorizedAsync(EmployerUserRole.Owner)).ReturnsAsync(true);
+            
             return this;
         }
     }
