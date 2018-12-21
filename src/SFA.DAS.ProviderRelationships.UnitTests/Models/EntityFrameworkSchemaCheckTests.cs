@@ -33,7 +33,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 
                     using (var context = new ProviderRelationshipsDbContext(optionsBuilder.Options))
                     {
-                        var comparer = new CompareEfSql();
+                        var config = new CompareEfSqlConfig
+                        {
+                            TablesToIgnoreCommaDelimited = "ClientOutboxData,OutboxData"
+                        };
+                        
+                        config.IgnoreTheseErrors("EXTRA IN DATABASE: SFA.DAS.ProviderRelationships.Database->Column 'Users', column name. Found = Id");
+                        
+                        var comparer = new CompareEfSql(config);
                         var hasErrors = comparer.CompareEfWithDb(context);
 
                         hasErrors.Should().BeFalse(comparer.GetAllErrors);

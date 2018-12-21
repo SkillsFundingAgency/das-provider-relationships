@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using NServiceBus;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 
@@ -17,7 +18,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 
         public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
         {
-            return _mediator.Send(new DeletePermissionsCommand(message.AccountProviderLegalEntityId, message.Ukprn, message.Deleted, context.MessageId));
+            return Task.WhenAll(
+                _mediator.Send(new DeletedPermissionsEventAuditCommand(
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.Deleted)),
+                _mediator.Send(new DeletePermissionsCommand(
+                    message.AccountProviderLegalEntityId,
+                    message.Ukprn,
+                    message.Deleted,
+                    context.MessageId)));
         }
     }
 }

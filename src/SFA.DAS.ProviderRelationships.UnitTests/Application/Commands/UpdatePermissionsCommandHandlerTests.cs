@@ -7,7 +7,7 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Models;

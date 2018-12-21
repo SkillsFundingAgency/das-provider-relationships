@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.ProviderRelationships.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
     public class UpdatedAccountProviderLegalEntityViewModel
     {
-        public AccountProviderLegalEntityBasicDto AccountProviderLegalEntity { get; set; }
+        public AccountProviderLegalEntityDto AccountProviderLegalEntity { get; set; }
         public int AccountLegalEntitiesCount { get; set; }
 
         [Required]

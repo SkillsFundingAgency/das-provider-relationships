@@ -1,4 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Dtos;
+﻿using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck
 {

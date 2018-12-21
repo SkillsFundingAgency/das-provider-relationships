@@ -47,7 +47,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 UserRef = userRef,
                 Created = DateTime.UtcNow
             });
-            
+
             await _messageSession.Publish(new AddedLegalEntityEvent
             {
                 AccountLegalEntityId = accountLegalEntityId,
@@ -70,14 +70,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 UserRef = userRef,
                 Created = DateTime.UtcNow
             });
-            
+
             await _messageSession.Publish(new RemovedLegalEntityEvent
             {
                 AccountLegalEntityId = accountLegalEntityId,
                 OrganisationName = updatedAccountLegalEntityName,
                 AccountId = accountId,
                 LegalEntityId = legalEntityId,
-                AgreementId = 2, 
+                AgreementId = 2,
                 AgreementSigned = true,
                 UserName = userName,
                 UserRef = userRef,

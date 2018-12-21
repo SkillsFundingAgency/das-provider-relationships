@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 
@@ -19,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                     .Select(o => new OperationViewModel
                     {
                         Value = o,
-                        IsEnabled = s.AccountProviderLegalEntitySummary != null && s.AccountProviderLegalEntitySummary.Operations.Contains(o)
+                        IsEnabled = s.AccountProviderLegalEntity != null && s.AccountProviderLegalEntity.Operations.Contains(o)
                     })));
             
             CreateMap<GetAccountProviderLegalEntityQueryResult, UpdateAccountProviderLegalEntityViewModel>()

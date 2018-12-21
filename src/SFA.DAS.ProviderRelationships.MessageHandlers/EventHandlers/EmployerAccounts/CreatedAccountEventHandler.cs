@@ -2,7 +2,7 @@
 using MediatR;
 using NServiceBus;
 using SFA.DAS.EmployerAccounts.Messages.Events;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
 {
@@ -17,7 +17,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 
         public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
         {
-            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId, message.Name, message.Created));
+            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
+                message.Name, message.Created));
         }
     }
 }

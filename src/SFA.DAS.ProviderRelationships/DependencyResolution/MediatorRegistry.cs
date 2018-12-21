@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution

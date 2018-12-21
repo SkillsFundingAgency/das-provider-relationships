@@ -5,6 +5,7 @@ using MediatR;
 using Moq;
 using NServiceBus;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
@@ -27,6 +28,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                         c.MessageId == f.MessageId), 
                     It.IsAny<CancellationToken>()), Times.Once));
         }
+
+        [Test]
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendAuditCommand()
+        {
+            return RunAsync(f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object), f => f.Mediator.Verify(m => m.Send(It.Is<DeletedPermissionsEventAuditCommand>(c =>
+                c.Deleted == f.Deleted &&
+                c.AccountProviderLegalEntityId == f.AccountProviderLegalEntityId &&
+                c.Ukprn == f.Ukprn
+            ), CancellationToken.None), Times.Once));
+        }
     }
 
     public class DeletedPermissionsEventHandlerTestsFixture
@@ -36,10 +47,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public Mock<IMessageHandlerContext> MessageHandlerContext { get; set; }
         public IHandleMessages<DeletedPermissionsEvent> Handler { get; set; }
         public Mock<IMediator> Mediator { get; set; }
+
+        public long Ukprn { get; set; }
+        public long AccountProviderLegalEntityId { get; set; }
+        public DateTime Deleted { get; set; }
         
         public DeletedPermissionsEventHandlerTestsFixture()
         {
-            Message = new DeletedPermissionsEvent(1, 12345678, DateTime.UtcNow);
+            Ukprn = 1122277833;
+            AccountProviderLegalEntityId = 112;
+            Deleted = DateTime.UtcNow;
+            Message = new DeletedPermissionsEvent(AccountProviderLegalEntityId, Ukprn, Deleted);
             MessageId = Guid.NewGuid().ToString();
             MessageHandlerContext = new Mock<IMessageHandlerContext>();
             Mediator = new Mock<IMediator>();

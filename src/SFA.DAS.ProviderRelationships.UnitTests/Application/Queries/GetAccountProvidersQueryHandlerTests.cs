@@ -9,9 +9,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Application.Queries;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 r.Should().NotBeNull();
                 
                 r.AccountProviders.Should().NotBeNull().And.BeEquivalentTo(
-                    new AccountProviderSummaryDto
+                    new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
                         ProviderName = f.Provider.Name
