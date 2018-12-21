@@ -14,7 +14,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
             Task.Run(Test).Wait();
         }
 
-        //todo: readonly connection string for client
         private static async Task Test()
         {
             using (var container = IoC.Initialize())
