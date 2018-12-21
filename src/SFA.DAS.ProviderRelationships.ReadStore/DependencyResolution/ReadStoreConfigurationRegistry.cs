@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.DependencyResolution
         public ReadStoreConfigurationRegistry()
         {
             IncludeRegistry<AutoConfigurationRegistry>();
-            For<ProviderRelationshipsReadStoreConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsReadStoreConfiguration>());
+            For<ProviderRelationshipsReadStoreConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsReadStoreConfiguration>());
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IHttpClientFactory>().Use<Http.HttpClientFactory>();
             For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
-            For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
+            For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>());
         }
     }
 }
