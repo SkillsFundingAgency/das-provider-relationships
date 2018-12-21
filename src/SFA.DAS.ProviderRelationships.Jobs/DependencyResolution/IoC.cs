@@ -16,7 +16,6 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<LoggerRegistry>();
-                c.AddRegistry<ReadStoreConfigurationRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
