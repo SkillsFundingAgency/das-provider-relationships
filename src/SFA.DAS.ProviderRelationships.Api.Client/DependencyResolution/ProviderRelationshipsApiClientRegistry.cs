@@ -28,19 +28,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
             For<IRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
 
-            //todo: move this into a pr comment?
-            // can't get the scanning to work, but whilst scanning would make life more convenient for developers going forward,
-            // individually registering handlers is probably more performant (at least for a reasonable number of handlers)
-//            Scan(s =>
-//            {
-////                s.AssemblyContainingType<HasPermissionQueryHandler>();
-//                s.TheCallingAssembly();
-//                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
-//                s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-////                s.AddAllTypesOf(typeof(IRequestHandler<,>));
-////                s.AddAllTypesOf(typeof(INotificationHandler<>));
-//            });
-
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<Http.HttpClientFactory>();
             For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
