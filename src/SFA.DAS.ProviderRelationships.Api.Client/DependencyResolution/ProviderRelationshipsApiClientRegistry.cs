@@ -7,6 +7,7 @@ using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
@@ -21,21 +22,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
             For<IAccountProviderLegalEntitiesRepository>().Use<ReadOnlyAccountProviderLegalEntitiesRepository>().Ctor<IDocumentClient>().IsNamedInstance(GetType().FullName);
 
-//todo: do mediator registrations by convention
-//            IncludeRegistry<ReadStoreMediatorRegistry>();
-            //For<ReadStoreServiceFactory>().Use<ReadStoreServiceFactory>(c => c.GetInstance);
             For<IMediator>().Use<Mediator>();
             For<ServiceFactory>().Use<ServiceFactory>(ctx => ctx.GetInstance);
-//            For<IReadStoreMediator>().Use<ReadStoreMediator>();
-//            For<IReadStoreRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
-//            For<IReadStoreRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
 
-            Scan(s =>
-            {
-                s.AssemblyContainingType<HasPermissionQueryHandler>();
-                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
-                //s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-            });
+            For<IRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
+            For<IRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
+
+            //todo: move this into a pr comment?
+            // can't get the scanning to work, but whilst scanning would make life more convenient for developers going forward,
+            // individually registering handlers is probably more performant (at least for a reasonable number of handlers)
+//            Scan(s =>
+//            {
+//                s.AssemblyContainingType<HasPermissionQueryHandler>();
+////                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+////                s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+//                s.AddAllTypesOf(typeof(IRequestHandler<,>));
+//                s.AddAllTypesOf(typeof(INotificationHandler<>));
+//            });
 
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
             For<IHttpClientFactory>().Use<Http.HttpClientFactory>();
