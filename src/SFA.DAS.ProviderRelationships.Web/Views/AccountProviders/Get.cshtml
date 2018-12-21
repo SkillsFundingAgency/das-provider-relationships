@@ -47,7 +47,12 @@
                                 @:No permissions set
                             }
                         </td>
-                        <td class="govuk-table__cell das-table__cell--vertical-align-top"><a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a></td>
+                        <td class="govuk-table__cell das-table__cell--vertical-align-top">
+                            @if (Html.IsAuthorized(EmployerUserRole.Owner))
+                            {
+                                <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
