@@ -33,11 +33,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             // individually registering handlers is probably more performant (at least for a reasonable number of handlers)
 //            Scan(s =>
 //            {
-//                s.AssemblyContainingType<HasPermissionQueryHandler>();
-////                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
-////                s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-//                s.AddAllTypesOf(typeof(IRequestHandler<,>));
-//                s.AddAllTypesOf(typeof(INotificationHandler<>));
+////                s.AssemblyContainingType<HasPermissionQueryHandler>();
+//                s.TheCallingAssembly();
+//                s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+//                s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+////                s.AddAllTypesOf(typeof(IRequestHandler<,>));
+////                s.AddAllTypesOf(typeof(INotificationHandler<>));
 //            });
 
             For<HttpClient>().Add(c => c.GetInstance<IHttpClientFactory>().CreateHttpClient()).Named(GetType().FullName).Singleton();
@@ -45,9 +46,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
-            //todo: how to wrangle these so don't read the config from table storage twice? level of indirection/cache
-            For<ReadStoreConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>().ReadStore);
-            For<AzureAdClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>().Get<ProviderRelationshipsApiClientConfiguration>().AzureAdClient);
+            //todo: we can supply the rowkey for the new version, but it would be better to supply a version (instead of hardcoding DefaultVersion) and still pick up the row name from the type name
+            // ^^ check with devops, but probably can't override the default version, but could tack the version number on the end of the name
+            //todo: also use the config object in the other config classes
+            
+            For<ReadStoreConfiguration>().Use(c => ProviderRelationshipsApiClientConfiguration.Get(c).ReadStore);
+            For<AzureAdClientConfiguration>().Use(c => ProviderRelationshipsApiClientConfiguration.Get(c).AzureAdClient);
         }
     }
 }

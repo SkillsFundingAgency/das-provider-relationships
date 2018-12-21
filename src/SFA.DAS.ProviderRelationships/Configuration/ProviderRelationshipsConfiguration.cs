@@ -2,6 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
+    //todo: nest object for IEmployerUrlsConfiguration
     public class ProviderRelationshipsConfiguration : IEmployerUrlsConfiguration
     {
         public AzureActiveDirectoryConfiguration AzureActiveDirectory { get; set; }
@@ -20,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
 
         public string NServiceBusLicense
         {
-            get =>  _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
+            get => _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
             set => _nServiceBusLicense = value;
         }
         
