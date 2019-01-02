@@ -20,14 +20,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
 
         public async Task<AuthorizationResult> GetAuthorizationResult(IReadOnlyCollection<string> options, IAuthorizationContext authorizationContext)
         {
-            var authorizationResult = new AuthorizationResult();
-            
-            if (!_environmentService.IsCurrent(DasEnv.LOCAL))
-            {
-                authorizationResult = await _authorizationHandler.GetAuthorizationResult(options, authorizationContext).ConfigureAwait(false);
-            }
-
-            return authorizationResult;
+            return _environmentService.IsCurrent(DasEnv.LOCAL)
+                ? new AuthorizationResult()
+                : await _authorizationHandler.GetAuthorizationResult(options, authorizationContext);
         }
     }
 }
