@@ -18,11 +18,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
             _environmentService = environmentService;
         }
 
-        public async Task<AuthorizationResult> GetAuthorizationResult(IReadOnlyCollection<string> options, IAuthorizationContext authorizationContext)
+        public Task<AuthorizationResult> GetAuthorizationResult(IReadOnlyCollection<string> options, IAuthorizationContext authorizationContext)
         {
             return _environmentService.IsCurrent(DasEnv.LOCAL)
-                ? new AuthorizationResult()
-                : await _authorizationHandler.GetAuthorizationResult(options, authorizationContext);
+                ? Task.FromResult(new AuthorizationResult())
+                : _authorizationHandler.GetAuthorizationResult(options, authorizationContext);
         }
     }
 }
