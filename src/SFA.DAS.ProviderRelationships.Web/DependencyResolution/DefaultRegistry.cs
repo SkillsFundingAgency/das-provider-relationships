@@ -1,5 +1,6 @@
 using System.Web;
 using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
@@ -16,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
         {
             For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
+            For<IAuthorizationHandler>().DecorateAllWith<AuthorizationHandlerDecorator>();
             For<IEmployerUrls>().Use<EmployerUrls>();
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();

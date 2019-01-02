@@ -122,6 +122,7 @@
     <Compile Include="Authentication\OwinAuthenticationService.cs" />
     <Compile Include="Authentication\PostAuthenticationHandler.cs" />
     <Compile Include="Authorization\AuthorizationContextProvider.cs" />
+    <Compile Include="Authorization\AuthorizationHandlerDecorator.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />

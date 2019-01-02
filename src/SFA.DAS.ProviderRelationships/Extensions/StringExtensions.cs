@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace SFA.DAS.ProviderRelationships.Extensions
 {
@@ -16,6 +17,11 @@ namespace SFA.DAS.ProviderRelationships.Extensions
             var output = WebUtility.HtmlEncode(input);
 
             return output;
+        }
+        
+        public static T ToEnum<T>(this string value) where T : Enum
+        {
+            return (T)Enum.Parse(typeof(T), value);
         }
     }
 }
