@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
 {
     [TestFixture]
     [Parallelizable]
-    public class AuthorizationHandlerDecoratorTests : FluentTest<AuthorizationHandlerDecoratorTestsFixture>
+    public class LocalAuthorizationHandlerTests : FluentTest<LocalAuthorizationHandlerTestsFixture>
     {
         [Test]
         public Task GetAuthorizationResult_WhenEnvironmentIsLocal_ThenShouldReturnAuthorizedAuthorizationResult()
@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         }
     }
 
-    public class AuthorizationHandlerDecoratorTestsFixture
+    public class LocalAuthorizationHandlerTestsFixture
     {
         public IReadOnlyCollection<string> Options { get; set; }
         public IAuthorizationContext AuthorizationContext { get; set; }
@@ -36,13 +36,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         public Mock<IEnvironmentService> EnvironmentService { get; set; }
         public AuthorizationResult AuthorizationResult { get; set; }
 
-        public AuthorizationHandlerDecoratorTestsFixture()
+        public LocalAuthorizationHandlerTestsFixture()
         {
             Options = new [] { "" };
             AuthorizationContext = new AuthorizationContext();
             AuthorizationHandler = new Mock<IAuthorizationHandler>();
             EnvironmentService = new Mock<IEnvironmentService>();
-            AuthorizationHandlerDecorator = new AuthorizationHandlerDecorator(AuthorizationHandler.Object, EnvironmentService.Object);
+            AuthorizationHandlerDecorator = new LocalAuthorizationHandler(AuthorizationHandler.Object, EnvironmentService.Object);
             AuthorizationResult = new AuthorizationResult();
         }
 
@@ -51,14 +51,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             return AuthorizationHandlerDecorator.GetAuthorizationResult(Options, AuthorizationContext);
         }
 
-        public AuthorizationHandlerDecoratorTestsFixture SetEnvironment(DasEnv environment)
+        public LocalAuthorizationHandlerTestsFixture SetEnvironment(DasEnv environment)
         {
             EnvironmentService.Setup(e => e.IsCurrent(environment)).Returns(true);
             
             return this;
         }
 
-        public AuthorizationHandlerDecoratorTestsFixture SetAuthorizationResult()
+        public LocalAuthorizationHandlerTestsFixture SetAuthorizationResult()
         {
             AuthorizationHandler.Setup(h => h.GetAuthorizationResult(Options, AuthorizationContext)).ReturnsAsync(AuthorizationResult);
             

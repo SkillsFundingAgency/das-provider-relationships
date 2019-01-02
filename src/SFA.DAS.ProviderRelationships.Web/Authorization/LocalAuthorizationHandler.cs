@@ -5,14 +5,14 @@ using SFA.DAS.AutoConfiguration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization
 {
-    public class AuthorizationHandlerDecorator : IAuthorizationHandler
+    public class LocalAuthorizationHandler : IAuthorizationHandler
     {
         public string Namespace => _authorizationHandler.Namespace;
         
         private readonly IAuthorizationHandler _authorizationHandler;
         private readonly IEnvironmentService _environmentService;
 
-        public AuthorizationHandlerDecorator(IAuthorizationHandler authorizationHandler, IEnvironmentService environmentService)
+        public LocalAuthorizationHandler(IAuthorizationHandler authorizationHandler, IEnvironmentService environmentService)
         {
             _authorizationHandler = authorizationHandler;
             _environmentService = environmentService;
