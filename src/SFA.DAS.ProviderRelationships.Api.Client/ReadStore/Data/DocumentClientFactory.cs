@@ -16,12 +16,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 
         public IDocumentClient CreateDocumentClient()
         {
-            //todo: more appropriate retry policy for read-only
             var connectionPolicy = new ConnectionPolicy
             {
                 RetryOptions =
                 {
-                    MaxRetryAttemptsOnThrottledRequests = 3,
+                    MaxRetryAttemptsOnThrottledRequests = 2,
                     MaxRetryWaitTimeInSeconds = 2
                 }
             };
