@@ -8,27 +8,32 @@ using NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
-    #pragma warning disable CS0618
-    public class EventHandlerTestsFixture<TEvent, TEventHandler> // where TEvent : Event, new()
-                                                                 where TEventHandler : IHandleMessages<TEvent>
-    #pragma warning restore CS0618
+    public class EventHandlerTestsFixture<TEvent, TEventHandler> where TEventHandler : IHandleMessages<TEvent>
     {
         public Mock<IMediator> Mediator { get; set; }
         public TEvent Message { get; set; }
         public IHandleMessages<TEvent> Handler { get; set; }
+        public string MessageId { get; set; }
+        public Mock<IMessageHandlerContext> MessageHandlerContext { get; set; }
         
         public EventHandlerTestsFixture(Func<IMediator, IHandleMessages<TEvent>> constructHandler = null)
         {
             Mediator = new Mock<IMediator>();
-            
-            Message = new Fixture().Create<TEvent>();
 
+            var fixture = new Fixture();
+            Message = fixture.Create<TEvent>();
+
+            MessageId = fixture.Create<string>();
+            MessageHandlerContext = new Mock<IMessageHandlerContext>();
+
+            MessageHandlerContext.Setup(c => c.MessageId).Returns(MessageId);
+            
             Handler = constructHandler != null ? constructHandler(Mediator.Object) : ConstructHandler();
         }
 
         public virtual Task Handle()
         {
-            return Handler.Handle(Message, null);
+            return Handler.Handle(Message, MessageHandlerContext.Object);
         }
 
         private TEventHandler ConstructHandler()
