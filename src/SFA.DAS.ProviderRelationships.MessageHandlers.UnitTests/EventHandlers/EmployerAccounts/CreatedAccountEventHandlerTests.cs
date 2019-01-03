@@ -26,12 +26,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent, CreatedAccountEventHandler>
     {
-        public CreatedAccountEventHandlerTestsFixture()
-        {
-            Message.AccountId = 1;
-            Message.HashedId = "AAA111";
-            Message.PublicHashedId = "AAA222";
-            Message.Name = "Foo";
-        }
     }
 }

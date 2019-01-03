@@ -1,15 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture;
 using MediatR;
 using Moq;
 using NServiceBus;
-using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
 {
     #pragma warning disable CS0618
-    public class EventHandlerTestsFixture<TEvent, TEventHandler> where TEvent : Event, new()
+    public class EventHandlerTestsFixture<TEvent, TEventHandler> // where TEvent : Event, new()
                                                                  where TEventHandler : IHandleMessages<TEvent>
     #pragma warning restore CS0618
     {
@@ -21,12 +21,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers
         {
             Mediator = new Mock<IMediator>();
             
-            //todo: autofixture event??
-            Message = new TEvent
-            {
-                Created = DateTime.UtcNow
-            };
-            
+            Message = new Fixture().Create<TEvent>();
+
             Handler = constructHandler != null ? constructHandler(Mediator.Object) : ConstructHandler();
         }
 

@@ -21,10 +21,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class ChangedAccountNameEventHandlerTestsFixture : EventHandlerTestsFixture<ChangedAccountNameEvent, ChangedAccountNameEventHandler>
     {
-        public ChangedAccountNameEventHandlerTestsFixture()
-        {
-            Message.AccountId = 1;
-            Message.CurrentName = "Foo";
-        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
@@ -22,10 +21,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class RemovedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<RemovedLegalEntityEvent, RemovedLegalEntityEventHandler>
     {
-        public RemovedLegalEntityEventHandlerTestsFixture()
-        {
-            Message.AccountId = 1;
-            Message.AccountLegalEntityId = 2;
-        }
     }
 }

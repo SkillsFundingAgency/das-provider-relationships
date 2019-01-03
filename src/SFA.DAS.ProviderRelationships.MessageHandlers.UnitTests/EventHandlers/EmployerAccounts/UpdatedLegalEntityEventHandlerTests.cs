@@ -21,10 +21,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
     
     public class UpdatedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedLegalEntityEvent, UpdatedLegalEntityEventHandler>
     {
-        public UpdatedLegalEntityEventHandlerTestsFixture()
-        {
-            Message.AccountLegalEntityId = 1;
-            Message.Name = "Foo";
-        }
     }
 }

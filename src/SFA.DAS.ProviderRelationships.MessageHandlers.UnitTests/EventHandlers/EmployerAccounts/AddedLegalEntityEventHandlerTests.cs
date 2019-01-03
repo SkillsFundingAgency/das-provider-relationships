@@ -25,12 +25,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 
     public class AddedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<AddedLegalEntityEvent, AddedLegalEntityEventHandler>
     {
-        public AddedLegalEntityEventHandlerTestsFixture()
-        {
-            Message.AccountId = 1;
-            Message.AccountLegalEntityId = 2;
-            Message.AccountLegalEntityPublicHashedId = "ALE123";
-            Message.OrganisationName = "Foo";
-        }
     }
 }
