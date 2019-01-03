@@ -28,31 +28,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
     }
 
-    public class CreatedAccountEventHandlerTestsFixture
+    public class CreatedAccountEventHandlerTestsFixture : EventHandlerTestsFixture<CreatedAccountEvent, CreatedAccountEventHandler>
     {
-        public Mock<IMediator> Mediator { get; set; }
-        public CreatedAccountEvent Message { get; set; }
-        public IHandleMessages<CreatedAccountEvent> Handler { get; set; }
-        
         public CreatedAccountEventHandlerTestsFixture()
         {
-            Mediator = new Mock<IMediator>();
-            
-            Message = new CreatedAccountEvent
-            {
-                AccountId = 1,
-                HashedId = "AAA111",
-                PublicHashedId = "AAA222",
-                Name = "Foo",
-                Created = DateTime.UtcNow
-            };
-            
-            Handler = new CreatedAccountEventHandler(Mediator.Object);
-        }
-
-        public Task Handle()
-        {
-            return Handler.Handle(Message, null);
+            Message.AccountId = 1;
+            Message.HashedId = "AAA111";
+            Message.PublicHashedId = "AAA222";
+            Message.Name = "Foo";
+            Message.Created = DateTime.UtcNow;
         }
     }
 }
