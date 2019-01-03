@@ -1,9 +1,5 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Moq;
-using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands.RemoveAccountLegalEntity;
@@ -19,36 +15,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         [Test]
         public Task Handle_WhenHandlingRemoveLegalEntityEvent_ThenShouldSendRemoveAccountLegalEntityCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<RemoveAccountLegalEntityCommand>(c =>
-                c.AccountId == f.Message.AccountId &&
-                c.AccountLegalEntityId == f.Message.AccountLegalEntityId &&
-                c.Removed == f.Message.Created), CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Handle(), f => f.VerifySend<RemoveAccountLegalEntityCommand>((c, m) =>
+                c.AccountId == m.AccountId && c.AccountLegalEntityId == m.AccountLegalEntityId && c.Removed == m.Created));
         }
     }
 
-    public class RemovedLegalEntityEventHandlerTestsFixture
+    public class RemovedLegalEntityEventHandlerTestsFixture : EventHandlerTestsFixture<RemovedLegalEntityEvent, RemovedLegalEntityEventHandler>
     {
-        public Mock<IMediator> Mediator { get; set; }
-        public RemovedLegalEntityEvent Message { get; set; }
-        public IHandleMessages<RemovedLegalEntityEvent> Handler { get; set; }
-        
         public RemovedLegalEntityEventHandlerTestsFixture()
         {
-            Mediator = new Mock<IMediator>();
-            
-            Message = new RemovedLegalEntityEvent
-            {
-                AccountId = 1,
-                AccountLegalEntityId = 2,
-                Created = DateTime.UtcNow
-            };
-            
-            Handler = new RemovedLegalEntityEventHandler(Mediator.Object);
-        }
-
-        public Task Handle()
-        {
-            return Handler.Handle(Message, null);
+            Message.AccountId = 1;
+            Message.AccountLegalEntityId = 2;
         }
     }
 }

@@ -32,7 +32,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
             Message.HashedId = "AAA111";
             Message.PublicHashedId = "AAA222";
             Message.Name = "Foo";
-            Message.Created = DateTime.UtcNow;
         }
     }
 }
