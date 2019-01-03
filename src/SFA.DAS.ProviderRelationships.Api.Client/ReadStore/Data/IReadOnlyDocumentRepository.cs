@@ -6,7 +6,7 @@ using Microsoft.Azure.Documents.Client;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
-    public interface IReadOnlyDocumentRepository<TDocument> //where TDocument : class
+    public interface IReadOnlyDocumentRepository<TDocument>
     {
         IQueryable<TDocument> CreateQuery(FeedOptions feedOptions = null);
 
