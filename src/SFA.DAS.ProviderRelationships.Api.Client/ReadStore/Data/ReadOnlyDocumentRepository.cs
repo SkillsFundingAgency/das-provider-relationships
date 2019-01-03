@@ -5,12 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using SFA.DAS.CosmosDb;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
     public abstract class ReadOnlyDocumentRepository<TDocument> : IReadOnlyDocumentRepository<TDocument>
-        //where TDocument : class //, IDocument
     {
         private readonly IDocumentClient _documentClient;
         private readonly string _databaseName;

@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
         internal HasRelationshipWithPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        internal Mock<IAccountProviderLegalEntitiesRepository> PermissionsRepository { get; set; }
+        internal Mock<IAccountProviderLegalEntitiesReadOnlyRepository> PermissionsRepository { get; set; }
         internal IOrderedQueryable<AccountProviderLegalEntityDto> DocumentQuery { get; set; }
         internal List<AccountProviderLegalEntityDto> Permissions { get; set; }
 
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
         {
             Query = new HasRelationshipWithPermissionQuery(11111111, Operation.CreateCohort);
             CancellationToken = CancellationToken.None;
-            PermissionsRepository = new Mock<IAccountProviderLegalEntitiesRepository>();
+            PermissionsRepository = new Mock<IAccountProviderLegalEntitiesReadOnlyRepository>();
             Permissions = new List<AccountProviderLegalEntityDto>();
             DocumentQuery = new FakeDocumentQuery<AccountProviderLegalEntityDto>(Permissions);
 
