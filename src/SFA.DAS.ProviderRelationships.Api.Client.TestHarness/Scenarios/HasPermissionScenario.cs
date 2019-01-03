@@ -22,7 +22,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.Scenarios
             var hasPermissionRequest = new HasPermissionRequest { Ukprn = ukprn, AccountLegalEntityId = accountLegalEntityId, Operation = Operation.CreateCohort };
             var hasPermission = await _providerRelationshipsApiClient.HasPermission(hasPermissionRequest);
 
-            //we could add a ToString to HasPermissionRequest and use that instead
             Console.WriteLine($"Calling HasPermission with Ukprn {hasPermissionRequest.Ukprn}, AccountLegalEntityId {hasPermissionRequest.AccountLegalEntityId}, Operation {hasPermissionRequest.Operation} returned {hasPermission}");
         }
     }
