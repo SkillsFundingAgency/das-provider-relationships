@@ -1,9 +1,5 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Moq;
-using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
@@ -19,12 +15,12 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         [Test]
         public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendCreateAccountLegalEntityCommand()
         {
-            return RunAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateAccountCommand>(c => 
-                c.AccountId == f.Message.AccountId &&
-                c.HashedId == f.Message.HashedId &&
-                c.PublicHashedId == f.Message.PublicHashedId &&
-                c.Name == f.Message.Name &&
-                c.Created == f.Message.Created), CancellationToken.None), Times.Once));
+            return RunAsync(f => f.Handle(), f => f.VerifySend<CreateAccountCommand>((c, m) => 
+                c.AccountId == m.AccountId &&
+                c.HashedId == m.HashedId &&
+                c.PublicHashedId == m.PublicHashedId &&
+                c.Name == m.Name &&
+                c.Created == m.Created));
         }
     }
 
