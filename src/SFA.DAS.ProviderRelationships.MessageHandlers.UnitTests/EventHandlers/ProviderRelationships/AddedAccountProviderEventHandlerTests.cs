@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         [Test]
         public Task Handle_WhenHandlingAddedAccountProviderEvent_ThenShouldSendAuditCommand()
         {
-            return RunAsync(f => f.Handler.Handle(f.Message, f.MessageHandlerContext.Object), f => f.VerifySend<AddedAccountProviderEventAuditCommand>((c, m) =>
+            return RunAsync(f => f.Handle(), f => f.VerifySend<AddedAccountProviderEventAuditCommand>((c, m) =>
                 c.AccountProviderId == m.AccountProviderId &&
                 c.AccountId == m.AccountId &&
                 c.ProviderUkprn == m.ProviderUkprn &&
