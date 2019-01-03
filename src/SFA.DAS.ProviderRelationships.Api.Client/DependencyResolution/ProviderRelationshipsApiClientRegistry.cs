@@ -33,10 +33,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<IRestHttpClient>().Use<RestHttpClient>().Ctor<HttpClient>().IsNamedInstance(GetType().FullName);
             For<IProviderRelationshipsApiClient>().Use<ProviderRelationshipsApiClient>();
 
-            const string providerRelationshipsApiClientConfigurationRowKey = "SFA.DAS.ProviderRelationships.Api.Client_V2";
-
             For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>()
-                .Get<ProviderRelationshipsApiClientConfiguration>(providerRelationshipsApiClientConfigurationRowKey)).Singleton();
+                .Get<ProviderRelationshipsApiClientConfiguration>(ConfigurationNames.ApiClientBase)).Singleton();
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsApiClientConfiguration>().ReadStore).Singleton();
             For<AzureAdClientConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsApiClientConfiguration>().AzureAdClient).Singleton();
         }
