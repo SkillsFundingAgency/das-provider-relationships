@@ -1,6 +1,5 @@
 using System.Web;
 using SFA.DAS.Authorization;
-using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
