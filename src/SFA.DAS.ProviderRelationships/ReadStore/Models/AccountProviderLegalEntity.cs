@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.Types.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.ReadStore.Models
 {
+    //todo: make properties virtual, so can more easily mock in tests?
     public class AccountProviderLegalEntity : Document, IAccountProviderLegalEntityDto
     {
         [JsonProperty("accountId")]
