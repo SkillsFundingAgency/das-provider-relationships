@@ -21,8 +21,10 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
             {
                 RetryOptions =
                 {
-                    MaxRetryAttemptsOnThrottledRequests = 7,
-                    MaxRetryWaitTimeInSeconds = 120
+                    //todo: we could use different values for web interactive updates vs off-line batch updates
+                    //todo: store these (and api client) values in config?
+                    MaxRetryAttemptsOnThrottledRequests = 4,
+                    MaxRetryWaitTimeInSeconds = 10
                 }
             };
 
