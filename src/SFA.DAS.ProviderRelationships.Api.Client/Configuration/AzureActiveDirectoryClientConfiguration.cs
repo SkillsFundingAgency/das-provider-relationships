@@ -2,7 +2,7 @@ using SFA.DAS.Http;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Configuration
 {
-    public class AzureAdClientConfiguration : IAzureADClientConfiguration
+    public class AzureActiveDirectoryClientConfiguration : IAzureADClientConfiguration
     {
         public string ApiBaseUrl { get; set; }
         public string ClientId { get; set; }

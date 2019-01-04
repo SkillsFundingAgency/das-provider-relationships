@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
             For<ProviderRelationshipsApiClientConfiguration>().Use(c => c.GetInstance<ITableStorageConfigurationService>()
                 .Get<ProviderRelationshipsApiClientConfiguration>(ConfigurationNames.ApiClientBase)).Singleton();
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsApiClientConfiguration>().ReadStore).Singleton();
-            For<AzureAdClientConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsApiClientConfiguration>().AzureAdClient).Singleton();
+            For<AzureActiveDirectoryClientConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsApiClientConfiguration>().AzureActiveDirectoryClient).Singleton();
         }
     }
 }
