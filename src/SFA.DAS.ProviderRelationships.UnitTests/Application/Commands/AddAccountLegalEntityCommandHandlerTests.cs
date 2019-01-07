@@ -34,7 +34,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     }
 
     //todo: we could do with a base class for these command test fixtures
-    //todo: these tests take a long time to run. optimize
     public class AddAccountLegalEntityCommandHandlerTestsFixture
     {
         public ProviderRelationshipsDbContext Db { get; set; }
