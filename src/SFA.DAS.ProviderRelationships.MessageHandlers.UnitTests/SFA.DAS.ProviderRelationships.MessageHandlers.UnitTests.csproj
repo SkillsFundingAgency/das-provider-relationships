@@ -24,11 +24,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Microsoft.CSharp" />
         <Reference Include="System" />
     </ItemGroup>
 
