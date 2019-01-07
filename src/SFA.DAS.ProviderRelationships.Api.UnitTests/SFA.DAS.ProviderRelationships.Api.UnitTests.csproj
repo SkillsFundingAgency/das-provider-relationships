@@ -21,9 +21,4 @@
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Web" />
-    </ItemGroup>
-
 </Project>
