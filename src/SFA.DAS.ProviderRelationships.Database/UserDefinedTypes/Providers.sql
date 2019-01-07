@@ -1,4 +1,4 @@
-﻿CREATE TYPE [dbo].[ProvidersType] AS TABLE
+﻿CREATE TYPE [dbo].[Providers] AS TABLE
 (
     [Ukprn] BIGINT NOT NULL PRIMARY KEY,
     [Name] NVARCHAR(100) NOT NULL
