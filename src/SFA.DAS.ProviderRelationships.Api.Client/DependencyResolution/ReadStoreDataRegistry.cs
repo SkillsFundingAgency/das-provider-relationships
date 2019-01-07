@@ -4,9 +4,9 @@ using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
 {
-    internal class DataRegistry : Registry
+    internal class ReadStoreDataRegistry : Registry
     {
-        public DataRegistry()
+        public ReadStoreDataRegistry()
         {
             For<IDocumentClient>().Add(c => c.GetInstance<IDocumentClientFactory>().CreateDocumentClient()).Named(GetType().FullName).Singleton();
             For<IDocumentClientFactory>().Use<DocumentClientFactory>();
