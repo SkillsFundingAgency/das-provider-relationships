@@ -12,7 +12,6 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
-using SFA.DAS.ProviderRelationships.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -194,7 +193,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
-                new AccountProviderDto(),
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
@@ -254,7 +253,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             }
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
-                new AccountProviderDto(),
+                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
                 {
