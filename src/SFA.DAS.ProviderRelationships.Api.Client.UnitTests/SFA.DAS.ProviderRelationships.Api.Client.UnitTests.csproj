@@ -17,7 +17,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.UnitTests\SFA.DAS.ProviderRelationships.UnitTests.csproj" />
     </ItemGroup>
 
 </Project>
