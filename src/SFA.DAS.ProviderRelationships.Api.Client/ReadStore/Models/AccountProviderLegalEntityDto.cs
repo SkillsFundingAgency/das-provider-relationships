@@ -6,7 +6,6 @@ using SFA.DAS.ProviderRelationships.Types.ReadStore.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models
 {
-    //todo: could we plug in a CamelCaseNamingStrategy? see https://stackoverflow.com/questions/21783137/default-camel-case-of-property-names-in-json-serialization
     internal class AccountProviderLegalEntityDto : IAccountProviderLegalEntityDto
     {
         [JsonProperty("accountLegalEntityId")]
