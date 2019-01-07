@@ -21,7 +21,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Data
             {
                 RetryOptions =
                 {
-                    //todo: store these (and api client) values in config?
                     MaxRetryAttemptsOnThrottledRequests = 4,
                     MaxRetryWaitTimeInSeconds = 10
                 }
