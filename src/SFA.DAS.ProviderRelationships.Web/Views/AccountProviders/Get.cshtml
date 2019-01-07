@@ -24,7 +24,10 @@
                 <tr class="govuk-table__row">
                     <th class="govuk-table__header">Your organisations</th>
                     <th class="govuk-table__header">Permissions</th>
-                    <th class="govuk-table__header"></th>
+                    @if (Model.IsUpdatePermissionsOperationAuthorized)
+                    {
+                        <th class="govuk-table__header"></th>
+                    }
                 </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -47,12 +50,12 @@
                                 @:No permissions set
                             }
                         </td>
-                        <td class="govuk-table__cell das-table__cell--vertical-align-top">
-                            @if (Model.IsUpdatePermissionsOperationAuthorized)
-                            {
+                        @if (Model.IsUpdatePermissionsOperationAuthorized)
+                        {
+                            <td class="govuk-table__cell das-table__cell--vertical-align-top">
                                 <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
-                            }
-                        </td>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
