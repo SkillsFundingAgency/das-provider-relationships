@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[ImportProviders]
-    @providers [dbo].[ProvidersType] READONLY,
+    @providers [dbo].[Providers] READONLY,
     @now DATETIME
 AS
     UPDATE [dbo].[Providers]
