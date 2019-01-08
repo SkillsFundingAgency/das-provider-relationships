@@ -60,6 +60,7 @@
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
+    <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
     <PackageReference Include="SFA.DAS.Authorization" Version="0.4.7" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.4.7" />
@@ -70,8 +71,8 @@
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="SFA.DAS.NServiceBus" Version="7.0.1" />
-    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="7.0.1" />
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="7.0.14" />
+    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="7.0.14" />
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.1.1" />
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="4.1.1" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="4.1.1" />

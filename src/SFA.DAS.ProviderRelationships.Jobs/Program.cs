@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.AutoConfiguration;
@@ -14,6 +15,8 @@ namespace SFA.DAS.ProviderRelationships.Jobs
         {
             using (var container = IoC.Initialize())
             {
+                ServicePointManager.DefaultConnectionLimit = 50;
+                
                 var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
                 var environmentService = container.GetInstance<IEnvironmentService>();
                 var loggerFactory = container.GetInstance<ILoggerFactory>();
