@@ -1,7 +1,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Configuration
 {
-    public static class ConfigurationNames
+    public static class ConfigurationKeys
     {
         public const string ApiClientBase = "SFA.DAS.ProviderRelationships.Api.Client_V2";
     }

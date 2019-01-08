@@ -1,6 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public static class ConfigurationNames
+    public static class ConfigurationKeys
     {
         public const string ProviderRelationships = "SFA.DAS.ProviderRelationships_V2";
         public const string EmployerFeatures = "SFA.DAS.ProviderRelationships.EmployerFeatures";
