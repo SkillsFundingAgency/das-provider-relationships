@@ -92,8 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             
             return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
+        
         [HttpNotFoundForNullModel]
         [Route("updated")]
         public async Task<ActionResult> Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
