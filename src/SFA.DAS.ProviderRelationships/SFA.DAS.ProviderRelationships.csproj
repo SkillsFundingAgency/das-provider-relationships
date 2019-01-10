@@ -9,7 +9,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="7.0.1" />
         <PackageReference Include="FAKEBuildScript" Version="1.2.8" />
-        <PackageReference Include="MediatR" Version="5.1.0" />
+        <PackageReference Include="MediatR" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
@@ -30,20 +30,16 @@
         <PackageReference Include="StructureMap" Version="4.7.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
+        <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.ReadStore\SFA.DAS.ProviderRelationships.ReadStore.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="Microsoft.WindowsAzure.Configuration" />
         <Reference Include="System" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Web" />
     </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ProviderRelationships.ReadStore.Data;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
 {
@@ -56,6 +56,7 @@ namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
                 OfferThroughput = 1000
             };
             
+            //todo: logging from eas
             await _documentClient.CreateDatabaseIfNotExistsAsync(database);
             await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection, requestOptions);
         }
