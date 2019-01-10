@@ -1,3 +1,4 @@
+using StructureMap;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
@@ -7,7 +8,6 @@ using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using SFA.DAS.UnitOfWork.NServiceBus.ClientOutbox;
-using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
 {

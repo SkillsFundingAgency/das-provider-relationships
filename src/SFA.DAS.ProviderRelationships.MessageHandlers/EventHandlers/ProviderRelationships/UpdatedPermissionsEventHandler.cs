@@ -3,19 +3,16 @@ using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
-using UpdatePermissionsCommand = SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissionsCommand;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     public class UpdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissionsEvent>
     {
-        private readonly IReadStoreMediator _readStoreMediator;
         private readonly IMediator _mediator;
 
-        public UpdatedPermissionsEventHandler(IReadStoreMediator readStoreMediator, IMediator mediator)
+        public UpdatedPermissionsEventHandler(IMediator mediator)
         {
-            _readStoreMediator = readStoreMediator;
             _mediator = mediator;
         }
 
@@ -31,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.UserRef,
                     message.GrantedOperations,
                     message.Updated)),
-                _readStoreMediator.Send(new UpdatePermissionsCommand(
+                _mediator.Send(new UpdatePermissionsCommand(
                     message.AccountId,
                     message.AccountLegalEntityId,
                     message.AccountProviderId,

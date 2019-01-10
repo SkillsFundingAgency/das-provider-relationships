@@ -1,13 +1,9 @@
-using SFA.DAS.Http;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.Configuration
 {
-    public class ProviderRelationshipsApiClientConfiguration : IAzureADClientConfiguration
+    public class ProviderRelationshipsApiClientConfiguration
     {
-        public string ApiBaseUrl { get; set; }
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public string IdentifierUri { get; set; }
-        public string Tenant { get; set; }
+        public AzureActiveDirectoryClientConfiguration AzureActiveDirectoryClient { get; set; }
+        public ReadStoreConfiguration ReadStore { get; set; }
     }
 }

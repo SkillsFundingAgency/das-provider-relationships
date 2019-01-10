@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Queries;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
@@ -87,7 +88,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
         public IRestHttpClient RestHttpClient { get; set; }
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
-        internal Mock<IReadStoreMediator> Mediator { get; set; }
+        internal Mock<IMediator> Mediator { get; set; }
         public GetAccountProviderLegalEntitiesWithPermissionResponse GetAccountProviderLegalEntitiesWithPermissionResponse { get; set; }
         public List<AccountProviderLegalEntityDto> Relationships { get; set; }
 
@@ -99,7 +100,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             HttpMessageHandler = new FakeHttpMessageHandler();
             HttpClient = new HttpClient(HttpMessageHandler) { BaseAddress = new Uri("https://foo.bar") };
             RestHttpClient = new RestHttpClient(HttpClient);
-            Mediator = new Mock<IReadStoreMediator>();
+            Mediator = new Mock<IMediator>();
             
             SetupHttpClientGetToReturnAccountProviderLegalEntitiesResponse();
             

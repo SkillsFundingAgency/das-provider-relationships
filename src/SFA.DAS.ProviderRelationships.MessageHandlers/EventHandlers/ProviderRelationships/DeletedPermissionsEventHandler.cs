@@ -3,19 +3,16 @@ using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Messages.Events;
-using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands;
-using SFA.DAS.ProviderRelationships.ReadStore.Mediator;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
     public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissionsEvent>
     {
-        private readonly IReadStoreMediator _readStoreMediator;
         private readonly IMediator _mediator;
 
-        public DeletedPermissionsEventHandler(IReadStoreMediator readStoreMediator, IMediator mediator)
+        public DeletedPermissionsEventHandler(IMediator mediator)
         {
-            _readStoreMediator = readStoreMediator;
             _mediator = mediator;
         }
 
@@ -26,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.AccountProviderLegalEntityId,
                     message.Ukprn,
                     message.Deleted)),
-                _readStoreMediator.Send(new DeletePermissionsCommand(
+                _mediator.Send(new DeletePermissionsCommand(
                     message.AccountProviderLegalEntityId,
                     message.Ukprn,
                     message.Deleted,
