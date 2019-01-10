@@ -17,8 +17,8 @@
         <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
         <PackageReference Include="NUnit" Version="3.11.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
-        <PackageReference Include="SFA.DAS.CosmosDb" Version="0.69.4" />
-        <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="0.69.4" />
+        <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.47" />
         <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
     </ItemGroup>
 
