@@ -16,9 +16,9 @@
         <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
         <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
-        <PackageReference Include="SFA.DAS.Authorization" Version="0.4.7" />
-        <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.4.7" />
-        <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="0.4.7" />
+        <PackageReference Include="SFA.DAS.Authorization" Version="1.1.1" />
+        <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.1.1" />
+        <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="1.1.1" />
         <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
         <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />

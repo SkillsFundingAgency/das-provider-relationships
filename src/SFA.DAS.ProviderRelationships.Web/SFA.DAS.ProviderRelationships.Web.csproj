@@ -62,10 +62,10 @@
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
     <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
-    <PackageReference Include="SFA.DAS.Authorization" Version="0.4.7" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="0.4.7" />
-    <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="0.4.7" />
-    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="0.4.7" />
+    <PackageReference Include="SFA.DAS.Authorization" Version="1.1.1" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.1.1" />
+    <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="1.1.1" />
+    <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="1.1.1" />
     <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.0.1" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
