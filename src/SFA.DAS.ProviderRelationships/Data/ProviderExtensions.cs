@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
             var providers = new SqlParameter("providers", SqlDbType.Structured)
             {
-                TypeName = "ProvidersType",
+                TypeName = "Providers",
                 Value = providersDataTable
             };
             

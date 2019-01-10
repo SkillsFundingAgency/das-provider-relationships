@@ -60,6 +60,7 @@
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.0" />
+    <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
     <PackageReference Include="SFA.DAS.Authorization" Version="1.0.4" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.0.4" />
