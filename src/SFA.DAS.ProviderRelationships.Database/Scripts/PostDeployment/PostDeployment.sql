@@ -16,7 +16,8 @@ IF (
     @@servername NOT LIKE '%-test2-%' AND
     @@servername NOT LIKE '%-pp-%' AND
     @@servername NOT LIKE '%-prd-%' AND
-    @@servername NOT LIKE '%-mo-%'
+    @@servername NOT LIKE '%-mo-%' AND
+    @@servername NOT LIKE '%-demo-%'
 )
 BEGIN
     :r .\SeedDevData.sql

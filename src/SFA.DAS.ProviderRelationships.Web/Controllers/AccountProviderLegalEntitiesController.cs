@@ -7,6 +7,7 @@ using AutoMapper;
 using MediatR;
 using MoreLinq.Extensions;
 using SFA.DAS.Authorization.EmployerFeatures;
+using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
@@ -20,7 +21,7 @@ using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerFeature.ProviderRelationships)]
+    [DasAuthorize(EmployerFeature.ProviderRelationships, EmployerUserRole.Owner)]
     [RoutePrefix("accounts/{accountHashedId}/providers/{accountProviderId}/legalentities/{accountLegalEntityId}")]
     public class AccountProviderLegalEntitiesController : Controller
     {
@@ -34,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-
+        
         [HttpNotFoundForNullModel]
         [Route]
         public async Task<ActionResult> Get(GetAccountProviderLegalEntityRouteValues routeValues)
@@ -45,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             return View(model);
         }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route]
@@ -55,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             
             return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
-
+        
         [HttpNotFoundForNullModel]
         [Route("update")]
         public async Task<ActionResult> Update(UpdateAccountProviderLegalEntityRouteValues routeValues)
@@ -78,7 +79,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             
             return View(model);
         }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("update")]
@@ -91,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             
             return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
-
+        
         [HttpNotFoundForNullModel]
         [Route("updated")]
         public async Task<ActionResult> Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
@@ -102,7 +103,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             
             return View(model);
         }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("updated")]

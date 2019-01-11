@@ -8,10 +8,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         public ProviderRelationshipsApiClientRegistry()
         {
             IncludeRegistry<AutoConfigurationRegistry>();
-            IncludeRegistry<ReadStoreDataRegistry>();
-            IncludeRegistry<MediatorRegistry>();
-            IncludeRegistry<HttpRegistry>();
             IncludeRegistry<ConfigurationRegistry>();
+            IncludeRegistry<HttpRegistry>();
+            IncludeRegistry<MediatorRegistry>();
+            IncludeRegistry<ReadStoreDataRegistry>();
         }
     }
 }

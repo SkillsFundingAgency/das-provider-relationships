@@ -10,10 +10,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
         public MediatorRegistry()
         {
             For<IMediator>().Use<Mediator>();
-            For<ServiceFactory>().Use<ServiceFactory>(ctx => ctx.GetInstance);
-
             For<IRequestHandler<HasPermissionQuery, bool>>().Use<HasPermissionQueryHandler>();
             For<IRequestHandler<HasRelationshipWithPermissionQuery, bool>>().Use<HasRelationshipWithPermissionQueryHandler>();
+            For<ServiceFactory>().Use<ServiceFactory>(ctx => ctx.GetInstance);
         }
     }
 }

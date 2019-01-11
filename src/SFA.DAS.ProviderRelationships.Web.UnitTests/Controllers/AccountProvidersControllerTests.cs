@@ -40,6 +40,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
                 model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
                 model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
+                model.IsAddProviderOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsAddProviderOperationAuthorized);
+                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsUpdatePermissionsOperationAuthorized);
             });
         }
         
@@ -218,6 +220,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
 
                 model.AccountProvider.Should().BeSameAs(f.GetAccountProviderQueryResult.AccountProvider);
+                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProviderQueryResult.IsUpdatePermissionsOperationAuthorized);
             });
         }
 
@@ -278,7 +281,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         ProviderName = "Foo"
                     }
                 },
-                2);
+                2,
+                true);
 
             Mediator.Setup(m => m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
                 .ReturnsAsync(GetAccountProvidersQueryResult);
@@ -435,7 +439,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                             }
                         })
                         .ToList()
-                });
+                },
+                true);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             

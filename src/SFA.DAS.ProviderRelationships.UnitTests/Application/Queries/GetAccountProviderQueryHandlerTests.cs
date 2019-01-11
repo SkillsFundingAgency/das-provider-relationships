@@ -7,7 +7,10 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Moq;
 using NUnit.Framework;
+using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
@@ -57,6 +60,26 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
+
+        [Test]
+        public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationUnauthorized()
+        {
+            return RunAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.IsUpdatePermissionsOperationAuthorized.Should().BeFalse();
+            });
+        }
+
+        [Test]
+        public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationAuthorized()
+        {
+            return RunAsync(f => f.SetAccountProviders().SetOwner(), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+                r.IsUpdatePermissionsOperationAuthorized.Should().BeTrue();
+            });
+        }
     }
 
     public class GetAccountProviderQueryHandlerTestsFixture
@@ -71,16 +94,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
+        public Mock<IAuthorizationService> AuthorizationService { get; set; }
         
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
-            
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
-            
-            Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
+            AuthorizationService = new Mock<IAuthorizationService>();
+            Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider, AuthorizationService.Object);
         }
 
         public Task<GetAccountProviderQueryResult> Handle()
@@ -90,7 +112,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderQueryHandlerTestsFixture SetAccountProviders()
         {
-            //todo: switch setters to internal and makeinternalsvisibleto?
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
             Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
@@ -105,6 +126,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
             Db.Permissions.Add(Permission);
             Db.SaveChanges();
+            
+            return this;
+        }
+
+        public GetAccountProviderQueryHandlerTestsFixture SetOwner()
+        {
+            AuthorizationService.Setup(a => a.IsAuthorizedAsync(EmployerUserRole.Owner)).ReturnsAsync(true);
             
             return this;
         }
