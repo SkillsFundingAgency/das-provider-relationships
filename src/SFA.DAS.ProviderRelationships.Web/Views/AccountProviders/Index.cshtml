@@ -41,7 +41,7 @@
                     <tr class="govuk-table__row">
                         <th class="govuk-table__header">Training providers</th>
                         <th class="govuk-table__header">Permissions</th>
-                        @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountProviders.Any(ap => ap.AccountProviderLegalEntitiesWithPermissionsCount > 0))
+                        @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountLegalEntitiesCount > 1)
                         {
                             <th class="govuk-table__header"></th>
                         }
@@ -69,7 +69,7 @@
                                     }
                                 }
                             </td>
-                            @if (Model.IsUpdatePermissionsOperationAuthorized || accountProvider.AccountProviderLegalEntitiesWithPermissionsCount > 0)
+                            @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountLegalEntitiesCount > 1)
                             {
                                 <td class="govuk-table__cell">
                                     <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">
