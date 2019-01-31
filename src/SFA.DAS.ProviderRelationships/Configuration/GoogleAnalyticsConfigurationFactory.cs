@@ -18,12 +18,12 @@ namespace SFA.DAS.ProviderRelationships.Configuration
             if (_environmentService.IsCurrent(DasEnv.PREPROD))
             {
                 configuration.ContainerId = "GTM-KWQBWGJ";
-                configuration.TrackingId = "UA-83918739-9";
+                configuration.TrackingId = "UA-83918739-10";
             }
             else if (_environmentService.IsCurrent(DasEnv.PROD))
             {
                 configuration.ContainerId = "GTM-KWQBWGJ";
-                configuration.TrackingId = "UA‌-83918739-10";
+                configuration.TrackingId = "UA‌-83918739-9";
             }
 
             return configuration;
