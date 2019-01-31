@@ -22,14 +22,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Configuration
         public void CreateConfiguration_WhenEnvironmentIsPreprod_ThenShouldReturnConfigurationWithContainerIdAndTrackingId()
         {
             Run(f => f.SetEnvironment(DasEnv.PREPROD), f => f.CreateConfiguration(), (f, r) => r.Should().NotBeNull()
-                .And.Match<GoogleAnalyticsConfiguration>(c => c.ContainerId == "GTM-KWQBWGJ" && c.TrackingId == "UA-83918739-9"));
+                .And.Match<GoogleAnalyticsConfiguration>(c => c.ContainerId == "GTM-KWQBWGJ" && c.TrackingId == "UA-83918739-10"));
         }
         
         [Test]
         public void CreateConfiguration_WhenEnvironmentIsProd_ThenShouldReturnConfigurationWithContainerIdAndTrackingId()
         {
             Run(f => f.SetEnvironment(DasEnv.PROD), f => f.CreateConfiguration(), (f, r) => r.Should().NotBeNull()
-                .And.Match<GoogleAnalyticsConfiguration>(c => c.ContainerId == "GTM-KWQBWGJ" && c.TrackingId == "UA‌-83918739-10"));
+                .And.Match<GoogleAnalyticsConfiguration>(c => c.ContainerId == "GTM-KWQBWGJ" && c.TrackingId == "UA‌-83918739-9"));
         }
     }
 
