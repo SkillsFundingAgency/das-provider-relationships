@@ -8,6 +8,7 @@
 
         <MSDeployPackagePublishDependsOn>CopyWebJobs</MSDeployPackagePublishDependsOn>
         <WebJobProjects>$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj;$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj</WebJobProjects>
+        <RootNamespace>SFA.DAS.ProviderPermissions.Host</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
