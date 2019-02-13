@@ -37,6 +37,15 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 c.AccountProviderId == m.AccountProviderId &&
                 c.Ukprn == m.Ukprn));
         }
+
+        [Test]
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendNotifyCommand()
+        {
+            return RunAsync(f => f.Handle(), f => f.VerifySend<UpdatedPermissionsEventNotifyCommand>((c, m) =>
+                m.GrantedOperations.All(fo => c.GrantedOperations.Any(co => co == fo)) &&
+                c.AccountProviderId == m.AccountProviderId &&
+                c.Ukprn == m.Ukprn));
+        }
     }
 
     internal class UpdatedPermissionsEventHandlerTestsFixture : EventHandlerTestsFixture<UpdatedPermissionsEvent, UpdatedPermissionsEventHandler>
