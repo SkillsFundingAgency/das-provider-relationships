@@ -23,8 +23,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.AccountProviderId,
                     It.Is<ProviderEmailRequest>(r =>
                         r.TemplateId == "UpdatedPermissionsEventNotification" &&
-                        r.Tokens["GrantedOperations"] == f.GrantedOperations.ToString() &&
-                        r.Tokens["AccountProvider"] == f.Ukprn.ToString()))));
+                        r.Tokens["GrantedOperations"] == f.ExpectedOperationsString &&
+                        r.Tokens["Ukprn"] == f.Ukprn.ToString()
+                        ))));
         }
     }
 
@@ -32,15 +33,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public UpdatedPermissionsEventNotifyCommand Command { get; set; }
         public IRequestHandler<UpdatedPermissionsEventNotifyCommand, Unit> Handler { get; set; }
-        public Mock<IAccountApiClient> Client { get; set; }
+        public Mock<IPasAccountApiClient> Client { get; set; }
         public long AccountProviderId { get; set; }
         public long Ukprn { get; set; }
         public HashSet<Operation> GrantedOperations { get; set; }
+        public string ExpectedOperationsString { get; set; }
 
         public UpdatedPermissionsEventNotifyCommandHandlerTestsFixture()
         {
+            AccountProviderId = 112;
+            Ukprn = 114;
+            GrantedOperations = new HashSet<Operation>{ Operation.CreateCohort };
+            ExpectedOperationsString = "CreateCohort";
+
             Command = new UpdatedPermissionsEventNotifyCommand(AccountProviderId, Ukprn, GrantedOperations);
-            Client = new Mock<IAccountApiClient>();
+            Client = new Mock<IPasAccountApiClient>();
             Handler = new UpdatedPermissionsEventNotifyCommandHandler(Client.Object);
         }
 
@@ -48,5 +55,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             await Handler.Handle(Command, CancellationToken.None);
         }
+
+        
     }
 }
