@@ -1,6 +1,8 @@
 using System.Web;
 using SFA.DAS.Authorization;
 using SFA.DAS.NLog.Logger;
+using SFA.DAS.PAS.Account.Api.Client;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
@@ -21,6 +23,8 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();
             For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
+            For<IPasAccountApiClient>().Use<PasAccountApiClient>();
+            For<IPasAccountApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().PasAccountApi);
 
             Scan(s =>
             {
