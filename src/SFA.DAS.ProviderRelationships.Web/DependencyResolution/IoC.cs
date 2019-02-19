@@ -1,3 +1,4 @@
+using System;
 using StructureMap;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerFeatures;
@@ -5,6 +6,7 @@ using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
+using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;
 using SFA.DAS.UnitOfWork.NServiceBus.ClientOutbox;
@@ -15,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
     {
         public static IContainer Initialize()
         {
-            return new Container(c =>
+            var container = new Container(c =>
             {
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
@@ -35,6 +37,20 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
+
+            var whatIHave = container.WhatDoIHave();
+
+            try
+            {
+                var controller = container.GetInstance<AccountProvidersController>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return container;
         }
     }
 }

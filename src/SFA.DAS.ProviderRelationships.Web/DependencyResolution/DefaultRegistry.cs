@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.ProviderRelationships.Web.Logging;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using StructureMap;
+using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
 {
