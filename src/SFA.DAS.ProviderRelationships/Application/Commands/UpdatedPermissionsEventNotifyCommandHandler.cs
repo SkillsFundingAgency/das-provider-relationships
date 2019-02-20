@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
     {
         private readonly IPasAccountApiClient _client;
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
-        private const string TemplateId = "UpdatedPermissionsEventNotification";
+        private const string TemplateId = "ba647e75-c105-4c79-9d49-3a49d446a2ea";
 
         public UpdatedPermissionsEventNotifyCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
         {
