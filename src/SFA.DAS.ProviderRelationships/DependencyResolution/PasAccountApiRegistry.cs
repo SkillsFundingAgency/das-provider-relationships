@@ -11,14 +11,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public PasAccountApiRegistry()
         {
             For<IPasAccountApiConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<PasAccountApiConfiguration>()).Singleton();
-            For<IPasAccountApiClient>().Use(c => BuildPasConfig(c));
-        }
-
-        public static IPasAccountApiClient BuildPasConfig(IContext c)
-        {
-            var autoConfig = c.GetInstance<IAutoConfigurationService>();
-            var provConfig = autoConfig.Get<ProviderRelationshipsConfiguration>();
-            return new PasAccountApiClient(provConfig.PasAccountApi);
+            For<IPasAccountApiClient>().Use(c => new PasAccountApiClient(c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsConfiguration>().PasAccountApi));
         }
     }
 }
