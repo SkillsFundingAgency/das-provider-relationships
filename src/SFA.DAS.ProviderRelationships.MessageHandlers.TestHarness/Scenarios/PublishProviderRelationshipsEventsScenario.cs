@@ -38,6 +38,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
             await _messageSession.Publish(new DeletedPermissionsEvent(
                 accountProviderLegalEntityId,
                 ukprn,
+                accountId,
+                accountProviderId,
                 DateTime.UtcNow));
 
             await _messageSession.Publish(new AddedAccountProviderEvent(

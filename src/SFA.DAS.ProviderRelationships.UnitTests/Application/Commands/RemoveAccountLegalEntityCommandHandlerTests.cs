@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldPublishDeletedPermissionsEvents()
         {
             return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().Should().AllBeOfType<DeletedPermissionsEvent>()
-                .And.BeEquivalentTo(f.AccountProviderLegalEntities.Select(aple => new DeletedPermissionsEvent(aple.Id, f.AccountProvider.ProviderUkprn, f.Command.Removed))));
+                .And.BeEquivalentTo(f.AccountProviderLegalEntities.Select(aple => new DeletedPermissionsEvent(aple.Id, f.AccountProvider.ProviderUkprn, f.Account.Id, f.AccountProvider.Id, f.Command.Removed))));
         }
         
         [Test]

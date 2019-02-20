@@ -23,10 +23,17 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
 
         [Test]
-        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendAuditCommand()
+        public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendAuditCommand()
         {
             return RunAsync(f => f.Handle(), f => f.VerifySend<DeletedPermissionsEventAuditCommand>((c, m) =>
                 c.Deleted == m.Deleted && c.AccountProviderLegalEntityId == m.AccountProviderLegalEntityId && c.Ukprn == m.Ukprn));
+        }
+
+        [Test]
+        public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendNotifyCommand()
+        {
+            return RunAsync(f => f.Handle(), f => f.VerifySend<DeletedPermissionsEventNotifyCommand>((c, m) =>
+                c.AccountId == m.AccountId && c.AccountProviderId == m.AccountProviderId));
         }
     }
 

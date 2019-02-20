@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SFA.DAS.PAS.Account.Api.Client;
+using SFA.DAS.PAS.Account.Api.Types;
+using SFA.DAS.ProviderRelationships.Data;
+
+namespace SFA.DAS.ProviderRelationships.Application.Commands
+{
+    public class DeletedPermissionsEventNotifyCommandHandler : AsyncRequestHandler<DeletedPermissionsEventNotifyCommand>
+    {
+        private readonly IPasAccountApiClient _client;
+        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        private const string TemplateId = "52708558-d8db-4b47-9738-9e7a6f319169";
+
+        public DeletedPermissionsEventNotifyCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
+        {
+            _client = client;
+            _db = db;
+        }
+
+        protected override async Task Handle(DeletedPermissionsEventNotifyCommand request, CancellationToken cancellationToken)
+        {
+            var organisation = await _db.Value.Accounts.SingleAsync(a => a.Id == request.AccountId, cancellationToken);
+
+            await _client.SendEmailToAllProviderRecipients(request.AccountProviderId, new ProviderEmailRequest {
+                TemplateId = TemplateId,
+                Tokens = new Dictionary<string, string> {
+                    { "organisation_name", organisation.Name }
+                }
+            });
+        }
+    }
+}

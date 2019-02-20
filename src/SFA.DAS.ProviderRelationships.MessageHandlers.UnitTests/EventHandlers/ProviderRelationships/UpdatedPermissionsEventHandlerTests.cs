@@ -42,9 +42,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendNotifyCommand()
         {
             return RunAsync(f => f.Handle(), f => f.VerifySend<UpdatedPermissionsEventNotifyCommand>((c, m) =>
-                m.GrantedOperations.All(fo => c.GrantedOperations.Any(co => co == fo)) &&
-                c.AccountProviderId == m.AccountProviderId &&
-                c.Ukprn == m.Ukprn));
+                c.AccountId == m.AccountId &&
+                c.AccountProviderId == m.AccountProviderId));
         }
     }
 
