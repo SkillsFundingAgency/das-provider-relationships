@@ -37,16 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
-            var whatIHave = container.WhatDoIHave();
-            try
-            {
-                container.GetInstance<AccountProvidersController>();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+
             return container;
         }
     }
