@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
     {
         private readonly IPasAccountApiClient _client;
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
-        private const string TemplateId = "52708558-d8db-4b47-9738-9e7a6f319169";
+        private const string TemplateId = "DeletedPermissionsEventNotification";
 
         public DeletedPermissionsEventNotifyCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
         {

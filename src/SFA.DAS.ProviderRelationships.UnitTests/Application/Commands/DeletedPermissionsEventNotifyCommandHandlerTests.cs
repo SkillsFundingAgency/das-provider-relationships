@@ -17,44 +17,44 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {
     [TestFixture]
     [Parallelizable]
-    public class UpdatedPermissionsEventNotifyCommandHandlerTests : FluentTest<UpdatedPermissionsEventNotifyCommandHandlerTestsFixture>
+    public class DeletedPermissionsEventNotifyCommandHandlerTests : FluentTest<DeletedPermissionsEventNotifyCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingUpdatedPermissionsEventNotifyCommand_ThenShouldCallClientToNotify()
+        public Task Handle_WhenHandlingDeletedPermissionsEventNotifyCommand_ThenShouldCallClientToNotify()
         {
             return RunAsync(f => f.Handle(),
                 f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.AccountProviderId,
                     It.Is<ProviderEmailRequest>(r =>
-                        r.TemplateId == "UpdatedPermissionsEventNotification" &&
+                        r.TemplateId == "DeletedPermissionsEventNotification" &&
                         r.Tokens["organisation_name"] == f.OrganisationName
-                        ))));
+                    ))));
         }
     }
 
-    public class UpdatedPermissionsEventNotifyCommandHandlerTestsFixture
+    public class DeletedPermissionsEventNotifyCommandHandlerTestsFixture
     {
-        public UpdatedPermissionsEventNotifyCommand Command { get; set; }
-        public IRequestHandler<UpdatedPermissionsEventNotifyCommand, Unit> Handler { get; set; }
+        public DeletedPermissionsEventNotifyCommand Command { get; set; }
+        public IRequestHandler<DeletedPermissionsEventNotifyCommand, Unit> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long AccountProviderId { get; set; }
         public long AccountId { get; set; }
         public string OrganisationName { get; set; }
 
-        public UpdatedPermissionsEventNotifyCommandHandlerTestsFixture()
+        public DeletedPermissionsEventNotifyCommandHandlerTestsFixture()
         {
             AccountProviderId = 112;
             AccountId = 114;
             OrganisationName = "TestOrg";
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            Command = new UpdatedPermissionsEventNotifyCommand(AccountProviderId, AccountId);
+            Command = new DeletedPermissionsEventNotifyCommand(AccountProviderId, AccountId);
             Client = new Mock<IPasAccountApiClient>();
 
             Db.Accounts.Add(EntityActivator.CreateInstance<Account>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
             Db.SaveChanges();
 
-            Handler = new UpdatedPermissionsEventNotifyCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            Handler = new DeletedPermissionsEventNotifyCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
         public async Task Handle()
@@ -62,6 +62,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             await Handler.Handle(Command, CancellationToken.None);
         }
 
-        
+
     }
 }
