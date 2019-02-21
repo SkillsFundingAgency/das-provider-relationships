@@ -4,16 +4,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
 {
     public class DeletedPermissionsEventNotifyCommand : IRequest
     {
-        public long AccountProviderId { get; set; }
+        public long Ukprn { get; set; }
         public long AccountId { get; set; }
 
         public DeletedPermissionsEventNotifyCommand
         (
-            long accountProviderId,
+            long ukprn,
             long accountId
         )
         {
-            AccountProviderId = accountProviderId;
+            Ukprn = ukprn;
             AccountId = accountId;
         }
     }

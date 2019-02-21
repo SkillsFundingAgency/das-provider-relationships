@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         {
             var organisation = await _db.Value.Accounts.SingleAsync(a => a.Id == request.AccountId, cancellationToken);
 
-            await _client.SendEmailToAllProviderRecipients(request.AccountProviderId, new ProviderEmailRequest {
+            await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
                 TemplateId = TemplateId,
                 Tokens = new Dictionary<string, string> {
                     { "organisation_name", organisation.Name }

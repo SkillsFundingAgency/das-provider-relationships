@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendNotifyCommand()
         {
             return RunAsync(f => f.Handle(), f => f.VerifySend<DeletedPermissionsEventNotifyCommand>((c, m) =>
-                c.AccountId == m.AccountId && c.AccountProviderId == m.AccountProviderId));
+                c.AccountId == m.AccountId && c.Ukprn == m.Ukprn));
         }
     }
 

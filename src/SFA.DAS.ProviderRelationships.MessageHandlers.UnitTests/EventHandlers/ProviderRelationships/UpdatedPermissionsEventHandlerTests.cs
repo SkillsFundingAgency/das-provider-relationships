@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         {
             return RunAsync(f => f.Handle(), f => f.VerifySend<UpdatedPermissionsEventNotifyCommand>((c, m) =>
                 c.AccountId == m.AccountId &&
-                c.AccountProviderId == m.AccountProviderId));
+                c.Ukprn == m.Ukprn));
         }
     }
 
