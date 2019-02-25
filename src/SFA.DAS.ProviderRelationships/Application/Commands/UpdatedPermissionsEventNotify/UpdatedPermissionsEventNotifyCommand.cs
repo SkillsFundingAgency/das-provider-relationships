@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify
 {
     public class UpdatedPermissionsEventNotifyCommand : IRequest
     {

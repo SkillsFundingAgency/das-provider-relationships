@@ -8,7 +8,7 @@ using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands.DeletedPermissionsEventNotify
 {
     public class DeletedPermissionsEventNotifyCommandHandler : AsyncRequestHandler<DeletedPermissionsEventNotifyCommand>
     {
