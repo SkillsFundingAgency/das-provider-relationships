@@ -23,8 +23,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IPostAuthenticationHandler>().Use<PostAuthenticationHandler>();
             For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
-            For<IPasAccountApiClient>().Use<PasAccountApiClient>();
-            For<IPasAccountApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().PasAccountApi);
 
             Scan(s =>
             {

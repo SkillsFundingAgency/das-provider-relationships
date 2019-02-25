@@ -35,6 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<OidcAuthenticationRegistry>();
                 c.AddRegistry<ProviderRelationshipsApiClientRegistry>();
                 c.AddRegistry<StartupRegistry>();
+                c.AddRegistry<PasAccountApiRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
 
