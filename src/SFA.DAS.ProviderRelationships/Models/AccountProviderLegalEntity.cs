@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             _permissions.Clear();
             
-            Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountProvider.AccountId, AccountProviderId, deleted));
+            Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
         }
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)

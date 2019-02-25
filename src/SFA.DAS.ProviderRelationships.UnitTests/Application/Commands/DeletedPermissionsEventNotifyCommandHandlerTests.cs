@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenHandlingDeletedPermissionsEventNotifyCommand_ThenShouldCallClientToNotify()
         {
             return RunAsync(f => f.Handle(),
-                f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.AccountProviderId,
+                f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Ukprn,
                     It.Is<ProviderEmailRequest>(r =>
                         r.TemplateId == "DeletedPermissionsEventNotification" &&
                         r.Tokens["organisation_name"] == f.OrganisationName
@@ -38,21 +38,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public IRequestHandler<DeletedPermissionsEventNotifyCommand, Unit> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
-        public long AccountProviderId { get; set; }
-        public long AccountId { get; set; }
+        public long Ukprn { get; set; }
+        public long AccountLegalEntityId { get; set; }
         public string OrganisationName { get; set; }
 
         public DeletedPermissionsEventNotifyCommandHandlerTestsFixture()
         {
-            AccountProviderId = 112;
-            AccountId = 114;
+            Ukprn = 228876542;
+            AccountLegalEntityId = 116;
             OrganisationName = "TestOrg";
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            Command = new DeletedPermissionsEventNotifyCommand(AccountProviderId, AccountId);
+            Command = new DeletedPermissionsEventNotifyCommand(Ukprn, AccountLegalEntityId);
             Client = new Mock<IPasAccountApiClient>();
 
-            Db.Accounts.Add(EntityActivator.CreateInstance<Account>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
+            Db.AccountLegalEntities.Add(EntityActivator.CreateInstance<AccountLegalEntity>().Set(a => a.Id, AccountLegalEntityId).Set(a => a.Name, OrganisationName));
             Db.SaveChanges();
 
             Handler = new DeletedPermissionsEventNotifyCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));

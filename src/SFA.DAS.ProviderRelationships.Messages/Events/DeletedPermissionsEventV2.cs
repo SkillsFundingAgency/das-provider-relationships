@@ -6,14 +6,12 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
     public class DeletedPermissionsEventV2 : DeletedPermissionsEvent
 #pragma warning restore 618
     {
-        public long AccountId { get; }
-        public long AccountProviderId { get; }
+        public long AccountLegalEntityId { get; }
 
-        public DeletedPermissionsEventV2(long accountProviderLegalEntityId, long ukprn, long accountId, long accountProviderId, DateTime deleted)
+        public DeletedPermissionsEventV2(long accountProviderLegalEntityId, long ukprn, long accountLegalEntityId, DateTime deleted)
             : base(accountProviderLegalEntityId, ukprn, deleted)
         {
-            AccountId = accountId;
-            AccountProviderId = accountProviderId;
+            AccountLegalEntityId = accountLegalEntityId;
         }
     }
 }

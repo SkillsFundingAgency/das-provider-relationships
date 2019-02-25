@@ -5,16 +5,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.DeletedPermissionsE
     public class DeletedPermissionsEventNotifyCommand : IRequest
     {
         public long Ukprn { get; set; }
-        public long AccountId { get; set; }
+        public long AccountLegalEntityId { get; set; }
 
         public DeletedPermissionsEventNotifyCommand
         (
             long ukprn,
-            long accountId
+            long accountLegalEntityId
         )
         {
             Ukprn = ukprn;
-            AccountId = accountId;
+            AccountLegalEntityId = accountLegalEntityId;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Command = new UpdatedPermissionsEventNotifyCommand(AccountProviderId, AccountId);
             Client = new Mock<IPasAccountApiClient>();
 
-            Db.Accounts.Add(EntityActivator.CreateInstance<Account>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
+            Db.AccountLegalEntities.Add(EntityActivator.CreateInstance<AccountLegalEntity>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
             Db.SaveChanges();
 
             Handler = new UpdatedPermissionsEventNotifyCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
