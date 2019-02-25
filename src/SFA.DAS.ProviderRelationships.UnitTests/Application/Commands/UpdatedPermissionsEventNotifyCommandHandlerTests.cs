@@ -18,10 +18,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {
     [TestFixture]
     [Parallelizable]
-    public class UpdatedPermissionsEventNotifyCommandHandlerTests : FluentTest<UpdatedPermissionsEventNotifyCommandHandlerTestsFixture>
+    public class SendUpdatedPermissionsNotificationCommandHandlerTests : FluentTest<SendUpdatedPermissionsNotificationCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingUpdatedPermissionsEventNotifyCommand_ThenShouldCallClientToNotify()
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotify()
         {
             return RunAsync(f => f.Handle(),
                 f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.AccountProviderId,
@@ -32,30 +32,30 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         }
     }
 
-    public class UpdatedPermissionsEventNotifyCommandHandlerTestsFixture
+    public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture
     {
-        public UpdatedPermissionsEventNotifyCommand Command { get; set; }
-        public IRequestHandler<UpdatedPermissionsEventNotifyCommand, Unit> Handler { get; set; }
+        public SendUpdatedPermissionsNotificationCommand Command { get; set; }
+        public IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long AccountProviderId { get; set; }
         public long AccountId { get; set; }
         public string OrganisationName { get; set; }
 
-        public UpdatedPermissionsEventNotifyCommandHandlerTestsFixture()
+        public SendUpdatedPermissionsNotificationCommandHandlerTestsFixture()
         {
             AccountProviderId = 112;
             AccountId = 114;
             OrganisationName = "TestOrg";
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            Command = new UpdatedPermissionsEventNotifyCommand(AccountProviderId, AccountId);
+            Command = new SendUpdatedPermissionsNotificationCommand(AccountProviderId, AccountId);
             Client = new Mock<IPasAccountApiClient>();
 
             Db.AccountLegalEntities.Add(EntityActivator.CreateInstance<AccountLegalEntity>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
             Db.SaveChanges();
 
-            Handler = new UpdatedPermissionsEventNotifyCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 
         public async Task Handle()

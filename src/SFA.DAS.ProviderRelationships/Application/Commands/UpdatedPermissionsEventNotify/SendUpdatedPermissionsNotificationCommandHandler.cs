@@ -8,21 +8,21 @@ using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.DeletedPermissionsEventNotify
+namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify
 {
-    public class DeletedPermissionsEventNotifyCommandHandler : AsyncRequestHandler<DeletedPermissionsEventNotifyCommand>
+    public class SendUpdatedPermissionsNotificationCommandHandler : AsyncRequestHandler<SendUpdatedPermissionsNotificationCommand>
     {
         private readonly IPasAccountApiClient _client;
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
-        private const string TemplateId = "DeletedPermissionsEventNotification";
+        private const string TemplateId = "UpdatedPermissionsEventNotification";
 
-        public DeletedPermissionsEventNotifyCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
+        public SendUpdatedPermissionsNotificationCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
         {
             _client = client;
             _db = db;
         }
 
-        protected override async Task Handle(DeletedPermissionsEventNotifyCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(SendUpdatedPermissionsNotificationCommand request, CancellationToken cancellationToken)
         {
             var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 

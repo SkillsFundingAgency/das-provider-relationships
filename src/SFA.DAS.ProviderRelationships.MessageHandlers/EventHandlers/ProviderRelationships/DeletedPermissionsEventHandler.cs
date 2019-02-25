@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.Ukprn,
                     message.Deleted,
                     context.MessageId)),
-                _mediator.Send(new DeletedPermissionsEventNotifyCommand(
+                _mediator.Send(new SendDeletedPermissionsNotificationCommand(
                     message.Ukprn,
                     message.AccountLegalEntityId)));
         }
