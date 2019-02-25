@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
         {
             var userRef = Guid.NewGuid();
             const long accountId = 1;
-            const long accountLegalEntityId = 3;
+            const long accountLegalEntityId = 2;
             const long accountProviderId = 4;
             const long accountProviderLegalEntityId = 34;
             const long ukprn = 12345678;
