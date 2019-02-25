@@ -11,16 +11,16 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
 {
     [TestFixture]
     [Parallelizable]
-    public class DeletedPermissionsEventHandlerTests : FluentTest<DeletedPermissionsEventHandlerTestsFixture>
+    public class DeletedPermissionsEventV2HandlerTests : FluentTest<DeletedPermissionsEventV2HandlerTestsFixture>
     {
         [Test]
         public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendDeletePermissionsCommand()
         {
-            return RunAsync(f => f.Handle(),f => f.VerifySend<DeletePermissionsCommand>((c, m) =>
-                        c.AccountProviderLegalEntityId == m.AccountProviderLegalEntityId &&
-                        c.Ukprn == m.Ukprn &&
-                        c.Deleted == m.Deleted &&
-                        c.MessageId == f.MessageId));
+            return RunAsync(f => f.Handle(), f => f.VerifySend<DeletePermissionsCommand>((c, m) =>
+                c.AccountProviderLegalEntityId == m.AccountProviderLegalEntityId &&
+                c.Ukprn == m.Ukprn &&
+                c.Deleted == m.Deleted &&
+                c.MessageId == f.MessageId));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
         }
     }
 
-    public class DeletedPermissionsEventHandlerTestsFixture : EventHandlerTestsFixture<DeletedPermissionsEvent, DeletedPermissionsEventHandler>
+    public class DeletedPermissionsEventV2HandlerTestsFixture : EventHandlerTestsFixture<DeletedPermissionsEventV2, DeletedPermissionsEventV2Handler>
     {
     }
 }

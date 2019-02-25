@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
     {
         public static IContainer Initialize()
         {
-            var container = new Container(c =>
+            return new Container(c =>
             {
                 c.AddRegistry<ApprenticeshipInfoServiceApiRegistry>();
                 c.AddRegistry<AuthorizationRegistry>();
@@ -38,8 +38,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<PasAccountApiRegistry>();
                 c.AddRegistry<DefaultRegistry>();
             });
-
-            return container;
         }
     }
 }

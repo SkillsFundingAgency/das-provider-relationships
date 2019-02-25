@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 new HashSet<Operation>(),
                 DateTime.UtcNow));
 
-            await _messageSession.Publish(new DeletedPermissionsEvent(
+            await _messageSession.Publish(new DeletedPermissionsEventV2(
                 accountProviderLegalEntityId,
                 ukprn,
                 accountId,
