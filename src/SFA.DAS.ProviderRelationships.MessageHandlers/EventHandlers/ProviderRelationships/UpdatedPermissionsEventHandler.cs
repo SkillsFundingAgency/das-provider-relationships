@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     context.MessageId)),
                 _mediator.Send(new UpdatedPermissionsEventNotifyCommand(
                     message.Ukprn,
-                    message.AccountId)));
+                    message.AccountLegalEntityId)));
         }
     }
 }

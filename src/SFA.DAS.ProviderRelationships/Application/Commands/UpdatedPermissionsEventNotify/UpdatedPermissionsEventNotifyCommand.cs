@@ -5,16 +5,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsE
     public class UpdatedPermissionsEventNotifyCommand : IRequest
     {
         public long Ukprn { get; set; }
-        public long AccountId { get; set; }
+        public long AccountLegalEntityId { get; set; }
 
         public UpdatedPermissionsEventNotifyCommand
         (
             long ukprn,
-            long accountId
+            long accountLegalEntityId
         )
         {
             Ukprn = ukprn;
-            AccountId = accountId;
+            AccountLegalEntityId = accountLegalEntityId;
         }
     }
 }

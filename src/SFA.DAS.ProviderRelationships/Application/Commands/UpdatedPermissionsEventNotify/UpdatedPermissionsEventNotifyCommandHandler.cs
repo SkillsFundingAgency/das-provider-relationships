@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsE
 
         protected override async Task Handle(UpdatedPermissionsEventNotifyCommand request, CancellationToken cancellationToken)
         {
-            var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountId, cancellationToken);
+            var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
             await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
                 TemplateId = TemplateId,
