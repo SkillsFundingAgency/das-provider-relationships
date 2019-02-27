@@ -2,22 +2,22 @@ using System.Threading.Tasks;
 using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.DeletedPermissionsEventNotify;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
-#pragma warning disable 618
-    public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissionsEvent>
+    public class DeletedPermissionsEventV2Handler : IHandleMessages<DeletedPermissionsEventV2>
     {
         private readonly IMediator _mediator;
 
-        public DeletedPermissionsEventHandler(IMediator mediator)
+        public DeletedPermissionsEventV2Handler(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
+        public Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
         {
             return Task.WhenAll(
                 _mediator.Send(new DeletedPermissionsEventAuditCommand(
@@ -28,8 +28,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.AccountProviderLegalEntityId,
                     message.Ukprn,
                     message.Deleted,
-                    context.MessageId)));
+                    context.MessageId)),
+                _mediator.Send(new SendDeletedPermissionsNotificationCommand(
+                    message.Ukprn,
+                    message.AccountLegalEntityId)));
         }
     }
-#pragma warning restore 618
 }
