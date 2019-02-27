@@ -8,7 +8,7 @@ using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify
+namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification
 {
     public class SendUpdatedPermissionsNotificationCommandHandler : AsyncRequestHandler<SendUpdatedPermissionsNotificationCommand>
     {

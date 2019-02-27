@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
-using SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;

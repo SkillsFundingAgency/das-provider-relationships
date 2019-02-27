@@ -2,7 +2,7 @@
 using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
-using SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 

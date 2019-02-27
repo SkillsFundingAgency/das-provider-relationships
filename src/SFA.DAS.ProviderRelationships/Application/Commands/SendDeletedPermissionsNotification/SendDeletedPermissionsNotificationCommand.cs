@@ -1,13 +1,13 @@
 ﻿using MediatR;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.UpdatedPermissionsEventNotify
+namespace SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification
 {
-    public class SendUpdatedPermissionsNotificationCommand : IRequest
+    public class SendDeletedPermissionsNotificationCommand : IRequest
     {
         public long Ukprn { get; set; }
         public long AccountLegalEntityId { get; set; }
 
-        public SendUpdatedPermissionsNotificationCommand
+        public SendDeletedPermissionsNotificationCommand
         (
             long ukprn,
             long accountLegalEntityId
