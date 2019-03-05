@@ -20,15 +20,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
         public Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
         {
             return Task.WhenAll(
-                _mediator.Send(new DeletedPermissionsEventAuditCommand(
-                    message.AccountProviderLegalEntityId,
-                    message.Ukprn,
-                    message.Deleted)),
-                _mediator.Send(new DeletePermissionsCommand(
-                    message.AccountProviderLegalEntityId,
-                    message.Ukprn,
-                    message.Deleted,
-                    context.MessageId)),
                 _mediator.Send(new SendDeletedPermissionsNotificationCommand(
                     message.Ukprn,
                     message.AccountLegalEntityId)));
