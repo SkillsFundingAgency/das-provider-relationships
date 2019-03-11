@@ -35,8 +35,8 @@
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
-        <PackageReference Include="SFA.DAS.PAS.Account.Api.Client" Version="1.0.0.40701" />
-        <PackageReference Include="SFA.DAS.PAS.Account.Api.Types" Version="1.0.0.40701" />
+        <PackageReference Include="SFA.DAS.PAS.Account.Api.Client" Version="1.1.683" />
+        <PackageReference Include="SFA.DAS.PAS.Account.Api.Types" Version="1.1.683" />
     </ItemGroup>
 
     <ItemGroup>

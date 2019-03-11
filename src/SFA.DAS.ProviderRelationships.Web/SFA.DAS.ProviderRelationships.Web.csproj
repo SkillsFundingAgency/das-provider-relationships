@@ -75,7 +75,7 @@
     <PackageReference Include="SFA.DAS.NServiceBus" Version="7.0.14" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="7.0.14" />
     <PackageReference Include="SFA.DAS.PAS.Account.Api.Types">
-      <Version>1.0.0.40701</Version>
+      <Version>1.1.683</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="4.1.1" />
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="4.1.1" />
