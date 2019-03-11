@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Messages", "SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj", "{6A265CC1-5196-4032-8645-1AE26E27D2AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderPermissions.Host", "SFA.DAS.ProviderPermissions.Host\SFA.DAS.ProviderPermissions.Host.csproj", "{1E68D7F6-06B8-4F24-A1CC-BF2950403000}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Host", "SFA.DAS.ProviderRelationships.Host\SFA.DAS.ProviderRelationships.Host.csproj", "{1E68D7F6-06B8-4F24-A1CC-BF2950403000}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Jobs", "SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj", "{AA3B4779-D497-4761-9228-DFD8233DF77D}"
 EndProject
