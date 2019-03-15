@@ -82,6 +82,7 @@
     <Compile Include="Authentication\AuthenticationStartup.cs" />
     <Compile Include="Authentication\IAuthenticationStartup.cs" />
     <Compile Include="DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
+    <Compile Include="ExceptionLoggers\ExceptionLogger.cs" />
     <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
