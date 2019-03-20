@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermiss
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships
 {
+#pragma warning disable 618
     public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissionsEvent>
     {
         private readonly IMediator _mediator;
@@ -30,4 +31,5 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     context.MessageId)));
         }
     }
+#pragma warning restore 618
 }

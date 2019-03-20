@@ -2,6 +2,7 @@
 using MediatR;
 using NServiceBus;
 using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 
@@ -36,7 +37,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.Ukprn,
                     message.GrantedOperations,
                     message.Updated,
-                    context.MessageId)));
+                    context.MessageId)),
+                _mediator.Send(new SendUpdatedPermissionsNotificationCommand(
+                    message.Ukprn,
+                    message.AccountLegalEntityId)));
         }
     }
 }

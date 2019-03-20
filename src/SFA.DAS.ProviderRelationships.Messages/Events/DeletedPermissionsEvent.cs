@@ -2,6 +2,7 @@ using System;
 
 namespace SFA.DAS.ProviderRelationships.Messages.Events
 {
+    [Obsolete("Use DeletedPermissionsEventV2")]
     public class DeletedPermissionsEvent
     {
         public long AccountProviderLegalEntityId { get; }

@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
         {
             var userRef = Guid.NewGuid();
             const long accountId = 1;
-            const long accountLegalEntityId = 3;
+            const long accountLegalEntityId = 2;
             const long accountProviderId = 4;
             const long accountProviderLegalEntityId = 34;
             const long ukprn = 12345678;
@@ -35,9 +35,10 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 new HashSet<Operation>(),
                 DateTime.UtcNow));
 
-            await _messageSession.Publish(new DeletedPermissionsEvent(
+            await _messageSession.Publish(new DeletedPermissionsEventV2(
                 accountProviderLegalEntityId,
                 ukprn,
+                accountLegalEntityId,
                 DateTime.UtcNow));
 
             await _messageSession.Publish(new AddedAccountProviderEvent(

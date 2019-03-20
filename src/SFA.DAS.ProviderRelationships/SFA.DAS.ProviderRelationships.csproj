@@ -14,6 +14,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+        <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.19.8" />
         <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
         <PackageReference Include="SFA.DAS.Authorization" Version="1.1.1" />
@@ -32,6 +33,8 @@
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="SFA.DAS.PAS.Account.Api.Client" Version="1.1.683" />
+        <PackageReference Include="SFA.DAS.PAS.Account.Api.Types" Version="1.1.683" />
     </ItemGroup>
 
     <ItemGroup>

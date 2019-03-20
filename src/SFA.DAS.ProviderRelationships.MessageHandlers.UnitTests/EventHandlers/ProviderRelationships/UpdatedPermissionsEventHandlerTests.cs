@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
@@ -35,6 +36,14 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.
                 c.AccountLegalEntityId == m.AccountLegalEntityId &&
                 c.AccountProviderLegalEntityId == m.AccountProviderLegalEntityId &&
                 c.AccountProviderId == m.AccountProviderId &&
+                c.Ukprn == m.Ukprn));
+        }
+
+        [Test]
+        public Task Handle_WhenHandlingCreatedAccountEvent_ThenShouldSendNotifyCommand()
+        {
+            return RunAsync(f => f.Handle(), f => f.VerifySend<SendUpdatedPermissionsNotificationCommand>((c, m) =>
+                c.AccountLegalEntityId == m.AccountLegalEntityId &&
                 c.Ukprn == m.Ukprn));
         }
     }
