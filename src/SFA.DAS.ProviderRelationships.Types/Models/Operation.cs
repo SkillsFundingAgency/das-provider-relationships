@@ -2,6 +2,7 @@
 {
     public enum Operation : short
     {
-        CreateCohort = 0
+        CreateCohort = 0,
+        Recruitment = 1
     }
 }
