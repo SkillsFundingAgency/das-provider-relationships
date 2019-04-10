@@ -45,6 +45,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     {
                         IsEnabled = true,
                         Value = Operation.CreateCohort
+                    },
+                    new OperationViewModel
+                    {
+                        IsEnabled = false,
+                        Value = Operation.Recruitment
                     }
                 });
                 
