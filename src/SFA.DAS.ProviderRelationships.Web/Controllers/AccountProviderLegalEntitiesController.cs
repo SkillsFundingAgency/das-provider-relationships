@@ -12,6 +12,7 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
@@ -71,6 +72,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdateAccountProviderLegalEntityViewModel>(result);
+
+            if (result.AccountProviderLegalEntity != null && result.AccountProviderLegalEntity.Operations.Any(p => p == Operation.Recruitment))
+            {
+                operations.Single(p => p.Value == Operation.Recruitment).IsEnabled = true;
+            }
 
             if (model != null)
             {

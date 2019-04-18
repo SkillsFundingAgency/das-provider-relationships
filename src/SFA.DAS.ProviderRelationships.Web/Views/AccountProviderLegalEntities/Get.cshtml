@@ -85,13 +85,28 @@
                                         <fieldset class="govuk-fieldset das-permissions-fieldset--float-right">
                                             <div class="govuk-radios govuk-radios--conditional govuk-radios--inline" data-module="radios">
                                                 <div class="govuk-radios__item">
-                                                    @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, true, new { id = $"operation-{i}-yes", @class = "govuk-radios__input" })
+                                                    @if (Model.Operations[i].IsEnabled)
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, true, new { id = $"operation-{i}-yes", @class = "govuk-radios__input", aria_disabled = "true", disabled = "disabled" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, true, new { id = $"operation-{i}-yes", @class = "govuk-radios__input" })
+                                                    }
+
                                                     <label class="govuk-label govuk-radios__label" for="operation-@i-yes">
                                                         Yes
                                                     </label>
                                                 </div>
                                                 <div class="govuk-radios__item">
-                                                    @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, false, new { id = $"operation-{i}-no", @class = "govuk-radios__input" })
+                                                    @if (Model.Operations[i].IsEnabled)
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, false, new { id = $"operation-{i}-no", @class = "govuk-radios__input", aria_disabled = "true", disabled = "disabled" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.Operations[i].IsEnabled, false, new { id = $"operation-{i}-no", @class = "govuk-radios__input" })
+                                                    }
                                                     <label class="govuk-label govuk-radios__label" for="operation-@i-no">
                                                         No
                                                     </label>
@@ -107,10 +122,7 @@
                                     <td class="govuk-table__cell" colspan="2">
                                         <div class="govuk-inset-text govuk-!-margin-top-0 govuk-!-margin-bottom-2">
                                             <p>
-                                                If you choose ‘No’, the training provider will no longer be able to recruit on your behalf.
-                                            </p>
-                                            <p>
-                                                All vacancies previously created by the provider will remain with them, to transfer vacancies back to you, contact us at <a href="mailto:VacancyServices.RAA@education.gov.uk">VacancyServices.RAA@education.gov.uk</a>
+                                                For support with removing permissions, contact us at <a href="mailto:vacancyservices.raa@education.gov.uk">vacancyservices.raa@education.gov.uk</a>
                                             </p>
                                         </div>
                                     </td>
@@ -126,7 +138,7 @@
                                                 Currently, only training providers that are part of beta testing can recruit apprentices.
                                             </p>
                                             <p>
-                                                Contact your provider if you’re unsure.
+                                                Contact your provider if you're unsure.
                                             </p>
                                         </div>
                                     </td>
