@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Manual\AML-2819_One_off_account_seeding.sql" />
+    <None Include="Scripts\Manual\Stats.sql" />
     <None Include="Scripts\PostDeployment\SeedDevData.sql" />
     <None Include="SFA.DAS.ProviderRelationships.Database.publish.xml" />
   </ItemGroup>
