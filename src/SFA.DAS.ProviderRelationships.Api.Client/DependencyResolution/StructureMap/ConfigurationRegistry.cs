@@ -1,8 +1,8 @@
-using StructureMap;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
+using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.StructureMap
 {
     internal class ConfigurationRegistry : Registry
     {

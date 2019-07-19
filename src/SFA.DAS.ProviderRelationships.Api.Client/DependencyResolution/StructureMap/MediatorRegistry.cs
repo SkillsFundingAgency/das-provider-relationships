@@ -1,9 +1,9 @@
 using MediatR;
-using StructureMap;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
+using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.StructureMap
 {
     internal class MediatorRegistry : Registry
     {
