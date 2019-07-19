@@ -263,9 +263,6 @@
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-62cc6f0a28-v1.woff" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-851b10ccdd-v1.woff2" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.map" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
   </ItemGroup>
   <PropertyGroup>
