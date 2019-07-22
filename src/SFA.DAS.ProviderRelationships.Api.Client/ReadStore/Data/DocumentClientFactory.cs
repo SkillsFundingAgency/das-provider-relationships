@@ -7,25 +7,23 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 {
     public class DocumentClientFactory : IDocumentClientFactory
     {
-        private readonly ReadStoreConfiguration _configuration;
+        private readonly Lazy<IDocumentClient> _documentClient;
 
         public DocumentClientFactory(ReadStoreConfiguration configuration)
         {
-            _configuration = configuration;
-        }
-
-        public IDocumentClient CreateDocumentClient()
-        {
-            var connectionPolicy = new ConnectionPolicy
+            _documentClient = new Lazy<IDocumentClient>(() => new DocumentClient(new Uri(configuration.Uri), configuration.AuthKey, new ConnectionPolicy
             {
                 RetryOptions =
                 {
                     MaxRetryAttemptsOnThrottledRequests = 2,
                     MaxRetryWaitTimeInSeconds = 2
                 }
-            };
+            }));
+        }
 
-            return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
+        public IDocumentClient CreateDocumentClient()
+        {
+            return _documentClient.Value;
         }
     }
 }
