@@ -73,11 +73,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdateAccountProviderLegalEntityViewModel>(result);
 
-            if (result.AccountProviderLegalEntity != null && result.AccountProviderLegalEntity.Operations.Any(p => p == Operation.Recruitment))
-            {
-                operations.Single(p => p.Value == Operation.Recruitment).IsEnabled = true;
-            }
-
             if (model != null)
             {
                 model.Operations = operations;
