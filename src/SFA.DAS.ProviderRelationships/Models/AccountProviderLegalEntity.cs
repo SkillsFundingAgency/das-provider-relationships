@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Created = DateTime.UtcNow;
             
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Created));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, user.Email, user.FirstName, user.LastName, grantedOperations, Created));
         }
 
         private AccountProviderLegalEntity()
@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Updated = DateTime.UtcNow;
             
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Updated.Value));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, user.Email, user.FirstName, user.LastName, grantedOperations, Updated.Value));
         }
     }
 }
