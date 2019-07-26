@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         [Route]
         [HttpPost]
         [AuthorizeRemoteOnly(Roles = "Write")]
-        public async Task<IHttpActionResult> RemoveProviderPermissionsToAccountLegalEntities(
+        public async Task<IHttpActionResult> RemoveProviderPermissionsFromAccountLegalEntity(
             [FromBody] RevokeProviderPermissionsToAccountLegalEntitiesRouteValues routeValues)
         {
             if (routeValues.Ukprn == null)
