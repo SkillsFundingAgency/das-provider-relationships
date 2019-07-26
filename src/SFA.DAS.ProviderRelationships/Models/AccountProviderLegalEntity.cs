@@ -50,8 +50,9 @@ namespace SFA.DAS.ProviderRelationships.Models
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
             
             Updated = DateTime.UtcNow;
-            
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, grantedOperations, Updated.Value));
+
+            Guid userRef = user?.Ref ?? Guid.Empty;
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, userRef, grantedOperations, Updated.Value));
         }
     }
 }
