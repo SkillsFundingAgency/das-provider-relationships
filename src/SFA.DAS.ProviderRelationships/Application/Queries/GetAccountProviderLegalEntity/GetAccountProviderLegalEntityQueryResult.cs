@@ -8,17 +8,20 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         public AccountLegalEntityDto AccountLegalEntity { get; }
         public AccountProviderLegalEntityDto AccountProviderLegalEntity { get; }
         public int AccountLegalEntitiesCount { get; }
+        public bool IsProviderBlockedFromRecruit { get; }
 
         public GetAccountProviderLegalEntityQueryResult(
             AccountProviderDto accountProvider,
             AccountLegalEntityDto accountLegalEntity,
             AccountProviderLegalEntityDto providerLegalEntity,
-            int accountLegalEntitiesCount)
+            int accountLegalEntitiesCount,
+            bool isProviderBlockedFromRecruit)
         {
             AccountProvider = accountProvider;
             AccountLegalEntity = accountLegalEntity;
             AccountProviderLegalEntity = providerLegalEntity;
             AccountLegalEntitiesCount = accountLegalEntitiesCount;
+            IsProviderBlockedFromRecruit = isProviderBlockedFromRecruit;
         }
     }
 }

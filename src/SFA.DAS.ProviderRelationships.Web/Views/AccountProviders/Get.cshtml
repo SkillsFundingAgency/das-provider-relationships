@@ -55,7 +55,7 @@
                         @if (Model.IsUpdatePermissionsOperationAuthorized)
                         {
                             <td class="govuk-table__cell das-table__cell--vertical-align-top">
-                                <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
+                                <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountHashedId = Model.AccountHashedId, AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
                             </td>
                         }
                     </tr>

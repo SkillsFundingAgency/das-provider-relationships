@@ -72,7 +72,7 @@
                             @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountLegalEntitiesCount > 1)
                             {
                                 <td class="govuk-table__cell">
-                                    <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">
+                                    <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountHashedId = Model.AccountHashedId, AccountProviderId = accountProvider.Id })">
                                         @if (Model.IsUpdatePermissionsOperationAuthorized && Model.AccountLegalEntitiesCount == 1)
                                         {
                                             @:Set permissions

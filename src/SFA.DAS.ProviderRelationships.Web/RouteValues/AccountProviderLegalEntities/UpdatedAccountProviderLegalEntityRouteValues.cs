@@ -6,6 +6,9 @@ namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEnti
     public class UpdatedAccountProviderLegalEntityRouteValues : IAuthorizationContextModel
     {
         [Required]
+        public string AccountHashedId { get; set; }
+
+        [Required]
         public long? AccountId { get; set; }
 
         [Required]

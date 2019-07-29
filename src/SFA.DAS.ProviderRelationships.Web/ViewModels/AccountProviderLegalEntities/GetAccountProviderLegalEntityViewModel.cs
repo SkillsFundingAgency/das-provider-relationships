@@ -11,6 +11,9 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         public int AccountLegalEntitiesCount { get; set; }
 
         [Required]
+        public string AccountHashedId { get; set; }
+
+        [Required]
         public long? AccountProviderId { get; set; }
 
         [Required]
@@ -18,5 +21,8 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
 
         [Required]
         public List<OperationViewModel> Operations { get; set; }
+
+        public int NoOfProviderCreatedVacancies { get; set; }
+        public bool IsProviderBlockedFromRecruit { get; internal set; }
     }
 }

@@ -3,6 +3,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
     public class AccountLegalEntityDto
     {
         public long Id { get; set; }
+        public string PublicHashedId { get; set; }
         public string Name { get; set; }
     }
 }
