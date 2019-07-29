@@ -3,7 +3,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.RouteValues.Providers
 {
-    public class RemoveProviderPermissionsFromAccountLegalEntityRouteValues
+    public class RemoveProviderPermissionsForAccountLegalEntityRouteValues
     {
         public long? Ukprn { get; set; }
         public string AccountLegalEntityPublicHashedId { get; set; }

@@ -2,15 +2,15 @@
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsFromAccountLegalEntity
+namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsForAccountLegalEntity
 {
-    public class RemoveProviderPermissionsFromAccountLegalEntityCommand : IRequest
+    public class RemoveProviderPermissionsForAccountLegalEntityCommand : IRequest
     {
         public long Ukprn { get; set; }
         public string AccountLegalEntityPublicHashedId { get; set; }
         public IEnumerable<Operation> OperationsToRemove { get; set; }
 
-        public RemoveProviderPermissionsFromAccountLegalEntityCommand(
+        public RemoveProviderPermissionsForAccountLegalEntityCommand(
             long ukprn,
             string accountLegalEntityPublicHashedId,
             IEnumerable<Operation> operationsToRemove)

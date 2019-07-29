@@ -7,18 +7,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsFromAccountLegalEntity
+namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsForAccountLegalEntity
 {
-    public class RemoveProviderPermissionsFromAccountLegalEntityCommandHandler : AsyncRequestHandler<RemoveProviderPermissionsFromAccountLegalEntityCommand>
+    public class RemoveProviderPermissionsForAccountLegalEntityCommandHandler : AsyncRequestHandler<RemoveProviderPermissionsForAccountLegalEntityCommand>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
-        public RemoveProviderPermissionsFromAccountLegalEntityCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public RemoveProviderPermissionsForAccountLegalEntityCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
             _db = db;
         }
 
-        protected override async Task Handle(RemoveProviderPermissionsFromAccountLegalEntityCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(RemoveProviderPermissionsForAccountLegalEntityCommand request, CancellationToken cancellationToken)
         {
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Include(x => x.AccountProvider)

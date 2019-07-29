@@ -7,7 +7,7 @@ using System.Web.Http;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.Providers;
-using SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsFromAccountLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsForAccountLegalEntity;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
@@ -24,8 +24,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         [Route]
         [HttpPost]
         [AuthorizeRemoteOnly(Roles = "Write")]
-        public async Task<IHttpActionResult> RemoveProviderPermissionsFromAccountLegalEntity(
-            [FromBody] RevokeProviderPermissionsToAccountLegalEntitiesRouteValues routeValues)
+        public async Task<IHttpActionResult> RemoveProviderPermissionsForAccountLegalEntity(
+            [FromBody] RemoveProviderPermissionsForAccountLegalEntityRouteValues routeValues)
         {
             if (routeValues.Ukprn == null)
             {
@@ -47,7 +47,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new RemoveProviderPermissionsFromAccountLegalEntityCommand(
+            var command = new RemoveProviderPermissionsForAccountLegalEntityCommand(
                 ukprn: routeValues.Ukprn.Value,
                 accountLegalEntityPublicHashedId: routeValues.AccountLegalEntityPublicHashedId,
                 operationsToRemove: routeValues.OperationsToRemove);

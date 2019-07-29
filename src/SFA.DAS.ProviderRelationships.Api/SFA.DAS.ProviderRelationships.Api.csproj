@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteValues\Providers\RevokeProviderPermissionsToAccountLegalEntitiesRouteValues.cs" />
+    <Compile Include="RouteValues\Providers\RemoveProviderPermissionsForAccountLegalEntityRouteValues.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

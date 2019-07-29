@@ -9,7 +9,7 @@ using NUnit.Framework.Internal;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {
     [TestFixture]
-    public class RemoveProviderPermissionsFromAccountLegalEntityCommandHandlerTests
+    public class RemoveProviderPermissionsForAccountLegalEntityCommandHandlerTests
     {
         [Test]
         [Parallelizable]

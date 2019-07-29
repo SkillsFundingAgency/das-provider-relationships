@@ -9,7 +9,7 @@ using NUnit.Framework.Internal;
 namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Providers
 {
     [TestFixture]
-    public class RemoveProviderPermissionsFromAccountLegalEntityTests
+    public class RemoveProviderPermissionsForAccountLegalEntityTests
     {
         [Test]
         public void ToDo()
