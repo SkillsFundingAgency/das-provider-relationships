@@ -8,6 +8,9 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
         public AccountProviderDto AccountProvider { get; set; }
 
         [Required]
+        public string AccountHashedId { get; set; }
+
+        [Required]
         public long? AccountProviderId { get; set; }
 
         [Required(ErrorMessage = "Option required")]

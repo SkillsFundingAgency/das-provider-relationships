@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public string UserFirstName { get; }
         public string UserLastName { get; }
         public HashSet<Operation> GrantedOperations { get; }
-        public DateTime Updated { get;}
+        public DateTime Updated { get; }
 
         public UpdatedPermissionsEvent(long accountId, long accountLegalEntityId, long accountProviderId,
                                     long accountProviderLegalEntityId, long ukprn, Guid userRef,
