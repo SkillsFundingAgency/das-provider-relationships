@@ -82,7 +82,11 @@
         },
         "logAnalyticsWorkspaceName": {
             "type": "string"
-        }
+        },
+        "cosmosDbIpRangeFilter": {
+            "type": "string",
+            "defaultValue": ""
+        }	    
     },
     "variables": {},
     "resources": [
@@ -404,6 +408,9 @@
                     },
                     "defaultConsistencyLevel": {
                         "value": "Strong"
+                    },
+                    "ipRangeFilter": {
+                        "value": "[parameters('cosmosDbIpRangeFilter')]"
                     }
                 }
             }
