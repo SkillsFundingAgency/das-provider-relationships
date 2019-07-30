@@ -653,3 +653,7 @@ li.menu-link.sub-menu-open ul {
 .das-list--comma-after li:last-child:after {
     content: "";
 }
+
+.das-warning-text__icon {
+    margin-top:-20px !important;
+}
