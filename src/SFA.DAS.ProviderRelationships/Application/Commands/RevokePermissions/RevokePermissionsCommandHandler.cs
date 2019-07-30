@@ -7,25 +7,25 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsForAccountLegalEntity
+namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
 {
-    public class RemoveProviderPermissionsForAccountLegalEntityCommandHandler : AsyncRequestHandler<RemoveProviderPermissionsForAccountLegalEntityCommand>
+    public class RevokePermissionsCommandHandler : AsyncRequestHandler<RevokePermissionsCommand>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
-        public RemoveProviderPermissionsForAccountLegalEntityCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
+        public RevokePermissionsCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
         {
             _db = db;
         }
 
-        protected override async Task Handle(RemoveProviderPermissionsForAccountLegalEntityCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(RevokePermissionsCommand command, CancellationToken cancellationToken)
         {
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Include(x => x.AccountProvider)
                 .Include(x => x.AccountLegalEntity)
                 .Include(x => x.Permissions)
-                .Where(x => x.AccountProvider.ProviderUkprn == request.Ukprn)
-                .Where(x => x.AccountLegalEntity.PublicHashedId == request.AccountLegalEntityPublicHashedId)
+                .Where(x => x.AccountProvider.ProviderUkprn == command.Ukprn)
+                .Where(x => x.AccountLegalEntity.PublicHashedId == command.AccountLegalEntityPublicHashedId)
                 .SingleOrDefaultAsync();
 
             if (accountProviderLegalEntity == null)
@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermi
 
             var remainingOperations = accountProviderLegalEntity
                 .Permissions
-                .Where(x => !request.OperationsToRemove.Contains(x.Operation))
+                .Where(x => !command.OperationsToRemove.Contains(x.Operation))
                 .Select(x => x.Operation);
             accountProviderLegalEntity.UpdatePermissions(
                 user: null,

@@ -1,31 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
-using SFA.DAS.ProviderRelationships.Api.RouteValues.Providers;
-using SFA.DAS.ProviderRelationships.Application.Commands.RemoveProviderPermissionsForAccountLegalEntity;
+using SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions;
+using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
-    [RoutePrefix("providers")]
-    public class ProvidersController : ApiController
+    [RoutePrefix("permissions")]
+    public class PermissionsController : ApiController
     {
         private readonly IMediator _mediator;
 
-        public ProvidersController(IMediator mediator)
+        public PermissionsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [Route("RemoveProviderPermissionsForAccountLegalEntity")]
+        [Route("revoke")]
         [HttpPost]
         [AuthorizeRemoteOnly(Roles = "Write")]
-        public async Task<IHttpActionResult> RemoveProviderPermissionsForAccountLegalEntity(
-            [FromBody] RemoveProviderPermissionsForAccountLegalEntityRouteValues routeValues)
+        public async Task<IHttpActionResult> Revoke([FromBody] RevokePermissionsRouteValues routeValues)
         {
             if (routeValues.Ukprn == null)
             {
@@ -47,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new RemoveProviderPermissionsForAccountLegalEntityCommand(
+            var command = new RevokePermissionsCommand(
                 ukprn: routeValues.Ukprn.Value,
                 accountLegalEntityPublicHashedId: routeValues.AccountLegalEntityPublicHashedId,
                 operationsToRemove: routeValues.OperationsToRemove);

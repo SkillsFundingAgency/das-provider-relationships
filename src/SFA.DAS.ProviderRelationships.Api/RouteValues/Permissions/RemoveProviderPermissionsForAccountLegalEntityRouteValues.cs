@@ -1,9 +1,9 @@
 ﻿using System;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.RouteValues.Providers
+namespace SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions
 {
-    public class RemoveProviderPermissionsForAccountLegalEntityRouteValues
+    public class RevokePermissionsRouteValues
     {
         public long? Ukprn { get; set; }
         public string AccountLegalEntityPublicHashedId { get; set; }
