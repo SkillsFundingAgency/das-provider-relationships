@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             _mediator = mediator;
         }
 
-        [Route]
+        [Route("RemoveProviderPermissionsForAccountLegalEntity")]
         [HttpPost]
         [AuthorizeRemoteOnly(Roles = "Write")]
         public async Task<IHttpActionResult> RemoveProviderPermissionsForAccountLegalEntity(
