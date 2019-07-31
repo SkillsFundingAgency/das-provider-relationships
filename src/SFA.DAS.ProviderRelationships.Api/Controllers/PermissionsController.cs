@@ -24,17 +24,17 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         {
             if (routeValues.Ukprn == null)
             {
-                ModelState.AddModelError(nameof(routeValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
+                ModelState.AddModelError(nameof(routeValues.Ukprn), "A Ukprn needs to be supplied");
             }
 
             if (string.IsNullOrWhiteSpace(routeValues.AccountLegalEntityPublicHashedId))
             {
-                ModelState.AddModelError(nameof(routeValues.AccountLegalEntityPublicHashedId), "Currently a Publich Hashed Id for an Account Legal Entity needs to be supplied");
+                ModelState.AddModelError(nameof(routeValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
             }
 
             if (routeValues.OperationsToRemove == null || routeValues.OperationsToRemove.Length == 0)
             {
-                ModelState.AddModelError(nameof(routeValues.OperationsToRemove), "Currently one or more Operations need to be supplied");
+                ModelState.AddModelError(nameof(routeValues.OperationsToRemove), "One or more operations need to be supplied");
             }
 
             if (!ModelState.IsValid)
