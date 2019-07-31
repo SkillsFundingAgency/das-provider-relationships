@@ -51,7 +51,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
 
             var providerOrgBlockStatus = await _dasRecruitService.GetProviderBlockedStatusAsync(accountProvider.ProviderUkprn, cancellationToken);
             var isProviderBlockedFromRecruit = providerOrgBlockStatus != null && providerOrgBlockStatus.Status.Equals(BlockedOrganisationStatusConstants.Blocked);
-            //var vs = await GetVacanciesSummary(request.AccountHashedId, accountProvider.ProviderUkprn.ToString(), accountLegalEntity, cancellationToken);
 
             return new GetAccountProviderLegalEntityQueryResult(accountProvider, accountLegalEntity, accountProviderLegalEntity, accountLegalEntitiesCount, isProviderBlockedFromRecruit);
         }

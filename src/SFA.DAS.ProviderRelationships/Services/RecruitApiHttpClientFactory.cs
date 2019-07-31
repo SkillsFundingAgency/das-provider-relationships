@@ -15,17 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Services
 
         public HttpClient CreateHttpClient()
         {
-            //var httpClient = new HttpClientBuilder()
-            //    .WithDefaultHeaders()
-            //    .WithBearerAuthorisationHeader(new AzureADBearerTokenGenerator(_recruitApiClientConfig))
-            //    .Build();
-
-            //httpClient.BaseAddress = new Uri(_recruitApiClientConfig.ApiBaseUrl);
-
-            //// set timeout, so we don't end up delaying the rendering of the homepage for a misbehaving api
-            ////httpClient.Timeout = TimeSpan.Parse(_recruitApiClientConfig.TimeoutTimeSpan);
-
-            //return httpClient;
             return new AzureActiveDirectoryHttpClientFactory(_recruitApiClientConfig).CreateHttpClient();
         }
     }
