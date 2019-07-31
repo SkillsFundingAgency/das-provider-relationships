@@ -22,14 +22,11 @@ namespace SFA.DAS.ProviderRelationships.Services
 
         public async Task<BlockedOrganisationStatus> GetProviderBlockedStatusAsync(long providerUkprn, CancellationToken cancellationToken = default)
         {
-            var blockedProviderStatusUri = $"/api/providers/status/{providerUkprn}";
+            var blockedProviderStatusUri = $"/api/providers/{providerUkprn}/status";
 
             try
             {
                 var response = await _httpClient.GetAsync(blockedProviderStatusUri, cancellationToken);
-
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                    return null;
 
                 var content = await response.Content.ReadAsStringAsync();
 
@@ -42,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.Services
             catch (Exception ex)
             {
                 _log.Warn($"Ignoring failed call to Recruit API: {ex}");
-                return null;
+                throw;
             }
         }
 
@@ -85,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.Services
             catch (Exception ex)
             {
                 _log.Warn($"Ignoring failed call to Recruit API: {ex}");
-                return null;
+                throw;
             }
         }
     }
