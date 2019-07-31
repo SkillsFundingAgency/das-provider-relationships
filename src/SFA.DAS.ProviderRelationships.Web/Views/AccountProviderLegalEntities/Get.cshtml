@@ -172,8 +172,7 @@
             @if (hasRecruitmentPermissionPreviouslyBeenSet)
             {
                 <text>
-                $recruitmentNoOption.change(function (e) {
-                    console.log(e); // check what is in this eventData object
+                $recruitmentNoOption.change(function () {
                     if ($recruitmentNoOption.prop("checked")) {
                         $recruitmentNoBlurb.show();
                     }
