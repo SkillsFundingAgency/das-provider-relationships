@@ -13,9 +13,9 @@ namespace SFA.DAS.ProviderRelationships.Services
             _recruitApiClientConfig = recruitApiClientConfig;
         }
 
-        public HttpClient CreateHttpClient()
+        public IRestHttpClient CreateRestHttpClient()
         {
-            return new AzureActiveDirectoryHttpClientFactory(_recruitApiClientConfig).CreateHttpClient();
+            return new RestHttpClient(new AzureActiveDirectoryHttpClientFactory(_recruitApiClientConfig).CreateHttpClient());
         }
     }
 }

@@ -54,10 +54,5 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
 
             return new GetAccountProviderLegalEntityQueryResult(accountProvider, accountLegalEntity, accountProviderLegalEntity, accountLegalEntitiesCount, isProviderBlockedFromRecruit);
         }
-
-        private Task<VacanciesSummary> GetVacanciesSummary(string employerAccountHashedId, string ukprn, AccountLegalEntityDto accountLegalEntity, CancellationToken cancellationToken)
-        {
-            return _dasRecruitService.GetVacanciesAsync(employerAccountHashedId, accountLegalEntity.Id, ukprn, maxVacanciesToGet: 1, cancellationToken: cancellationToken);
-        }
     }
 }

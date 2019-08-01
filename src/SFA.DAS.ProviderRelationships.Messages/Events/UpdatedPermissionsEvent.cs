@@ -12,9 +12,9 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public long AccountProviderLegalEntityId { get; }
         public long Ukprn { get; }
         public Guid UserRef { get; }
-        public string UserEmailAddress { get; }
-        public string UserFirstName { get; }
-        public string UserLastName { get; }
+        public string Email { get; }
+        public string FirstName { get; }
+        public string LastName { get; }
         public HashSet<Operation> GrantedOperations { get; }
         public DateTime Updated { get; }
 
@@ -29,9 +29,9 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
             AccountProviderLegalEntityId = accountProviderLegalEntityId;
             Ukprn = ukprn;
             UserRef = userRef;
-            UserEmailAddress = userEmailAddress;
-            UserFirstName = firstName;
-            UserLastName = lastName;
+            Email = userEmailAddress;
+            FirstName = firstName;
+            LastName = lastName;
             GrantedOperations = grantedOperations;
             Updated = updated;
         }
