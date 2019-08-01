@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using SFA.DAS.Http;
 using SFA.DAS.NLog.Logger;
 
@@ -12,12 +9,12 @@ namespace SFA.DAS.ProviderRelationships.Services
     public class DasRecruitService : IDasRecruitService
     {
         private readonly ILog _log;
-        private readonly HttpClient _httpClient;
+        private readonly IRestHttpClient _httpClient;
 
         public DasRecruitService(ILog log, IRecruitApiHttpClientFactory recruitApiHttpClientFactory)
         {
             _log = log;
-            _httpClient = recruitApiHttpClientFactory.CreateHttpClient();
+            _httpClient = recruitApiHttpClientFactory.CreateRestHttpClient();
         }
 
         public async Task<BlockedOrganisationStatus> GetProviderBlockedStatusAsync(long providerUkprn, CancellationToken cancellationToken = default)
@@ -26,19 +23,12 @@ namespace SFA.DAS.ProviderRelationships.Services
 
             try
             {
-                var response = await _httpClient.GetAsync(blockedProviderStatusUri, cancellationToken);
-
-                var content = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                    throw new RestHttpClientException(response, content);
-
-                var blockedOrgStatus = JsonConvert.DeserializeObject<BlockedOrganisationStatus>(content);
+                var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken);
                 return blockedOrgStatus;
             }
             catch (Exception ex)
             {
-                _log.Warn($"Ignoring failed call to Recruit API: {ex}");
+                _log.Warn($"Failed to call Provider Blocked Status endpoint of Recruit API: {ex.Message}");
                 throw;
             }
         }
@@ -66,22 +56,12 @@ namespace SFA.DAS.ProviderRelationships.Services
 
             try
             {
-                var response = await _httpClient.GetAsync(vacanciesSummaryUri, cancellationToken);
-
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                    return null;
-
-                var content = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                    throw new RestHttpClientException(response, content);
-
-                var vacanciesSummary = JsonConvert.DeserializeObject<VacanciesSummary>(content);
+                var vacanciesSummary = await _httpClient.Get<VacanciesSummary>(vacanciesSummaryUri, cancellationToken);
                 return vacanciesSummary;
             }
             catch (Exception ex)
             {
-                _log.Warn($"Ignoring failed call to Recruit API: {ex}");
+                _log.Warn($"Failed to call Provider Blocked Status endpoint of Recruit API: {ex.Message}");
                 throw;
             }
         }
