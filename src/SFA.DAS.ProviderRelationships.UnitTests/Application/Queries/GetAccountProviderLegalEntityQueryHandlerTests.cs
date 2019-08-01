@@ -112,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntityQueryHandlerFixture()
         {
-            Query = new GetAccountProviderLegalEntityQuery("", 1, 2, 3);
+            Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
             MockRecruitService = new Mock<IDasRecruitService>();

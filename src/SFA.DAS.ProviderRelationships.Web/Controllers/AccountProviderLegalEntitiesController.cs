@@ -40,10 +40,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public async Task<ActionResult> Get(GetAccountProviderLegalEntityRouteValues routeValues)
         {
-            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountHashedId, routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
+            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderLegalEntityViewModel>(result);
-            model.AccountHashedId = routeValues.AccountHashedId;
 
             return View(model);
         }
@@ -55,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             TempData.Set(model.Operations);
 
-            return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountHashedId = model.AccountHashedId, AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
+            return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
 
         [HttpNotFoundForNullModel]
@@ -66,13 +65,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             if (operations == null)
             {
-                return RedirectToAction("Get", new GetAccountProviderLegalEntityRouteValues { AccountHashedId = routeValues.AccountHashedId, AccountProviderId = routeValues.AccountProviderId.Value, AccountLegalEntityId = routeValues.AccountLegalEntityId.Value });
+                return RedirectToAction("Get", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = routeValues.AccountProviderId.Value, AccountLegalEntityId = routeValues.AccountLegalEntityId.Value });
             }
 
-            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountHashedId, routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
+            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdateAccountProviderLegalEntityViewModel>(result);
-            model.AccountHashedId = routeValues.AccountHashedId;
 
             if (model != null)
             {
@@ -92,7 +90,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             await _mediator.Send(command);
 
-            return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountHashedId = model.AccountHashedId, AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
+            return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
 
         [HttpNotFoundForNullModel]

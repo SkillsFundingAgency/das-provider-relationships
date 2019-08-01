@@ -17,7 +17,7 @@
     }
     else
     {
-        <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountHashedId = Model.AccountHashedId, AccountProviderId = Model.AccountProvider.Id })">Back</a>
+        <a class="govuk-back-link" href="@Url.Action("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = Model.AccountProvider.Id })">Back</a>
     }
 }
 
