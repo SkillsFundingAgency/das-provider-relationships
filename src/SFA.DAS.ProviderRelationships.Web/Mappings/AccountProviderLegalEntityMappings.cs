@@ -13,7 +13,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         public AccountProviderLegalEntityMappings()
         {
             CreateMap<GetAccountProviderLegalEntityQueryResult, GetAccountProviderLegalEntityViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.Ignore())
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())
                 .ForMember(d => d.NoOfProviderCreatedVacancies, o => o.Ignore())
@@ -26,7 +25,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                     })));
             
             CreateMap<GetAccountProviderLegalEntityQueryResult, UpdateAccountProviderLegalEntityViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.Ignore())
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())

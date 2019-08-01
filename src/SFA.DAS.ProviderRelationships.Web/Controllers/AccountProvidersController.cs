@@ -43,7 +43,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
-            model.AccountHashedId = routeValues.AccountHashedId;
             
             return View(model);
         }
@@ -104,7 +103,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                     var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
                     var accountProviderId = await _mediator.Send(command);
 
-                    return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountHashedId = model.AccountHashedId, AccountProviderId = accountProviderId });
+                    return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
                 case "ReEnterUkprn":
                     return RedirectToAction("Find");
                 default:
@@ -120,7 +119,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AddedAccountProviderViewModel>(result);
-            model.AccountHashedId = routeValues.AccountHashedId;
             
             return View(model);
         }
@@ -134,7 +132,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountHashedId = model.AccountHashedId, AccountProviderId = model.AccountProviderId.Value });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 case "GoToHomepage":
@@ -152,7 +150,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AlreadyAddedAccountProviderViewModel>(result);
-            //model.AccountHashedId = routeValues.AccountHashedId,
 
             return View(model);
         }
@@ -166,7 +163,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountHashedId = model.AccountHashedId, AccountProviderId = model.AccountProviderId.Value });
+                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
                     return RedirectToAction("Find");
                 default:
@@ -182,11 +179,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
-            model.AccountHashedId = routeValues.AccountHashedId;
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {
-                return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountHashedId = routeValues.AccountHashedId, AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
+                return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
             
             return View(model);

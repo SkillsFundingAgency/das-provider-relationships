@@ -11,22 +11,17 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public AccountProviderMappings()
         {
-            CreateMap<GetAccountProvidersQueryResult, AccountProvidersViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore());
+            CreateMap<GetAccountProvidersQueryResult, AccountProvidersViewModel>();
 
-            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore());
+            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>();
 
             CreateMap<GetAddedAccountProviderQueryResult, AddedAccountProviderViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
             
             CreateMap<GetAddedAccountProviderQueryResult, AlreadyAddedAccountProviderViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
             
             CreateMap<GetProviderToAddQueryResult, AddAccountProviderViewModel>()
-                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.Ukprn, o => o.Ignore())
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
