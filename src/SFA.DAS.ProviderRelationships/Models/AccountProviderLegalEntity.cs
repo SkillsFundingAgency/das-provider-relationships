@@ -47,6 +47,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         internal void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)
         {
+            EnsureAccountLegalEntityHasNotBeenDeleted();
             var remainingOperations = Permissions
                 .Where(x => !operationsToRevoke.Contains(x.Operation))
                 .Select(x => x.Operation);
@@ -65,5 +66,14 @@ namespace SFA.DAS.ProviderRelationships.Models
             Guid userRef = user?.Ref ?? Guid.Empty;
             Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, userRef, grantedOperations, Updated.Value));
         }
+
+        private void EnsureAccountLegalEntityHasNotBeenDeleted()
+        {
+            if (AccountLegalEntity.Deleted != null)
+            {
+                throw new InvalidOperationException("Requires account legal entity has not been deleted");
+            }
+        }
+
     }
 }

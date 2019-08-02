@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
             RunAsync(
                 arrange: f =>
                 {
-                    f.RevokePermissionsRouteValues.OperationsToRemove = operations;
+                    f.RevokePermissionsRouteValues.OperationsToRevoke = operations;
                 },
                 act: async f =>
                 {
@@ -72,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                 assert: (f, r) =>
                 {
                     r.Should().BeAssignableTo<InvalidModelStateResult>();
-                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.OperationsToRemove), "One or more operations need to be supplied");
+                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.OperationsToRevoke), "One or more operations need to be supplied");
                 }
             );
 
@@ -109,7 +109,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
             RevokePermissionsRouteValues = new RevokePermissionsRouteValues(
                 ukprn: 299792458,
                 accountLegalEntityPublicHashedId: "DEADBEEF",
-                operationsToRemove: new[] { Operation.Recruitment });
+                operationsToRevoke: new[] { Operation.Recruitment });
 
             Mediator = new Mock<IMediator>();
             Mediator

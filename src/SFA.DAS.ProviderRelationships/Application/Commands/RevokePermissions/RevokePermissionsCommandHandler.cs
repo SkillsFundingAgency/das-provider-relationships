@@ -20,13 +20,15 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
 
         protected override async Task Handle(RevokePermissionsCommand command, CancellationToken cancellationToken)
         {
+            //TODO: PeteM - Decode hash into key
+            // - SFA.DAS.Encoding
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Include(x => x.AccountProvider)
                 .Include(x => x.AccountLegalEntity)
                 .Include(x => x.Permissions)
                 .Where(x => x.AccountProvider.ProviderUkprn == command.Ukprn)
                 .Where(x => x.AccountLegalEntity.PublicHashedId == command.AccountLegalEntityPublicHashedId)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (accountProviderLegalEntity == null)
                 return;

@@ -32,9 +32,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 ModelState.AddModelError(nameof(routeValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
             }
 
-            if (routeValues.OperationsToRemove == null || routeValues.OperationsToRemove.Length == 0)
+            if (routeValues.OperationsToRevoke == null || routeValues.OperationsToRevoke.Length == 0)
             {
-                ModelState.AddModelError(nameof(routeValues.OperationsToRemove), "One or more operations need to be supplied");
+                ModelState.AddModelError(nameof(routeValues.OperationsToRevoke), "One or more operations need to be supplied");
             }
 
             if (!ModelState.IsValid)
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             var command = new RevokePermissionsCommand(
                 ukprn: routeValues.Ukprn.Value,
                 accountLegalEntityPublicHashedId: routeValues.AccountLegalEntityPublicHashedId,
-                operationsToRevoke: routeValues.OperationsToRemove);
+                operationsToRevoke: routeValues.OperationsToRevoke);
             await _mediator.Send(command);
 
             return Ok();
