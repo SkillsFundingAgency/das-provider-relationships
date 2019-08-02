@@ -19,6 +19,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
         public async Task Run()
         {
             var userRef = Guid.NewGuid();
+            var userEmail = "a@a.com";
+            var userFirstName = "a";
+            var userLastName = "a";
             const long accountId = 1;
             const long accountLegalEntityId = 2;
             const long accountProviderId = 4;
@@ -32,6 +35,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 accountProviderLegalEntityId,
                 ukprn,
                 userRef,
+                userEmail,
+                userFirstName,
+                userLastName,
                 new HashSet<Operation>(),
                 DateTime.UtcNow));
 

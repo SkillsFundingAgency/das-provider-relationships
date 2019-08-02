@@ -1,7 +1,7 @@
-﻿using StructureMap;
-using SFA.DAS.AutoConfiguration.DependencyResolution;
+﻿using SFA.DAS.AutoConfiguration.DependencyResolution;
+using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution
+namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.StructureMap
 {
     public class ProviderRelationshipsApiClientRegistry : Registry
     {

@@ -67,7 +67,7 @@
     <PackageReference Include="SFA.DAS.Authorization.EmployerFeatures" Version="1.1.1" />
     <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="1.1.1" />
     <PackageReference Include="SFA.DAS.Authorization.Mvc" Version="1.1.1" />
-    <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.0.1" />
+    <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.2.6" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
@@ -263,9 +263,6 @@
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-62cc6f0a28-v1.woff" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\fonts\light-tabular-851b10ccdd-v1.woff2" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.map" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
   </ItemGroup>
   <PropertyGroup>

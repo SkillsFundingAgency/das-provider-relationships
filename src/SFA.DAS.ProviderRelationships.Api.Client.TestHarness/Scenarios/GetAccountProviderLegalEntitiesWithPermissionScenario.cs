@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.Scenarios
 {
-    internal class GetAccountProviderLegalEntitiesWithPermissionScenario
+    public class GetAccountProviderLegalEntitiesWithPermissionScenario
     {
         private readonly IProviderRelationshipsApiClient _providerRelationshipsApiClient;
         

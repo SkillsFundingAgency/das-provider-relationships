@@ -150,7 +150,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AlreadyAddedAccountProviderViewModel>(result);
-            
+
             return View(model);
         }
 

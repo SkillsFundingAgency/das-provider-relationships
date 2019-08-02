@@ -11,6 +11,7 @@ using MediatR;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using SFA.DAS.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
@@ -21,7 +22,6 @@ using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 {
-    //todo: i'd be tempted to split this into 2 separate tests: 1 for methods that go to the read store, and 1 that goes to the web.api
     [TestFixture]
     [Parallelizable]
     public class ProviderRelationshipsApiClientTests : FluentTest<ProviderRelationshipsApiClientTestsFixture>
@@ -85,7 +85,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
         public HttpClient HttpClient { get; set; }
-
         public IRestHttpClient RestHttpClient { get; set; }
         public FakeHttpMessageHandler HttpMessageHandler { get; set; }
         internal Mock<IMediator> Mediator { get; set; }
