@@ -22,7 +22,7 @@
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Training provider permissions</h1>
     </div>
     <div class="govuk-grid-column-two-thirds">  
-        <p class="govuk-body">Set permissions for what you want training providers to do on your behalf. You can select from those you've previously worked with, or find a new one.</p>
+        <p class="govuk-body">Add training providers and set permissions. You can allow the training providers to do tasks on your behalf, this can include creating vacancies, reserving funding and adding apprentice records. You will be able to approve anything the training provider does.</p>
         @if (Model.IsAddProviderOperationAuthorized)
         {
             <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a new training provider</a>
