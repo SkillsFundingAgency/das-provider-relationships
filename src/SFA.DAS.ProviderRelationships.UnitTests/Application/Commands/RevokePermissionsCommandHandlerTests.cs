@@ -95,7 +95,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             RevokePermissionsCommand = new RevokePermissionsCommand(
                 ukprn: 299792458,
                 accountLegalEntityPublicHashedId: "ALE1",
-                operationsToRemove: new[] { Operation.Recruitment });
+                operationsToRevoke: new[] { Operation.Recruitment });
 
             UnitOfWorkContext = new UnitOfWorkContext();
         }

@@ -8,16 +8,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
     {
         public long Ukprn { get; set; }
         public string AccountLegalEntityPublicHashedId { get; }
-        public IEnumerable<Operation> OperationsToRemove { get; }
+        public IEnumerable<Operation> OperationsToRevoke { get; }
 
         public RevokePermissionsCommand(
             long ukprn,
             string accountLegalEntityPublicHashedId,
-            IEnumerable<Operation> operationsToRemove)
+            IEnumerable<Operation> operationsToRevoke)
         {
             Ukprn = ukprn;
             AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
-            OperationsToRemove = operationsToRemove;
+            OperationsToRevoke = operationsToRevoke;
         }
     }
 }

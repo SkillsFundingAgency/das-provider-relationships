@@ -90,7 +90,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                         It.Is<RevokePermissionsCommand>(c => 
                             c.Ukprn == 299792458
                             && c.AccountLegalEntityPublicHashedId == "DEADBEEF"
-                            && c.OperationsToRemove.Single() == Operation.Recruitment
+                            && c.OperationsToRevoke.Single() == Operation.Recruitment
                         ),
                         It.IsAny<CancellationToken>()
                     ));

@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
 
             accountProviderLegalEntity.RevokePermissions(
                 user: null,
-                operationsToRevoke: command.OperationsToRemove);
+                operationsToRevoke: command.OperationsToRevoke);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
             var command = new RevokePermissionsCommand(
                 ukprn: routeValues.Ukprn.Value,
                 accountLegalEntityPublicHashedId: routeValues.AccountLegalEntityPublicHashedId,
-                operationsToRemove: routeValues.OperationsToRemove);
+                operationsToRevoke: routeValues.OperationsToRemove);
             await _mediator.Send(command);
 
             return Ok();
