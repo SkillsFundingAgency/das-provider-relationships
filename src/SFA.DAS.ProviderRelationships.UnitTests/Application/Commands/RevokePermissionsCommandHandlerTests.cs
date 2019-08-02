@@ -7,8 +7,10 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -23,6 +25,46 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     [TestFixture]
     public class RevokePermissionsCommandHandlerTests : FluentTest<RevokePermissionsCommandHandlerTestsFixture>
     {
+        [Test]
+        public Task WhenPublicHashedIdIsInvalid_ThenShouldDoNothing() =>
+            RunAsync(
+                arrange: f =>
+                {
+                    f.RevokePermissionsCommand = new RevokePermissionsCommand(
+                        ukprn: f.RevokePermissionsCommand.Ukprn,
+                        accountLegalEntityPublicHashedId: "DoesNotExist",
+                        operationsToRevoke: f.RevokePermissionsCommand.OperationsToRevoke);
+                },
+                act: async f =>
+                {
+                    await f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None);
+                },
+                assert: f =>
+                {
+                    IEnumerable<object> events = f.UnitOfWorkContext.GetEvents();
+                    events.Should().BeEmpty();
+                });
+
+        [Test]
+        public Task WhenUkPrnIsInvalid_ThenShouldDoNothing() =>
+            RunAsync(
+                arrange: f =>
+                {
+                    f.RevokePermissionsCommand = new RevokePermissionsCommand(
+                        ukprn: 0,
+                        accountLegalEntityPublicHashedId: f.RevokePermissionsCommand.AccountLegalEntityPublicHashedId,
+                        operationsToRevoke: f.RevokePermissionsCommand.OperationsToRevoke);
+                },
+                act: async f =>
+                {
+                    await f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None);
+                },
+                assert: f =>
+                {
+                    IEnumerable<object> events = f.UnitOfWorkContext.GetEvents();
+                    events.Should().BeEmpty();
+                });
+
         [Test]
         [Parallelizable]
         public Task WhenExecuted_ThenShouldRemoveMatchingOperationsOnly() =>
@@ -74,6 +116,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public IRequestHandler<RevokePermissionsCommand, Unit> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
+        public Mock<IEncodingService> EncodingService { get; set; }
 
         public Account Account;
         public Provider Provider;
@@ -89,8 +132,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             CreateDb();
             CreateDefaultEntities();
 
+            long accountLegalEntityId = AccountLegalEntity.Id;
+            EncodingService = new Mock<IEncodingService>();
+            EncodingService
+                .Setup(x => x.TryDecode(AccountLegalEntity.PublicHashedId, EncodingType.AccountLegalEntityId, out accountLegalEntityId))
+                .Returns(true);
+
             var lazyDb = new Lazy<ProviderRelationshipsDbContext>(() => Db);
-            Handler = new RevokePermissionsCommandHandler(lazyDb);
+            Handler = new RevokePermissionsCommandHandler(lazyDb, EncodingService.Object);
 
             RevokePermissionsCommand = new RevokePermissionsCommand(
                 ukprn: 299792458,
