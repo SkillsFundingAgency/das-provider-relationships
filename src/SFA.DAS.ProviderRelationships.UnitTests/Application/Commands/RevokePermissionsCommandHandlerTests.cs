@@ -104,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     firstEvent.AccountProviderId.Should().Be(f.AccountProvider.Id);
                     firstEvent.AccountProviderLegalEntityId.Should().Be(f.AccountProviderLegalEntity.Id);
                     firstEvent.Ukprn.Should().Be(f.Provider.Ukprn);
-                    firstEvent.UserRef.Should().Be(Guid.Empty);
+                    firstEvent.UserRef.Should().Be(null);
                 }
             );
 
@@ -135,7 +135,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             long accountLegalEntityId = AccountLegalEntity.Id;
             EncodingService = new Mock<IEncodingService>();
             EncodingService
-                .Setup(x => x.TryDecode(AccountLegalEntity.PublicHashedId, EncodingType.AccountLegalEntityId, out accountLegalEntityId))
+                .Setup(x => x.TryDecode(AccountLegalEntity.PublicHashedId, EncodingType.PublicAccountLegalEntityId, out accountLegalEntityId))
                 .Returns(true);
 
             var lazyDb = new Lazy<ProviderRelationshipsDbContext>(() => Db);

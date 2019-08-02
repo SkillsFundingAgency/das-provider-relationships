@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
         public long AccountProviderId { get; }
         public long AccountProviderLegalEntityId { get; }
         public long Ukprn { get; }
-        public Guid UserRef { get; }
+        public Guid? UserRef { get; }
         public HashSet<Operation> GrantedOperations { get; }
         public DateTime Updated { get; }
 
@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands
             long accountProviderId,
             long accountProviderLegalEntityId,
             long ukprn,
-            Guid userRef,
+            Guid? userRef,
             HashSet<Operation> grantedOperations,
             DateTime updated
         )

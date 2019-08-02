@@ -63,8 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             
             Updated = DateTime.UtcNow;
 
-            Guid userRef = user?.Ref ?? Guid.Empty;
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, userRef, grantedOperations, Updated.Value));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user?.Ref, grantedOperations, Updated.Value));
         }
 
         private void EnsureAccountLegalEntityHasNotBeenDeleted()

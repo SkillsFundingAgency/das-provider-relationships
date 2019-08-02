@@ -13,12 +13,12 @@ namespace SFA.DAS.ProviderRelationships.Models
         public long AccountProviderId { get; private set; }
         public long AccountProviderLegalEntityId { get; private set; }
         public long Ukprn { get; private set; }
-        public Guid UserRef { get; private set; }
+        public Guid? UserRef { get; private set; }
         public string GrantedOperations { get; private set; }
         public DateTime Updated { get; private set; }
         public DateTime Logged { get; private set; }
         
-        public UpdatedPermissionsEventAudit(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, Guid userRef, HashSet<Operation> grantedOperations, DateTime updated)
+        public UpdatedPermissionsEventAudit(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, Guid? userRef, HashSet<Operation> grantedOperations, DateTime updated)
         {
             AccountId = accountId;
             AccountLegalEntityId = accountLegalEntityId;
