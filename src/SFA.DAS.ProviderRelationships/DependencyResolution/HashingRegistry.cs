@@ -1,3 +1,4 @@
+using SFA.DAS.Encoding;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
@@ -9,6 +10,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public HashingRegistry()
         {
             For<IHashingService>().Use(c => GetHashingService(c));
+            For<IEncodingService>().Use<EncodingService>();
         }
 
         private IHashingService GetHashingService(IContext context)

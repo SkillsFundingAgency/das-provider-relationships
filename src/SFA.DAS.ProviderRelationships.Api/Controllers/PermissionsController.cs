@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using MediatR;
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
