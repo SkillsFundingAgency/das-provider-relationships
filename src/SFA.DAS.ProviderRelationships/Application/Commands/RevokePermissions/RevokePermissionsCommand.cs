@@ -7,8 +7,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
     public class RevokePermissionsCommand : IRequest
     {
         public long Ukprn { get; set; }
-        public string AccountLegalEntityPublicHashedId { get; set; }
-        public IEnumerable<Operation> OperationsToRemove { get; set; }
+        public string AccountLegalEntityPublicHashedId { get; }
+        public IEnumerable<Operation> OperationsToRemove { get; }
 
         public RevokePermissionsCommand(
             long ukprn,
