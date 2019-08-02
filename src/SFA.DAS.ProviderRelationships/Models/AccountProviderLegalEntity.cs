@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -42,6 +43,16 @@ namespace SFA.DAS.ProviderRelationships.Models
             _permissions.Clear();
             
             Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
+        }
+
+        internal void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)
+        {
+            var remainingOperations = Permissions
+                .Where(x => !operationsToRevoke.Contains(x.Operation))
+                .Select(x => x.Operation);
+            UpdatePermissions(
+                user: null,
+                grantedOperations: new HashSet<Operation>(remainingOperations));
         }
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)

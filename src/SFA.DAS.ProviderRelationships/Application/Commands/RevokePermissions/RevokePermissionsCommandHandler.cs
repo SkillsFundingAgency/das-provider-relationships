@@ -31,13 +31,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
             if (accountProviderLegalEntity == null)
                 return;
 
-            var remainingOperations = accountProviderLegalEntity
-                .Permissions
-                .Where(x => !command.OperationsToRemove.Contains(x.Operation))
-                .Select(x => x.Operation);
-            accountProviderLegalEntity.UpdatePermissions(
+            accountProviderLegalEntity.RevokePermissions(
                 user: null,
-                grantedOperations: new HashSet<Types.Models.Operation>(remainingOperations));
+                operationsToRevoke: command.OperationsToRemove);
         }
     }
 }
