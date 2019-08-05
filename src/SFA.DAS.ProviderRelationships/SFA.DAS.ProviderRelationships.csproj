@@ -22,6 +22,7 @@
         <PackageReference Include="SFA.DAS.Authorization.EmployerUserRoles" Version="1.1.1" />
         <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
+        <PackageReference Include="SFA.DAS.Encoding" Version="1.1.57" />
         <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
         <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
         <PackageReference Include="SFA.DAS.NServiceBus" Version="7.0.14" />

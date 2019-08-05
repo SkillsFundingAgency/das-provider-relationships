@@ -12,7 +12,6 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.Http;
-using SFA.DAS.ProviderRelationships.Api.Client.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
@@ -75,6 +74,27 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         {
             return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<RestHttpClientException>());
         }
+
+        [Test]
+        public Task RevokePermissions_ShouldExecuteHttpRequest()
+             => RunAsync(
+                 act: async f =>
+                 {
+                     f.RevokePermissionsRequest = new RevokePermissionsRequest(
+                         ukprn: 299792458,
+                         accountLegalEntityPublicHashedId: "DEADBEEF",
+                         operationsToRevoke: new[] { Operation.Recruitment });
+
+                     await f.ProviderRelationshipsApiClient.RevokePermissions(f.RevokePermissionsRequest);
+                 },
+                 assert: f =>
+                 {
+                     var req = f.HttpMessageHandler.HttpRequestMessage;
+                     req.RequestUri.ToString().Should().Be("https://foo.bar/permissions/revoke");
+
+                     var objectContent = (ObjectContent)req.Content;
+                     objectContent.Value.Should().BeSameAs(f.RevokePermissionsRequest);
+                 });
     }
 
     public class ProviderRelationshipsApiClientTestsFixture
@@ -82,6 +102,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         public HasPermissionRequest HasPermissionRequest { get; set; }
         public GetAccountProviderLegalEntitiesWithPermissionRequest GetAccountProviderLegalEntitiesWithPermissionRequest { get; set; }
         public HasRelationshipWithPermissionRequest HasRelationshipWithPermissionRequest { get; set; }
+        public RevokePermissionsRequest RevokePermissionsRequest { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public IProviderRelationshipsApiClient ProviderRelationshipsApiClient { get; set; }
         public HttpClient HttpClient { get; set; }

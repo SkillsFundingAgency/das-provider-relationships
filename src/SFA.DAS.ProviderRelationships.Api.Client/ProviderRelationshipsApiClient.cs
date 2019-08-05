@@ -39,5 +39,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         {
             return _restHttpClient.Get("healthcheck");
         }
+
+        public Task RevokePermissions(RevokePermissionsRequest command, CancellationToken cancellationToken = default) =>
+            _restHttpClient.PostAsJson("permissions/revoke", command, cancellationToken);
     }
 }
