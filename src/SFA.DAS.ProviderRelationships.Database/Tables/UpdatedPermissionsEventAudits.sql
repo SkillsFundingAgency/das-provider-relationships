@@ -6,7 +6,7 @@
     [AccountProviderId] BIGINT NOT NULL, 
     [AccountProviderLegalEntityId] BIGINT NOT NULL, 
     [Ukprn] BIGINT NOT NULL, 
-    [UserRef] UNIQUEIDENTIFIER NOT NULL, 
+    [UserRef] UNIQUEIDENTIFIER NULL, 
     [GrantedOperations] NVARCHAR(MAX) NOT NULL, 
     [Updated] DATETIME2 NOT NULL, 
     [Logged] DATETIME2 NOT NULL,

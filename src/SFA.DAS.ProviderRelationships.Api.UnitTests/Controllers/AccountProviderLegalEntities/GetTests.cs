@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -13,6 +12,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
+using SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProviderLegalEntities
 {
@@ -36,14 +36,14 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
         public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied"));
+                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied"));
         }
         
         [Test]
         public Task WhenOperationIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-                (f, r) => f.AssertSingleModelError(r, nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
+                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
         }
     }
 
@@ -91,16 +91,5 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
             return this;
         }
 
-        public void AssertSingleModelError(object result, string propertyName, string message)
-        {
-            result.Should().NotBeNull();
-            result.Should().BeOfType<InvalidModelStateResult>();
-            var modelStateDictionary = ((InvalidModelStateResult) result).ModelState;
-            modelStateDictionary.Count.Should().Be(1);
-            modelStateDictionary.Keys.First().Should().Be(propertyName);
-            var modelState = modelStateDictionary.Values.First();
-            modelState.Errors.Count.Should().Be(1);
-            modelState.Errors.First().ErrorMessage.Should().Be(message);
-        }
     }
 }
