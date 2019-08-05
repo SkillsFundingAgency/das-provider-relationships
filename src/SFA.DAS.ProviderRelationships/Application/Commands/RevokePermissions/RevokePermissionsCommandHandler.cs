@@ -22,16 +22,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
 
         protected override async Task Handle(RevokePermissionsCommand command, CancellationToken cancellationToken)
         {
-            long id;
-            if (!_encodingService.TryDecode(command.AccountLegalEntityPublicHashedId, EncodingType.PublicAccountLegalEntityId, out id))
-                return;
+            long accountLegalEntityId = _encodingService.Decode(command.AccountLegalEntityPublicHashedId, EncodingType.PublicAccountLegalEntityId);
 
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                 .Include(x => x.AccountProvider)
                 .Include(x => x.AccountLegalEntity)
                 .Include(x => x.Permissions)
                 .Where(x => x.AccountProvider.ProviderUkprn == command.Ukprn)
-                .Where(x => x.AccountLegalEntity.Id == id)
+                .Where(x => x.AccountLegalEntity.Id == accountLegalEntityId)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (accountProviderLegalEntity == null)

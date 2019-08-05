@@ -16,11 +16,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [Route]
-        public ActionResult Index()
+        public ActionResult Index(string accountHashedId = null)
         {
             if (_environmentService.IsCurrent(DasEnv.LOCAL))
             {
-                return RedirectToAction("Index", "AccountProviders", new { accountHashedId = "JRML7V" });
+                return RedirectToAction("Index", "AccountProviders", new { accountHashedId = accountHashedId ?? "JRML7V" });
             }
 
             return Redirect(_employerUrls.Homepage());

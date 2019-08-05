@@ -62,8 +62,13 @@ namespace SFA.DAS.ProviderRelationships.Models
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
             
             Updated = DateTime.UtcNow;
+<<<<<<< HEAD
 
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user?.Ref, user?.Email, user?.FirstName, user?.LastName, grantedOperations, Updated.Value));
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user?.Ref, grantedOperations, Updated.Value));
+=======
+            
+            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, user.Email, user.FirstName, user.LastName, grantedOperations, Updated.Value));
+>>>>>>> origin
         }
 
         private void EnsureAccountLegalEntityHasNotBeenDeleted()

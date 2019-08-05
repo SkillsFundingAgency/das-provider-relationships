@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.Testing;
 
@@ -13,11 +14,27 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     [Parallelizable]
     public class HomeControllerTests : FluentTest<HomeControllerTestsFixture>
     {
+        const string ExampleEmployerAccountId = "ABC123";
+
         [Test]
         public void Index_WhenGettingIndexAction_ThenShouldRedirectToEmployerPortal()
         {
             Run(f => f.SetCurrentEnvironmentIsLocal(false), f => f.Local(), (f, r) => r.Should().NotBeNull()
                 .And.Match<RedirectResult>(a => a.Url == HomeControllerTestsFixture.EmployerPortalUrl));
+        }
+
+        [Test]
+        public void Index_WhenGettingIndexActionWithSuppliedEmployerAccountId_AndEnvironmentIsNotLocal_ThenShouldRedirectToAccountProvidersPage()
+        {
+            Run(f => f.SetCurrentEnvironmentIsLocal(false), f => f.LocalWithEmployerAccountId(ExampleEmployerAccountId), (f, r) => r.Should().NotBeNull()
+                .And.Match<RedirectResult>(a => a.Url == HomeControllerTestsFixture.EmployerPortalUrl));
+        }
+
+        [Test]
+        public void Index_WhenGettingIndexActionWithSuppliedEmployerAccountId_AndEnvironmentIsLocal_ThenShouldRedirectToAccountProvidersPage()
+        {
+            Run(f => f.SetCurrentEnvironmentIsLocal(true), f => f.LocalWithEmployerAccountId(ExampleEmployerAccountId), (f, r) => r.Should().NotBeNull()
+                .And.Match<RedirectToRouteResult>(rr => rr.RouteValues.ContainsKey(RouteValueKeys.AccountHashedId) && rr.RouteValues.ContainsValue(ExampleEmployerAccountId)));
         }
     }
 
@@ -42,6 +59,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public ActionResult Local()
         {
             return HomeController.Index();
+        }
+
+        public ActionResult LocalWithEmployerAccountId(string employerAccountId)
+        {
+            return HomeController.Index(employerAccountId);
         }
 
         public HomeControllerTestsFixture SetCurrentEnvironmentIsLocal(bool isLocal)
