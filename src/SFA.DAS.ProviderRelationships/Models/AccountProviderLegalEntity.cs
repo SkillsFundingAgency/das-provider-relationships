@@ -61,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             var sortedGrantedOperations = grantedOperations.OrderBy(x => x);
             var sortedPermissionOperations = _permissions.Select(x => x.Operation).OrderBy(x => x);
-            if (Enumerable.SequenceEqual(sortedGrantedOperations, sortedPermissionOperations))
+            if (sortedGrantedOperations.SequenceEqual(sortedPermissionOperations))
                 return;
 
             _permissions.Clear();
