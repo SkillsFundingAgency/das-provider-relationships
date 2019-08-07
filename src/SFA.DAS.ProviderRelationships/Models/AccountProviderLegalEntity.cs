@@ -51,9 +51,13 @@ namespace SFA.DAS.ProviderRelationships.Models
             var remainingOperations = Permissions
                 .Where(x => !operationsToRevoke.Contains(x.Operation))
                 .Select(x => x.Operation);
-            UpdatePermissions(
-                user: null,
-                grantedOperations: new HashSet<Operation>(remainingOperations));
+
+            if (Permissions.Count() != remainingOperations.Count())
+            {
+                UpdatePermissions(
+                    user: null,
+                    grantedOperations: new HashSet<Operation>(remainingOperations));
+            }
         }
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
