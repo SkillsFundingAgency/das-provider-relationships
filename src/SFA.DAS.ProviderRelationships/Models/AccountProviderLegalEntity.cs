@@ -59,12 +59,10 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
-            if (grantedOperations.Count == _permissions.Count)
-            {
-                var existingOperations = _permissions.Select(x => x.Operation);
-                if (grantedOperations.All(x => existingOperations.Contains(x)))
-                    return;
-            }
+            var sortedGrantedOperations = grantedOperations.OrderBy(x => x);
+            var sortedPermissionOperations = _permissions.Select(x => x.Operation).OrderBy(x => x);
+            if (Enumerable.SequenceEqual(sortedGrantedOperations, sortedPermissionOperations))
+                return;
 
             _permissions.Clear();
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
