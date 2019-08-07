@@ -105,6 +105,29 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 }
             );
 
+        [Test]
+        [Parallelizable]
+        public Task WhenRevokedPermissionDidNotExist_ThenShouldNotPublishAnyEvents() =>
+            RunAsync(
+                arrange: f =>
+                {
+                    f.RevokePermissionsCommand = new RevokePermissionsCommand(
+                        ukprn: f.RevokePermissionsCommand.Ukprn,
+                        accountLegalEntityPublicHashedId: f.RevokePermissionsCommand.AccountLegalEntityPublicHashedId,
+                        operationsToRevoke: new[] { (Operation)short.MinValue }
+                        );
+                },
+                act: async f =>
+                {
+                    await f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None);
+                },
+                assert: f =>
+                {
+                    IEnumerable<object> events = f.UnitOfWorkContext.GetEvents();
+                    events.Should().BeEmpty();
+                }
+            );
+
     }
 
     public class RevokePermissionsCommandHandlerTestsFixture
