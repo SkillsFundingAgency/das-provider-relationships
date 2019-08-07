@@ -26,11 +26,11 @@ namespace SFA.DAS.ProviderRelationships.Models
             AccountProviderId = accountProvider.Id;
             AccountLegalEntity = accountLegalEntity;
             AccountLegalEntityId = accountLegalEntity.Id;
-            
+
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
-            
+
             Created = DateTime.UtcNow;
-            
+
             Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, user.Email, user.FirstName, user.LastName, grantedOperations, Created));
         }
 
@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         internal void Delete(DateTime deleted)
         {
             _permissions.Clear();
-            
+
             Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
         }
 
@@ -52,19 +52,23 @@ namespace SFA.DAS.ProviderRelationships.Models
                 .Where(x => !operationsToRevoke.Contains(x.Operation))
                 .Select(x => x.Operation);
 
-            if (Permissions.Count() != remainingOperations.Count())
-            {
-                UpdatePermissions(
-                    user: null,
-                    grantedOperations: new HashSet<Operation>(remainingOperations));
-            }
+            UpdatePermissions(
+                user: null,
+                grantedOperations: new HashSet<Operation>(remainingOperations));
         }
 
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
+            if (grantedOperations.Count == _permissions.Count)
+            {
+                var existingOperations = _permissions.Select(x => x.Operation);
+                if (grantedOperations.All(x => existingOperations.Contains(x)))
+                    return;
+            }
+
             _permissions.Clear();
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
-            
+
             Updated = DateTime.UtcNow;
 
             Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user?.Ref, user?.Email, user?.FirstName, user?.LastName, grantedOperations, Updated.Value));
@@ -77,6 +81,5 @@ namespace SFA.DAS.ProviderRelationships.Models
                 throw new InvalidOperationException("Requires account legal entity has not been deleted");
             }
         }
-
     }
 }
