@@ -34,10 +34,13 @@
 * Clone the [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config) repository.
 * Clone the [das-employer-config-updater](https://github.com/SkillsFundingAgency/das-employer-config-updater) repository.
 * Run Azure Storage Emulator.
+* Run Azure Cosmos DB Emulator.
 * Open the `das-employer-config-updater` solution in Visual Studio.
 * Press F5 and follow the instructions to import the config from the directory that you cloned the `das-employer-config repository` to.
 
 > The two repositories above are private. If the links appear to be dead make sure that you are logged into GitHub with an account that has access to these i.e. that you are part of the Skills Funding Agency Team organization.
+
+> The NServiceBus license contained in the `das-employer-config` repo have have expired - if so, obtain a valid license key and use it to replace the expired `NServiceBusLicense` setting in the `SFA.DAS.ProviderRelationshipsV2.json` file that was cloned from the config repo. Then re-run the importer.
 
 ##### Add Certificates
 
