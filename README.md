@@ -40,7 +40,7 @@
 
 > The two repositories above are private. If the links appear to be dead make sure that you are logged into GitHub with an account that has access to these i.e. that you are part of the Skills Funding Agency Team organization.
 
-> The NServiceBus license contained in the `das-employer-config` repo have have expired - if so, obtain a valid license key and use it to replace the expired `NServiceBusLicense` setting in the `SFA.DAS.ProviderRelationshipsV2.json` file that was cloned from the config repo. Then re-run the importer.
+> The NServiceBus license contained in the `das-employer-config` repo may have expired - if so, obtain a valid license key and use it to replace the expired `NServiceBusLicense` setting in the `SFA.DAS.ProviderRelationshipsV2.json` file that was cloned from the config repo. Then re-run the importer.
 
 ##### Add Certificates
 
