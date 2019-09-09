@@ -26,8 +26,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck
         {
             var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var healthCheck = user.CreateHealthCheck();
-
-            await healthCheck.Run(_providerApiClient.FindAllAsync, _providerRelationshipsApiClient.HealthCheck);
+            
+            await healthCheck.Run(_providerApiClient.FindAllAsync, () => _providerRelationshipsApiClient.Ping(cancellationToken));
 
             _db.Value.HealthChecks.Add(healthCheck);
         }

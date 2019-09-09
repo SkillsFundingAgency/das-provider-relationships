@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
 
         public IDocumentClient CreateDocumentClient()
         {
-            return _documentClient.Value;
+            return _documentClient.Value; 
         }
     }
 }

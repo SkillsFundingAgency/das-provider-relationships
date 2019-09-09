@@ -12,6 +12,7 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.Http;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Commands.Ping;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
@@ -70,9 +71,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         }
         
         [Test]
-        public Task HealthCheck_WhenHealthCheckFails_ThenShouldThrowException()
+        public Task Ping_WhenHttpPingFails_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetHealthCheckFailure(), f => f.HealthCheck(), (f, r) => r.Should().Throw<RestHttpClientException>());
+            return RunAsync(f => f.SetHttpPingFailure(), f => f.Ping(), (f, r) => r.Should().Throw<RestHttpClientException>());
+        }
+        
+        [Test]
+        public Task Ping_WhenReadStorePingFails_ThenShouldThrowException()
+        {
+            return RunAsync(f => f.SetReadStorePingFailure(), f => f.Ping(), (f, r) => r.Should().Throw<Exception>());
         }
 
         [Test]
@@ -173,9 +180,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             return ProviderRelationshipsApiClient.HasRelationshipWithPermission(HasRelationshipWithPermissionRequest, CancellationToken);
         }
 
-        public Task HealthCheck()
+        public Task Ping()
         {
-            return ProviderRelationshipsApiClient.HealthCheck();
+            return ProviderRelationshipsApiClient.Ping(CancellationToken);
         }
 
         public ProviderRelationshipsApiClientTestsFixture AddRelationships()
@@ -201,14 +208,21 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             
             return this;
         }
+
+        public ProviderRelationshipsApiClientTestsFixture SetReadStorePingFailure()
+        {
+            Mediator.Setup(m => m.Send(It.IsAny<PingCommand>(), CancellationToken)).Throws<Exception>();
+            
+            return this;
+        }
         
-        public ProviderRelationshipsApiClientTestsFixture SetHealthCheckFailure()
+        public ProviderRelationshipsApiClientTestsFixture SetHttpPingFailure()
         {
             HttpMessageHandler.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
                 Content = new StringContent("Kaboom"),
                 ReasonPhrase = "Internal server error",
-                RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/healthcheck")
+                RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://foo.bar/ping")
             };
             
             return this;

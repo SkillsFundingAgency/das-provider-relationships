@@ -16,6 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolut
                 .AddTransient<GetAccountProviderLegalEntitiesWithPermissionScenario>()
                 .AddTransient<HasPermissionScenario>()
                 .AddTransient<HasRelationshipWithPermissionScenario>()
+                .AddTransient<PingScenario>()
                 .BuildServiceProvider();
         }
 

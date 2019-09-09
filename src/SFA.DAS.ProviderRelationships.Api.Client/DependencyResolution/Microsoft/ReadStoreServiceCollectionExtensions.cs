@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.Microsof
         public static IServiceCollection AddReadStore(this IServiceCollection services)
         {
             return services.AddSingleton<IDocumentClientFactory, DocumentClientFactory>()
-                .AddTransient<IAccountProviderLegalEntitiesReadOnlyRepository>(p => new AccountProviderLegalEntitiesReadOnlyRepository(p.GetRequiredService<IDocumentClientFactory>().CreateDocumentClient()));
+                .AddTransient<IAccountProviderLegalEntitiesReadOnlyRepository, AccountProviderLegalEntitiesReadOnlyRepository>();
         }
     }
 }
