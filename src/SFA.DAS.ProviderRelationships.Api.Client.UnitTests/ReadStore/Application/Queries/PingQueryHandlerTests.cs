@@ -8,15 +8,15 @@ using MediatR;
 using Microsoft.Azure.Documents;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Commands.Ping;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Application.Queries
 {
     [TestFixture]
     [Parallelizable]
-    public class PingCommandHandlerTests : FluentTest<PingCommandHandlerTestsFixture>
+    public class PingQueryHandlerTests : FluentTest<PingQueryHandlerTestsFixture>
     {
         [Test]
         public Task Handle_WhenDatabasePingFails_ThenShouldThrowException()
@@ -28,25 +28,25 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
         }
     }
 
-    public class PingCommandHandlerTestsFixture
+    public class PingQueryHandlerTestsFixture
     {
-        internal PingCommand Command { get; set; }
+        internal PingQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public Mock<IDocumentClient> DocumentClient { get; set; }
-        internal IRequestHandler<PingCommand, Unit> Handler { get; set; }
+        internal IRequestHandler<PingQuery, Unit> Handler { get; set; }
         public Mock<IDocumentClientFactory> DocumentClientFactory { get; set; }
         public List<Database> Databases { get; set; }
 
-        public PingCommandHandlerTestsFixture()
+        public PingQueryHandlerTestsFixture()
         {
             DocumentClient = new Mock<IDocumentClient>();
-            Command = new PingCommand();
+            Query = new PingQuery();
             CancellationToken = CancellationToken.None;
             DocumentClientFactory = new Mock<IDocumentClientFactory>();
             
             DocumentClientFactory.Setup(f => f.CreateDocumentClient()).Returns(DocumentClient.Object);
             
-            Handler = new PingCommandHandler(DocumentClientFactory.Object);
+            Handler = new PingQueryHandler(DocumentClientFactory.Object);
             Databases = new List<Database> { new Database { Id = DocumentSettings.DatabaseName }, new Database() };
             
             DocumentClient.Setup(c => c.CreateDatabaseQuery(null)).Returns(Databases.AsQueryable().OrderBy(d => d.Id));
@@ -54,10 +54,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
 
         public Task Handle()
         {
-            return Handler.Handle(Command, CancellationToken);
+            return Handler.Handle(Query, CancellationToken);
         }
 
-        public PingCommandHandlerTestsFixture SetPingFailure()
+        public PingQueryHandlerTestsFixture SetPingFailure()
         {
             Databases.Clear();
             

@@ -4,18 +4,18 @@ using MediatR;
 using Microsoft.Azure.Documents;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Commands.Ping
+namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping
 {
-    internal class PingCommandHandler : RequestHandler<PingCommand>
+    internal class PingQueryHandler : RequestHandler<PingQuery>
     {
         private readonly IDocumentClient _documentClient;
 
-        public PingCommandHandler(IDocumentClientFactory documentClientFactory)
+        public PingQueryHandler(IDocumentClientFactory documentClientFactory)
         {
             _documentClient = documentClientFactory.CreateDocumentClient();
         }
         
-        protected override void Handle(PingCommand request)
+        protected override void Handle(PingQuery request)
         {
             var value = _documentClient.CreateDatabaseQuery()
                 .Where(d => d.Id == DocumentSettings.DatabaseName)

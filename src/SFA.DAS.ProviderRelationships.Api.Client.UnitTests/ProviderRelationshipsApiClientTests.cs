@@ -12,9 +12,9 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.Http;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Commands.Ping;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
 using SFA.DAS.ProviderRelationships.Api.Client.UnitTests.Fakes;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -211,7 +211,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
 
         public ProviderRelationshipsApiClientTestsFixture SetReadStorePingFailure()
         {
-            Mediator.Setup(m => m.Send(It.IsAny<PingCommand>(), CancellationToken)).Throws<Exception>();
+            Mediator.Setup(m => m.Send(It.IsAny<PingQuery>(), CancellationToken)).Throws<Exception>();
             
             return this;
         }

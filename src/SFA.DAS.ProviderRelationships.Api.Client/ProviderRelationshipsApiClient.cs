@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.Http;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Commands.Ping;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 
         public Task Ping(CancellationToken cancellationToken = default)
         {
-            return Task.WhenAll(_restHttpClient.Get("ping", null, cancellationToken), _mediator.Send(new PingCommand(), cancellationToken));
+            return Task.WhenAll(_restHttpClient.Get("ping", null, cancellationToken), _mediator.Send(new PingQuery(), cancellationToken));
         }
 
         public Task RevokePermissions(RevokePermissionsRequest request, CancellationToken cancellationToken = default)
