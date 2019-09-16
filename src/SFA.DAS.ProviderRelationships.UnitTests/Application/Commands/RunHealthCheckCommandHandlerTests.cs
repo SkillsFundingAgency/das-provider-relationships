@@ -41,6 +41,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public UnitOfWorkContext UnitOfWorkContext { get; set; }
         public Mock<IProviderApiClient> ProviderApiClient { get; set; }
         public Mock<IProviderRelationshipsApiClient> ProviderRelationshipsApiClient { get; set; }
+        public CancellationToken CancellationToken { get; set; }
 
         public RunHealthCheckCommandHandlerTestsFixture()
         {
@@ -50,19 +51,20 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IProviderApiClient>();
             ProviderRelationshipsApiClient = new Mock<IProviderRelationshipsApiClient>();
+            CancellationToken = new CancellationToken();
 
             Db.Users.Add(User);
             Db.SaveChanges();
             
             ProviderApiClient.Setup(c => c.SearchAsync("", 1)).ReturnsAsync(new ProviderSearchResponseItem());
-            ProviderRelationshipsApiClient.Setup(c => c.HealthCheck()).Returns(Task.CompletedTask);
+            ProviderRelationshipsApiClient.Setup(c => c.Ping(CancellationToken)).Returns(Task.CompletedTask);
 
             Handler = new RunHealthCheckCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ProviderApiClient.Object, ProviderRelationshipsApiClient.Object);
         }
 
         public async Task Handle()
         {
-            await Handler.Handle(RunHealthCheckCommand, CancellationToken.None);
+            await Handler.Handle(RunHealthCheckCommand, CancellationToken);
             await Db.SaveChangesAsync();
         }
     }

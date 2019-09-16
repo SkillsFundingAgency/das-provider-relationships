@@ -9,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
         Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default);
         Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default);
         Task<bool> HasRelationshipWithPermission(HasRelationshipWithPermissionRequest request, CancellationToken cancellationToken = default);
-        Task HealthCheck();
-        Task RevokePermissions(RevokePermissionsRequest command, CancellationToken cancellationToken = default);
+        Task Ping(CancellationToken cancellationToken = default);
+        Task RevokePermissions(RevokePermissionsRequest request, CancellationToken cancellationToken = default);
     }
 }

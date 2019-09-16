@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness.Scenarios
             var hasRelationshipWithPermissionRequest = new HasRelationshipWithPermissionRequest { Ukprn = ukprn, Operation = Operation.CreateCohort };
             var hasRelationshipWithPermission = await _providerRelationshipsApiClient.HasRelationshipWithPermission(hasRelationshipWithPermissionRequest);
 
-            Console.WriteLine($"Calling HasRelationshipWithPermissionRequest with Ukprn {hasRelationshipWithPermissionRequest.Ukprn}, Operation {hasRelationshipWithPermissionRequest.Operation} returned {hasRelationshipWithPermission}");
+            Console.WriteLine($"Calling HasRelationshipWithPermission with Ukprn {hasRelationshipWithPermissionRequest.Ukprn}, Operation {hasRelationshipWithPermissionRequest.Operation} returned {hasRelationshipWithPermission}");
         }
     }
 }

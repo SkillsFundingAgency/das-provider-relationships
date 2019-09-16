@@ -4,6 +4,7 @@ using MediatR;
 using SFA.DAS.Http;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
 using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
+using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
@@ -19,8 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             _mediator = mediator;
         }
 
-        public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(
-                GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
+        public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
         {
             return await _restHttpClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
         }
@@ -35,12 +35,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
         }
 
-        public Task HealthCheck()
+        public Task Ping(CancellationToken cancellationToken = default)
         {
-            return _restHttpClient.Get("healthcheck");
+            return Task.WhenAll(_restHttpClient.Get("ping", null, cancellationToken), _mediator.Send(new PingQuery(), cancellationToken));
         }
 
-        public Task RevokePermissions(RevokePermissionsRequest command, CancellationToken cancellationToken = default) =>
-            _restHttpClient.PostAsJson("permissions/revoke", command, cancellationToken);
+        public Task RevokePermissions(RevokePermissionsRequest request, CancellationToken cancellationToken = default)
+        {
+            return _restHttpClient.PostAsJson("permissions/revoke", request, cancellationToken);
+        }
     }
 }

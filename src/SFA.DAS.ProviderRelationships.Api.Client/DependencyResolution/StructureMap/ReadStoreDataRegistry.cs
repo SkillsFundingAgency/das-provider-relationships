@@ -8,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.Structur
         public ReadStoreDataRegistry()
         {
             For<IDocumentClientFactory>().Use<DocumentClientFactory>().Singleton();
-            For<IAccountProviderLegalEntitiesReadOnlyRepository>().Use(c => new AccountProviderLegalEntitiesReadOnlyRepository(c.GetInstance<IDocumentClientFactory>().CreateDocumentClient())).Transient();
+            For<IAccountProviderLegalEntitiesReadOnlyRepository>().Use<AccountProviderLegalEntitiesReadOnlyRepository>().Transient();
         }
     }
 }

@@ -97,7 +97,7 @@
     <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntitiesRouteValues.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorization\AuthorizeRemoteOnlyAttribute.cs" />
-    <Compile Include="Controllers\HealthCheckController.cs" />
+    <Compile Include="Controllers\PingController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
