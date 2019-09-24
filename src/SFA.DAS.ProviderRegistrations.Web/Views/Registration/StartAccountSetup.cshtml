@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Manage apprenticeships";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Start setting up an account for an employer
+        </h1>
+        <p class="govuk-body-lead">They will be sent an invitation email, so they can complete the set-up the account.</p>
+       
+        <h2 class="govuk-heading-m">Before you start</h2>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>you'll need to have permission from the employer to use their details. Have a conversation with them to let them know to expect the invitation</li>
+            <li>you'll need to know the name and email address of the person you're inviting</li>
+        </ul>
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                Before you start, you must make sure you have permission to invite the employer to setup an account.
+            </strong>
+        </div>
+
+        <br>
+        <a href="@Url.Action("NewEmployerUser")" class="govuk-button govuk-button--start">Start</a>
+    </div>
+</div>
