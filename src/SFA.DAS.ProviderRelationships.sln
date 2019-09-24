@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{04794025-72A5-4A0D-B7DD-BD3BBE2BD055}"
 EndProject
@@ -50,6 +50,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRelationships.Api", "SFA.DAS.ProviderRelationships.Api\SFA.DAS.ProviderRelationships.Api.csproj", "{CCBEC137-2904-4046-9968-CCBF6EE2415A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Api.UnitTests", "SFA.DAS.ProviderRelationships.Api.UnitTests\SFA.DAS.ProviderRelationships.Api.UnitTests.csproj", "{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRegistrations.Web", "SFA.DAS.ProviderRegistrations.Web\SFA.DAS.ProviderRegistrations.Web.csproj", "{914F3597-2E00-499D-908B-D804573CE0BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRegistrations", "SFA.DAS.ProviderRegistrations\SFA.DAS.ProviderRegistrations.csproj", "{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +135,14 @@ Global
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2952B2-5B18-4B53-8A37-E934DFA55CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914F3597-2E00-499D-908B-D804573CE0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914F3597-2E00-499D-908B-D804573CE0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914F3597-2E00-499D-908B-D804573CE0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914F3597-2E00-499D-908B-D804573CE0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
