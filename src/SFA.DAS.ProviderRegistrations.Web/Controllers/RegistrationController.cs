@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRegistrations.Web.Models;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
@@ -47,7 +43,24 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 return View("NewEmployerUser", model);
             }
 
-            else return null;
+            return View("InviteConfirmation");
+        }
+
+        [HttpPost]
+        [Route("InviteConfirmation")]
+        [ValidateAntiForgeryToken]
+        public IActionResult InviteConfirmation(string action)
+        {
+            switch (action)
+            {
+                case "Invite": return View();
+                case "Homepage": return View();
+                default:
+                {
+                    ViewBag.InValid = true;
+                    return View();
+                }
+            }
         }
     }
 }

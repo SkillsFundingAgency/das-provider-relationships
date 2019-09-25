@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Manage apprenticeships";
+    var inError = ViewBag.InValid ?? false;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                The employer account is ready for them to complete
+            </h1>
+            <div class="govuk-panel__body">
+                The employer has been sent an email invitation with instructions to complete the set-up of the account.
+            </div>
+        </div>
+        <br>
+        <form id="ConfirmInvite" novalidate method="post" action="@Url.Action("InviteConfirmation")">
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group @(inError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            What next?
+                        </h1>
+                    </legend>
+                    @if (inError)
+                    {
+                        <span class="field-validation-error govuk-error-message">Please select an option</span>
+                    }
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="employer-confirmation" name="action" type="radio" value="Invite">
+                            <label class="govuk-label govuk-radios__label" for="employer-confirmation">
+                                Invite another employer
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="employer-confirmation-2" name="action" type="radio" value="Homepage">
+                            <label class="govuk-label govuk-radios__label" for="employer-confirmation-2">
+                                Return to homepage
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>
