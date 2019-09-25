@@ -1,0 +1,49 @@
+﻿@model SFA.DAS.ProviderRegistrations.Web.Models.NewEmployerUserViewModel
+@using SFA.DAS.ProviderRegistrations.Web.Extensions
+@{
+    ViewData["Title"] = "Manage apprenticeships";
+}
+
+<p class="govuk-body govuk-!-margin-bottom-8">
+    <a href="@Url.Action("StartAccountSetup")" class="govuk-back-link">Back</a>
+</p>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Enter the employer details
+        </h1>
+        <p>Enter the details for the employer. Once the account is created, the employer will be able to add other users.</p>
+        <br>
+        <form id="NewEmployerUser" novalidate method="post" action="@Url.Action("NewEmployerUser")">
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group">
+                <div class="govuk-form-group @Html.AddClassIfPropertyInError(x => x.EmployerOrganisation, "govuk-form-group--error")">
+                    <label class="govuk-label" asp-for="EmployerOrganisation">Employer organisation</label>
+                    @Html.ValidationMessageFor(m => m.EmployerOrganisation, null, new { @class = "govuk-error-message", id = "error-message-" + Html.IdFor(m => m.EmployerOrganisation) })
+                    <input class="govuk-input" asp-for="EmployerOrganisation">
+                </div>
+                <div class="govuk-form-group @Html.AddClassIfPropertyInError(x => x.EmployerFirstName, "govuk-form-group--error")">
+                    <label class="govuk-label" asp-for="EmployerFirstName">Employer first name</label>
+                    @Html.ValidationMessageFor(m => m.EmployerFirstName, null, new { @class = "govuk-error-message", id = "error-message-" + Html.IdFor(m => m.EmployerFirstName) })
+                    <input class="govuk-input" asp-for="EmployerFirstName">
+                </div>
+                <div class="govuk-form-group @Html.AddClassIfPropertyInError(x => x.EmployerLastName, "govuk-form-group--error")">
+                    <label class="govuk-label" asp-for="EmployerFirstName">Employer last name</label>
+                    @Html.ValidationMessageFor(m => m.EmployerLastName, null, new { @class = "govuk-error-message", id = "error-message-" + Html.IdFor(m => m.EmployerLastName) })
+                    <input class="govuk-input" asp-for="EmployerLastName">
+                </div>
+                <div class="govuk-form-group @Html.AddClassIfPropertyInError(x => x.EmployerEmailAddress, "govuk-form-group--error")">
+                    <label class="govuk-label" asp-for="EmployerEmailAddress">Employer email address</label>
+                    @Html.ValidationMessageFor(m => m.EmployerEmailAddress, null, new { @class = "govuk-error-message", id = "error-message-" + Html.IdFor(m => m.EmployerEmailAddress) })
+                    <span id="email-hint" class="govuk-hint">
+                        We'll send an email to the employer to confirm their identity.
+                    </span>
+                    <input class="govuk-input" asp-for="EmployerEmailAddress">
+                </div>
+            </div>
+            <button type="submit" class="govuk-button">Continue</button>
+        </form>
+    </div>
+</div>
+
