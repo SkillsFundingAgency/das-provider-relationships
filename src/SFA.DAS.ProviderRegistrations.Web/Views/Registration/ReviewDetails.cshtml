@@ -1,0 +1,101 @@
+﻿@model SFA.DAS.ProviderRegistrations.Web.Models.NewEmployerUserViewModel
+@{
+    ViewData["Title"] = "Manage apprenticeships";
+}
+
+<form id="InviteEmployerUser" novalidate method="post" action="@Url.Action("InviteEmployeruser")">
+    @Html.AntiForgeryToken()
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                Check details
+            </h1>
+            <p class="govuk-body">Check the details are correct. We will be sending the invitation to complete the set-up of the account to the email address below.</p>
+            <br>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Employer organisation
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmployerOrganisation
+                        @Html.HiddenFor(m => m.EmployerOrganisation)
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Employer first name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmployerFirstName
+                        @Html.HiddenFor(m => m.EmployerFirstName)
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Employer last name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmployerLastName
+                        @Html.HiddenFor(m => m.EmployerLastName)
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Employer email address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmployerEmailAddress
+                        @Html.HiddenFor(m => m.EmployerEmailAddress)
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                    </dd>
+                </div>
+            </dl>
+
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="how-contacted-conditional-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h1 class="govuk-fieldset__heading">
+                            Receive a copy of the email
+                        </h1>
+                    </legend>
+
+                    <span id="how-contacted-conditional-hint" class="govuk-hint">
+                        Choosing the option below will automatically send you a copy of the email invitation sent to the employer.
+                    </span>
+
+                    <div class="govuk-checkboxes" data-module="checkboxes">
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="how-contacted-conditional-1" name="how-contacted" type="checkbox" value="email" aria-controls="conditional-how-contacted-conditional-1" aria-expanded="false">
+                            <label class="govuk-label govuk-checkboxes__label" for="how-contacted-conditional-1">
+                                I'd like a copy of the email
+                            </label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-how-contacted-conditional-1">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="contact-by-email">
+                                    Email address
+                                </label>
+                                <input class="govuk-input govuk-input--width-20" id="contact-by-email" name="contact-by-email" type="email" spellcheck="false">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button type="submit" class="govuk-button">Invite employer</button>
+        </div>
+    </div>
+</form>

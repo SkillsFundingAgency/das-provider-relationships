@@ -18,23 +18,36 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpGet]
-        [Route("newEmployeruser")]
+        [Route("NewEmployeruser")]
         public IActionResult NewEmployerUser()
-        {
+        { 
             return View();
         }
 
         [HttpPost]
-        [Route("newEmployeruser")]
+        [Route("NewEmployeruser")]
         [ValidateAntiForgeryToken]
-        public IActionResult NewEmployerUser(NewEmployerUserViewModel model)
+        public IActionResult NewEmployeruser(NewEmployerUserViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("NewEmployerUser", model);
             }
 
             return View("ReviewDetails", model);
+        }
+
+        [HttpPost]
+        [Route("InviteEmployeruser")]
+        [ValidateAntiForgeryToken]
+        public IActionResult InviteEmployeruser(NewEmployerUserViewModel model, string command)
+        {
+            if (command == "Change")
+            {
+                return View("NewEmployerUser", model);
+            }
+
+            else return null;
         }
     }
 }
