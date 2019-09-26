@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Data
+namespace SFA.DAS.ProviderRelationships.Domain.Data
 {
     public interface IProviderRelationshipsDbContextFactory
     {

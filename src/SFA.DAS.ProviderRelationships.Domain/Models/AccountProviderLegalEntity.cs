@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class AccountProviderLegalEntity : Entity
     {
@@ -38,14 +37,14 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
         }
 
-        internal void Delete(DateTime deleted)
+        public void Delete(DateTime deleted)
         {
             _permissions.Clear();
 
             Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
         }
 
-        internal void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)
+        public void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)
         {
             EnsureAccountLegalEntityHasNotBeenDeleted();
             var remainingOperations = Permissions
@@ -57,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.Models
                 grantedOperations: new HashSet<Operation>(remainingOperations));
         }
 
-        internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
+        public void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
             var sortedGrantedOperations = grantedOperations.OrderBy(x => x);
             var sortedPermissionOperations = _permissions.Select(x => x.Operation).OrderBy(x => x);

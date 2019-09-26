@@ -1,7 +1,7 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.DependencyResolution

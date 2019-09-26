@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class HealthCheck : Entity
     {

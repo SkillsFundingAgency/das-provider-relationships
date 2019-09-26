@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ProviderRelationships.Data
+namespace SFA.DAS.ProviderRelationships.Domain.Data
 {
     public static class ProviderExtensions
     {

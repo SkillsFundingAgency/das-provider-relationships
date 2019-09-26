@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution

@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;

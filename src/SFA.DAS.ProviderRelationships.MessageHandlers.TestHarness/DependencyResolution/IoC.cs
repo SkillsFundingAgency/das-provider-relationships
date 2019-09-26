@@ -1,5 +1,5 @@
 ﻿using SFA.DAS.AutoConfiguration.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore;
 using SFA.DAS.UnitOfWork.NServiceBus;

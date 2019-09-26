@@ -4,7 +4,7 @@ using System.Linq;
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class AccountProvider : Entity
     {

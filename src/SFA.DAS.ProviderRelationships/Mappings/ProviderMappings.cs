@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
 namespace SFA.DAS.ProviderRelationships.Mappings
 {

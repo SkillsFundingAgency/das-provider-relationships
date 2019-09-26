@@ -8,8 +8,8 @@ using NUnit.Framework;
 using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification;
-using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Data;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 

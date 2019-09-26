@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using MoreLinq.Extensions;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.Providers.Api.Client;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs

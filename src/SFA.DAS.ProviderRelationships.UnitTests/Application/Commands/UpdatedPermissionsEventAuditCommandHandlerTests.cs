@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
-using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Data;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 

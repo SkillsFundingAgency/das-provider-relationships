@@ -1,4 +1,4 @@
-﻿using SFA.DAS.ProviderRelationships.Data;
+﻿using SFA.DAS.ProviderRelationships.Domain.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution

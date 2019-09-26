@@ -14,9 +14,9 @@ using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
-namespace SFA.DAS.ProviderRelationships.Data
+namespace SFA.DAS.ProviderRelationships.Domain.Data
 {
     public class ProviderRelationshipsDbContext : DbContext
     {

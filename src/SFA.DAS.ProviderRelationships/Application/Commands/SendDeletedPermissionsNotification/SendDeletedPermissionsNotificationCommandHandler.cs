@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification
 {

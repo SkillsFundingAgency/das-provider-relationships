@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class Account : Entity
     {

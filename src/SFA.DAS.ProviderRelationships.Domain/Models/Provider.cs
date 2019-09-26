@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class Provider : Entity
     {

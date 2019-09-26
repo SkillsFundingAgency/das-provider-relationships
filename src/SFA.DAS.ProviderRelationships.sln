@@ -53,7 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationshi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRegistrations.Web", "SFA.DAS.ProviderRegistrations.Web\SFA.DAS.ProviderRegistrations.Web.csproj", "{914F3597-2E00-499D-908B-D804573CE0BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ProviderRegistrations", "SFA.DAS.ProviderRegistrations\SFA.DAS.ProviderRegistrations.csproj", "{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRegistrations", "SFA.DAS.ProviderRegistrations\SFA.DAS.ProviderRegistrations.csproj", "{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ProviderRelationships.Domain", "SFA.DAS.ProviderRelationships.Domain\SFA.DAS.ProviderRelationships.Domain.csproj", "{52F5CE9B-22EF-4051-B9B0-E866E003F9BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +145,10 @@ Global
 		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F4C6766-ECE9-4C8E-ABC1-83D6D7A9F56F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F5CE9B-22EF-4051-B9B0-E866E003F9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F5CE9B-22EF-4051-B9B0-E866E003F9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F5CE9B-22EF-4051-B9B0-E866E003F9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F5CE9B-22EF-4051-B9B0-E866E003F9BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

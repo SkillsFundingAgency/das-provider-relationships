@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
-using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Data;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands
 {

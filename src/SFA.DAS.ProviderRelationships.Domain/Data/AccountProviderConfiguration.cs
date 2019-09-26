@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
-namespace SFA.DAS.ProviderRelationships.Data
+namespace SFA.DAS.ProviderRelationships.Domain.Data
 {
     public class AccountProviderConfiguration : IEntityTypeConfiguration<AccountProvider>
     {

@@ -1,5 +1,5 @@
 using System;
-using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Builders
 {

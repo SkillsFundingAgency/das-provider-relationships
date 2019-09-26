@@ -7,7 +7,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider.Dtos;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider
 {

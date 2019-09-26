@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
 {

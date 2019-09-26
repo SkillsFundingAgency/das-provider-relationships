@@ -1,7 +1,7 @@
 using System.Web;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api.Logging;
-using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution

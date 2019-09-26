@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class AccountLegalEntity : Entity
     {
@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private readonly List<AccountProviderLegalEntity> _accountProviderLegalEntities = new List<AccountProviderLegalEntity>();
 
-        internal AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
+        public AccountLegalEntity(Account account, long id, string publicHashedId, string name, DateTime created)
         {
             Id = id;
             PublicHashedId = publicHashedId;
@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             }
         }
 
-        internal void Delete(DateTime deleted)
+        public void Delete(DateTime deleted)
         {
             EnsureAccountLegalEntityHasNotBeenDeleted();
 

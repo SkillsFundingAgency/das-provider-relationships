@@ -1,7 +1,7 @@
 ﻿using System;
 using SFA.DAS.UnitOfWork;
 
-namespace SFA.DAS.ProviderRelationships.Models
+namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public abstract class Entity
     {
