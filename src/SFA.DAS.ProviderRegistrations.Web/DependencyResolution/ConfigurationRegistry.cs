@@ -16,6 +16,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.DependencyResolution
             //AddConfiguration<CommitmentPermissionsApiClientConfiguration>(ProviderCommitmentsConfigurationKeys.CommitmentsClientApiConfiguration);
             AddConfiguration<EncodingConfig>(ProviderRegistrationsConfigurationKeys.Encoding);
             AddConfiguration<ProviderFeaturesConfiguration>(ProviderRegistrationsConfigurationKeys.FeaturesConfiguration);
+            AddConfiguration<ProviderRegistrationsSettings>(ProviderRegistrationsConfigurationKeys.ProviderRegistrations);
         }
 
         private void AddConfiguration<T>(string key) where T : class

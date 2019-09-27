@@ -4,7 +4,7 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
 {
     public class Invitation : Entity
     {
-        public int Id { get; }
+        public long Id { get; set; }
 
         public Guid Reference { get; }
 
@@ -26,18 +26,18 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
 
         public DateTime UpdatedDate { get; }
 
-        public Invitation(Guid reference, string ukprn, string userRef, string organisation, string firstName, string lastName, string email, int status, DateTime createdDate)
+        public Invitation(Guid reference, string ukprn, string userRef, string employerOrganisation, string employerFirstName, string employerLastName, string employerEmail, int status, DateTime createdDate, DateTime updatedDate)
         {
             Reference = reference;
             Ukprn = ukprn;
             UserRef = userRef;
-            EmployerOrganisation = organisation;
-            EmployerFirstName = firstName;
-            EmployerLastName = lastName;
-            EmployerEmail = email;
+            EmployerOrganisation = employerOrganisation;
+            EmployerFirstName = employerFirstName;
+            EmployerLastName = employerLastName;
+            EmployerEmail = employerEmail;
             Status = status;
             CreatedDate = createdDate;
-            UpdatedDate = createdDate;
+            UpdatedDate = updatedDate;
         }
     }
 }

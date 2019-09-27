@@ -3,6 +3,7 @@ using SFA.DAS.Authorization.Context;
 using SFA.DAS.Authorization.Handlers;
 using SFA.DAS.ProviderRegistrations.Web.Authentication;
 using SFA.DAS.ProviderRegistrations.Web.Authorization;
+using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.ProviderUrlHelper;
 using StructureMap;
 using StructureMap.Building.Interception;
@@ -26,6 +27,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.DependencyResolution
             For<IAuthenticationService>().Use<AuthenticationService>().Singleton();
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
             For<ILinkGenerator>().Use<LinkGenerator>().Singleton();
+            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNewTransactionFactory>();
             // Toggle<IProviderRelationshipsApiClient, StubProviderRelationshipsApiClient>("UseStubProviderRelationships");
         }
         
