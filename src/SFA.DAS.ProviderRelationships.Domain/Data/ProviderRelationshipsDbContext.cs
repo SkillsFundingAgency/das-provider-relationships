@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Domain.Data
         public DbSet<UpdatedPermissionsEventAudit> UpdatedPermissionsEventAudits { get; set; }
         public DbSet<DeletedPermissionsEventAudit> DeletedPermissionsEventAudits { get; set; }
         public DbSet<AddedAccountProviderEventAudit> AddedAccountProviderEventAudits { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         public ProviderRelationshipsDbContext(DbContextOptions<ProviderRelationshipsDbContext> options) : base(options)
         {
@@ -44,6 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Domain.Data
             modelBuilder.ApplyConfiguration(new UpdatedPermissionsEventAuditConfiguration());
             modelBuilder.ApplyConfiguration(new DeletedPermissionsEventAuditConfiguration());
             modelBuilder.ApplyConfiguration(new AddedAccountProviderEventAuditConfiguration());
+            modelBuilder.ApplyConfiguration(new InvitationConfiguration());
         }
     }
 }

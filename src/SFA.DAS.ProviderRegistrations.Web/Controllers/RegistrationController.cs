@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
 using SFA.DAS.ProviderRegistrations.Web.Models;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
@@ -6,6 +10,13 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
     [Route("registration")]
     public class RegistrationController : Controller
     {
+        private readonly IMediator _mediator;
+
+        public RegistrationController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet]
         [Route("startAccountSetup")]
         public IActionResult StartAccountSetup()
@@ -36,12 +47,24 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         [HttpPost]
         [Route("InviteEmployeruser")]
         [ValidateAntiForgeryToken]
-        public IActionResult InviteEmployeruser(NewEmployerUserViewModel model, string command)
+        public async Task<IActionResult> InviteEmployeruser(NewEmployerUserViewModel model, string command)
         {
             if (command == "Change")
             {
                 return View("NewEmployerUser", model);
             }
+
+            await _mediator.Send(new AddInvitationCommand(
+                Guid.NewGuid(),
+                "UKPRN",
+                "USER_REF",
+                model.EmployerOrganisation,
+                model.EmployerFirstName,
+                model.EmployerLastName,
+                model.EmployerEmailAddress,
+                0,
+                DateTime.Now
+            ));
 
             return View("InviteConfirmation");
         }
