@@ -3,11 +3,9 @@ using MediatR;
 
 namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand
 {
-    public class AddInvitationCommand : IRequest
+    public class AddInvitationCommand : IRequest<string>
     {
         public int Id { get; }
-
-        public Guid Reference { get; }
 
         public string Ukprn { get; }
 
@@ -21,21 +19,17 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
 
         public string EmployerEmail { get; }
 
-        public int Status { get; }
+        public string ProviderEmail { get; }
 
-        public DateTime CreatedDate { get; }
-
-        public AddInvitationCommand(Guid reference, string ukprn, string userRef, string organisation, string firstName, string lastName, string email, int status, DateTime createdDate)
+        public AddInvitationCommand(string ukprn, string userRef, string organisation, string firstName, string lastName, string email, string providerEmail)
         {
-            Reference = reference;
             Ukprn = ukprn;
             UserRef = userRef;
             EmployerOrganisation = organisation;
             EmployerFirstName = firstName;
             EmployerLastName = lastName;
             EmployerEmail = email;
-            Status = status;
-            CreatedDate = createdDate;
+            ProviderEmail = providerEmail;
         }
     }
 }

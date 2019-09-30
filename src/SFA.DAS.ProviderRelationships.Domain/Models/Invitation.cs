@@ -20,13 +20,15 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
 
         public string EmployerEmail { get; }
 
+        public string ProviderEmail { get; }
+
         public int Status { get; }
 
         public DateTime CreatedDate { get; }
 
         public DateTime UpdatedDate { get; }
 
-        public Invitation(Guid reference, string ukprn, string userRef, string employerOrganisation, string employerFirstName, string employerLastName, string employerEmail, int status, DateTime createdDate, DateTime updatedDate)
+        public Invitation(Guid reference, string ukprn, string userRef, string employerOrganisation, string employerFirstName, string employerLastName, string employerEmail, string providerEmail, int status, DateTime createdDate, DateTime updatedDate)
         {
             Reference = reference;
             Ukprn = ukprn;
@@ -35,6 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
             EmployerFirstName = employerFirstName;
             EmployerLastName = employerLastName;
             EmployerEmail = employerEmail;
+            ProviderEmail = providerEmail;
             Status = status;
             CreatedDate = createdDate;
             UpdatedDate = updatedDate;

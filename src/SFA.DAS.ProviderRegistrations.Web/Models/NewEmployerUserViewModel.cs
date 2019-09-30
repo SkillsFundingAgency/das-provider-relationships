@@ -24,5 +24,8 @@ namespace SFA.DAS.ProviderRegistrations.Web.Models
         [Required]
         [EmailAddress]
         public string EmployerEmailAddress { get; set; }
+
+        [Display(Name = "Send copy of email")]
+        public bool CopyEmailToProvider { get; set; }
     }
 }

@@ -8,6 +8,7 @@
     [EmployerFirstName] VARCHAR(255) NOT NULL,
     [EmployerLastName] VARCHAR(255)  NOT NULL,
     [EmployerEmail] VARCHAR(255) NOT NULL,
+    [ProviderEmail] VARCHAR(255) NULL,
     [Status] INT NOT NULL,
     [CreatedDate] DATETIME,
     [UpdatedDate] DATETIME, 

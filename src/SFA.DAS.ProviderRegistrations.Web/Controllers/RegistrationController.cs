@@ -54,16 +54,14 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 return View("NewEmployerUser", model);
             }
 
-            await _mediator.Send(new AddInvitationCommand(
-                Guid.NewGuid(),
+            var invitationId = await _mediator.Send(new AddInvitationCommand(
                 "UKPRN",
                 "USER_REF",
                 model.EmployerOrganisation,
                 model.EmployerFirstName,
                 model.EmployerLastName,
                 model.EmployerEmailAddress,
-                0,
-                DateTime.Now
+                model.CopyEmailToProvider ? "PROVIDER_EMAIL" : null
             ));
 
             return View("InviteConfirmation");

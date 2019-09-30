@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Domain.Models;
 
 namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand
 {
-    public class AddInvitationCommandHandler : AsyncRequestHandler<AddInvitationCommand>
+    public class AddInvitationCommandHandler : IRequestHandler<AddInvitationCommand, string>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
 
@@ -16,22 +16,27 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
             _db = db;
         }
 
-        protected override async Task Handle(AddInvitationCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddInvitationCommand request, CancellationToken cancellationToken)
         {
+            var reference = Guid.NewGuid();
+
             var invitation = new Invitation(
-                request.Reference, 
+                reference, 
                 request.Ukprn, 
                 request.UserRef, 
                 request.EmployerOrganisation, 
                 request.EmployerFirstName,
                 request.EmployerLastName,
                 request.EmployerEmail,
-                request.Status,
-                request.CreatedDate,
-                request.CreatedDate);
+                request.ProviderEmail,
+                0,
+                DateTime.Now, 
+                DateTime.Now);
             
             _db.Value.Invitations.Add(invitation);
             await _db.Value.SaveChangesAsync(cancellationToken);
+
+            return reference.ToString();
         }
     }
 }

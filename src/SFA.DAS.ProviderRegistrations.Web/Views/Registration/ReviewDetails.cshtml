@@ -79,18 +79,10 @@
 
                     <div class="govuk-checkboxes" data-module="checkboxes">
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="how-contacted-conditional-1" name="how-contacted" type="checkbox" value="email" aria-controls="conditional-how-contacted-conditional-1" aria-expanded="false">
-                            <label class="govuk-label govuk-checkboxes__label" for="how-contacted-conditional-1">
+                            <input class="govuk-checkboxes__input" asp-for="CopyEmailToProvider" type="checkbox" />
+                            <label class="govuk-label govuk-checkboxes__label" asp-for="CopyEmailToProvider">
                                 I'd like a copy of the email
                             </label>
-                        </div>
-                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-how-contacted-conditional-1">
-                            <div class="govuk-form-group">
-                                <label class="govuk-label" for="contact-by-email">
-                                    Email address
-                                </label>
-                                <input class="govuk-input govuk-input--width-20" id="contact-by-email" name="contact-by-email" type="email" spellcheck="false">
-                            </div>
                         </div>
                     </div>
                 </fieldset>

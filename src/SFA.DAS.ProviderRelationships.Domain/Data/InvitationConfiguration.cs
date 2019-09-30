@@ -15,6 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Domain.Data
             builder.Property(a => a.EmployerFirstName).IsRequired().HasColumnType("varchar(255)");
             builder.Property(a => a.EmployerLastName).IsRequired().HasColumnType("varchar(255)");
             builder.Property(a => a.EmployerEmail).IsRequired().HasColumnType("varchar(255)");
+            builder.Property(a => a.ProviderEmail).HasColumnType("varchar(255)");
             builder.Property(a => a.Status).IsRequired().HasColumnType("int");
             builder.Property(a => a.CreatedDate).HasColumnType("datetime");
             builder.Property(a => a.UpdatedDate).HasColumnType("datetime");
