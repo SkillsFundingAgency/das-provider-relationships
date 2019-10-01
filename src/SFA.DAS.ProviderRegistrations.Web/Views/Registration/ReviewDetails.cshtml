@@ -3,6 +3,11 @@
     ViewData["Title"] = "Manage apprenticeships";
 }
 
+@section Styles
+{
+    <link rel="Stylesheet" href="@Href("~/stylesheets/site.css")" />
+}
+
 <form id="InviteEmployerUser" novalidate method="post" action="@Url.Action("InviteEmployeruser")">
     @Html.AntiForgeryToken()
     <div class="govuk-grid-row">
@@ -22,7 +27,7 @@
                         @Html.HiddenFor(m => m.EmployerOrganisation)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                        <input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" />
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -34,7 +39,7 @@
                         @Html.HiddenFor(m => m.EmployerFirstName)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                        <input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" />
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -46,7 +51,7 @@
                         @Html.HiddenFor(m => m.EmployerLastName)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                        <input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" />
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -58,7 +63,7 @@
                         @Html.HiddenFor(m => m.EmployerEmailAddress)
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <input class="govuk-link" type="submit" value="Change" name="command" />
+                        <input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" />
                     </dd>
                 </div>
             </dl>
