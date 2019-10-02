@@ -18,6 +18,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.DependencyResolution
             registry.IncludeRegistry<MediatorRegistry>();
             registry.IncludeRegistry<EncodingRegistry>();
             registry.IncludeRegistry<DataRegistry>();
+            registry.IncludeRegistry<MapperRegistry>();
             //registry.IncludeRegistry<ProviderFeaturesAuthorizationRegistry>();
             //registry.IncludeRegistry<ProviderPermissionsAuthorizationRegistry>();
             registry.IncludeRegistry<DefaultRegistry>();

@@ -1,11 +1,19 @@
-using System;
 using MediatR;
 
 namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand
 {
     public class AddInvitationCommand : IRequest<string>
     {
-        public int Id { get; }
+        public AddInvitationCommand(string ukprn, string userRef, string organisation, string firstName, string lastName, string email, string providerEmail)
+        {
+            Ukprn = ukprn;
+            UserRef = userRef;
+            EmployerOrganisation = organisation;
+            EmployerFirstName = firstName;
+            EmployerLastName = lastName;
+            EmployerEmail = email;
+            ProviderEmail = providerEmail;
+        }
 
         public string Ukprn { get; }
 
@@ -20,16 +28,5 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
         public string EmployerEmail { get; }
 
         public string ProviderEmail { get; }
-
-        public AddInvitationCommand(string ukprn, string userRef, string organisation, string firstName, string lastName, string email, string providerEmail)
-        {
-            Ukprn = ukprn;
-            UserRef = userRef;
-            EmployerOrganisation = organisation;
-            EmployerFirstName = firstName;
-            EmployerLastName = lastName;
-            EmployerEmail = email;
-            ProviderEmail = providerEmail;
-        }
     }
 }

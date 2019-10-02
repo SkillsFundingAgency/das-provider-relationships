@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SFA.DAS.ProviderRegistrations.Web.Models
+namespace SFA.DAS.ProviderRegistrations.Web.ViewModels
 {
     public class NewEmployerUserViewModel
     {

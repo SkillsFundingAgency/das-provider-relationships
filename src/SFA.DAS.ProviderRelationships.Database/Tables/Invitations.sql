@@ -10,7 +10,7 @@
     [EmployerEmail] VARCHAR(255) NOT NULL,
     [ProviderEmail] VARCHAR(255) NULL,
     [Status] INT NOT NULL,
-    [CreatedDate] DATETIME,
-    [UpdatedDate] DATETIME, 
+    [CreatedDate] DATETIME NOT NULL,
+    [UpdatedDate] DATETIME NOT NULL, 
     CONSTRAINT [PK_Invitations] PRIMARY KEY ([Id])
 )

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
-using SFA.DAS.ProviderRegistrations.Web.Models;
+using SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery;
+using SFA.DAS.ProviderRegistrations.Types;
+using SFA.DAS.ProviderRegistrations.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
 {
@@ -11,10 +15,12 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
     public class RegistrationController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public RegistrationController(IMediator mediator)
+        public RegistrationController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -54,7 +60,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 return View("NewEmployerUser", model);
             }
 
-            var invitationId = await _mediator.Send(new AddInvitationCommand(
+            await _mediator.Send(new AddInvitationCommand(
                 "UKPRN",
                 "USER_REF",
                 model.EmployerOrganisation,
@@ -82,6 +88,24 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                     return View();
                 }
             }
+        }
+
+        [HttpGet]
+        [Route("InvitedEmployers")]
+        public async Task<IActionResult> InvitedEmployers(string sortColumn, string sortDirection)
+        {
+            sortColumn = Enum.GetNames(typeof(InvitationSortColumn)).SingleOrDefault(e => e == sortColumn);
+
+            if (string.IsNullOrWhiteSpace(sortColumn)) sortColumn = Enum.GetNames(typeof(InvitationSortColumn)).First();
+            if (string.IsNullOrWhiteSpace(sortDirection) || (sortDirection != "Asc" && sortDirection != "Desc")) sortDirection = "Asc";
+
+            var results = await _mediator.Send(new GetInvitationQuery("UKPRN", null, sortColumn, sortDirection));
+
+            var model = _mapper.Map<InvitationsViewModel>(results);
+            model.SortColumn = sortColumn;
+            model.SortDirection = sortDirection;
+
+            return View(model);
         }
     }
 }

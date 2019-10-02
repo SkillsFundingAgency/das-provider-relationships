@@ -2,12 +2,13 @@
 using AutoFixture;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
 using SFA.DAS.ProviderRegistrations.Web.Controllers;
-using SFA.DAS.ProviderRegistrations.Web.Models;
+using SFA.DAS.ProviderRegistrations.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationControllerUnitTests
 {
@@ -33,6 +34,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
         {
             private readonly RegistrationController _controller;
             private readonly Mock<IMediator> _mediator;
+            private readonly Mock<IMapper> _mapper;
             private readonly NewEmployerUserViewModel _model;
 
             public RegistrationControllerTestFixture()
@@ -47,10 +49,11 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
                     CopyEmailToProvider = autoFixture.Create<bool>()
                 };
 
+                _mapper = new Mock<IMapper>();
                 _mediator = new Mock<IMediator>();
                 _mediator.Setup(x => x.Send(It.IsAny<AddInvitationCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(Guid.NewGuid().ToString());
 
-                _controller = new RegistrationController(_mediator.Object);
+                _controller = new RegistrationController(_mediator.Object, _mapper.Object);
             }
 
             public async Task InviteEmployeruser()

@@ -21,18 +21,18 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
             var reference = Guid.NewGuid();
 
             var invitation = new Invitation(
-                reference, 
-                request.Ukprn, 
-                request.UserRef, 
-                request.EmployerOrganisation, 
+                reference,
+                request.Ukprn,
+                request.UserRef,
+                request.EmployerOrganisation,
                 request.EmployerFirstName,
                 request.EmployerLastName,
                 request.EmployerEmail,
                 request.ProviderEmail,
                 0,
-                DateTime.Now, 
+                DateTime.Now,
                 DateTime.Now);
-            
+
             _db.Value.Invitations.Add(invitation);
             await _db.Value.SaveChangesAsync(cancellationToken);
 

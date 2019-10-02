@@ -1,0 +1,92 @@
+﻿@using SFA.DAS.ProviderRegistrations.Types
+@model SFA.DAS.ProviderRegistrations.Web.ViewModels.InvitationsViewModel
+@{
+    ViewData["Title"] = "Manage apprenticeships";
+}
+
+@section Styles
+{
+    <link rel="Stylesheet" href="@Href("~/stylesheets/site.css")" />
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Invited employers</h1>
+    </div>
+    <div class="govuk-grid-column-full">
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.EmployerOrganisation)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.EmployerOrganisation)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Employer organisation</sfa-sortable-column-header>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.EmployerFirstname)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.EmployerFirstname)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Employer first name</sfa-sortable-column-header>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.EmployerLastname)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.EmployerLastname)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Employer last name</sfa-sortable-column-header>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.EmployerEmail)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.EmployerEmail)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Employer email</sfa-sortable-column-header>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.CreatedDate)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.CreatedDate)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Date sent</sfa-sortable-column-header>
+                    </th>
+                    <th scope="col" class="govuk-table__header">
+                        <sfa-sortable-column-header class="approved-sort govuk-link"
+                                                    data-sortColumn="@nameof(InvitationSortColumn.Status)"
+                                                    asp-action="InvitedEmployers"
+                                                    asp-controller="Registration"
+                                                    sfa-sort-column="@nameof(InvitationSortColumn.Status)"
+                                                    sfa-table-sort-column="@Model.SortColumn"
+                                                    sfa-sort-direction="@Model.SortDirection">Status</sfa-sortable-column-header>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var invitation in Model.Invitations)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@invitation.EmployerOrganisation</td>
+                        <td class="govuk-table__cell">@invitation.EmployerFirstName</td>
+                        <td class="govuk-table__cell">@invitation.EmployerLastName</td>
+                        <td class="govuk-table__cell">@invitation.EmployerEmail</td>
+                        <td class="govuk-table__cell nowrap">@invitation.SentDate.ToString("dd MMM yy")</td>
+                        <td class="govuk-table__cell">@invitation.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
