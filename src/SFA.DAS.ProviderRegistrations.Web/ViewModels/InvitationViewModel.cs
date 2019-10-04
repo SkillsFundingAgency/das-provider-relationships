@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.ViewModels
 
         public string EmployerEmail { get; set; }
 
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         public DateTime SentDate { get; set; }
     }

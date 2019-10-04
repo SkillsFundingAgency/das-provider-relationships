@@ -22,11 +22,11 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
 
         public string ProviderEmail { get; }
 
-        public int Status { get; }
+        public int Status { get; private set; }
 
         public DateTime CreatedDate { get; }
 
-        public DateTime UpdatedDate { get; }
+        public DateTime UpdatedDate { get; private set; }
 
         public Invitation(Guid reference, string ukprn, string userRef, string employerOrganisation, string employerFirstName, string employerLastName, string employerEmail, string providerEmail, int status, DateTime createdDate, DateTime updatedDate)
         {
@@ -41,6 +41,12 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
             Status = status;
             CreatedDate = createdDate;
             UpdatedDate = updatedDate;
+        }
+
+        public void UpdateStatus(int status, DateTime updated)
+        {
+            Status = status;
+            UpdatedDate = updated;
         }
     }
 }
