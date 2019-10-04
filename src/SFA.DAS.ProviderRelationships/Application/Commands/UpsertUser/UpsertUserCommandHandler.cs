@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using SFA.DAS.CosmosDb;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Domain.Data;
 using SFA.DAS.ProviderRelationships.Domain.Models;
 
