@@ -9,6 +9,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
     {
         public MapperRegistry()
         {
+            var x = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("SFA.DAS"));
             For<IConfigurationProvider>().Use(c => new MapperConfiguration(cfg => cfg.AddProfiles(AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("SFA.DAS"))))).Singleton();
             For<IMapper>().Use(c => c.GetInstance<IConfigurationProvider>().CreateMapper()).Singleton();
         }

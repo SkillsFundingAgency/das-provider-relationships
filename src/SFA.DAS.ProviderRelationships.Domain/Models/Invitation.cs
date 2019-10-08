@@ -6,25 +6,25 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
     {
         public long Id { get; set; }
 
-        public Guid Reference { get; }
+        public Guid Reference { get; private set; }
 
-        public string Ukprn { get; }
+        public string Ukprn { get; private set; }
 
-        public string UserRef { get; }
+        public string UserRef { get; private set; }
 
-        public string EmployerOrganisation { get; }
+        public string EmployerOrganisation { get; private set; }
 
-        public string EmployerFirstName { get; }
+        public string EmployerFirstName { get; private set; }
 
-        public string EmployerLastName { get; }
+        public string EmployerLastName { get; private set; }
 
-        public string EmployerEmail { get; }
+        public string EmployerEmail { get; private set; }
 
-        public string ProviderEmail { get; }
+        public string ProviderEmail { get; private set; }
 
         public int Status { get; private set; }
 
-        public DateTime CreatedDate { get; }
+        public DateTime CreatedDate { get; private set; }
 
         public DateTime UpdatedDate { get; private set; }
 
@@ -41,6 +41,10 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
             Status = status;
             CreatedDate = createdDate;
             UpdatedDate = updatedDate;
+        }
+
+        private Invitation()
+        {
         }
 
         public void UpdateStatus(int status, DateTime updated)

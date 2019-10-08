@@ -51,6 +51,9 @@
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.7.2" />
+    <PackageReference Include="Microsoft.AspNet.Mvc">
+      <Version>5.2.6</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.TelemetryCorrelation" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.6" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
@@ -90,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationStartup.cs" />
     <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="Controllers\InvitationsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />
     <Compile Include="ExceptionLoggers\ExceptionLogger.cs" />
@@ -124,6 +128,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ProviderRegistrations\SFA.DAS.ProviderRegistrations.csproj">
+      <Project>{4f4c6766-ece9-4c8e-abc1-83d6d7a9f56f}</Project>
+      <Name>SFA.DAS.ProviderRegistrations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Domain\SFA.DAS.ProviderRelationships.Domain.csproj">
       <Project>{52f5ce9b-22ef-4051-b9b0-e866e003f9bf}</Project>
       <Name>SFA.DAS.ProviderRelationships.Domain</Name>

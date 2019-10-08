@@ -25,6 +25,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
             return await _restHttpClient.Get<GetAccountProviderLegalEntitiesWithPermissionResponse>("accountproviderlegalentities", withPermissionRequest, cancellationToken);
         }
 
+        public async Task<InvitationDto> GetInvitation(string correlationId, CancellationToken cancellationToken = default)
+        {
+            return await _restHttpClient.Get<InvitationDto>($"invitations/{correlationId}", null, cancellationToken);
+        }
+
         public Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default)
         {
             return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.AccountLegalEntityId, request.Operation), cancellationToken);

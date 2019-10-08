@@ -7,6 +7,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
     public interface IProviderRelationshipsApiClient
     {
         Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default);
+        Task<InvitationDto> GetInvitation(string correlationId, CancellationToken cancellationToken = default);
         Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default);
         Task<bool> HasRelationshipWithPermission(HasRelationshipWithPermissionRequest request, CancellationToken cancellationToken = default);
         Task Ping(CancellationToken cancellationToken = default);
