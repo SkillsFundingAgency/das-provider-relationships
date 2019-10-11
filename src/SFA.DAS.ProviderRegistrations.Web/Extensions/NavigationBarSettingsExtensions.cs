@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.Authorization.ProviderFeatures.Configuration;
 using SFA.DAS.Provider.Shared.UI;
 using SFA.DAS.Provider.Shared.UI.Startup;
+using SFA.DAS.ProviderRegistrations.Configuration;
+using SFA.DAS.ProviderRegistrations.Features;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Extensions
 {
@@ -9,8 +13,8 @@ namespace SFA.DAS.ProviderRegistrations.Web.Extensions
     {
         public static IMvcBuilder AddNavigationBarSettings(this IMvcBuilder builder, IConfiguration configuration)
         {
-            builder.SetDefaultNavigationSection(NavigationSection.YourCohorts);
-            /*
+            builder.SetDefaultNavigationSection(NavigationSection.Home);
+            
             var featuresConfiguration = configuration
                 .GetSection(ProviderRegistrationsConfigurationKeys.FeaturesConfiguration)
                 .Get<ProviderFeaturesConfiguration>();
@@ -23,7 +27,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Extensions
             {
                 builder.SuppressNavigationSection(NavigationSection.Reservations);
             }
-            */
+            
             return builder;
         }
     }

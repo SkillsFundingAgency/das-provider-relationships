@@ -11,7 +11,7 @@ using SFA.DAS.ProviderRegistrations.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
 {
-    [Route("registration")]
+    [Route("{providerId}/[controller]/[action]")]
     public class RegistrationController : Controller
     {
         private readonly IMediator _mediator;
@@ -24,23 +24,20 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpGet]
-        [Route("startAccountSetup")]
         public IActionResult StartAccountSetup()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("NewEmployeruser")]
         public IActionResult NewEmployerUser()
         { 
             return View();
         }
 
         [HttpPost]
-        [Route("NewEmployeruser")]
         [ValidateAntiForgeryToken]
-        public IActionResult NewEmployeruser(NewEmployerUserViewModel model)
+        public IActionResult NewEmployerUser(NewEmployerUserViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +48,6 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpPost]
-        [Route("InviteEmployeruser")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> InviteEmployeruser(NewEmployerUserViewModel model, string command)
         {
@@ -74,7 +70,6 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpPost]
-        [Route("InviteConfirmation")]
         [ValidateAntiForgeryToken]
         public IActionResult InviteConfirmation(string action)
         {
@@ -91,7 +86,6 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpGet]
-        [Route("InvitedEmployers")]
         public async Task<IActionResult> InvitedEmployers(string sortColumn, string sortDirection)
         {
             sortColumn = Enum.GetNames(typeof(InvitationSortColumn)).SingleOrDefault(e => e == sortColumn);
