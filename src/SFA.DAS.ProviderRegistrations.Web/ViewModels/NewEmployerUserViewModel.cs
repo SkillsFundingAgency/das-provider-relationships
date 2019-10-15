@@ -4,28 +4,28 @@ namespace SFA.DAS.ProviderRegistrations.Web.ViewModels
 {
     public class NewEmployerUserViewModel
     {
-        [Display(Name = "Employer organisation")]
+        [Display(Name = "employer organisation")]
         [MaxLength(100)]
         [Required]
         public string EmployerOrganisation { get; set; }
 
-        [Display(Name = "Employer first name")]
+        [Display(Name = "employer first name")]
         [MaxLength(100)]
         [Required]
         public string EmployerFirstName { get; set; }
 
-        [Display(Name = "Employer last name")]
+        [Display(Name = "employer last name")]
         [MaxLength(100)]
         [Required]
         public string EmployerLastName { get; set; }
 
-        [Display(Name = "Employer email address")]
+        [Display(Name = "employer email address")]
         [MaxLength(100)]
         [Required]
         [EmailAddress]
         public string EmployerEmailAddress { get; set; }
 
-        [Display(Name = "Provider email address")]
+        [Display(Name = "provider email address")]
         [MaxLength(100)]
         public string ProviderEmailAddress { get; set; }
 
