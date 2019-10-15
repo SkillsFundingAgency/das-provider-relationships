@@ -1,4 +1,5 @@
 ﻿@model SFA.DAS.ProviderRegistrations.Web.ViewModels.NewEmployerUserViewModel
+@using SFA.DAS.ProviderRegistrations.Web.Extensions
 @{
     ViewData["Title"] = "Manage apprenticeships";
 }
@@ -77,21 +78,29 @@
                             Receive a copy of the email
                         </h1>
                     </legend>
-
                     <span id="how-contacted-conditional-hint" class="govuk-hint">
                         Choosing the option below will automatically send you a copy of the email invitation sent to the employer.
                     </span>
-
-                    <div class="govuk-checkboxes" data-module="checkboxes">
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" asp-for="CopyEmailToProvider" type="checkbox" />
+                            <input class="govuk-checkboxes__input" asp-for="CopyEmailToProvider" type="checkbox" aria-controls="CopyEmailToProviderConditional" aria-expanded="true">
                             <label class="govuk-label govuk-checkboxes__label" asp-for="CopyEmailToProvider">
                                 I'd like a copy of the email
                             </label>
                         </div>
+                        <div class="govuk-checkboxes__conditional @(Model.CopyEmailToProvider ? "" : "govuk-checkboxes__conditional--hidden")" id="CopyEmailToProviderConditional">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="ProviderEmailAddress">
+                                    Email address
+                                </label>
+                                @Html.ValidationMessageFor(m => m.ProviderEmailAddress, null, new { @class = "govuk-error-message", id = "error-message-" + Html.IdFor(m => m.ProviderEmailAddress) })
+                                <input class="govuk-input govuk-input--width-20" asp-for="ProviderEmailAddress">
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
             </div>
+
             <button type="submit" class="govuk-button">Invite employer</button>
         </div>
     </div>

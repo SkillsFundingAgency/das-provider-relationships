@@ -56,6 +56,11 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 return View("NewEmployerUser", model);
             }
 
+            if (!ModelState.IsValid)
+            {
+                return View("ReviewDetails", model);
+            }
+
             await _mediator.Send(new AddInvitationCommand(
                 "UKPRN",
                 "USER_REF",
@@ -63,7 +68,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 model.EmployerFirstName,
                 model.EmployerLastName,
                 model.EmployerEmailAddress,
-                model.CopyEmailToProvider ? "PROVIDER_EMAIL" : null
+                model.CopyEmailToProvider ? model.ProviderEmailAddress : null
             ));
 
             return View("InviteConfirmation");

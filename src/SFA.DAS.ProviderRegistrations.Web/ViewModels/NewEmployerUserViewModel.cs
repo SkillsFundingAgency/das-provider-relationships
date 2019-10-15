@@ -25,6 +25,10 @@ namespace SFA.DAS.ProviderRegistrations.Web.ViewModels
         [EmailAddress]
         public string EmployerEmailAddress { get; set; }
 
+        [Display(Name = "Provider email address")]
+        [MaxLength(100)]
+        public string ProviderEmailAddress { get; set; }
+
         [Display(Name = "Send copy of email")]
         public bool CopyEmailToProvider { get; set; }
     }
