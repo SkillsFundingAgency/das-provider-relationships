@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
 using SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery;
 using SFA.DAS.ProviderRegistrations.Types;
+using SFA.DAS.ProviderRegistrations.Web.Authentication;
 using SFA.DAS.ProviderRegistrations.Web.ViewModels;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
@@ -16,11 +17,13 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IAuthenticationService _authenticationService;
 
-        public RegistrationController(IMediator mediator, IMapper mapper)
+        public RegistrationController(IMediator mediator, IMapper mapper, IAuthenticationService authenticationService)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
@@ -44,6 +47,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
                 return View("NewEmployerUser", model);
             }
 
+            if (model.ProviderEmailAddress == null) model.ProviderEmailAddress = _authenticationService.UserEmail;
             return View("ReviewDetails", model);
         }
 
@@ -62,8 +66,8 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
             }
 
             await _mediator.Send(new AddInvitationCommand(
-                "UKPRN",
-                "USER_REF",
+                _authenticationService.Ukprn,
+                _authenticationService.UserId,
                 model.EmployerOrganisation,
                 model.EmployerFirstName,
                 model.EmployerLastName,

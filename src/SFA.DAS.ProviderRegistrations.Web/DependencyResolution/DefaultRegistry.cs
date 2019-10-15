@@ -28,7 +28,6 @@ namespace SFA.DAS.ProviderRegistrations.Web.DependencyResolution
             For<IAuthorizationContextProvider>().Use<AuthorizationContextProvider>();
             For<ILinkGenerator>().Use<LinkGenerator>().Singleton();
             For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNewTransactionFactory>();
-            // Toggle<IProviderRelationshipsApiClient, StubProviderRelationshipsApiClient>("UseStubProviderRelationships");
         }
         
         private void Toggle<TPluginType, TConcreteType>(string configurationKey) where TConcreteType : TPluginType

@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Authentication
         public string UserId => GetUserClaimAsString(ProviderClaims.Upn);
         public string UserName => GetUserClaimAsString(ProviderClaims.Name);
         public string UserEmail => GetUserClaimAsString(ProviderClaims.Email);
+        public string Ukprn => GetUserClaimAsString(ProviderClaims.Ukprn);
 
         public bool IsUserAuthenticated()
         {
