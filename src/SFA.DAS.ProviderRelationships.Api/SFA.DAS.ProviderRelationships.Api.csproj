@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationStartup.cs" />
     <Compile Include="Authentication\IAuthenticationStartup.cs" />
+    <Compile Include="Controllers\UnsubscribeController.cs" />
     <Compile Include="Controllers\InvitationsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="DependencyResolution\AzureActiveDirectoryAuthenticationRegistry.cs" />

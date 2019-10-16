@@ -96,6 +96,7 @@
     <Build Include="Tables\DeletedPermissionsEventAudits.sql" />
     <Build Include="Tables\AddedAccountProviderEventAudits.sql" />
     <Build Include="Tables\Invitations.sql" />
+    <Build Include="Tables\Unsubscribed.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SFA.DAS.ProviderRelationships.Database.refactorlog" />
