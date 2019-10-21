@@ -17,9 +17,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.AddedPayeScheme
 
         public string SchemeName { get; set; }
 
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
-        public AddedPayeSchemeCommand(long accountId, string userName, Guid userRef, string payeRef, string aorn, string schemeName, Guid correlationId)
+        public AddedPayeSchemeCommand(long accountId, string userName, Guid userRef, string payeRef, string aorn, string schemeName, string correlationId)
         {
             AccountId = accountId;
             UserName = userName;

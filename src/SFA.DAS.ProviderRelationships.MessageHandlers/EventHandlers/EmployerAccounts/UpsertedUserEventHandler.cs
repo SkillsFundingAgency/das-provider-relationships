@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 
         public Task Handle(UpsertedUserEvent message, IMessageHandlerContext context)
         {
-            return _mediator.Send(new UpsertUserCommand(message.UserRef, message.Created, "WILL_NEED_A_CORRELATIONID"));
+            return _mediator.Send(new UpsertUserCommand(message.UserRef, message.Created, message.CorrelationId));
         }
     }
 }

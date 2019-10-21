@@ -19,9 +19,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SignedAgreement
 
         public Guid UserRef { get; set; }
 
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
-        public SignedAgreementCommand(long accountId, long agreementId, string organisationName, long legalEntityId, bool cohortCreated, string userName, Guid userRef, Guid correlationId)
+        public SignedAgreementCommand(long accountId, long agreementId, string organisationName, long legalEntityId, bool cohortCreated, string userName, Guid userRef, string correlationId)
         {
             AccountId = accountId;
             AgreementId = agreementId;

@@ -66,9 +66,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Guid correlationId2 = Guid.NewGuid();
             Guid correlationId3 = Guid.NewGuid();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new SignedAgreementCommand(1, 1, "Org", 1, true, "Name", Guid.NewGuid(), correlationId1);
-            CommandDoesntExist = new SignedAgreementCommand(2, 2, "Org", 2, true, "Name", Guid.NewGuid(), Guid.NewGuid());
-            CommandInvalidStatus = new SignedAgreementCommand(3, 3, "Org", 3, true, "Name", Guid.NewGuid(), correlationId3);
+            Command = new SignedAgreementCommand(1, 1, "Org", 1, true, "Name", Guid.NewGuid(), correlationId1.ToString());
+            CommandDoesntExist = new SignedAgreementCommand(2, 2, "Org", 2, true, "Name", Guid.NewGuid(), Guid.NewGuid().ToString());
+            CommandInvalidStatus = new SignedAgreementCommand(3, 3, "Org", 3, true, "Name", Guid.NewGuid(), correlationId3.ToString());
 
             Invitation = new Invitation(correlationId1, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.PayeSchemeAdded, DateTime.Now, DateTime.Now);
             InvitationDoesntExist = new Invitation(correlationId2, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.PayeSchemeAdded, DateTime.Now, DateTime.Now);

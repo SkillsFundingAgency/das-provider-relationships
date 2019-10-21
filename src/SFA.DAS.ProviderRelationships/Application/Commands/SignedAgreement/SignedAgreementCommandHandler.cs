@@ -19,9 +19,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SignedAgreement
 
         protected override async Task Handle(SignedAgreementCommand request, CancellationToken cancellationToken)
         {
-            if (request.CorrelationId != Guid.Empty)
+            if (!string.IsNullOrWhiteSpace(request.CorrelationId) && Guid.TryParse(request.CorrelationId, out _))
             {
-                var invitation = await _db.Value.Invitations.SingleOrDefaultAsync(i => i.Reference == request.CorrelationId && i.Status < (int) InvitationStatus.LegalAgreementSigned, cancellationToken);
+                var invitation = await _db.Value.Invitations.SingleOrDefaultAsync(i => i.Reference == Guid.Parse(request.CorrelationId) && i.Status < (int) InvitationStatus.LegalAgreementSigned, cancellationToken);
                 invitation?.UpdateStatus((int) InvitationStatus.LegalAgreementSigned, DateTime.Now);
             }
         }

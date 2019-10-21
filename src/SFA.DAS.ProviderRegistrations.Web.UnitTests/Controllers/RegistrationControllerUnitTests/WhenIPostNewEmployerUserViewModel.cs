@@ -7,6 +7,8 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
+using SFA.DAS.ProviderRegistrations.Application.Queries.GetUnsubscribedQuery;
+using SFA.DAS.ProviderRegistrations.Web.Authentication;
 using SFA.DAS.ProviderRegistrations.Web.Controllers;
 using SFA.DAS.ProviderRegistrations.Web.ViewModels;
 
@@ -35,6 +37,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
             private readonly RegistrationController _controller;
             private readonly Mock<IMediator> _mediator;
             private readonly Mock<IMapper> _mapper;
+            private readonly Mock<IAuthenticationService> _authenticationService;
             private readonly NewEmployerUserViewModel _model;
 
             public RegistrationControllerTestFixture()
@@ -46,14 +49,16 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
                     EmployerFirstName = autoFixture.Create<string>(),
                     EmployerLastName = autoFixture.Create<string>(),
                     EmployerEmailAddress = autoFixture.Create<string>(),    
-                    CopyEmailToProvider = autoFixture.Create<bool>()
+                    CopyEmailToProvider = false
                 };
 
                 _mapper = new Mock<IMapper>();
+                _authenticationService = new Mock<IAuthenticationService>();
                 _mediator = new Mock<IMediator>();
                 _mediator.Setup(x => x.Send(It.IsAny<AddInvitationCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(Guid.NewGuid().ToString());
+                _mediator.Setup(x => x.Send(It.IsAny<GetUnsubscribedQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
-                _controller = new RegistrationController(_mediator.Object, _mapper.Object);
+                _controller = new RegistrationController(_mediator.Object, _mapper.Object, _authenticationService.Object);
             }
 
             public async Task InviteEmployeruser()

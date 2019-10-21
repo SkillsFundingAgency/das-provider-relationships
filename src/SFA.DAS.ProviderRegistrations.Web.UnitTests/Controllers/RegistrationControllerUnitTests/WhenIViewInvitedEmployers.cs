@@ -10,6 +10,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationCommand;
 using SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery;
 using SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery.Dtos;
+using SFA.DAS.ProviderRegistrations.Web.Authentication;
 using SFA.DAS.ProviderRegistrations.Web.Controllers;
 using SFA.DAS.ProviderRegistrations.Web.Mappings;
 using SFA.DAS.ProviderRegistrations.Web.ViewModels;
@@ -39,15 +40,17 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
             private readonly RegistrationController _controller;
             private readonly Mock<IMediator> _mediator;
             private readonly IMapper _mapper;
+            private readonly Mock<IAuthenticationService> _authenticationService;
 
             public RegistrationControllerTestFixture()
             {
+                _authenticationService = new Mock<IAuthenticationService>();
                 _mapper = new MapperConfiguration(c => c.AddProfiles(typeof(InvitationMappings))).CreateMapper();
 
                 _mediator = new Mock<IMediator>();
                 _mediator.Setup(x => x.Send(It.IsAny<GetInvitationQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetInvitationQueryResult(new List<InvitationDto>()));
 
-                _controller = new RegistrationController(_mediator.Object, _mapper);
+                _controller = new RegistrationController(_mediator.Object, _mapper, _authenticationService.Object);
             }
 
             public async Task ViewInvitedEmployer()

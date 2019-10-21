@@ -7,11 +7,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.UpsertUser
     {
         public string UserRef { get; }
 
-        public Guid CorrelationId { get; }
+        public string CorrelationId { get; }
 
         public DateTime Created { get; }
 
-        public UpsertUserCommand(string userRef, DateTime created, Guid correlationId)
+        public UpsertUserCommand(string userRef, DateTime created, string correlationId)
         {
             UserRef = userRef;
             Created = created;

@@ -66,9 +66,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Guid correlationId2 = Guid.NewGuid();
             Guid correlationId3 = Guid.NewGuid();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, correlationId1);
-            CommandDoesntExist = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, Guid.NewGuid());
-            CommandInvalidStatus = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, correlationId3);
+            Command = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, correlationId1.ToString());
+            CommandDoesntExist = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, Guid.NewGuid().ToString());
+            CommandInvalidStatus = new UpsertUserCommand(Guid.NewGuid().ToString(), DateTime.Now, correlationId3.ToString());
 
             Invitation = new Invitation(correlationId1, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
             InvitationDoesntExist = new Invitation(correlationId2, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
