@@ -93,8 +93,11 @@
         "ServiceBusAuthorizationRuleName": {
             "type": "string"
         },
-        "rights": {
+        "serviceBusAuthRuleRights": {
             "type": "array"
+        },
+        "sharedResourceGroupName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -465,32 +468,34 @@
             }
         },
         {
-            "apiVersion": "2015-08-01",
-            "name": "[parameters('servicebusNamespace')]",
-            "type": "Microsoft.ServiceBus/namespaces",
-            "location": "West Europe",
-            "sku": {
-                "name": "Standard"
-            },
-            "resources": [
-                {
-                    "apiVersion": "2015-08-01",
-                    "name": "[parameters('ServiceBusAuthorizationRuleName')]",
-                    "type": "AuthorizationRules",
-                    "dependsOn": [
-                        "[parameters('ServiceBusAuthorizationRuleName')]"
-                    ],
-                    "properties": {
-                        "rights": "[parameters('rights')]"
+         "apiVersion": "2017-05-10",
+            "name": "service-bus-authorisation-rule",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedResourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/service-bus-authorization-rule.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters" :{
+                    "serviceBusNamespaceName": {
+                        "value": "[parameters('servicebusNamespace')]"
+                    },
+                    "serviceBusAuthRuleName": {
+                        "value": "[parameters('ServiceBusAuthorizationRuleName')]"
+                    },
+                    "serviceBusAuthRuleRights": {
+                        "value" : "[parameters('serviceBusAuthRuleRights')]"
                     }
-                }
-            ]
+                }   
+             }
         }
     ],
     "outputs": {
         "ServiceBusConnectionString": {
             "type": "string",
-            "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/AuthorizationRules'),parameters('serviceBusNamespace'),parameters('ServiceBusAuthorizationRuleName')),'2015-08-01').primaryConnectionString]"
+            "value": "[reference('service-bus-authorisation-rule').outputs.ServiceBusConnectionString.value]"
         }
     }
 }
