@@ -97,7 +97,8 @@
             "type": "array"
         }
     },
-    "variables": {},
+    "variables": {
+    },
     "resources": [
         {
             "apiVersion": "2017-05-10",
@@ -207,7 +208,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-05-10",
@@ -264,7 +266,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-05-10",
@@ -353,7 +356,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-08-01",
@@ -374,7 +378,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-08-01",
@@ -395,12 +400,14 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-05-10",
             "name": "cosmos-db-resources-deployment",
-            "dependsOn": [],
+            "dependsOn": [
+            ],
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -462,33 +469,20 @@
             "name": "[parameters('servicebusNamespace')]",
             "type": "Microsoft.ServiceBus/namespaces",
             "location": "West Europe",
-            "sku":{
+            "sku": {
                 "name": "Standard"
             },
             "resources": [
                 {
                     "apiVersion": "2015-08-01",
                     "name": "[parameters('ServiceBusAuthorizationRuleName')]",
-                    "type": "Queues",
+                    "type": "AuthorizationRules",
                     "dependsOn": [
-                        "[concat('Microsoft.ServiceBus/namespaces/', parameters('servicebusNamespace'))]"
+                        "[parameters('ServiceBusAuthorizationRuleName')]"
                     ],
                     "properties": {
-                        "path": "[parameters('ServiceBusAuthorizationRuleName')]"
-                    },
-                    "resources": [
-                        {
-                            "apiVersion": "2015-08-01",
-                            "name": "[parameters('ServiceBusAuthorizationRuleName')]",
-                            "type": "AuthorizationRules",
-                            "dependsOn": [
-                                "[parameters('ServiceBusAuthorizationRuleName')]"
-                            ],
-                            "properties": {
-                                "rights": "[parameters('rights')]"
-                            }
-                        }
-                    ]
+                        "rights": "[parameters('rights')]"
+                    }
                 }
             ]
         }
@@ -496,7 +490,7 @@
     "outputs": {
         "ServiceBusConnectionString": {
             "type": "string",
-            "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/Queues/AuthorizationRules'),parameters('serviceBusNamespace'),parameters('ServiceBusAuthorizationRuleName'),parameters('ServiceBusAuthorizationRuleName')),'2015-08-01').primaryConnectionString]"
+            "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/AuthorizationRules'),parameters('serviceBusNamespace'),parameters('ServiceBusAuthorizationRuleName')),'2015-08-01').primaryConnectionString]"
         }
     }
 }
