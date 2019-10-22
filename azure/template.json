@@ -86,7 +86,16 @@
         "cosmosDbIpRangeFilter": {
             "type": "string",
             "defaultValue": ""
-        }	    
+        },
+        "servicebusNamespace": {
+            "type": "string"
+        },
+        "ServiceBusAuthorizationRuleName": {
+            "type": "string"
+        },
+        "rights": {
+            "type": "array"
+        }
     },
     "variables": {},
     "resources": [
@@ -447,7 +456,47 @@
                     }
                 }
             }
+        },
+        {
+            "apiVersion": "2015-08-01",
+            "name": "[parameters('servicebusNamespace')]",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "location": "West Europe",
+            "sku":{
+                "name": "Standard"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "[parameters('ServiceBusAuthorizationRuleName')]",
+                    "type": "Queues",
+                    "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', parameters('servicebusNamespace'))]"
+                    ],
+                    "properties": {
+                        "path": "[parameters('ServiceBusAuthorizationRuleName')]"
+                    },
+                    "resources": [
+                        {
+                            "apiVersion": "2015-08-01",
+                            "name": "[parameters('ServiceBusAuthorizationRuleName')]",
+                            "type": "AuthorizationRules",
+                            "dependsOn": [
+                                "[parameters('ServiceBusAuthorizationRuleName')]"
+                            ],
+                            "properties": {
+                                "rights": "[parameters('rights')]"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "ServiceBusConnectionString": {
+            "type": "string",
+            "value": "[listKeys(resourceId(concat('Microsoft.ServiceBus/namespaces/Queues/AuthorizationRules'),parameters('serviceBusNamespace'),parameters('ServiceBusAuthorizationRuleName'),parameters('ServiceBusAuthorizationRuleName')),'2015-08-01').primaryConnectionString]"
+        }
+    }
 }
