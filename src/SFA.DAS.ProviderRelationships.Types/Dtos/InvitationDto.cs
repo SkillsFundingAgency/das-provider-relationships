@@ -9,7 +9,9 @@ namespace SFA.DAS.ProviderRelationships.Types.Dtos
         public string EmployerLastName { get; set; }
 
         public string EmployerEmail { get; set; }
+        
+        public int Status { get; set; }
 
-        public string Ukprn { get; set; }
+        public long Ukprn { get; set; }
     }
 }

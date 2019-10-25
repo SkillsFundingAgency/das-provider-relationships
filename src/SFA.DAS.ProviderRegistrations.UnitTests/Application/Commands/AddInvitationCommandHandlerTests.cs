@@ -28,8 +28,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Commands
                     a.EmployerFirstName == f.Command.EmployerFirstName &&
                     a.EmployerLastName == f.Command.EmployerLastName &&
                     a.EmployerOrganisation == f.Command.EmployerOrganisation && 
-                    a.EmployerEmail == f.Command.EmployerEmail && 
-                    a.ProviderEmail == f.Command.ProviderEmail));
+                    a.EmployerEmail == f.Command.EmployerEmail));
         }
 
         [Test]
@@ -48,7 +47,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Commands
         public AddInvitationCommandHandlerTestFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Command = new AddInvitationCommand("UKPRN", Guid.NewGuid().ToString(), "Organisation", "John", "Smith", "john@gov.uk", "admin@gov.uk");
+            Command = new AddInvitationCommand(12345, Guid.NewGuid().ToString(), "Organisation", "John", "Smith", "john@gov.uk");
             Handler = new AddInvitationCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
 

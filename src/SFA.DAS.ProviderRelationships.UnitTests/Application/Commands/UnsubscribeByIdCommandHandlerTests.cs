@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             return RunAsync(f => f.Handle(), f =>
             {
-                f.Db.Unsubscribed.SingleOrDefault(u => u.Ukprn == "PRN" && u.EmailAddress == "Email").Should().NotBeNull();
+                f.Db.Unsubscribed.SingleOrDefault(u => u.Ukprn == 12345 && u.EmailAddress == "Email").Should().NotBeNull();
             });
         }
     }
@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             Command = new UnsubscribeByIdCommand(correlationId);
             
-            Invitation = new Invitation(correlationId, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
+            Invitation = new Invitation(correlationId, 12345, "Ref", "Org", "FirstName", "LastName", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
            
             Db.Invitations.Add(Invitation); 
             Db.SaveChanges();

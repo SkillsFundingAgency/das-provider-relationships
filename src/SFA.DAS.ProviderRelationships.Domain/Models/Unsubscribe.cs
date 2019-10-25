@@ -6,9 +6,9 @@ namespace SFA.DAS.ProviderRelationships.Domain.Models
     {
         public string EmailAddress { get; private set; }
 
-        public string Ukprn { get; private set; }
+        public long Ukprn { get; private set; }
 
-        public Unsubscribe(string emailAddress, string ukprn)
+        public Unsubscribe(string emailAddress, long ukprn)
         {
             EmailAddress = emailAddress;
             Ukprn = ukprn;

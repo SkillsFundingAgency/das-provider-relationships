@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Domain.Data;
+using SFA.DAS.ProviderRelationships.Domain.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider
 {
@@ -22,6 +23,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider
             var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
             var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var accountProvider = account.AddProvider(provider, user);
+
+            if (request.CorrelationId.HasValue)
+            {
+                var invitation = await _db.Value.Invitations.SingleOrDefaultAsync(i => i.Reference == request.CorrelationId.Value && i.Status < (int) InvitationStatus.InvitationComplete, cancellationToken);
+                invitation?.UpdateStatus((int) InvitationStatus.InvitationComplete, DateTime.Now);
+            }
 
             await _db.Value.SaveChangesAsync(cancellationToken);
             

@@ -160,6 +160,7 @@
     <Compile Include="RouteValues\AccountProviders\AddAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AddedAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AlreadyAddedAccountProviderRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviders\InvitationAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\GetAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\HealthCheck\HealthCheckRouteValues.cs" />
     <Compile Include="RouteValues\RouteValueKeys.cs" />

@@ -48,8 +48,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.UnitTests.Controllers.RegistrationCo
                     EmployerOrganisation = autoFixture.Create<string>(),
                     EmployerFirstName = autoFixture.Create<string>(),
                     EmployerLastName = autoFixture.Create<string>(),
-                    EmployerEmailAddress = autoFixture.Create<string>(),    
-                    CopyEmailToProvider = false
+                    EmployerEmailAddress = autoFixture.Create<string>()
                 };
 
                 _mapper = new Mock<IMapper>();

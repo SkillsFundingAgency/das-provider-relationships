@@ -70,9 +70,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             CommandDoesntExist = new AddedPayeSchemeCommand(1, "User", Guid.NewGuid(), "Ref", "Aorn", "Scheme", Guid.NewGuid().ToString());
             CommandInvalidStatus = new AddedPayeSchemeCommand(1, "User", Guid.NewGuid(), "Ref", "Aorn", "Scheme", correlationId3.ToString());
 
-            Invitation = new Invitation(correlationId1, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
-            InvitationDoesntExist = new Invitation(correlationId2, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
-            InvitationInvalidStatus = new Invitation(correlationId3, "PRN", "Ref", "Org", "FirstName", "LastName", "Email", "Email", (int) InvitationStatus.LegalAgreementSigned, DateTime.Now, DateTime.Now);
+            Invitation = new Invitation(correlationId1, 12345, "Ref", "Org", "FirstName", "LastName", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
+            InvitationDoesntExist = new Invitation(correlationId2, 12345, "Ref", "Org", "FirstName", "LastName", "Email", (int) InvitationStatus.InvitationSent, DateTime.Now, DateTime.Now);
+            InvitationInvalidStatus = new Invitation(correlationId3, 12345, "Ref", "Org", "FirstName", "LastName", "Email", (int) InvitationStatus.LegalAgreementSigned, DateTime.Now, DateTime.Now);
 
             Db.Invitations.Add(Invitation);
             Db.Invitations.Add(InvitationDoesntExist);

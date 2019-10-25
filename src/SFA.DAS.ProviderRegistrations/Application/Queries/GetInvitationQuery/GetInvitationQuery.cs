@@ -4,7 +4,7 @@ namespace SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery
 {
     public class GetInvitationQuery : IRequest<GetInvitationQueryResult>
     {
-        public GetInvitationQuery(string ukprn, string userRef, string sortColumn, string sortDirection)
+        public GetInvitationQuery(long ukprn, string userRef, string sortColumn, string sortDirection)
         {
             Ukprn = ukprn;
             UserRef = userRef;
@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRegistrations.Application.Queries.GetInvitationQuery
             SortDirection = sortDirection;
         }
 
-        public string Ukprn { get; }
+        public long Ukprn { get; }
 
         public string UserRef { get; }
 

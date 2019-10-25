@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Queries
         
         public GetInvitationQueryHandlerTestsFixture()
         {
-            Query = new GetInvitationQuery("PRN", null, "EmployerOrganisation", "Desc");
+            Query = new GetInvitationQuery(12345, null, "EmployerOrganisation", "Desc");
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(InvitationMappings)));
             Handler = new GetInvitationQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Queries
 
         public GetInvitationQueryHandlerTestsFixture SetInvitations()
         {
-            Invitation = EntityActivator.CreateInstance<Invitation>().Set(i => i.Ukprn, "PRN").Set(i => i.EmployerOrganisation, "Org");
+            Invitation = EntityActivator.CreateInstance<Invitation>().Set(i => i.Ukprn, 12345).Set(i => i.EmployerOrganisation, "Org");
             Db.Invitations.Add(Invitation);
             Db.SaveChanges();
             

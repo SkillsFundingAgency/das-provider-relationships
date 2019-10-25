@@ -10,6 +10,6 @@ namespace SFA.DAS.ProviderRegistrations.Web.Authentication
         string UserName { get; }
         string UserId { get; }
         string UserEmail { get; }
-        string Ukprn { get; }
+        long? Ukprn { get; }
     }
 }

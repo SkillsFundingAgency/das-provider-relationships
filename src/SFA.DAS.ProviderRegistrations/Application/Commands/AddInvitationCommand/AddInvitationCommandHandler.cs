@@ -28,7 +28,6 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
                 request.EmployerFirstName,
                 request.EmployerLastName,
                 request.EmployerEmail,
-                request.ProviderEmail,
                 0,
                 DateTime.Now,
                 DateTime.Now);

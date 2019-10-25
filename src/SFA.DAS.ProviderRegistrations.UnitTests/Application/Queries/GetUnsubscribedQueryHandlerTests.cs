@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Queries
         
         public GetUnsubscribedQueryHandlerTestsFixture()
         {
-            Query = new GetUnsubscribedQuery("PRN", "email@email.com");
+            Query = new GetUnsubscribedQuery(12345, "email@email.com");
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             Handler = new GetUnsubscribedQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRegistrations.UnitTests.Application.Queries
 
         public GetUnsubscribedQueryHandlerTestsFixture SetUnsubscribe()
         {
-            Unsubscribe = EntityActivator.CreateInstance<Unsubscribe>().Set(i => i.Ukprn, "PRN").Set(i => i.EmailAddress, "email@email.com");
+            Unsubscribe = EntityActivator.CreateInstance<Unsubscribe>().Set(i => i.Ukprn, 12345).Set(i => i.EmailAddress, "email@email.com");
             Db.Unsubscribed.Add(Unsubscribe);
             Db.SaveChanges();
             

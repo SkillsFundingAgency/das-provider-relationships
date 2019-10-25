@@ -58,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetInvitationByIdQueryHandlerTestsFixture SetInvitation()
         {
-            Invitation = EntityActivator.CreateInstance<Invitation>().Set(p => p.Reference, Query.CorrelationId).Set(p => p.EmployerOrganisation, "Foo").Set(p => p.Ukprn, "PRN");
+            Invitation = EntityActivator.CreateInstance<Invitation>().Set(p => p.Reference, Query.CorrelationId).Set(p => p.EmployerOrganisation, "Foo").Set(p => p.Ukprn, 12345);
             
             Db.Invitations.Add(Invitation);
             Db.SaveChanges();

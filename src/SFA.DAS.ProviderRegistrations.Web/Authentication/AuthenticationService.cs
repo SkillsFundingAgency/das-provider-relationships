@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Authentication
         public string UserId => GetUserClaimAsString(ProviderClaims.Upn);
         public string UserName => GetUserClaimAsString(ProviderClaims.Name);
         public string UserEmail => GetUserClaimAsString(ProviderClaims.Email);
-        public string Ukprn => GetUserClaimAsString(ProviderClaims.Ukprn);
+        public long? Ukprn => GetUserClaimAsLong(ProviderClaims.Ukprn);
 
         public bool IsUserAuthenticated()
         {
@@ -50,6 +50,16 @@ namespace SFA.DAS.ProviderRegistrations.Web.Authentication
             if (IsUserAuthenticated() && TryGetUserClaimValue(claim, out var value))
             {
                 return value;
+            }
+
+            return null;
+        }
+
+        private long? GetUserClaimAsLong(string claim)
+        {
+            if (IsUserAuthenticated() && TryGetUserClaimValue(claim, out var value))
+            {
+                if (long.TryParse(value, out var parsed)) return parsed;
             }
 
             return null;

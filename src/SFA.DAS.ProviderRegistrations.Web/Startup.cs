@@ -1,5 +1,4 @@
-﻿using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +11,6 @@ using SFA.DAS.Authorization.Mvc.Extensions;
 using SFA.DAS.ProviderRegistrations.Web.Authentication;
 using SFA.DAS.ProviderRegistrations.Web.DependencyResolution;
 using SFA.DAS.ProviderRegistrations.Web.Extensions;
-using SFA.DAS.ProviderRegistrations.Web.Validators;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRegistrations.Web
@@ -49,7 +47,6 @@ namespace SFA.DAS.ProviderRegistrations.Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices()
                 .AddSessionStateTempDataProvider()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewEmployerUserViewModelValidator>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddHealthChecks();

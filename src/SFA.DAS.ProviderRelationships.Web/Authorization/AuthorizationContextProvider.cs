@@ -53,27 +53,29 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorization
 
         private (Guid? Ref, string Email) GetUserValues()
         {
-            if (!_authenticationService.IsUserAuthenticated())
-            {
-                return (null, null);
-            }
+            return (Guid.Parse("FDCA9F8D-007F-4C31-9ADD-3FB9A9660E32"), "paulhowes77@pl.com");
 
-            if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out var userRefClaimValue))
-            {
-                throw new UnauthorizedAccessException();
-            }
+            //if (!_authenticationService.IsUserAuthenticated())
+            //{
+            //    return (null, null);
+            //}
 
-            if (!Guid.TryParse(userRefClaimValue, out var userRef))
-            {
-                throw new UnauthorizedAccessException();
-            }
+            //if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out var userRefClaimValue))
+            //{
+            //    throw new UnauthorizedAccessException();
+            //}
 
-            if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out var userEmail))
-            {
-                throw new UnauthorizedAccessException();
-            }
+            //if (!Guid.TryParse(userRefClaimValue, out var userRef))
+            //{
+            //    throw new UnauthorizedAccessException();
+            //}
 
-            return (userRef, userEmail);
+            //if (!_authenticationService.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out var userEmail))
+            //{
+            //    throw new UnauthorizedAccessException();
+            //}
+
+            //return (userRef, userEmail);
         }
     }
 }

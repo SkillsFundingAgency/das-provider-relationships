@@ -4,7 +4,7 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
 {
     public class AddInvitationCommand : IRequest<string>
     {
-        public AddInvitationCommand(string ukprn, string userRef, string organisation, string firstName, string lastName, string email, string providerEmail)
+        public AddInvitationCommand(long ukprn, string userRef, string organisation, string firstName, string lastName, string email)
         {
             Ukprn = ukprn;
             UserRef = userRef;
@@ -12,10 +12,9 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
             EmployerFirstName = firstName;
             EmployerLastName = lastName;
             EmployerEmail = email;
-            ProviderEmail = providerEmail;
         }
 
-        public string Ukprn { get; }
+        public long Ukprn { get; }
 
         public string UserRef { get; }
 
@@ -26,7 +25,5 @@ namespace SFA.DAS.ProviderRegistrations.Application.Commands.AddInvitationComman
         public string EmployerLastName { get; }
 
         public string EmployerEmail { get; }
-
-        public string ProviderEmail { get; }
     }
 }
