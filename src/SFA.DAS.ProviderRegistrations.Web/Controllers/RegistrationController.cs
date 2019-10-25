@@ -14,7 +14,7 @@ using SFA.DAS.ProviderUrlHelper.Core;
 
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("{providerId}/[controller]/[action]")]
     public class RegistrationController : Controller
     {
         private readonly IMediator _mediator;
@@ -29,6 +29,7 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpGet]
+        [HttpGet("/{providerId}/[controller]")]
         public IActionResult StartAccountSetup()
         {
             return View();
