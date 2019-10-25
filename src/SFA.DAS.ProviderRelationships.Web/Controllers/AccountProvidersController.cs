@@ -22,7 +22,7 @@ using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    //[DasAuthorize(EmployerFeature.ProviderRelationships)]
+    [DasAuthorize(EmployerFeature.ProviderRelationships)]
     [RoutePrefix("accounts/{accountHashedId}/providers")]
     public class AccountProvidersController : Controller
     {
@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _employerUrls = employerUrls;
         }
         
-        //[DasAuthorize(EmployerUserRole.Any)]
+        [DasAuthorize(EmployerUserRole.Any)]
         [Route]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
@@ -48,14 +48,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [Route("find")]
         public ActionResult Find()
         {
             return View(new FindProviderViewModel());
         }
         
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
@@ -80,7 +80,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderRouteValues routeValues)
@@ -92,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("add")]
@@ -112,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
         public async Task<ActionResult> Added(AddedAccountProviderRouteValues routeValues)
@@ -124,7 +124,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/added")]
@@ -143,7 +143,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/alreadyadded")]
         public async Task<ActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
@@ -154,8 +154,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             return View(model);
         }
-
-        // [DasAuthorize(EmployerUserRole.Owner)]
+        
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/alreadyadded")]
@@ -172,7 +172,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        //[DasAuthorize(EmployerUserRole.Owner)]
+        [DasAuthorize(EmployerUserRole.Owner)]
         [Route("invitation/{correlationId}")]
         public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
         {
@@ -190,7 +190,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
         }
 
-        // [DasAuthorize(EmployerUserRole.Any)]
+        [DasAuthorize(EmployerUserRole.Any)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
         public async Task<ActionResult> Get(GetAccountProviderRouteValues routeValues)
