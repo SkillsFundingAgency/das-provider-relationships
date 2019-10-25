@@ -15,7 +15,8 @@ using SFA.DAS.ProviderUrlHelper.Core;
 namespace SFA.DAS.ProviderRegistrations.Web.Controllers
 {
     [Route("{providerId}/[controller]/[action]")]
-    public class RegistrationController : Controller
+    [ProviderActionFilter]
+    public class RegistrationController : BaseProviderController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -29,9 +30,14 @@ namespace SFA.DAS.ProviderRegistrations.Web.Controllers
         }
 
         [HttpGet]
-        [HttpGet("/{providerId}/[controller]")]
+        //[HttpGet("/{providerId}/[controller]")]
         public IActionResult StartAccountSetup()
         {
+            // All these return null
+            var url = Url.Action("NewEmployerUser");
+            var url1 = Url.Action("NewEmployerUser", "Registration");
+            // This returns the correct url as it can now substitute the provider id in the route template
+            var url2 = Url.Action("NewEmployerUser", "Registration", new { ProviderId = 4321 });
             return View();
         }
 

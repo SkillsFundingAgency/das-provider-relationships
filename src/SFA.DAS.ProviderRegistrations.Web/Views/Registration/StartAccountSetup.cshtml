@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SFA.DAS.ProviderRegistrations.Web.Extensions;
+@{
     ViewData["Title"] = "Manage apprenticeships";
 }
 
@@ -8,7 +9,7 @@
             Start setting up an account for an employer
         </h1>
         <p class="govuk-body-lead">They will be sent an invitation email, so they can complete the set-up the account.</p>
-       
+
         <h2 class="govuk-heading-m">Before you start</h2>
         <ul class="govuk-list govuk-list--bullet">
             <li>you'll need to have permission from the employer to use their details. Have a conversation with them to let them know to expect the invitation</li>
@@ -23,6 +24,13 @@
         </div>
 
         <br>
-        <a href="@Url.Action("NewEmployerUser")" class="govuk-button govuk-button--start">Start</a>
+         @*Either we use a custom url helper to simplify the code, which takes the provider id out of the route and
+            resupplies it as part of the url action, based on acting in the same controller.
+            OR
+            We can use an action filter to populate the controller base propery / View Bag 
+            And be more specific with each Url.Action where we want to make use of the prefixed route so it's not a blanket
+            change.*@
+        @*@Url.Action("NewEmployerUser", "Registration", new { ProviderId = ViewBag.ProviderId })*@
+        <a href="@Url.ProviderAction("NewEmployerUser")" class="govuk-button govuk-button--start">Start</a>
     </div>
 </div>
