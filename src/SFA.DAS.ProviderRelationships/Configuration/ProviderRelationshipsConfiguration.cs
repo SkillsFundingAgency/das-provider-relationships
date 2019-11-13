@@ -11,14 +11,14 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public EmployerUrlsConfiguration EmployerUrls { get; set; }
         public PasAccountApiConfiguration PasAccountApi { get; set; }
         public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
-        
+        public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
+
         public string AllowedHashstringCharacters { get; set; }
         public string Hashstring { get; set; }
         public string DatabaseConnectionString { get; set; }
         public string ServiceBusConnectionString { get; set; }
 
-        public string NServiceBusLicense
-        {
+        public string NServiceBusLicense {
             get => _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
             set => _nServiceBusLicense = value;
         }
