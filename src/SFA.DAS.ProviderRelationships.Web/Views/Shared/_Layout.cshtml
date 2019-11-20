@@ -58,7 +58,7 @@
                     <p class="floating-head-text">Your employer account</p>
                     <nav id="user-nav">
                         <ul role="menubar">
-                            <li><a href="@Html.EmployerUrls().Help()" class="menu-main">Help</a></li>
+                            <li><a href="@Html.EmployerUrls().Help()" class="menu-main" target="_blank">Help</a></li>
                             @if (Context.User.Identity.IsAuthenticated)
                             {
                                 <li class="has-sub-menu">
@@ -114,7 +114,7 @@
                         <h2 class="govuk-visually-hidden">Support links</h2>
                         <ul class="govuk-footer__inline-list">
                             <li class="govuk-footer__inline-list-item">
-                                <a class="govuk-footer__link" href="@Html.EmployerUrls().Help()">
+                                <a class="govuk-footer__link" href="@Html.EmployerUrls().Help()" target="_blank">
                                     Help
                                 </a>
                             </li>
