@@ -95,7 +95,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (Session["Invitation"] as bool? == true)
             {
                 var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/invitation/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+                return Redirect($"{_employerUrls.Account()}/AddedProvider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
             }
 
             return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
