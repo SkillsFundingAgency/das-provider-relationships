@@ -128,7 +128,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Update_WhenPostingUpdateActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
         {
             return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
-                a.Url.Equals("https://localhost/accounts/ABC123/teams/invitation/Foo+Bar")));
+                a.Url.Equals("https://localhost/accounts/ABC123/teams/addedprovider/Foo+Bar")));
         }
 
         [Test]
