@@ -134,7 +134,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Updated_WhenGettingUpdatedAction_ThenShouldReturnView()
         {
-            return RunAsync(f => f.Updated(), (f, r) =>
+            return RunAsync(f => f.CreateSession(), f => f.Updated(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
 

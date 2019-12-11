@@ -105,6 +105,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("updated")]
         public async Task<ActionResult> Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
         {
+            if (Session["Invitation"] as bool? == true)
+            {
+                var provider = await _mediator.Send(new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value));
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+            }
+
             var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdatedAccountProviderLegalEntityViewModel>(result);
