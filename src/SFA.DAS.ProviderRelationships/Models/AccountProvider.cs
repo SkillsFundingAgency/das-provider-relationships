@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private readonly List<AccountProviderLegalEntity> _accountProviderLegalEntities = new List<AccountProviderLegalEntity>();
 
-        public AccountProvider(Account account, Provider provider, User user)
+        public AccountProvider(Account account, Provider provider, User user, Guid? correlationId)
         {
             Account = account;
             AccountId = account.Id;
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             ProviderUkprn = provider.Ukprn;
             Created = DateTime.UtcNow;
             
-            Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created));
+            Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created, correlationId));
         }
 
         private AccountProvider()

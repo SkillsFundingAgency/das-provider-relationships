@@ -51,11 +51,11 @@ namespace SFA.DAS.ProviderRelationships.Models
             }
         }
 
-        public AccountProvider AddProvider(Provider provider, User user)
+        public AccountProvider AddProvider(Provider provider, User user, Guid? correlationId)
         {
             EnsureProviderHasNotAlreadyBeenAdded(provider);
 
-            var accountProvider = new AccountProvider(this, provider, user);
+            var accountProvider = new AccountProvider(this, provider, user, correlationId);
             
             _accountProviders.Add(accountProvider);
 

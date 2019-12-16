@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.SessionState;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -100,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingUpdateAction_ThenShouldSendUpdatePermissionsCommand()
         {
-            return RunAsync(f => f.PostUpdate(), f => f.Mediator.Verify(m => m.Send(
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(), f => f.Mediator.Verify(m => m.Send(
                 It.Is<UpdatePermissionsCommand>(c => 
                     c.AccountId == f.UpdateAccountProviderLegalEntityViewModel.AccountId &&
                     c.UserRef == f.UpdateAccountProviderLegalEntityViewModel.UserRef &&
@@ -113,7 +117,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingUpdateAction_ThenShouldRedirectToUpdatedAction()
         {
-            return RunAsync(f => f.PostUpdate(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Updated") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.UpdateAccountProviderLegalEntityViewModel.AccountProviderId) &&
@@ -121,9 +125,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
+        public Task Update_WhenPostingUpdateActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
+        {
+            return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+                a.Url.Equals("https://localhost/accounts/ABC123/teams/addedprovider/Foo+Bar")));
+        }
+
+        [Test]
         public Task Updated_WhenGettingUpdatedAction_ThenShouldReturnView()
         {
-            return RunAsync(f => f.Updated(), (f, r) =>
+            return RunAsync(f => f.CreateSession(), f => f.Updated(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
 
@@ -179,6 +190,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetUpdatedAccountProviderLegalEntityQueryResult GetUpdatedAccountProviderLegalEntityQueryResult { get; set; }
         public UpdatedAccountProviderLegalEntityRouteValues UpdatedAccountProviderLegalEntityRouteValues { get; set; }
         public UpdatedAccountProviderLegalEntityViewModel UpdatedAccountProviderLegalEntityViewModel { get; set; }
+        public GetAccountProviderQueryResult GetAccountProviderQueryResult { get; set; }
 
         public AccountProviderLegalEntitiesControllerTestsFixture()
         {
@@ -298,7 +310,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 }
             };
 
+            GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
+                new Application.Queries.GetAccountProvider.Dtos.AccountProviderDto {
+                    Id = 2,
+                    ProviderName = "Foo Bar"
+                },
+                true);
+
             Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None)).ReturnsAsync(Unit.Value);
+            Mediator.Setup(m => m.Send(It.IsAny<GetAccountProviderQuery>(), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
 
             return AccountProviderLegalEntitiesController.Update(UpdateAccountProviderLegalEntityViewModel);
         }
@@ -343,6 +363,29 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 .Returns($"https://localhost/accounts/ABC123/teams");
 
             return AccountProviderLegalEntitiesController.Updated(UpdatedAccountProviderLegalEntityViewModel);
+        }
+
+        public AccountProviderLegalEntitiesControllerTestsFixture CreateSession()
+        {
+            var context = new Mock<HttpContextBase>();
+            var session = new Mock<HttpSessionStateBase>();
+            context.Setup(x => x.Session).Returns(session.Object);
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+
+            return this;
+        }
+
+        public AccountProviderLegalEntitiesControllerTestsFixture CreateSessionFromInvitation()
+        {
+            var context = new Mock<HttpContextBase>();
+            var session = new Mock<HttpSessionStateBase>();
+
+            session.Setup(s => s["Invitation"]).Returns(true);
+            context.Setup(x => x.Session).Returns(session.Object);
+            EmployerUrls.Setup(e => e.Account(It.IsAny<string>())).Returns("https://localhost/accounts/ABC123/teams");
+
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+            return this;
         }
     }
 }

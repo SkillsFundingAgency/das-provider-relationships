@@ -11,6 +11,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
@@ -186,6 +187,26 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
             
             return View(model);
+        }
+
+        [DasAuthorize(EmployerUserRole.Owner)]
+        [Route("invitation/{correlationId}")]
+        public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
+        {
+            Session["Invitation"] = true;
+
+            var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
+
+            var verify = await _mediator.Send(new FindProviderToAddQuery(routeValues.AccountId.Value, invitation.Invitation.Ukprn));
+
+            if (verify.ProviderNotFound || verify.ProviderAlreadyAdded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
+            
+            return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
         }
     }
 }

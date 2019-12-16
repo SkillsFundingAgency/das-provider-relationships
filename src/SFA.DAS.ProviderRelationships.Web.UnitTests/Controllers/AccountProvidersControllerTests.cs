@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -12,9 +14,12 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -138,6 +143,26 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
+        public Task Add_WhenInvitationIsValid_ThenShouldSendAddAccountProviderCommand()
+        {
+            return RunAsync(f => f.CreateSession(), f => f.Invitation(), f => f.Mediator.Verify(m => m.Send(
+                It.Is<AddAccountProviderCommand>(c =>
+                    c.AccountId == f.AddAccountProviderViewModel.AccountId &&
+                    c.UserRef == f.AddAccountProviderViewModel.UserRef &&
+                    c.Ukprn == f.AddAccountProviderViewModel.Ukprn),
+                CancellationToken.None), Times.Once));
+        }
+
+        [Test]
+        public Task Add_WhenInvitationIsValid_ThenShouldRedirectToAddedAction()
+        {
+            return RunAsync(f => f.CreateSession(),f => f.Invitation(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Get") &&
+                a.RouteValues["Controller"] == null &&
+                a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId)));
+        }
+
+        [Test]
         public Task Added_WhenGettingAddedAction_ThenShouldReturnAddedView()
         {
             return RunAsync(f => f.Added(), (f, r) =>
@@ -247,10 +272,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public FindProviderToAddQueryResult FindProvidersQueryResult { get; set; }
         public AddAccountProviderRouteValues AddAccountProviderRouteValues { get; set; }
         public GetProviderToAddQueryResult GetProviderToAddQueryResult { get; set; }
+        public GetInvitationByIdQueryResult GetInvitationByIdQueryResult { get; set; }
         public AddAccountProviderViewModel AddAccountProviderViewModel { get; set; }
         public long AccountProviderId { get; set; }
         public GetAddedAccountProviderQueryResult GetAddedAccountProviderQueryResult { get; set; }
         public AddedAccountProviderRouteValues AddedAccountProviderRouteValues { get; set; }
+        public InvitationAccountProviderRouteValues InvitationAccountProviderRouteValues { get; set; }
         public AddedAccountProviderViewModel AddedAccountProviderViewModel { get; set; }
         public AlreadyAddedAccountProviderRouteValues AlreadyAddedAccountProviderRouteValues { get; set; }
         public AlreadyAddedAccountProviderViewModel AlreadyAddedAccountProviderViewModel { get; set; }
@@ -445,6 +472,60 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             
             return AccountProvidersController.Get(GetAccountProviderRouteValues);
+        }
+
+        public Task<ActionResult> Invitation()
+        {
+            var userRef = Guid.NewGuid();
+            var correlationId = Guid.NewGuid();
+            var ukprn = 12345678;
+            var accountId = 1;
+
+            InvitationAccountProviderRouteValues = new InvitationAccountProviderRouteValues {
+                AccountId = accountId,
+                CorrelationId =correlationId,
+                UserRef =userRef
+            };
+
+            GetInvitationByIdQueryResult = new GetInvitationByIdQueryResult(new InvitationDto {
+                EmployerEmail = "foo@foo.com",
+                EmployerFirstName = "John",
+                EmployerLastName = "Smtih",
+                EmployerOrganisation = "ESFA",
+                Ukprn = ukprn,
+                Status = 0
+            });
+
+            AddAccountProviderViewModel = new AddAccountProviderViewModel {
+                AccountId = accountId,
+                UserRef = userRef,
+                Ukprn = ukprn
+            };
+
+            FindProviderViewModel = new FindProviderViewModel {
+                AccountId = accountId,
+                Ukprn = ukprn.ToString()
+            };
+
+            AccountProviderId = 2;
+
+            FindProvidersQueryResult = new FindProviderToAddQueryResult(12345678, null);
+
+            Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == 1 && q.Ukprn == 12345678), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
+            Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
+            Mediator.Setup(m => m.Send(It.IsAny<GetInvitationByIdQuery>(), CancellationToken.None)).ReturnsAsync(GetInvitationByIdQueryResult);
+
+            return AccountProvidersController.Invitation(InvitationAccountProviderRouteValues);
+        }
+
+        public AccountProvidersControllerTestsFixture CreateSession()
+        {
+            var context = new Mock<HttpContextBase>();
+            var session = new Mock<HttpSessionStateBase>();
+            context.Setup(x => x.Session).Returns(session.Object);
+            AccountProvidersController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProvidersController);
+
+            return this;
         }
     }
 }

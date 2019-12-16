@@ -19,6 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
         public async Task Run()
         {
             var userRef = Guid.NewGuid();
+            var correlationId = Guid.NewGuid(); 
             var userEmail = "a@a.com";
             var userFirstName = "a";
             var userLastName = "a";
@@ -52,7 +53,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 accountId,
                 ukprn,
                 userRef,
-                DateTime.UtcNow));
+                DateTime.UtcNow,
+                correlationId));
         }
     }
 }

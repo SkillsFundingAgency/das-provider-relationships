@@ -205,7 +205,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             User = new User(Guid.NewGuid(), "me@home.com", "Bill", "Gates");
             Db.Add(User);
 
-            AccountProvider = new AccountProvider(Account, Provider, User);
+            AccountProvider = new AccountProvider(Account, Provider, User, null);
             AccountProvider.Set(x => x.Id, 23);
             Db.Add(AccountProvider);
 

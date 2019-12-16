@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
@@ -10,6 +11,7 @@ using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -90,6 +92,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             await _mediator.Send(command);
 
+            if (Session["Invitation"] as bool? == true)
+            {
+                var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+            }
+
             return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
 
@@ -97,6 +105,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("updated")]
         public async Task<ActionResult> Updated(UpdatedAccountProviderLegalEntityRouteValues routeValues)
         {
+            if (Session["Invitation"] as bool? == true)
+            {
+                var provider = await _mediator.Send(new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value));
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+            }
+
             var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdatedAccountProviderLegalEntityViewModel>(result);
