@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appServicePlanName": {
+        "SharedFrontEndAppServicePlanName": {
             "type": "string"
         },
-        "appServicePlanResourceGroup": {
+        "SharedEnvResourceGroup": {
             "type": "string"
         },
         "appServiceName": {
@@ -13,14 +13,6 @@
         },
         "apiAppServiceName": {
             "type": "string"
-        },
-        "aseHostingEnvironmentName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "aseResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
         },
         "customHostName": {
             "type": "string"
@@ -129,12 +121,6 @@
                     },
                     "aspInstances": {
                         "value": 1
-                    },
-                    "aseHostingEnvironmentName": {
-                        "value": "[parameters('aseHostingEnvironmentName')]"
-                    },
-                    "aseResourceGroup": {
-                        "value": "[parameters('aseResourceGroup')]"
                     }
                 }
             }
@@ -154,10 +140,10 @@
                         "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[parameters('SharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[parameters('SharedEnvResourceGroup')]"
                     },
                     "deployStagingSlot": {
                         "value": true
@@ -194,7 +180,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[reference(resourceId(parameters('SharedEnvResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint]"
                     }
                 }
             },
@@ -215,10 +201,10 @@
                         "value": "[parameters('apiAppServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[parameters('SharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[parameters('SharedEnvResourceGroup')]"
                     },
                     "deployStagingSlot": {
                         "value": true
@@ -251,7 +237,7 @@
                         "value": "[parameters('apiCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('apiKeyVaultCertificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[reference(resourceId(parameters('SharedEnvResourceGroup'), 'Microsoft.Web/certificates', parameters('apiKeyVaultCertificateName')), '2016-03-01').Thumbprint]"
                     }
                 }
             },
