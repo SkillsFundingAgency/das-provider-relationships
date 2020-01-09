@@ -87,6 +87,11 @@
         },
         "sharedManagementResourceGroup": {
             "type": "string"
+        },
+        "appServiceAllowedIPs": {
+            "type": "array",
+            "defaultValue": [
+            ]
         }
     },
     "variables": {
@@ -219,6 +224,9 @@
                     },
                     "certificateThumbprint": {
                         "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
             },
@@ -305,6 +313,9 @@
                     },
                     "certificateThumbprint": {
                         "value": "[reference('api-app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
             },
@@ -409,7 +420,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                   "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
