@@ -2,10 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appServicePlanName": {
+        "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },
-        "appServicePlanResourceGroup": {
+        "sharedBackEndAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedEnvResourceGroup": {
             "type": "string"
         },
         "appServiceName": {
@@ -13,14 +16,6 @@
         },
         "apiAppServiceName": {
             "type": "string"
-        },
-        "aseHostingEnvironmentName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "aseResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
         },
         "customHostName": {
             "type": "string"
@@ -86,9 +81,22 @@
         "cosmosDbIpRangeFilter": {
             "type": "string",
             "defaultValue": ""
-        }	    
+        },
+        "sharedKeyVaultName": {
+            "type": "string"
+        },
+        "sharedManagementResourceGroup": {
+            "type": "string"
+        },
+        "appServiceAllowedIPs": {
+            "type": "array",
+            "defaultValue": [
+            ]
+        }
     },
-    "variables": {},
+    "variables": {
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/"
+    },
     "resources": [
         {
             "apiVersion": "2017-05-10",
@@ -97,7 +105,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/storage-account-arm.json",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'storage-account-arm.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -114,7 +122,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service-plan.json",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-plan.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -129,12 +137,33 @@
                     },
                     "aspInstances": {
                         "value": 1
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "app-service-certificate",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('keyVaultCertificateName')]"
                     },
-                    "aseHostingEnvironmentName": {
-                        "value": "[parameters('aseHostingEnvironmentName')]"
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
                     },
-                    "aseResourceGroup": {
-                        "value": "[parameters('aseResourceGroup')]"
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedManagementResourceGroup')]"
+                    },
+                    "serverFarmId": {
+                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontEndAppServicePlanName'))]"
                     }
                 }
             }
@@ -146,7 +175,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -154,10 +183,10 @@
                         "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "deployStagingSlot": {
                         "value": true
@@ -194,11 +223,43 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "app-service-certificate"
+            ]
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "api-app-service-certificate",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('apiKeyVaultCertificateName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedManagementResourceGroup')]"
+                    },
+                    "serverFarmId": {
+                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedBackendAppServicePlanName'))]"
+                    }
+                }
+            }
         },
         {
             "apiVersion": "2017-05-10",
@@ -207,7 +268,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -215,10 +276,10 @@
                         "value": "[parameters('apiAppServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[parameters('sharedBackEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "deployStagingSlot": {
                         "value": true
@@ -251,11 +312,16 @@
                         "value": "[parameters('apiCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('apiKeyVaultCertificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[reference('api-app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "api-app-service-certificate"
+            ]
         },
         {
             "apiVersion": "2017-05-10",
@@ -264,7 +330,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -332,7 +398,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -344,7 +410,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-08-01",
@@ -353,7 +420,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -365,7 +432,8 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-08-01",
@@ -374,7 +442,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -386,17 +454,19 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-05-10",
             "name": "cosmos-db-resources-deployment",
-            "dependsOn": [],
+            "dependsOn": [
+            ],
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/cosmos-db.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'cosmos-db.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -423,7 +493,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/sql-database.json",
+                    "uri": "[concat(variables('deploymentUrlBase'),'sql-database.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -449,5 +519,6 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+    }
 }
