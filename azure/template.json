@@ -231,7 +231,7 @@
                 }
             },
             "dependsOn": [
-                "app-service-resources-deployment"
+                "app-service-certificate"
             ]
         },
         {
