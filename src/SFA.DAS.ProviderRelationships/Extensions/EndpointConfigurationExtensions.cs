@@ -1,6 +1,5 @@
 ﻿using System;
 using NServiceBus;
-using SFA.DAS.NServiceBus.AzureServiceBus;
 
 namespace SFA.DAS.ProviderRelationships.Extensions
 {
@@ -9,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Extensions
         public static EndpointConfiguration UseAzureServiceBusTransport(
             this EndpointConfiguration config, Func<string> connectionStringBuilder, bool isDevelopment)
         {
-            config.UseAzureServiceBusTransport(isDevelopment, connectionStringBuilder, r => {});
+            config.UseAzureServiceBusTransport(connectionStringBuilder, isDevelopment);
 
             return config;
         }

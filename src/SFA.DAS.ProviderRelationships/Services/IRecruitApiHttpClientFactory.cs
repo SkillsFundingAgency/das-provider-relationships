@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using SFA.DAS.Http;
+﻿using SFA.DAS.Http;
 
 namespace SFA.DAS.ProviderRelationships.Services
 {

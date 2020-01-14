@@ -1,5 +1,4 @@
-﻿using System;
-using SFA.DAS.ProviderRelationships.Types.Models;
+﻿using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions
 {

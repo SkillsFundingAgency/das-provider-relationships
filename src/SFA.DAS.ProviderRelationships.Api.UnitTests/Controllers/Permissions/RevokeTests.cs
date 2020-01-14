@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions;
 using SFA.DAS.Testing;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -10,7 +9,6 @@ using SFA.DAS.ProviderRelationships.Api.Controllers;
 using SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions;
 using FluentAssertions;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web.Http.Results;

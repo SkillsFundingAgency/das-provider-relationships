@@ -3,7 +3,7 @@ using System.Security.Claims;
 using MediatR;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
 {

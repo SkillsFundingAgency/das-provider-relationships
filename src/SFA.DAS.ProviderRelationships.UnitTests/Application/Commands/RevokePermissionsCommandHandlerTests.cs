@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Data;
