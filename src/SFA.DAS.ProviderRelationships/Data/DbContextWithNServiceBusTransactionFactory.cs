@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using NServiceBus.Persistence;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.NServiceBus.SqlServer.Data;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.Context;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {

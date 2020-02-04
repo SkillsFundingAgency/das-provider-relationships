@@ -27,7 +27,7 @@
         <PackageReference Include="SFA.DAS.NServiceBus" Version="16.0.2" />
         <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.2" />
         <PackageReference Include="SFA.DAS.Providers.Api.Client" Version="0.11.97" />
-        <PackageReference Include="SFA.DAS.UnitOfWork" Version="4.1.1" />
+        <PackageReference Include="SFA.DAS.UnitOfWork" Version="9.0.13" />
         <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
         <PackageReference Include="StructureMap" Version="4.7.1" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />

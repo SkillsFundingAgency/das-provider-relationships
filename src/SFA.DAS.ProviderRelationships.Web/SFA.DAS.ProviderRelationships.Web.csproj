@@ -77,7 +77,7 @@
       <Version>1.1.683</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="4.1.1" />
+    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus">
       <Version>9.0.13</Version>
