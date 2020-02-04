@@ -16,7 +16,7 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Providers.Api.Client;
 using SFA.DAS.Testing;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.Context;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {

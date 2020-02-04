@@ -7,7 +7,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
-
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
@@ -16,7 +15,7 @@ using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.Context;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
