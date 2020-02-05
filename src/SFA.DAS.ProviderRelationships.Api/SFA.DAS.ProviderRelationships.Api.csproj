@@ -65,10 +65,10 @@
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NServiceBus">
-      <Version>16.0.2</Version>
+      <Version>15.0.25</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer">
-      <Version>16.0.2</Version>
+      <Version>15.0.25</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore">
       <Version>9.0.13</Version>
