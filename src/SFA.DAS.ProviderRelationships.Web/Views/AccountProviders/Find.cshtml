@@ -15,30 +15,20 @@
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Search for a training provider</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number(UKPRN)</h1>
     </div>
     <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body">Search for a training provider via a UKPRN.</p>
+        <p class="govuk-body">This is the unique 8-digit number that we use to identify a training provider.</p>
+        <p>Ask your training provider for their UKPRN if you do not know it.</p>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-                <label class="govuk-label govuk-!-font-weight-bold govuk-!-margin-bottom-0" for="@Html.IdFor(m => m.Ukprn)">UK Provider Reference Number</label>
                 <span class="govuk-error-message govuk-!-margin-bottom-0">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
                 @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })
             </div>
-            <details class="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        What is a UK Provider Reference Number?
-                    </span>
-                </summary>
-                <div class="govuk-details__text govuk-body-s">
-                    <p>A UK Provider Reference Number (UKPRN) is a unique, 8-digit number that identifies a training provider. Your training provider can tell you their UKPRN.</p>
-                </div>
-            </details>
             <button class="govuk-button" type="submit">Continue</button>
         }
     </div>
