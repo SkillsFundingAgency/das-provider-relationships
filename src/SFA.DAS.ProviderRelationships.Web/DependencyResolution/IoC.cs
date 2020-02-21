@@ -1,15 +1,13 @@
-using System;
 using StructureMap;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.StructureMap;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
-using SFA.DAS.UnitOfWork.EntityFrameworkCore;
-using SFA.DAS.UnitOfWork.NServiceBus;
-using SFA.DAS.UnitOfWork.NServiceBus.ClientOutbox;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.StructureMap;
+using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.StructureMap;
+using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
 {

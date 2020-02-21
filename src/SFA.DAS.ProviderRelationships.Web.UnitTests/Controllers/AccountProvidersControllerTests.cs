@@ -14,7 +14,6 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
