@@ -13,8 +13,8 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountOverview;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
@@ -40,12 +40,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
 
-                var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
+                var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountViewModel>().Which;
 
-                model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
-                model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
-                model.IsAddProviderOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsAddProviderOperationAuthorized);
-                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsUpdatePermissionsOperationAuthorized);
+                model.AccountProvidersCount.Should().Be(f.GetAccountOverviewQueryResult.AccountProvidersCount);
+                model.AccountLegalEntitiesCount.Should().Be(f.GetAccountOverviewQueryResult.AccountLegalEntitiesCount);
+                model.IsAddProviderOperationAuthorized.Should().Be(f.GetAccountOverviewQueryResult.IsAddProviderOperationAuthorized);
+                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountOverviewQueryResult.IsUpdatePermissionsOperationAuthorized);
             });
         }
         
@@ -267,7 +267,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
-        public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
+        public GetAccountOverviewQueryResult GetAccountOverviewQueryResult { get; set; }
         public FindProviderToAddQueryResult FindProvidersQueryResult { get; set; }
         public AddAccountProviderRouteValues AddAccountProviderRouteValues { get; set; }
         public GetProviderToAddQueryResult GetProviderToAddQueryResult { get; set; }
@@ -298,20 +298,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 AccountId = 1
             };
             
-            GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(
-                new List<Application.Queries.GetAccountProviders.Dtos.AccountProviderDto>
-                {
-                    new Application.Queries.GetAccountProviders.Dtos.AccountProviderDto
-                    {
-                        Id = 2,
-                        ProviderName = "Foo"
-                    }
-                },
-                2,
-                true);
+            GetAccountOverviewQueryResult = new GetAccountOverviewQueryResult(1, 2, true);
 
-            Mediator.Setup(m => m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
-                .ReturnsAsync(GetAccountProvidersQueryResult);
+            Mediator.Setup(m => m.Send(It.Is<GetAccountOverviewQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
+                .ReturnsAsync(GetAccountOverviewQueryResult);
             
             return AccountProvidersController.Index(AccountProvidersRouteValues);
         }

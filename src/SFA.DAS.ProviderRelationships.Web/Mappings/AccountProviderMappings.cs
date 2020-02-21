@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountOverview;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public AccountProviderMappings()
         {
-            CreateMap<GetAccountProvidersQueryResult, AccountProvidersViewModel>();
+            CreateMap<GetAccountOverviewQueryResult, AccountViewModel>();
 
             CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>();
 

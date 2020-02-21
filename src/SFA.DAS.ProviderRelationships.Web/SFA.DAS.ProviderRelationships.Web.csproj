@@ -155,7 +155,6 @@
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
     <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
-    <Compile Include="Mappings\AccountMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\OperationExtensions.cs" />
