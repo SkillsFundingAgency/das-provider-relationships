@@ -8,8 +8,8 @@ using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountOverview;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
@@ -41,9 +41,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
-            var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
+            var query = new GetAccountOverviewQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
-            var model = _mapper.Map<AccountProvidersViewModel>(result);
+            var model = _mapper.Map<AccountViewModel>(result);
             
             return View(model);
         }
