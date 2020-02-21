@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap;
-using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.Microsoft;
 using SFA.DAS.ProviderRelationships.Api.Client.DependencyResolution.StructureMap;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.Scenarios;

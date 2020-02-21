@@ -2,10 +2,8 @@
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
-
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;

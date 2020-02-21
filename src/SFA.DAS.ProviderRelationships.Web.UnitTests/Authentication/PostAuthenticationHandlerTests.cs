@@ -10,7 +10,7 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
