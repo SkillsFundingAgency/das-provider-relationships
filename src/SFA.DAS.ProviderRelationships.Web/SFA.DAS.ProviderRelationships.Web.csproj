@@ -184,7 +184,6 @@
     <Compile Include="ViewModels\AccountProviderLegalEntities\OperationViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\AccountViewModel.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
@@ -285,6 +284,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_HowPermissionsWork.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccountProviders\AccountProvidersWithMultipleOrganisation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccountProviders\AccountProvidersWithSingleOrganisation.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

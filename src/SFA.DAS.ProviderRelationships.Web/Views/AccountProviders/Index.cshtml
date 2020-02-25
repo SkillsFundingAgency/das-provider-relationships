@@ -1,4 +1,4 @@
-﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountViewModel
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 
 @{
     ViewBag.Title = "Your training providers";
@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body">You can add a training provider, then set permissions to choose what they can do on your behalf.</p>
 
-        @if (Model.AccountProvidersCount == 0)
+        @if (Model.AccountProviders.Count == 0)
         {
             <p class="govuk-body">You have not added any training providers yet.</p>
         }
@@ -28,6 +28,11 @@
             <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a training provider</a>
         }
     </div>
+    
+    @if (Model.AccountProviders.Count > 0)
+    {
+        @Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
+    }
 
     <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_HowPermissionsWork")
