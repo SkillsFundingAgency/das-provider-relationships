@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
         {
             return await _db.Value.AccountProviders
                 .Where(ap => ap.Id == accountProviderId && ap.Account.Id == accountId)
-                .ProjectTo<AccountProviderDto>(_configurationProvider, new {accountProviderId = accountProviderId})
+                .ProjectTo<AccountProviderDto>(_configurationProvider, new {accountProviderId})
                 .SingleOrDefaultAsync(cancellationToken);
         }
     }
