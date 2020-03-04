@@ -15,6 +15,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -310,7 +311,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
 
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
-                new Application.Queries.GetAccountProvider.Dtos.AccountProviderDto {
+                new AccountProviderDto {
                     Id = 2,
                     ProviderName = "Foo Bar"
                 },

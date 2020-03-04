@@ -1,94 +1,40 @@
-﻿@using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
-@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 
 @{
-    ViewBag.Title = "Training provider permissions";
-    ViewBag.ZenDeskLabel = "permissions-training-provider-permissions";
+    ViewBag.Title = "Your training providers";
+    ViewBag.ZenDeskLabel = "permissions-your-training-providers";
 }
 
 @section breadcrumb
 {
-    <div class="govuk-breadcrumbs">
-        <ol class="govuk-breadcrumbs__list">
-            <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="@Html.EmployerUrls().Account()">Home</a>
-            </li>
-            <li aria-current="page" class="govuk-breadcrumbs__list-item">Training provider permissions</li>
-        </ol>
-    </div>
+    <a href="@Html.EmployerUrls().Account()" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Training provider permissions</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Your training providers</h1>
     </div>
-    <div class="govuk-grid-column-two-thirds">  
-        <p class="govuk-body">Add training providers and set permissions. You can allow the training providers to do tasks on your behalf, this can include creating vacancies, reserving funding and adding apprentice records. You will be able to approve anything the training provider does.</p>
+
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body">You can add a training provider, then set permissions to choose what they can do on your behalf.</p>
+
+        @if (Model.AccountProviders.Count == 0)
+        {
+            <p class="govuk-body">You have not added any training providers yet.</p>
+        }
+
         @if (Model.IsAddProviderOperationAuthorized)
         {
-            <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a new training provider</a>
+            <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a training provider</a>
         }
     </div>
-    <div class="govuk-grid-column-full">
-        <h2 class="govuk-heading-m govuk-!-margin-top-9">Your training providers</h2>
-        @if (!Model.AccountProviders.Any())
-        {
-            <p class="govuk-body">No training provider permissions set</p>
-        }
-        else
-        {
-            <table class="govuk-table govuk-!-font-size-19">
-                <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th class="govuk-table__header">Training providers</th>
-                        <th class="govuk-table__header">Permissions</th>
-                        @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountLegalEntitiesCount > 1)
-                        {
-                            <th class="govuk-table__header"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                    @foreach (var accountProvider in Model.AccountProviders)
-                    {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@accountProvider.ProviderName</td>
-                            <td class="govuk-table__cell">
-                                @if (accountProvider.AccountProviderLegalEntitiesWithPermissionsCount == 0)
-                                {
-                                    @:No permissions set
-                                }
-                                else
-                                {
-                                    if (Model.AccountLegalEntitiesCount == 1)
-                                    {
-                                        @:Permissions set
-                                    }
-                                    else
-                                    {
-                                        @:Permissions set for @accountProvider.AccountProviderLegalEntitiesWithPermissionsCount organisation@(accountProvider.AccountProviderLegalEntitiesWithPermissionsCount > 1 ? "s" : "")
-                                    }
-                                }
-                            </td>
-                            @if (Model.IsUpdatePermissionsOperationAuthorized || Model.AccountLegalEntitiesCount > 1)
-                            {
-                                <td class="govuk-table__cell">
-                                    <a href="@Url.Action("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProvider.Id })">
-                                        @if (Model.IsUpdatePermissionsOperationAuthorized && Model.AccountLegalEntitiesCount == 1)
-                                        {
-                                            @:Set permissions
-                                        }
-                                        else
-                                        {
-                                            @:View
-                                        }
-                                    </a>
-                                </td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+    
+    @if (Model.AccountProviders.Count > 0)
+    {
+        @Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
+    }
+
+    <div class="govuk-grid-column-two-thirds">
+        @Html.Partial("_HowPermissionsWork")
     </div>
 </div>

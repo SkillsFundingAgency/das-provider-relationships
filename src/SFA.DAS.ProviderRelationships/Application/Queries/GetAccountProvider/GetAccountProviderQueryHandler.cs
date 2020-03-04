@@ -8,8 +8,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
 {
