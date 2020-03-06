@@ -20,8 +20,8 @@
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-0">
+                <fieldset class="govuk-fieldset">                    
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                         <h1 class="govuk-fieldset__heading">
                             What's next?
                         </h1>
@@ -33,7 +33,7 @@
                         @if (Model.AccountLegalEntitiesCount > 1)
                         {
                             <div class="govuk-radios__item">
-                                @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
+                                @Html.RadioButtonFor(m => m.Choice, "YourTrainingProviders", new { id = "choice-1", @class = "govuk-radios__input" })
                                 <label class="govuk-label govuk-radios__label" for="choice-1">
                                     View your training providers
                                 </label>

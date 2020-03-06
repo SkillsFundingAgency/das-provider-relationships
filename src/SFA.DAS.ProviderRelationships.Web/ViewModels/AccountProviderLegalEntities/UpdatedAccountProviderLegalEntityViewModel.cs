@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         public long? AccountProviderId { get; set; }
         
         [Required(ErrorMessage = "Select what you want to do next")]
-        [RegularExpression("SetPermissions|AddTrainingProvider|GoToHomepage", ErrorMessage = "Select what you want to do next")]
+        [RegularExpression("YourTrainingProviders|AddTrainingProvider|GoToHomepage", ErrorMessage = "Select what you want to do next")]
         public string Choice { get; set; }
     }
 }
