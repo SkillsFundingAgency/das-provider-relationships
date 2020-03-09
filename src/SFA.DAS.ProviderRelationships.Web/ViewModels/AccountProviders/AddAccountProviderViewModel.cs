@@ -17,9 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
         
         [Required]
         public long? Ukprn { get; set; }
-
-        [Required(ErrorMessage = "Option required")]
-        [RegularExpression("Confirm|ReEnterUkprn", ErrorMessage = "Option required")]
+        
         public string Choice { get; set; }
     }
 }
