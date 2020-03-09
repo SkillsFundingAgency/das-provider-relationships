@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\lib\esfa-stacker\stacker.js" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.js" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.js" />
     <Content Include="Content\htm\403.html" />
