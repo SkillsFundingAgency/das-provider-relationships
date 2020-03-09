@@ -185,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\lib\esfa-stacker\stacker.js" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.5.0.min.css" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.5.0.min.js" />
+    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-ie8-2.5.0.min.css" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.js" />
     <Content Include="Content\lib\jquery\dist\jquery-3.3.1.min.js" />
     <Content Include="Content\htm\403.html" />
@@ -206,9 +209,6 @@
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-important.png" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-pointer-2x.png" />
     <Content Include="Content\lib\govuk-frontend\dist\assets\images\icon-pointer.png" />
-    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.css" />
-    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.js" />
-    <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-ie8-2.0.0.min.css" />
     <Content Include="Content\lib\govuk-frontend\dist\VERSION.txt" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
