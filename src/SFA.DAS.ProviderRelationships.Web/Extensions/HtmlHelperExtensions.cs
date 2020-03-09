@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
         public static string GetZenDeskSnippetSectionId(this HtmlHelper html)
         {
-            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
+            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();            
             return configuration.ZenDeskSectionId;
         }
 
