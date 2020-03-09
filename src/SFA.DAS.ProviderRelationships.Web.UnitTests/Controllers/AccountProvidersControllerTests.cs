@@ -139,7 +139,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            return RunAsync(f => f.PostAdd("test"), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenAddModelError()
+        {
+            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+               a.RouteValues["Action"].Equals("Add") &&
+               a.RouteValues["Controller"] == null));
         }
 
         [Test]
@@ -364,6 +372,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             AddAccountProviderViewModel = new AddAccountProviderViewModel
             {
+                Provider = new Application.Queries.GetProviderToAdd.Dtos.ProviderDto { Name ="ProviderName" ,Ukprn = 10083920 },
                 AccountId = 1,
                 UserRef = Guid.NewGuid(),
                 Ukprn = 12345678,
