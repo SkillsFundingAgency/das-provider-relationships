@@ -97,14 +97,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [ValidateAntiForgeryToken]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderViewModel model)
-        {
-            if (string.IsNullOrEmpty(model.Choice))
-            {
-                ModelState.AddModelError("confirm-training-provider", $"Select yes if you want to add {model.Provider.Name}");                
-
-                return RedirectToAction("Add", new AddAccountProviderViewModel { Ukprn = model.Ukprn});
-            }
-            
+        {           
             switch (model.Choice)
             {
                 case "Confirm":

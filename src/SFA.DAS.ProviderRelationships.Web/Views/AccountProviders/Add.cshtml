@@ -24,10 +24,7 @@
                 <fieldset class="govuk-fieldset">
                     <h3>Do you want to add this training provider?</h3>
                     <span class="govuk-error-message">
-                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-training-provider"))
-                        {                            
-                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-training-provider"].Errors.First().ErrorMessage
-                        }
+                        @Html.ValidationMessageFor(m => m.Choice)                       
                     </span>
                     <div class="govuk-radios">
                         <div class="govuk-radios__item">
