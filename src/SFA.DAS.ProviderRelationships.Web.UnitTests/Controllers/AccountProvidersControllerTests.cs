@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
@@ -139,7 +139,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ValidationException>());
         }
 
         [Test]
@@ -374,7 +374,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             AccountProviderId = 2;
 
             Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
-           
+
+            var contex = new System.ComponentModel.DataAnnotations.ValidationContext(AddAccountProviderViewModel);
+            Validator.ValidateObject(AddAccountProviderViewModel, contex);
 
             return AccountProvidersController.Add(AddAccountProviderViewModel);
         }
