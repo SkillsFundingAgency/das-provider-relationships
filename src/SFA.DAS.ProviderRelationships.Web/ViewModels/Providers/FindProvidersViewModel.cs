@@ -2,13 +2,10 @@
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
+namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
-    public class FindProviderViewModel : IAuthorizationContextModel 
+    public class FindProvidersViewModel : IAuthorizationContextModel
     {
-        [Required]
-        public long? AccountId { get; set; }
-        
         [Required(ErrorMessage = ErrorMessages.InvalidUkprn)]
         [RegularExpression(@"[\d+]{8}", ErrorMessage = ErrorMessages.InvalidUkprn)]
         public string Ukprn { get; set; }

@@ -13,7 +13,6 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
-using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -36,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-        
+
         [DasAuthorize(EmployerUserRole.Any)]
         [Route]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
@@ -44,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
-            
+
             return View(model);
         }
 
@@ -58,38 +57,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         public ActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [Route("find")]
-        public ActionResult Find()
-        {
-            return View(new FindProviderViewModel());
-        }
-        
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("find")]
-        public async Task<ActionResult> Find(FindProviderViewModel model)
-        {
-            var ukprn = long.Parse(model.Ukprn);
-            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
-            var result = await _mediator.Send(query);
-
-            if (result.ProviderNotFound)
-            {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
-
-                return RedirectToAction("Find");
-            }
-
-            if (result.ProviderAlreadyAdded)
-            {
-                return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value });
-            }
-
-            return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
 
         [DasAuthorize(EmployerUserRole.Owner)]
@@ -118,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
                     return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
                 case "ReEnterUkprn":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -132,7 +99,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AddedAccountProviderViewModel>(result);
-            
+
             return View(model);
         }
 
@@ -147,7 +114,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 case "GoToHomepage":
                     return Redirect(_employerUrls.Account());
                 default:
@@ -178,7 +145,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get");
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -197,7 +164,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             {
                 return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
-            
+
             return View(model);
         }
 
@@ -217,7 +184,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
 
             var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
-            
+
             return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
         }
     }

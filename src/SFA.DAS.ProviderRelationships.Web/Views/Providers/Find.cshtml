@@ -1,0 +1,52 @@
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.Providers.FindProvidersViewModel
+
+@{
+    ViewBag.Title = "Search for a training provider";
+    ViewBag.ZenDeskLabel = "permissions-search-for-a-training-provider";
+}
+
+@section breadcrumb
+{
+    @*<a class="govuk-back-link" href="@Url.Action("Index")">Back</a>*@
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+    </div>
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number(UKPRN)</h1>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body">
+            This is the unique, 8-digit number that we use to identify a training provider.
+            Ask your training provider for their UKPRN if you do not know it.
+        </p>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group">
+                @*<span class="govuk-error-message govuk-!-margin-bottom-0">
+                    @Html.ValidationMessageFor(m => m.Ukprn)
+                </span>*@
+                <div class="govuk-!-margin-bottom-2">
+                    <noscript>
+                        <div class="govuk-form-group" id="non-js-search">
+                            <span esfa-validation-message-for="Ukprn" class="govuk-error-message"></span>
+                            <input asp-for="Ukprn" type="text" maxlength="8" class="govuk-input govuk-input--width-10" />
+                        </div>
+                    </noscript>
+                    <div class="govuk-form-group js-hidden" id="js-search">
+                        <span esfa-validation-message-for="TrainingProviderSearch" class="govuk-error-message"></span>
+                        <input asp-for="TrainingProviderSearch" type="text" class="govuk-input search-input" />
+                    </div>
+                </div>
+                <p class="govuk-body">
+                    <a class="govuk-back-link" href="@Url.Action("Find", "Providers")">Clear search</a>
+                </p>
+                @*@Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })*@
+            </div>
+            <button class="govuk-button" type="submit">Continue</button>
+        }
+    </div>
+</div>
