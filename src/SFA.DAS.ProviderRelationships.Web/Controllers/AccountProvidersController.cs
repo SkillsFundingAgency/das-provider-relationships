@@ -14,7 +14,6 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
-using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -124,7 +123,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
                     return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
                 case "ReEnterUkprn":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -153,7 +152,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 case "GoToHomepage":
                     return Redirect(_employerUrls.Account());
                 default:
@@ -184,7 +183,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get");
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find");
+                    return RedirectToAction("Find","Providers");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
