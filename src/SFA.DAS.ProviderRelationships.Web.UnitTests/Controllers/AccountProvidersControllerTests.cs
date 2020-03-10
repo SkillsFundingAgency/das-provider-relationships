@@ -145,9 +145,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenAddModelError()
         {
-            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-               a.RouteValues["Action"].Equals("Add") &&
-               a.RouteValues["Controller"] == null));
+            return RunAsync(f => f.PostAdd(), (f, r) =>
+            {
+                r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a => a.RouteValues["Action"].Equals("Add") && a.RouteValues["Controller"] == null);                
+                f.AccountProvidersController.ModelState["confirm-training-provider"].Errors.First().ErrorMessage.Should().Be("Select yes if you want to add ProviderName");
+                f.AccountProvidersController.ModelState.ContainsKey("confirm-training-provider").Should().BeTrue();
+            });
         }
 
         [Test]
@@ -382,7 +385,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             AccountProviderId = 2;
 
             Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
-            
+           
+
             return AccountProvidersController.Add(AddAccountProviderViewModel);
         }
 
