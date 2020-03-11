@@ -48,6 +48,18 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
+        [ChildActionOnly]
+        public ActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
+        {
+            return PartialView(model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
+        {
+            return PartialView(model);
+        }
+
         [DasAuthorize(EmployerUserRole.Owner)]
         [Route("find")]
         public ActionResult Find()

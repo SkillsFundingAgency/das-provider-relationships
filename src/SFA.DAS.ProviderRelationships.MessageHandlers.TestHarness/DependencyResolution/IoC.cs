@@ -1,8 +1,8 @@
 ﻿using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
-using SFA.DAS.UnitOfWork.EntityFrameworkCore;
-using SFA.DAS.UnitOfWork.NServiceBus;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.StructureMap;
+using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.StructureMap;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution
