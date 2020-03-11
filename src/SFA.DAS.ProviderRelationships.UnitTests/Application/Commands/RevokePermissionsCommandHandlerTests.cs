@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Data;
@@ -18,7 +17,7 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
-using SFA.DAS.UnitOfWork;
+using SFA.DAS.UnitOfWork.Context;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 {

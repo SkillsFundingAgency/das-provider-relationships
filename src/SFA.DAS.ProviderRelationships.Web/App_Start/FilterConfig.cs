@@ -3,7 +3,7 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.Urls;
-using SFA.DAS.UnitOfWork.Mvc;
+using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos
+namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class AccountLegalEntityDto
     {

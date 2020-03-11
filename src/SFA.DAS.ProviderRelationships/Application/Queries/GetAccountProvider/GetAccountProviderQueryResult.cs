@@ -1,4 +1,4 @@
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
 {
