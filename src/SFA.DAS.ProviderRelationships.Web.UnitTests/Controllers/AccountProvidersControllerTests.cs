@@ -14,7 +14,6 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
@@ -294,16 +293,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<ActionResult> Index()
         {
-            AccountProvidersRouteValues = new AccountProvidersRouteValues
-            {
+            AccountProvidersRouteValues = new AccountProvidersRouteValues {
                 AccountId = 1
             };
-            
+
             GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(
-                new List<Application.Queries.GetAccountProviders.Dtos.AccountProviderDto>
-                {
-                    new Application.Queries.GetAccountProviders.Dtos.AccountProviderDto
-                    {
+                new List<AccountProviderDto> {
+                    new AccountProviderDto {
                         Id = 2,
                         ProviderName = "Foo"
                     }
@@ -311,9 +307,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 2,
                 true);
 
-            Mediator.Setup(m => m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId), CancellationToken.None))
+            Mediator.Setup(m =>
+                    m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId),
+                        CancellationToken.None))
                 .ReturnsAsync(GetAccountProvidersQueryResult);
-            
+
             return AccountProvidersController.Index(AccountProvidersRouteValues);
         }
 
@@ -451,12 +449,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             };
             
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
-                new Application.Queries.GetAccountProvider.Dtos.AccountProviderDto
+                new AccountProviderDto
                 {
                     Id = 2,
                     ProviderName = "Foo",
                     AccountLegalEntities = Enumerable.Range(3, accountLegalEntitiesCount ?? 2)
-                        .Select(i => new Application.Queries.GetAccountProvider.Dtos.AccountLegalEntityDto
+                        .Select(i => new AccountLegalEntityDto
                         {
                             Id = i,
                             Name = i.ToString(),

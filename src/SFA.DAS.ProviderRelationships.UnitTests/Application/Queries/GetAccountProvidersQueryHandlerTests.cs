@@ -13,10 +13,11 @@ using NUnit.Framework;
 using SFA.DAS.Authorization;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
+using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
@@ -32,12 +33,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return RunAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                
+
                 r.AccountProviders.Should().NotBeNull().And.BeEquivalentTo(
-                    new AccountProviderDto
-                    {
+                    new AccountProviderDto {
                         Id = f.AccountProvider.Id,
-                        ProviderName = f.Provider.Name
+                        ProviderName = f.Provider.Name,
+                        ProviderUkprn = f.Provider.Ukprn,
+                        AccountLegalEntities = new List<AccountLegalEntityDto> {
+                            new AccountLegalEntityDto {
+                                Id = 3,
+                                Operations = new List<Operation> {Operation.CreateCohort}
+                            },
+                            new AccountLegalEntityDto {
+                                Id = 4,
+                                Operations = new List<Operation>()
+                            }
+                        }
                     });
                 
                 r.AccountLegalEntitiesCount.Should().Be(f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId));
@@ -84,6 +95,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Account Account { get; set; }
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
+        public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
+        public Permission Permission { get; set; }
         public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
@@ -115,11 +128,20 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 4).Set(ale => ale.AccountId, Account.Id),
                 EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 5).Set(ale => ale.AccountId, 2)
             };
-            
+
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                .Set(aple => aple.Id, 8).Set(aple => aple.AccountLegalEntityId, 3)
+                .Set(aple => aple.AccountProviderId, 2);
+
+            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 4)
+                .Set(p => p.Operation, Operation.CreateCohort).Set(p => p.AccountProviderLegalEntityId, 8);
+
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
             Db.AccountProviders.Add(AccountProvider);
             Db.AccountLegalEntities.AddRange(AccountLegalEntities);
+            Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
+            Db.Permissions.Add(Permission);
             Db.SaveChanges();
 
             return this;
