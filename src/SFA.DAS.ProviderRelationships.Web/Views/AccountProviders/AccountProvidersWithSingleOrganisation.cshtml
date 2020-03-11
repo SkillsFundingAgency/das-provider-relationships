@@ -2,7 +2,7 @@
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 
 <div class="govuk-grid-column-full">
-    <table class="govuk-table govuk-!-font-size-19">
+    <table class="govuk-table">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
             <th class="govuk-table__header">Training provider name</th>
@@ -34,7 +34,7 @@
                 @if (Model.IsUpdatePermissionsOperationAuthorized)
                 {
                     <td class="govuk-table__cell">
-                        <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
+                        <a class="govuk-link" href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
                             @if (accountProvider.AccountLegalEntities.First().Operations.Count == 0)
                             {
                                 @:Set permissions

@@ -6,7 +6,7 @@
     {
         <h2 class="govuk-heading-l govuk-!-margin-top-7">@accountProvider.ProviderName</h2>
 
-        <table class="govuk-table govuk-!-font-size-19">
+        <table class="govuk-table">
             <thead class="govuk-table__head">
             <tr class="govuk-table__row">
                 <th class="govuk-table__header">Organisation</th>
@@ -31,14 +31,14 @@
                         {
                             foreach (var operation in accountProviderLegalEntity.Operations)
                             {
-                                <div>@operation.GetDescription()</div>
+                                <span>@operation.GetDescription()</span>
                             }
                         }
                     </td>
                     @if (Model.IsUpdatePermissionsOperationAuthorized)
                     {
                         <td class="govuk-table__cell">
-                            <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
+                            <a class="govuk-link" href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
                                 @if (accountProviderLegalEntity.Operations.Count == 0)
                                 {
                                     @:Set permissions

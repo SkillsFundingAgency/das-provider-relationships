@@ -16,8 +16,8 @@
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
 
         <h1 class="govuk-panel__title">Confirm training provider</h1>
-
         <p class="govuk-body">The details you entered are for @Model.Provider.Name, (@Model.Provider.Ukprn).</p>
+
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()

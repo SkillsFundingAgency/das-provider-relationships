@@ -24,12 +24,16 @@
         {
             <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a training provider</a>
         }
-    
-        @if (Model.AccountProviders.Count > 0)
-        {
-            @Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
-        }
-    
+    </div>
+</div>
+<div class="govuk-grid-row">
+@if (Model.AccountProviders.Count > 0)
+{
+    @Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
+}
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_HowPermissionsWork")
     </div>
 </div>
