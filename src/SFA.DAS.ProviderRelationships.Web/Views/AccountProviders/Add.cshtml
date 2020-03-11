@@ -23,9 +23,13 @@
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
-                    <h3>Do you want to add this training provider?</h3>
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 class="govuk-fieldset__heading">
+                            Do you want to add this training provider?
+                        </h2>
+                    </legend>
                     <span class="govuk-error-message">
-                        @Html.ValidationMessageFor(m => m.Choice)                       
+                        @Html.ValidationMessageFor(m => m.Choice)
                     </span>
                     <div class="govuk-radios">
                         <div class="govuk-radios__item">
