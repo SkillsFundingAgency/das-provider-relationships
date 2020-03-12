@@ -22,7 +22,7 @@ using SFA.DAS.Validation.Mvc;
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerFeature.ProviderRelationships)]
-    [RoutePrefix("accounts/{accountHashedId}/providers")]
+    [RoutePrefix("accounts/{accountHashedId}")]
     public class AccountProvidersController : Controller
     {
         private readonly IMediator _mediator;
