@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using Microsoft.IdentityModel;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
-using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerFeature.ProviderRelationships)]
-    [RoutePrefix("providers")]
+    [RoutePrefix("accounts/{accountHashedId}/providers")]
     public class ProvidersController : Controller
     {
         private readonly IMediator _mediator;
@@ -32,9 +24,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [DasAuthorize(EmployerUserRole.Owner)]
         [Route("find")]
-        public ActionResult Find()
+        public async Task<ActionResult> Find()
         {
-            return View(new FindProvidersViewModel());
+            var query = new FindAllProvidersQuery();
+            var result = await _mediator.Send(query);
+            var model = _mapper.Map<FindProvidersViewModel>(result);
+            return View(model);
         }
 
         [DasAuthorize(EmployerUserRole.Owner)]
