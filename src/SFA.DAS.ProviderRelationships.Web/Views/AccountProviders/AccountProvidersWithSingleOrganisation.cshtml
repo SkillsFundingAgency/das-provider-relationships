@@ -17,8 +17,8 @@
         @foreach (var accountProvider in Model.AccountProviders)
         {
             <tr class="govuk-table__row">
-                <td class="govuk-table__cell">@accountProvider.ProviderName</td>
-                <td class="govuk-table__cell">
+                <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
+                <td class="govuk-table__cell das-table-cell-width-50">
                     @if (accountProvider.AccountLegalEntities.First().Operations.Count == 0)
                     {
                         @:No permissions set
@@ -27,14 +27,14 @@
                     {
                         foreach (var operation in accountProvider.AccountLegalEntities.First().Operations)
                         {
-                            <div>@operation.GetDescription()</div>
+                            <span>@operation.GetDescription()</span><br />
                         }
                     }
                 </td>
                 @if (Model.IsUpdatePermissionsOperationAuthorized)
                 {
-                    <td class="govuk-table__cell">
-                        <a class="govuk-link" href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
+                    <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
+                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
                             @if (accountProvider.AccountLegalEntities.First().Operations.Count == 0)
                             {
                                 @:Set permissions
