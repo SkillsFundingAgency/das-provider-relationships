@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissi
 
         protected override async Task Handle(SendDeletedPermissionsNotificationCommand request, CancellationToken cancellationToken)
         {
-            var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
+            var organisation = await _db.Value.AccountLegalEntities.IgnoreQueryFilters().SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
             await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
                 TemplateId = TemplateId,
