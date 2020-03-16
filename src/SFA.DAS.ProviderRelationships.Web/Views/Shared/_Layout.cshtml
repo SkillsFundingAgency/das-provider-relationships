@@ -5,23 +5,16 @@
     <title>@ViewBag.Title - Provider relationships</title>
     <meta name="theme-color" content="#0b0c0c" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:image" content="/Content/lib/govuk-frontend/dist/assets/images/govuk-opengraph-image.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-180x180.png" />
-    <link rel="apple-touch-icon" sizes="167x167" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-167x167.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-apple-touch-icon.png" />
-    <link rel="mask-icon" href="/Content/lib/govuk-frontend/dist/assets/images/govuk-mask-icon.svg" color="#0b0c0c" />
-    <link rel="shortcut icon" href="/Content/lib/govuk-frontend/dist/assets/images/favicon.ico" type="image/x-icon" />
+    <meta property="og:image" content="@Html.CdnLink("assets/images","govuk-opengraph-image.png")">
+    <link rel="mask-icon" href="@Html.CdnLink("assets/images","govuk-mask-icon.svg")" color="#0b0c0c">
+    <link rel="apple-touch-icon" sizes="180x180" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-180x180.png")">
+    <link rel="apple-touch-icon" sizes="167x167" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-167x167.png")">
+    <link rel="apple-touch-icon" sizes="152x152" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-152x152.png")">
+    <link rel="apple-touch-icon" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon.png")">
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="@Html.CdnLink("assets/images","favicon.ico")" type="image/x-icon" />
     <!--[if !IE 8]><!-->
-    <link href="/Content/lib/govuk-frontend/dist/govuk-frontend-2.0.0.min.css" rel="stylesheet" />
+    <link href="@Html.CdnLink("css", "main.css")" rel="stylesheet" />
     <!--<![endif]-->
-    <!--[if IE 8]>
-        <link href="/Content/lib/govuk-frontend/dist/govuk-frontend-ie8-2.0.0.min.css" rel="stylesheet" />
-    <![endif]-->
-    <!--[if lt IE 9]>
-        <script src="/Content/lib/govuk-frontend/dist/html5-shiv/html5shiv.js"></script>
-    <![endif]-->
-    <link href="/Content/css/application.css" rel="stylesheet" />
     @Html.Partial("_ZenDeskWidget")
     @Html.Partial("_GoogleAnalyticsHead")
 </head>
@@ -31,7 +24,7 @@
         document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
     <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
-
+    
     @Html.Partial("_Header", Html.GetHeaderViewModel())
 
     <div class="govuk-width-container">
@@ -41,15 +34,19 @@
         </main>
     </div>
 
-
     @Html.Partial("_Footer", Html.GetFooterViewModel())
-    <script src="/Content/lib/govuk-frontend/dist/govuk-frontend-2.0.0.min.js"></script>
-    <script src="/Content/lib/jquery/dist/jquery-3.3.1.min.js"></script>
-    <script src="/Content/lib/esfa-stacker/stacker.js"></script>
-    <script src="/Content/js/application.js"></script>
-    @*<script>
-            window.GOVUKFrontend.initAll()
-        </script>*@
+
+    <script src="@Html.CdnLink("libs/jquery","jquery.min.js")"></script>
+    <script src="@Html.CdnLink("libs/govuk-frontend","all.js")"></script>
+
+    <script src="@Html.CdnLink("js","das-all.min.js")"></script>
+    <script src="@Html.CdnLink("js","app.min.js")"></script>
+
+    <script>
+        window.GOVUKFrontend.initAll();
+        window.DASFrontend.initAll();
+    </script>
+
     @RenderSection("footerJS", required: false)
 </body>
 </html>

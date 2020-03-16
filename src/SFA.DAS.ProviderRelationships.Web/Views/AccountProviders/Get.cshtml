@@ -22,7 +22,7 @@
         <p class="govuk-body">Set permissions for a single organisation, or set the same permissions for all your organisations at the same time.</p>
     </div>
     <div class="@(Model.IsUpdatePermissionsOperationAuthorized ? "govuk-grid-column-two-thirds" : "govuk-grid-column-one-half")">
-        <table class="govuk-table govuk-!-font-size-19">
+        <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th class="govuk-table__header">Your organisations</th>
@@ -37,7 +37,7 @@
                 @foreach (var accountLegalEntity in Model.AccountProvider.AccountLegalEntities)
                 {
                     <tr class="govuk-table__row">
-                        <td class="govuk-table__cell das-table__cell--vertical-align-top">@accountLegalEntity.Name</td>
+                        <td class="govuk-table__cell">@accountLegalEntity.Name</td>
                         <td class="govuk-table__cell">
                             @if (accountLegalEntity.Operations.Any())
                             {
@@ -55,7 +55,7 @@
                         </td>
                         @if (Model.IsUpdatePermissionsOperationAuthorized)
                         {
-                            <td class="govuk-table__cell das-table__cell--vertical-align-top">
+                            <td class="govuk-table__cell">
                                 <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
                             </td>
                         }

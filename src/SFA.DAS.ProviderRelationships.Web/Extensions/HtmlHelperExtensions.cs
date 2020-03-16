@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using SFA.DAS.MA.Shared.UI.Configuration;
 using SFA.DAS.MA.Shared.UI.Models;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Web.App_Start;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using System.Web;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
@@ -95,6 +96,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             var requestUrl = new Uri(request.Url.AbsoluteUri);
 
             return $"{requestUrl.Scheme}://{requestUrl.Authority}";
+        }
+
+        public static MvcHtmlString CdnLink(this HtmlHelper html, string folderName, string fileName)
+        {
+            var cdnLocation = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
+
+            var trimCharacters = new char[] { '/' };
+            return new MvcHtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
         }
     }
 }
