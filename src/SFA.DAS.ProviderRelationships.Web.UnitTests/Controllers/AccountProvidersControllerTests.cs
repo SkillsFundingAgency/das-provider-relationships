@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -138,7 +139,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ValidationException>());
         }
 
         [Test]
@@ -362,6 +363,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             AddAccountProviderViewModel = new AddAccountProviderViewModel
             {
+                Provider = new Application.Queries.GetProviderToAdd.Dtos.ProviderDto { Name ="ProviderName" ,Ukprn = 10083920 },
                 AccountId = 1,
                 UserRef = Guid.NewGuid(),
                 Ukprn = 12345678,
@@ -371,7 +373,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             AccountProviderId = 2;
 
             Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
-            
+
+            var contex = new System.ComponentModel.DataAnnotations.ValidationContext(AddAccountProviderViewModel);
+            Validator.ValidateObject(AddAccountProviderViewModel, contex);
+
             return AccountProvidersController.Add(AddAccountProviderViewModel);
         }
 

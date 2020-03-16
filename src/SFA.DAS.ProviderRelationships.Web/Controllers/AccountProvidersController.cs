@@ -109,7 +109,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [ValidateAntiForgeryToken]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderViewModel model)
-        {
+        {           
             switch (model.Choice)
             {
                 case "Confirm":
