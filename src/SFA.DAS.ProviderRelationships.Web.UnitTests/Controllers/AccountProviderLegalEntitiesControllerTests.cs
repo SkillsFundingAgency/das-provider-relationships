@@ -231,7 +231,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
                 new AccountProviderDto {
                     Id = 2,
-                    ProviderName = "Foo Bar"
+                    Name = "Foo Bar"
                 },
                 true);
 
