@@ -52,7 +52,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         {
             _permissions.Clear();
 
-            Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.Ukprn, AccountLegalEntityId, deleted));
+            Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
         }
 
         internal void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)

@@ -32,7 +32,7 @@
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
-                <select id="Ukprn" name="Ukprn" class="govuk-select">
+                <select id="Ukprn" name="ProviderUkprn" class="govuk-select">
                     <option value="">Search for a provider </option>
                     @foreach (var provider in Model.Providers)
                     {

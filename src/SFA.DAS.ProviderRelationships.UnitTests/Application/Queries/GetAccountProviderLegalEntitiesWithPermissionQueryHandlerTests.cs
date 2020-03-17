@@ -96,7 +96,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
                 .Set(ap => ap.Id, 49L)
                 .Set(ap => ap.AccountId, Account.Id)
-                .Set(ap =>ap.Ukprn, Query.Ukprn);
+                .Set(ap =>ap.ProviderUkprn, Query.Ukprn);
 
             AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
                 .Set(ale =>ale.Id,413L)

@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         /// It would be nice to cancel on client disconnects, see https://github.com/aspnet/Mvc/issues/5239
         /// </remarks>
         /// <param name="routeValues">GetAccountProviderLegalEntitiesParameters members:
-        /// Ukprn: Filter AccountProviderLegalEntities to only those for this provider (we could accept non-nullable, but we might want to return unfiltered by ukprn)
+        /// ProviderUkprn: Filter AccountProviderLegalEntities to only those for this provider (we could accept non-nullable, but we might want to return unfiltered by ukprn)
         /// Operation: Filter AccountProviderLegalEntities to only those which have this permission
         /// </param>
         [Route]
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         {
             if (routeValues.Ukprn == null)
             {
-                ModelState.AddModelError(nameof(routeValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
+                ModelState.AddModelError(nameof(routeValues.Ukprn), "Currently a ProviderUkprn filter needs to be supplied");
             }
 
             if (routeValues.Operation == null)
