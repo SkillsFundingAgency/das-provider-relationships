@@ -87,7 +87,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
 
             var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
-            GetUpdatedAccountProviderLegalEntityQueryResult result = await _mediator.Send(query);
+            var result = await _mediator.Send(query);
             var model = _mapper.Map<UpdatedAccountProviderLegalEntityViewModel>(result);
 
             return View(model);
