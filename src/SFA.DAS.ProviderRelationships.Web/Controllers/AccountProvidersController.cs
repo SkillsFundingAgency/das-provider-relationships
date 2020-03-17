@@ -63,6 +63,42 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [DasAuthorize(EmployerUserRole.Owner)]
+        [Route("find")]
+        public async Task<ActionResult> Find()
+        {
+            var query = new FindAllProvidersQuery();
+            var result = await _mediator.Send(query);
+            var model = _mapper.Map<FindProvidersViewModel>(result);
+            return View(model);
+        }
+
+        [DasAuthorize(EmployerUserRole.Owner)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("find")]
+        public async Task<ActionResult> Find(FindProvidersViewModel model)
+        {
+            var ukprn = long.Parse(model.Ukprn);
+            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
+
+            var result = await _mediator.Send(query);
+
+            if (result.ProviderNotFound)
+            {
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+
+                return RedirectToAction("Find");
+            }
+
+            if (result.ProviderAlreadyAdded)
+            {
+                return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value });
+            }
+
+            return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
+        }
+
+        [DasAuthorize(EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderRouteValues routeValues)
@@ -79,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [ValidateAntiForgeryToken]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderViewModel model)
-        {           
+        {
             switch (model.Choice)
             {
                 case "Confirm":
@@ -189,42 +225,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
             return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [Route("find")]
-        public async Task<ActionResult> Find()
-        {
-            var query = new FindAllProvidersQuery();
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<FindProvidersViewModel>(result);
-            return View(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("find")]
-        public async Task<ActionResult> Find(FindProvidersViewModel model)
-        {
-            var ukprn = long.Parse(model.Ukprn);
-            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
-
-            var result = await _mediator.Send(query);
-
-            if (result.ProviderNotFound)
-            {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
-
-                return RedirectToAction("Find");
-            }
-
-            if (result.ProviderAlreadyAdded)
-            {
-                return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value });
-            }
-
-            return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
     }
 }
