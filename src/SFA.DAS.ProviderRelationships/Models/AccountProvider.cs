@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Models
         public Account Account { get; private set; }
         public long AccountId { get; private set; }
         public Provider Provider { get; private set; }
-        public long Ukprn { get; private set; }
+        public long ProviderUkprn { get; private set; }
         public DateTime Created { get; private set; }
         public IEnumerable<AccountProviderLegalEntity> AccountProviderLegalEntities => _accountProviderLegalEntities;
 
@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Models
             Account = account;
             AccountId = account.Id;
             Provider = provider;
-            Ukprn = provider.Ukprn;
+            ProviderUkprn = provider.Ukprn;
             Created = DateTime.UtcNow;
             
             Publish(() => new AddedAccountProviderEvent(Id, Account.Id, Provider.Ukprn, user.Ref, Created, correlationId));

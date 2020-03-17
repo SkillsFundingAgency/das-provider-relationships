@@ -105,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public FindProviderToAddQueryHandlerTestsFixture SetAccountProvider()
         {
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 1).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.Ukprn, Provider.Ukprn);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 1).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
             
             Db.AccountProviders.Add(AccountProvider);
             Db.SaveChanges();

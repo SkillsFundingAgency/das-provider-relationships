@@ -84,7 +84,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandHandlerTestsFixture SetAccountProvider()
         {
-            Db.AccountProviders.Add(EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.AccountId, Account.Id).Set(ap => ap.Ukprn, Provider.Ukprn));
+            Db.AccountProviders.Add(EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn));
             Db.SaveChanges();
             
             return this;

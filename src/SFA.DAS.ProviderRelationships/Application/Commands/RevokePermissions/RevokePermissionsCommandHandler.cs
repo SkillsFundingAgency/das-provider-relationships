@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
                 .Include(x => x.AccountProvider)
                 .Include(x => x.AccountLegalEntity)
                 .Include(x => x.Permissions)
-                .Where(x => x.AccountProvider.Ukprn == command.Ukprn)
+                .Where(x => x.AccountProvider.ProviderUkprn == command.Ukprn)
                 .Where(x => x.AccountLegalEntity.Id == accountLegalEntityId)
                 .SingleOrDefaultAsync(cancellationToken);
 

@@ -66,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return RunAsync(f => f.PostFind(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Add") &&
                 a.RouteValues["Controller"] == null &&
-                a.RouteValues["Ukprn"].Equals(f.FindProvidersQueryResult.Ukprn)));
+                a.RouteValues["ProviderUkprn"].Equals(f.FindProvidersQueryResult.Ukprn)));
         }
 
         [Test]

@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
                     e.AccountProviderId == f.AccountProvider.Id &&
                     e.AccountProviderLegalEntityId == f.AccountProvider.AccountProviderLegalEntities.Single().Id &&
-                    e.Ukprn == f.AccountProvider.Ukprn &&
+                    e.Ukprn == f.AccountProvider.ProviderUkprn &&
                     e.UserRef == f.User.Ref &&
                     e.GrantedOperations == f.Command.GrantedOperations &&
                     e.Updated == f.AccountProvider.AccountProviderLegalEntities.Single().Created));
@@ -72,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
                     e.AccountProviderId == f.AccountProvider.Id &&
                     e.AccountProviderLegalEntityId == f.AccountProviderLegalEntity.Id &&
-                    e.Ukprn == f.AccountProvider.Ukprn &&
+                    e.Ukprn == f.AccountProvider.ProviderUkprn &&
                     e.UserRef == f.User.Ref &&
                     e.GrantedOperations == f.Command.GrantedOperations &&
                     e.Updated == f.AccountProviderLegalEntity.Updated));

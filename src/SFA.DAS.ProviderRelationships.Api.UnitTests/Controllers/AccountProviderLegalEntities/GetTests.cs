@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
         public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
         {
             return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied"));
+                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a ProviderUkprn filter needs to be supplied"));
         }
         
         [Test]
