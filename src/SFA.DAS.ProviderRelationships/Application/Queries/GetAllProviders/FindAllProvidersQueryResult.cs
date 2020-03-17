@@ -5,9 +5,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
 {
     public class FindAllProvidersQueryResult
     {
-        public List<ProviderDto> Providers { get; }
+        public List<AccountProviderDto> Providers { get; }
 
-        public FindAllProvidersQueryResult(List<ProviderDto> providers)
+        public FindAllProvidersQueryResult(List<AccountProviderDto> providers)
         {
             Providers = providers;
         }

@@ -230,7 +230,6 @@
     <Content Include="Views\AccountProviders\Added.cshtml" />
     <Content Include="Views\AccountProviders\AlreadyAdded.cshtml" />
     <Content Include="Views\AccountProviders\Index.cshtml" />
-    <Content Include="Views\Providers\Find.cshtml" />
     <Content Include="Views\AccountProviders\Get.cshtml" />
     <Content Include="Views\Shared\_GoogleAnalyticsBody.cshtml" />
     <Content Include="Views\Shared\_GoogleAnalyticsHead.cshtml" />

@@ -20,16 +20,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
 
         public async Task<FindAllProvidersQueryResult> Handle(FindAllProvidersQuery request, CancellationToken cancellationToken)
         {
-            var providers = new List<ProviderDto>();
+            var providers = new List<AccountProviderDto>();
 
             var providerIds = await _db.Value.Providers
                                 .ToListAsync(cancellationToken);
 
             foreach (var provider in providerIds)
             {
-                var providerDto = new ProviderDto {
+                var providerDto = new AccountProviderDto {
                     Ukprn = provider.Ukprn,
-                    Name = provider.Name,
+                    ProviderName = provider.Name,
                     FormattedProviderSuggestion = FormatSuggestion(provider.Name, provider.Ukprn)
                 };
                 providers.Add(providerDto);

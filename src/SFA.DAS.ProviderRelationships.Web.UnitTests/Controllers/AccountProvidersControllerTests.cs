@@ -303,7 +303,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new List<AccountProviderDto> {
                     new AccountProviderDto {
                         Id = 2,
-                        Name = "Foo"
+                        ProviderName = "Foo"
                     }
                 },
                 2,
@@ -458,7 +458,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new AccountProviderDto
                 {
                     Id = 2,
-                    Name = "Foo",
+                    ProviderName = "Foo",
                     AccountLegalEntities = Enumerable.Range(3, accountLegalEntitiesCount ?? 2)
                         .Select(i => new AccountLegalEntityDto
                         {
