@@ -5,6 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
     public class ProvidersViewModel
     {
-        public List<ProviderDto> Providers { get; set; }
+        public List<AccountProviderDto> Providers { get; set; }
     }
 }

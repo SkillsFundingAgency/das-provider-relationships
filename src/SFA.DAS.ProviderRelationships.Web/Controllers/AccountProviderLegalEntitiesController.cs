@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (Session["Invitation"] as bool? == true)
             {
                 var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.Name)}");
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
             }
 
             return RedirectToAction("Updated", new UpdatedAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
@@ -83,7 +83,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (Session["Invitation"] as bool? == true)
             {
                 var provider = await _mediator.Send(new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.Name)}");
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
             }
 
             var query = new GetUpdatedAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);

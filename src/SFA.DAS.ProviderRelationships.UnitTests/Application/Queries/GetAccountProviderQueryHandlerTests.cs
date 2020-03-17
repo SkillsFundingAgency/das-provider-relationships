@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     {
                         Id = f.AccountProvider.Id,
                         Ukprn = f.Provider.Ukprn,
-                        Name = f.Provider.Name,
+                        ProviderName = f.Provider.Name,
                         AccountLegalEntities = new List<AccountLegalEntityDto>
                         {
                             new AccountLegalEntityDto

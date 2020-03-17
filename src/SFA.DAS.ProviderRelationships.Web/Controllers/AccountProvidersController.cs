@@ -14,16 +14,18 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
+using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerFeature.ProviderRelationships)]
-    [RoutePrefix("accounts/{accountHashedId}")]
+    [RoutePrefix("accounts/{accountHashedId}/providers")]
     public class AccountProvidersController : Controller
     {
         private readonly IMediator _mediator;
@@ -123,7 +125,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
                     return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
                 case "ReEnterUkprn":
-                    return RedirectToAction("Find","Providers");
+                    return RedirectToAction("Find");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -152,7 +154,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find","Providers");
+                    return RedirectToAction("Find");
                 case "GoToHomepage":
                     return Redirect(_employerUrls.Account());
                 default:
@@ -183,7 +185,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 case "SetPermissions":
                     return RedirectToAction("Get");
                 case "AddTrainingProvider":
-                    return RedirectToAction("Find","Providers");
+                    return RedirectToAction("Find");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
@@ -224,6 +226,42 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
             return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
+        }
+
+        [DasAuthorize(EmployerUserRole.Owner)]
+        [Route("find")]
+        public async Task<ActionResult> Find()
+        {
+            var query = new FindAllProvidersQuery();
+            var result = await _mediator.Send(query);
+            var model = _mapper.Map<FindProvidersViewModel>(result);
+            return View(model);
+        }
+
+        [DasAuthorize(EmployerUserRole.Owner)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("find")]
+        public async Task<ActionResult> Find(FindProvidersViewModel model)
+        {
+            var ukprn = long.Parse(model.Ukprn);
+            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
+
+            var result = await _mediator.Send(query);
+
+            if (result.ProviderNotFound)
+            {
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+
+                return RedirectToAction("Find");
+            }
+
+            if (result.ProviderAlreadyAdded)
+            {
+                return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value });
+            }
+
+            return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
     }
 }
