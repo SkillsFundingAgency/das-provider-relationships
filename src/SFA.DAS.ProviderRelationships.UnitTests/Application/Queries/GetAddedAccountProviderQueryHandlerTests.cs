@@ -66,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
             Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.Ukprn, Provider.Ukprn);
 
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
