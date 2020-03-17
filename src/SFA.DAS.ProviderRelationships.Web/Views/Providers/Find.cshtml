@@ -15,7 +15,7 @@
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number(UKPRN)</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number (UKPRN)</h1>
     </div>
     <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body">
@@ -25,26 +25,20 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="govuk-form-group">
-                @*<span class="govuk-error-message govuk-!-margin-bottom-0">
+            <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+                <label class="govuk-label js-hidden" for="Ukprn">
+                    UKPRN
+                </label>
+                <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
-                </span>*@
-                <div class="govuk-!-margin-bottom-2">
-                    <noscript>
-                        <div class="govuk-form-group" id="non-js-search">
-                            <span esfa-validation-message-for="Ukprn" class="govuk-error-message"></span>
-                            <input asp-for="Ukprn" type="text" maxlength="8" class="govuk-input govuk-input--width-10" />
-                        </div>
-                    </noscript>
-                    <div class="govuk-form-group js-hidden" id="js-search">
-                        <span esfa-validation-message-for="TrainingProviderSearch" class="govuk-error-message"></span>
-                        <input asp-for="TrainingProviderSearch" type="text" class="govuk-input search-input" />
-                    </div>
-                </div>
-                <p class="govuk-body">
-                    <a class="govuk-back-link" href="@Url.Action("Find", "Providers")">Clear search</a>
-                </p>
-                @*@Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })*@
+                </span>
+                <select id="Ukprn" name="Ukprn" class="govuk-select">
+                    <option value="">Search for a provider </option>
+                    @foreach (var provider in Model.Providers)
+                    {
+                        <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
+                    }
+                </select>
             </div>
             <button class="govuk-button" type="submit">Continue</button>
         }
