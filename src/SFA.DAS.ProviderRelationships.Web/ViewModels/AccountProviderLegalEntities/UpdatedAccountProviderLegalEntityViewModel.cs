@@ -11,8 +11,8 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         [Required]
         public long? AccountProviderId { get; set; }
         
-        [Required(ErrorMessage = "Option required")]
-        [RegularExpression("SetPermissions|AddTrainingProvider|GoToHomepage", ErrorMessage = "Option required")]
+        [Required(ErrorMessage = "Select what you want to do next")]
+        [RegularExpression("YourTrainingProviders|AddTrainingProvider|GoToHomepage", ErrorMessage = "Select what you want to do next")]
         public string Choice { get; set; }
     }
 }
