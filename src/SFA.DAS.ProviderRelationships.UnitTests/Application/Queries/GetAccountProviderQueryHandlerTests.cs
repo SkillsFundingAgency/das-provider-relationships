@@ -37,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     .And.BeEquivalentTo(new AccountProviderDto
                     {
                         Id = f.AccountProvider.Id,
-                        Ukprn = f.Provider.Ukprn,
+                        ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name,
                         AccountLegalEntities = new List<AccountLegalEntityDto>
                         {

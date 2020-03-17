@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
             foreach (var provider in providerIds)
             {
                 var providerDto = new AccountProviderDto {
-                    Ukprn = provider.Ukprn,
+                    ProviderUkprn = provider.Ukprn,
                     ProviderName = provider.Name,
                     FormattedProviderSuggestion = FormatSuggestion(provider.Name, provider.Ukprn)
                 };
