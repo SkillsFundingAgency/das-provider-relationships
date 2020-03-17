@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                 assert: (f, r) =>
                 {
                     r.Should().BeAssignableTo<InvalidModelStateResult>();
-                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A ProviderUkprn needs to be supplied");
+                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A Ukprn needs to be supplied");
                 }
             );
 
