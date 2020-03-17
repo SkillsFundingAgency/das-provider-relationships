@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 
 namespace SFA.DAS.ProviderRelationships.Web.Mappings
 {

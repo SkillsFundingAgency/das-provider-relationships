@@ -26,7 +26,6 @@ using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
@@ -50,48 +49,48 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsUpdatePermissionsOperationAuthorized);
             });
         }
-        
-        //[Test]
-        //public void Find_WhenGettingFindAction_ThenShouldReturnFindView()
-        //{
-        //    Run(f => f.Find(), (f, r) =>
-        //    {
-        //        r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-        //        r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProvidersViewModel>();
-        //    });
-        //}
 
-        //[Test]
-        //public Task Find_WhenPostingFindActionAndProviderExists_ThenShouldRedirectToAddAction()
-        //{
-        //    return RunAsync(f => f.PostFind(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-        //        a.RouteValues["Action"].Equals("Add") &&
-        //        a.RouteValues["Controller"] == null &&
-        //        a.RouteValues["Ukprn"].Equals(f.FindProvidersQueryResult.Ukprn)));
-        //}
+        [Test]
+        public void Find_WhenGettingFindAction_ThenShouldReturnFindView()
+        {
+            Run(f => f.Find(), (f, r) =>
+            {
+                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
+                r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProvidersViewModel>();
+            });
+        }
 
-        //[Test]
-        //public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldAddModelError()
-        //{
-        //    return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProvidersViewModel.Ukprn)).Should().BeTrue());
-        //}
+        [Test]
+        public Task Find_WhenPostingFindActionAndProviderExists_ThenShouldRedirectToAddAction()
+        {
+            return RunAsync(f => f.PostFind(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Add") &&
+                a.RouteValues["Controller"] == null &&
+                a.RouteValues["Ukprn"].Equals(f.FindProvidersQueryResult.Ukprn)));
+        }
 
-        //[Test]
-        //public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldRedirectToFindAction()
-        //{
-        //    return RunAsync(f => f.PostFind(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-        //        a.RouteValues["Action"].Equals("Find") &&
-        //        a.RouteValues["Controller"] == null));
-        //}
+        [Test]
+        public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldAddModelError()
+        {
+            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProvidersViewModel.Ukprn)).Should().BeTrue());
+        }
 
-        //[Test]
-        //public Task Find_WhenPostingFindActionAndProviderAlreadyAdded_ThenShouldRedirectToAlreadyAddedAction()
-        //{
-        //    return RunAsync(f => f.PostFind(true, true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-        //        a.RouteValues["Action"].Equals("AlreadyAdded") &&
-        //        a.RouteValues["Controller"] == null &&
-        //        a.RouteValues["AccountProviderId"].Equals(f.FindProvidersQueryResult.AccountProviderId)));
-        //}
+        [Test]
+        public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldRedirectToFindAction()
+        {
+            return RunAsync(f => f.PostFind(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("Find") &&
+                a.RouteValues["Controller"] == null));
+        }
+
+        [Test]
+        public Task Find_WhenPostingFindActionAndProviderAlreadyAdded_ThenShouldRedirectToAlreadyAddedAction()
+        {
+            return RunAsync(f => f.PostFind(true, true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+                a.RouteValues["Action"].Equals("AlreadyAdded") &&
+                a.RouteValues["Controller"] == null &&
+                a.RouteValues["AccountProviderId"].Equals(f.FindProvidersQueryResult.AccountProviderId)));
+        }
 
         [Test]
         public Task Add_WhenGettingAddAction_ThenShouldReturnAddView()
@@ -317,29 +316,28 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Index(AccountProvidersRouteValues);
         }
 
-        //public ActionResult Find()
-        //{
-        //    return ProvidersController.Find();
-        //}
+        public Task<ActionResult> Find()
+        {
+            return AccountProvidersController.Find();
+        }
 
-        //public Task<ActionResult> PostFind(bool providerExists = false, bool providerAlreadyAdded = false)
-        //{
-        //    var accountId = 1;
-        //    var ukprn = 12345678;
-        //    var accountProviderId = 2;
-            
-        //    FindProviderViewModel = new FindProvidersViewModel
-        //    {
-        //        //AccountId = accountId,
-        //        Ukprn = ukprn.ToString()
-        //    };
+        public Task<ActionResult> PostFind(bool providerExists = false, bool providerAlreadyAdded = false)
+        {
+            var accountId = 1;
+            var ukprn = 12345678;
+            var accountProviderId = 2;
 
-        //    FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null, providerAlreadyAdded ? accountProviderId : (int?)null);
+            var findProvidersViewModel = new FindProvidersViewModel {
+                AccountId = accountId,
+                Ukprn = ukprn.ToString()
+            };
 
-        //    Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == ukprn), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
+            FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null, providerAlreadyAdded ? accountProviderId : (int?)null);
 
-        //    return ProvidersController.Find(FindProviderViewModel);
-        //}
+            Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == ukprn), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
+
+            return AccountProvidersController.Find(findProvidersViewModel);
+        }
 
         public Task<ActionResult> Add()
         {
