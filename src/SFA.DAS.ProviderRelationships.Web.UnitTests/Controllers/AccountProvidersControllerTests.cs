@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Find_WhenGettingFindAction_ThenShouldReturnFindView()
         {
-            Run(f => f.Find(), (f, r) =>
+            RunAsync(f => f.Find(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProvidersViewModel>();
