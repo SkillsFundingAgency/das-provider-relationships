@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         {
             if (routeValues.Ukprn == null)
             {
-                ModelState.AddModelError(nameof(routeValues.Ukprn), "A ProviderUkprn needs to be supplied");
+                ModelState.AddModelError(nameof(routeValues.Ukprn), "A Ukprn needs to be supplied");
             }
 
             if (string.IsNullOrWhiteSpace(routeValues.AccountLegalEntityPublicHashedId))
