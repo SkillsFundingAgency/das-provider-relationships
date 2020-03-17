@@ -5,6 +5,7 @@ using MediatR;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 
@@ -39,8 +40,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         public async Task<ActionResult> Find(FindProvidersViewModel model)
         {
             var ukprn = long.Parse(model.Ukprn);
-            //var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
-            var query = new FindAllProvidersQuery();
+            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
+            
             var result = await _mediator.Send(query);
 
             //if (result.ProviderNotFound)
