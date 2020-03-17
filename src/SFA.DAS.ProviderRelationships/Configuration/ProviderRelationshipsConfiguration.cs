@@ -12,6 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public PasAccountApiConfiguration PasAccountApi { get; set; }
         public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
         public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
+        public string CdnBaseUrl { get; set; }
 
         public string AllowedHashstringCharacters { get; set; }
         public string Hashstring { get; set; }

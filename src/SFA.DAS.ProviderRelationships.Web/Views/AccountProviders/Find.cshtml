@@ -15,7 +15,7 @@
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number(UKPRN)</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number (UKPRN)</h1>
     </div>
     <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body">This is the unique, 8-digit number that we use to identify a training provider.
@@ -23,12 +23,15 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-                <span class="govuk-error-message govuk-!-margin-bottom-0">
-                    @Html.ValidationMessageFor(m => m.Ukprn)
-                </span>
-                @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-!-width-one-half" })
-            </div>
+        <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+            <label class="govuk-label" for="Ukprn">
+                UKPRN
+            </label>
+            <span class="govuk-error-message">
+                @Html.ValidationMessageFor(m => m.Ukprn)
+            </span>
+            @Html.TextBoxFor(m => m.Ukprn, new { @class = "govuk-input govuk-input--width-10", @maxlength = 8 })
+        </div>
             <button class="govuk-button" type="submit">Continue</button>
         }
     </div>
