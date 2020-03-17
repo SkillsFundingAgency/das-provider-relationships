@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         public async Task<GetAccountProviderLegalEntitiesWithPermissionQueryResult> Handle(GetAccountProviderLegalEntitiesWithPermissionQuery request, CancellationToken cancellationToken)
         {
             var relationships = await _db.Value.AccountProviderLegalEntities
-                .Where(aple => aple.AccountProvider.ProviderUkprn == request.Ukprn
+                .Where(aple => aple.AccountProvider.Ukprn == request.Ukprn
                                && aple.Permissions.Any(p => p.Operation == request.Operation))
                 .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);

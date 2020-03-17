@@ -87,7 +87,7 @@ namespace SFA.DAS.ProviderRelationships.Models
 
         private void EnsureProviderHasNotAlreadyBeenAdded(Provider provider)
         {
-            if (_accountProviders.Any(ap => ap.ProviderUkprn == provider.Ukprn))
+            if (_accountProviders.Any(ap => ap.Ukprn == provider.Ukprn))
             {
                 throw new InvalidOperationException("Requires provider has not already been added");
             }
