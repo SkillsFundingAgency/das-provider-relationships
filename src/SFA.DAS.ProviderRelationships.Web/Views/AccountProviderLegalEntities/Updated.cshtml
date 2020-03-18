@@ -7,22 +7,22 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <div aria-labelledby="success-summary-title" class="govuk-success-summary govuk-!-text-align-center" role="alert" tabindex="-1">
-            <h1 class="govuk-heading-xl govuk-!-margin-bottom-2 govuk-!-margin-top-4" id="success-summary-title">
-                Permissions updated
+        
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                You've successfully changed @Model.AccountProviderLegalEntity.ProviderName's permissions
             </h1>
-            <div class="govuk-success-summary__body">
-                <p>
-                    You've successfully updated permissions for <span class="govuk-!-font-weight-bold">@Model.AccountProviderLegalEntity.ProviderName</span>
-                </p>
-            </div>
         </div>
+        <p class="govuk-body">We’ll send @Model.AccountProviderLegalEntity.ProviderName an email to let them know that you’ve changed their permissions and what their new permissions are.</p>
+       
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-0">
+                <fieldset class="govuk-fieldset">                    
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                         <h1 class="govuk-fieldset__heading">
                             What's next?
                         </h1>
@@ -30,20 +30,17 @@
                     <span class="govuk-error-message">
                         @Html.ValidationMessageFor(m => m.Choice)
                     </span>
-                    <div class="govuk-radios">
-                        @if (Model.AccountLegalEntitiesCount > 1)
-                        {
-                            <div class="govuk-radios__item">
-                                @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
-                                <label class="govuk-label govuk-radios__label" for="choice-1">
-                                    Set permissions for another organisation
-                                </label>
-                            </div>
-                        }
+                    <div class="govuk-radios">                        
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Choice, "YourTrainingProviders", new { id = "Choice", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="Choice">
+                                View your training providers
+                            </label>
+                        </div>                        
                         <div class="govuk-radios__item">
                             @Html.RadioButtonFor(m => m.Choice, "AddTrainingProvider", new { id = "choice-2", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-2">
-                                Add another training provider
+                                Add a training provider
                             </label>
                         </div>
                         <div class="govuk-radios__item">
@@ -55,7 +52,7 @@
                     </div>
                 </fieldset>
             </div>
-            <button class="govuk-button" type="submit">Continue</button>
-        }  
+            <button class="govuk-button" type="submit">Confirm</button>
+        }
     </div>
 </div>
