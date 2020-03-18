@@ -40,18 +40,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public long AccountProviderId { get; set; }
         public long AccountId { get; set; }
         public string OrganisationName { get; set; }
+        public long Ukprn { get; set; }
 
         public SendUpdatedPermissionsNotificationCommandHandlerTestsFixture()
         {
             AccountProviderId = 112;
             AccountId = 114;
             OrganisationName = "TestOrg";
+            Ukprn = 10000020;
+
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new SendUpdatedPermissionsNotificationCommand(AccountProviderId, AccountId);
             Client = new Mock<IPasAccountApiClient>();
 
             Db.AccountLegalEntities.Add(EntityActivator.CreateInstance<AccountLegalEntity>().Set(a => a.Id, AccountId).Set(a => a.Name, OrganisationName));
+            //Db.Providers.Add(EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 112).Set(p => p.Name, "5 E LTD"));
             Db.SaveChanges();
 
             Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
