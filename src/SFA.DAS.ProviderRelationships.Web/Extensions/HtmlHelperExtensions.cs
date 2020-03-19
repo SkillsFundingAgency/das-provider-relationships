@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Web.App_Start;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Extensions
@@ -41,6 +42,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
         {
             var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
             return configuration.ZenDeskSectionId;
+        }
+
+        public static MvcHtmlString CdnLink(this HtmlHelper html, string folderName, string fileName)
+        {
+            var cdnLocation = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
+
+            var trimCharacters = new char[] { '/' };
+            return new MvcHtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
         }
     }
 }

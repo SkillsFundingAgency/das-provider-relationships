@@ -109,10 +109,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Updated_WhenPostingUpdatedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
         {
-            Run(f => f.PostUpdated("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            Run(f => f.PostUpdated("YourTrainingProviders"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Index") &&
-                a.RouteValues["Controller"].Equals("AccountProviders") &&
-                a.RouteValues["AccountProviderId"] == null ));
+                a.RouteValues["Controller"].Equals("AccountProviders")));
         }
 
         [Test]

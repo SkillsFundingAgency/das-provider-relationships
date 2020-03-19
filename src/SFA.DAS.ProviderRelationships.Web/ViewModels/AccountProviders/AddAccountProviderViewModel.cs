@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
-    public class AddAccountProviderViewModel : IAuthorizationContextModel
+    public class AddAccountProviderViewModel : IAuthorizationContextModel, IValidatableObject
     {
         public ProviderDto Provider { get; set; }
 
@@ -17,9 +18,16 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
         
         [Required]
         public long? Ukprn { get; set; }
-
-        [Required(ErrorMessage = "Option required")]
+        
         [RegularExpression("Confirm|ReEnterUkprn", ErrorMessage = "Option required")]
         public string Choice { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrEmpty(Choice))
+            {
+                yield return new ValidationResult($"Select yes if you want to add {Provider.Name}.",  new[] { nameof(Choice) });
+            }
+        }
     }
 }
