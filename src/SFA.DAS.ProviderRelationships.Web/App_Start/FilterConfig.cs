@@ -19,5 +19,5 @@ namespace SFA.DAS.ProviderRelationships.Web
             filters.Add(new GoogleAnalyticsViewBagFilter(() => DependencyResolver.Current.GetService<GoogleAnalyticsConfiguration>()));
             filters.Add(new UrlsViewBagFilter(() => DependencyResolver.Current.GetService<IEmployerUrls>()));
         }
-    }
+    }    
 }

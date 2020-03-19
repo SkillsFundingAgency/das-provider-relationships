@@ -54,7 +54,7 @@
                                 @Model.Operations[i].Value.GetDescription()
                             </td>
                             <td class="govuk-table__cell">
-                                @if (Model.Operations[i].IsEnabled)
+                                @if (Model.Operations[i].IsEnabled.HasValue && Model.Operations[i].IsEnabled.Value)
                                 {
                                     @:Yes
                                 }

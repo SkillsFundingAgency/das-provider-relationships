@@ -46,7 +46,7 @@
                     @for (var i = 0; i < Model.Operations.Count; i++)
                     {
                         var isRecruitmentPermission = Model.Operations[i].Value.Equals(Operation.Recruitment);
-                        hasRecruitmentPermissionPreviouslyBeenSet = Model.Operations[i].IsEnabled;
+                        hasRecruitmentPermissionPreviouslyBeenSet = Model.Operations[i].IsEnabled.HasValue ?  Model.Operations[i].IsEnabled.Value : false;
                         var recruitmentCountCaption = Model.NoOfProviderCreatedVacancies > 0
                                                         ? Model.NoOfProviderCreatedVacancies.ToString()
                                                         : "Any";

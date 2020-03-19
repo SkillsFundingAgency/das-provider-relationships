@@ -23,6 +23,7 @@ using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Operations;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
@@ -228,7 +229,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     q.AccountLegalEntityId == GetAccountProviderLegalEntityRouteValues.AccountLegalEntityId), CancellationToken.None))
                 .ReturnsAsync(GetAccountProviderLegalEntityQueryResult);
             
-            return AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntityRouteValues);
+            return Task.FromResult(AccountProviderLegalEntitiesController.Get(GetAccountProviderLegalEntityRouteValues));
         }
 
         public ActionResult PostGet()
