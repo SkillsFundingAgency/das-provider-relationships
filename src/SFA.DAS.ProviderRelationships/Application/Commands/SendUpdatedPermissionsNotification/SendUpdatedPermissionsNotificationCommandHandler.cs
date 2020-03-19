@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -27,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
         {
             var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
-            //var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
+            var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
 
             var accountProviderLegalEntity = await _db.Value.AccountProviderLegalEntities
                .Include(x => x.AccountProvider)
@@ -37,27 +39,22 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
                .Where(x => x.AccountLegalEntity.Id == request.AccountLegalEntityId)
                .SingleOrDefaultAsync(cancellationToken);
 
-            var permissions = accountProviderLegalEntity?.Permissions.Select(x => x.Operation);
-            
-            //var operations = string.Join(",", permissions
-            //  .Where(label => !string.IsNullOrEmpty(label.ToString()))
-            //  .Select(label => $"'{EscapeApostrophes(label.ToString())}'"));
-            
+            var permissions = accountProviderLegalEntity?.Permissions.Select(x => x.Operation);            
+
+            var operations = string.Join(" and ", permissions?
+              .Where(ope => !string.IsNullOrEmpty(ope.ToString()))
+              .Select(ope => $"{ope.GetType().GetMember(ope.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name}"));
+           
 
             await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
                 TemplateId = TemplateId,
                 Tokens = new Dictionary<string, string> {
-                   // { "training_provider_name", provider.Name },
+                    { "training_provider_name", provider.Name },
                     { "organisation_name", organisation.Name },
-                   // { "permissions_set", operations }
+                    { "permissions_set", operations }
 
                 }
             });
-        }
-
-        private static string EscapeApostrophes(string input)
-        {
-            return input.Replace("'", @"\'");
         }
     }
 }
