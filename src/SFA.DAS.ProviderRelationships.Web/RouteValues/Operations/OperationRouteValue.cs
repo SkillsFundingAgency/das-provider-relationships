@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Types.Models;
@@ -21,19 +22,11 @@ namespace SFA.DAS.ProviderRelationships.Web.RouteValues.Operations
 
         public bool? IsEnabled { get; set; }
 
-        public bool IsEditMode { get; set; }
-
-        public Operation CurrentOperation 
-        {
-            get
-            {
-                return (Operation)Enum.Parse(typeof(Operation), OperationId.ToString());
-            }
-        }
+        public bool IsEditMode { get; set; }       
 
         public OperationRouteValue()
         {
             OperationId = (short)Operation.NotSet;
-        }
+        }        
     }
 }
