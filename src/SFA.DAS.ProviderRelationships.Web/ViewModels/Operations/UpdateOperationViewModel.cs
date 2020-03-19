@@ -20,6 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
         public int AccountLegalEntitiesCount { get; set; }
         public bool IsEditMode { get; set; }
         public string BackLink { get; set; }
+        public bool IsProviderBlockedFromRecruit { get; }
         public List<OperationViewModel> Operations { get; set; }
 
         public void Update(List<OperationViewModel> operations)
