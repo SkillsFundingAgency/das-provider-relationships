@@ -31,6 +31,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.AccountProviderId, o => o.MapFrom( m=> m.AccountProvider.Id))
                 .ForMember(d => d.ProviderName, o => o.MapFrom(m => m.AccountProvider.ProviderName))
                 .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(m => m.AccountLegalEntity.Id))
+                .ForMember(d => d.Operation, o => o.Ignore())
+                .ForMember(d => d.IsEnabled, o => o.Ignore())
+                .ForMember(d => d.BackLink, o => o.Ignore())
                 .ForMember(d => d.IsEditMode, o => o.MapFrom(s => s.AccountProviderLegalEntity != null && (s.AccountProviderLegalEntity.Operations.Count() > 0)))
                 .ForMember(d => d.Operations, x => x.MapFrom(s => s.AccountProviderLegalEntity == null ?
                     null
@@ -39,12 +42,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                     .Select(o => new OperationViewModel {
                         Value = o,
                         IsEnabled = true
-                    })));
+                    }))
+                );
 
             CreateMap<GetAccountProviderLegalEntityQueryResult, ConfirmOperationViewModel>()
                 .ForMember(d => d.AccountProviderId, o => o.MapFrom(m => m.AccountProvider.Id))
                 .ForMember(d => d.ProviderName, o => o.MapFrom(m => m.AccountProvider.ProviderName))
                 .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(m => m.AccountLegalEntity.Id))
+                .ForMember(d => d.BackLink, o => o.Ignore())
                 .ForMember(d => d.Operations, x => x.MapFrom(s => s.AccountProviderLegalEntity == null ?
                     null
                     :

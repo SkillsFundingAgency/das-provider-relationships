@@ -217,7 +217,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Run(f => f.PostAlreadyAdded("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Get") &&
                 a.RouteValues["Controller"] == null &&
-                a.RouteValues["AccountProviderId"].Equals(f.AlreadyAddedAccountProviderViewModel.AccountProviderId)));
+                a.RouteValues["AccountProviderId"] == null));
         }
 
         [Test]
