@@ -76,16 +76,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
-        public async Task<ActionResult> Find(FindProvidersViewModel model)
+        public async Task<ActionResult> Find(FindProvidersEditModel model)
         {
-            var ukprn = long.Parse(model.Ukprn);
+            var ukprn = long.Parse(model.ProviderUkprn);
             var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
 
             var result = await _mediator.Send(query);
 
             if (result.ProviderNotFound)
             {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.ProviderUkprn), ErrorMessages.InvalidUkprn);
 
                 return RedirectToAction("Find");
             }
