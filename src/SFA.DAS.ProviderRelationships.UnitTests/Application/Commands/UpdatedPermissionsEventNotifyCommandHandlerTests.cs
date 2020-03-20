@@ -72,23 +72,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    r.Tokens["permissions_set"] == f.GetOperationName(f.AccountProviderLegalEntity.Permissions.Select(x => x.Operation))                   
                    )));
                });
-
-        [Test]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotifyWithOrganisationAndPrviderAndPermissionSet123() =>
-          RunAsync(            
-              act: async f =>
-              {
-                  await f.Handle();
-              },
-              assert: f =>
-              {
-                  f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r =>
-                  r.TemplateId == "UpdatedPermissionsEventNotification" &&
-                  r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
-                  r.Tokens["training_provider_name"] == f.Provider.Name &&
-                  r.Tokens["permissions_set"] == f.GetOperationName(f.AccountProviderLegalEntity.Permissions.Select(x => x.Operation))
-                  )));
-              });
     }
 
     public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture
@@ -124,11 +107,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         private void CreateDefaultEntities()
         {
             Account = new Account(
-                           id: 1,
-                           hashedId: "HashedId",
-                           publicHashedId: "PublicHashedId",
-                           name: "Account",
-                           created: DateTime.UtcNow);
+                id: 1,
+                hashedId: "HashedId",
+                publicHashedId: "PublicHashedId",
+                name: "Account",
+                created: DateTime.UtcNow);
             Db.Add(Account);
 
             AccountLegalEntity = new AccountLegalEntity(
@@ -139,11 +122,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 created: DateTime.UtcNow);
             Db.Add(AccountLegalEntity);
 
-
-            Provider = EntityActivator
-              .CreateInstance<Provider>()
-              .Set(x => x.Ukprn, 299792458)
-              .Set(x => x.Name, "Provider Name");
+            Provider = EntityActivator.CreateInstance<Provider>().Set(x => x.Ukprn, 299792458).Set(x => x.Name, "Provider Name");
             Db.Add(Provider);
 
             User = new User(Guid.NewGuid(), "me@home.com", "Bill", "Gates");
