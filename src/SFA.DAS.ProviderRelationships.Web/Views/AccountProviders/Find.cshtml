@@ -34,7 +34,7 @@
                 </span>
                 <select id="Ukprn" name="ProviderUkprn" class="govuk-select">
                     <option value="">Search for a provider </option>
-                    @foreach (var provider in Model.Providers)
+                    @foreach (var provider in Model.ProviderDto)
                     {
                         <option value="@provider.ProviderUkprn">@provider.FormattedProviderSuggestion</option>
                     }
