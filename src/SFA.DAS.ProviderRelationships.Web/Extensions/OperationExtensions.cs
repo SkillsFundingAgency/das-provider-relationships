@@ -18,23 +18,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 .Name;
         }
 
-        // TODO : return a partial
-        public static MvcHtmlString GetDescriptionParagraph(this Operation operation)
+        public static MvcHtmlString GetDescriptionPartial(this Operation operation, HtmlHelper html)
         {
-            switch(operation)
+            switch (operation)
             {
                 case Operation.Recruitment:
-                    var descriptionBuilder = new TagBuilder("p");
-                    descriptionBuilder.AddCssClass("govuk-body");
-                    descriptionBuilder.SetInnerText("This will allow your training provider to:");
-                    var listBuilder = new TagBuilder("ul") {
-                        InnerHtml = "<li>create and manager job adverts</li><li>receive and manage applications</li>"
-                    };
-                    return MvcHtmlString.Create(descriptionBuilder.ToString() + listBuilder.ToString());
+                    return System.Web.Mvc.Html.PartialExtensions.Partial(html, "_OperationRecruitmentDescription");
                 default:
-                    return MvcHtmlString .Create("If your company does not pay the levy, this will also allow your training provider to reserve apprenticeship funding on your behalf.");
+                    return System.Web.Mvc.Html.PartialExtensions.Partial(html, "_OperationDefaultDescription");
             }
-        }
+        } 
 
         public static Operation Previous(this List<Operation> operations, Operation current)
         {

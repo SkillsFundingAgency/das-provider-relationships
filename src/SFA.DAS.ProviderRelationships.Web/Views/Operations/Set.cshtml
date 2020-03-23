@@ -24,8 +24,8 @@
     @using (Html.BeginForm(new { action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}/operations/{(short)Model.Operation}", controller = "accounts" }))
     {
         <div class="govuk-grid-column-two-thirds @(Html.IsValid(m => m.Operation) ? "" : " govuk-form-group--error")">
-            <div class="govuk-grid-column-two-thirds">
-                @Model.Operation.GetDescriptionParagraph()
+            <div class="govuk-grid-column-two-thirds">                
+                @Model.Operation.GetDescriptionPartial(Html)
             </div>
             <div class="govuk-grid-column-two-thirds">
                 @Html.AntiForgeryToken()
