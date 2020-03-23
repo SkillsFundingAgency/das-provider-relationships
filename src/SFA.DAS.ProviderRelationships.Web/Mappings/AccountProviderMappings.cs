@@ -24,8 +24,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
-
-            
         }
     }
 }
