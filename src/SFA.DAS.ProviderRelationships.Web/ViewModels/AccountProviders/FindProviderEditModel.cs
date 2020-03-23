@@ -4,7 +4,7 @@ using SFA.DAS.ProviderRelationships.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
-    public class FindProvidersEditModel : IAuthorizationContextModel
+    public class FindProviderEditModel : IAuthorizationContextModel
     {
         [Required]
         public long? AccountId { get; set; }

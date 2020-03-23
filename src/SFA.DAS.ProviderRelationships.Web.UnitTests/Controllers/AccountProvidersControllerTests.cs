@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             RunAsync(f => f.Find(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProvidersViewModel>();
+                r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProviderViewModel>();
             });
         }
 
@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldAddModelError()
         {
-            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProvidersEditModel.ProviderUkprn)).Should().BeTrue());
+            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.ProviderUkprn)).Should().BeTrue());
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class AccountProvidersControllerTestsFixture
     {
         public AccountProvidersController AccountProvidersController { get; set; }
-        public FindProvidersViewModel FindProviderViewModel { get; set; }
+        public FindProviderViewModel FindProviderViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
@@ -328,7 +328,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             var ukprn = 12345678;
             var accountProviderId = 2;
 
-            var findProvidersViewModel = new FindProvidersEditModel {
+            var findProviderEditModel = new FindProviderEditModel {
                 AccountId = accountId,
                 ProviderUkprn = ukprn.ToString()
             };
@@ -337,7 +337,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == ukprn), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
 
-            return AccountProvidersController.Find(findProvidersViewModel);
+            return AccountProvidersController.Find(findProviderEditModel);
         }
 
         public Task<ActionResult> Add()
@@ -505,7 +505,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Ukprn = ukprn
             };
 
-            FindProviderViewModel = new FindProvidersViewModel {
+            FindProviderViewModel = new FindProviderViewModel {
                 //AccountId = accountId,
                 Ukprn = ukprn.ToString()
             };
