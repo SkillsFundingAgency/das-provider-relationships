@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using SFA.DAS.ProviderRelationships.Types.Dtos;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
 {
     public class GetAllProvidersQueryResult
     {
-        public List<AccountProviderDto> Providers { get; }
+        public List<ProviderDto> ProviderDto { get; }
 
-        public GetAllProvidersQueryResult(List<AccountProviderDto> providers)
+        public GetAllProvidersQueryResult(List<ProviderDto> providers)
         {
-            Providers = providers;
+            ProviderDto = providers;
         }
     }
 }

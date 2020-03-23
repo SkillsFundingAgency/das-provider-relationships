@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
 {
@@ -20,20 +20,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders
 
         public async Task<GetAllProvidersQueryResult> Handle(GetAllProvidersQuery request, CancellationToken cancellationToken)
         {
-            var providersDto = new List<AccountProviderDto>();
-
-            var providers = await _db.Value.Providers
-                                .ToListAsync(cancellationToken);
-
-            foreach (var provider in providers)
-            {
-                var providerDto = new AccountProviderDto {
-                    ProviderUkprn = provider.Ukprn,
-                    ProviderName = provider.Name
-                };
-                providersDto.Add(providerDto);
-            }
-            return new GetAllProvidersQueryResult(providersDto);
+            return new GetAllProvidersQueryResult(
+                await _db.Value.Providers
+                    .Select(p => new ProviderDto { Ukprn = p.Ukprn, Name = p.Name })
+                    .ToListAsync(cancellationToken));
         }
     }
 }

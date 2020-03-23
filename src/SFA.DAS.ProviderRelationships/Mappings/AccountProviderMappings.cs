@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Mappings
             CreateMap<AccountProvider, AccountProviderDto>()
                 .ForMember(d => d.AccountLegalEntities,
                     o => o.MapFrom(s => s.Account.AccountLegalEntities.OrderBy(ale => ale.Name)));
-            //.ForMember(d => d.FormattedProviderSuggestion, o => o.Ignore());
         }
     }
 }

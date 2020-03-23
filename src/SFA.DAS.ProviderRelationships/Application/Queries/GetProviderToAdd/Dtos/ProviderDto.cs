@@ -4,5 +4,6 @@
     {
         public long Ukprn { get; set; }
         public string Name { get; set; }
+        public string FormattedProviderSuggestion => $"{Name.ToUpper()} {Ukprn}";
     }
 }

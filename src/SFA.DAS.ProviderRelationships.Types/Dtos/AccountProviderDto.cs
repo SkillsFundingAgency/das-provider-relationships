@@ -8,6 +8,5 @@ namespace SFA.DAS.ProviderRelationships.Types.Dtos
         public long ProviderUkprn { get; set; }
         public string ProviderName { get; set; }
         public List<AccountLegalEntityDto> AccountLegalEntities { get; set; }
-        public string FormattedProviderSuggestion => $"{ProviderName.ToUpper()} {ProviderUkprn}";
     }
 }
