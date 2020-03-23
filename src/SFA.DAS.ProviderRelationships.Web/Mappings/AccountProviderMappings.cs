@@ -25,9 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.Choice, o => o.Ignore());
 
-            CreateMap<GetAllProvidersQueryResult, FindProviderViewModel>()
-                .ForMember(d => d.Ukprn, s => s.Ignore())
-                .ForMember(d => d.AccountId, s => s.Ignore());
+            
         }
     }
 }
