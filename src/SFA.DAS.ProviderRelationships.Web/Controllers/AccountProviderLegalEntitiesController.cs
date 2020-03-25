@@ -125,12 +125,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             switch (model.Choice)
             {
-                case "SetPermissions":
-                    return RedirectToAction("Get", "AccountProviders", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
+                case "YourTrainingProviders":
+                    return RedirectToAction("Index", "AccountProviders");                
                 case "AddTrainingProvider":
                     return RedirectToAction("Find", "AccountProviders");
                 case "GoToHomepage":
-                    return Redirect(_employerUrls.Account());
+                    return Redirect(_employerUrls.Account());               
                 default:
                     throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
             }
