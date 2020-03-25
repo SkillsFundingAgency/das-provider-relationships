@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification
 {
@@ -43,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
 
             var operations = string.Join(" and ", permissions?
               .Where(ope => !string.IsNullOrEmpty(ope.ToString()))
-              .Select(ope => $"{ope.GetType().GetMember(ope.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name}"));
+              .Select(ope => ope.GetDisplayName()));
            
 
             await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
@@ -52,7 +53,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
                     { "training_provider_name", provider.Name },
                     { "organisation_name", organisation.Name },
                     { "permissions_set", operations }
-
                 }
             });
         }
