@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     [TestFixture]
     [Parallelizable]
     public class SendUpdatedPermissionsNotificationCommandHandlerTests : FluentTest<SendUpdatedPermissionsNotificationCommandHandlerTestsFixture>
-    {      
+    {
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotify() =>
             RunAsync(
@@ -48,29 +48,106 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 },
                 assert: f =>
                 {
-                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r => 
+                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r =>
                     r.TemplateId == "UpdatedPermissionsEventNotification" &&
                     r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
                     r.Tokens["training_provider_name"] == f.Provider.Name
-
                     )));
                 });
 
         [Test]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotifyWithOrganisationAndPrviderAndPermissionSet() =>
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_BothPermissionsAdded_ThenShouldCallClientToNotifyPermissionSet() =>
            RunAsync(
+               arrange: f =>
+               {
+                   f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
+               },
                act: async f =>
                {
                    await f.Handle();
                },
                assert: f =>
                {
-                   f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r =>
-                   r.TemplateId == "UpdatedPermissionsEventNotification" &&
-                   r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
-                   r.Tokens["training_provider_name"] == f.Provider.Name &&
-                   r.Tokens["permissions_set"] == "add apprentice records and recruit apprentices"
-                   )));
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual("You can now add apprentice records and recruit apprentices on their behalf.", f.ResultEmailRequest.Tokens["part2_text"]);
+               });
+
+        [Test]
+        [TestCase(Operation.CreateCohort, "You can now add apprentice records on their behalf.")]
+        [TestCase(Operation.Recruitment, "You can now recruit apprentices on their behalf.")]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_SinglePermissionAdded_ThenShouldCallClientToNotifyWithPermissionSet(Operation grantedOperation, string expectedSetPermissionString) =>
+           RunAsync(
+               arrange: f =>
+               {
+                   f.Command.GrantedOperations = new HashSet<Operation> { grantedOperation };
+               },
+               act: async f =>
+               {
+                   await f.Handle();
+               },
+               assert: f =>
+               {
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual(expectedSetPermissionString, f.ResultEmailRequest.Tokens["part2_text"]);
+               });
+
+        [Test]
+        [TestCase(Operation.CreateCohort, "removed your permission to recruit apprentices.", "You can still add apprentice records on their behalf.")]
+        [TestCase(Operation.Recruitment, "removed your permission to add apprentice records.", "You can still recruit apprentices on their behalf.")]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_BothPermissionSet_SinglePermissionRemoved_ThenShouldCallClientToNotifyWithPermissionRemoved(
+            Operation remainingGrantedOperation, 
+            string expectedSetPermissionPart1, 
+            string expectedSetPermissionPart2) =>
+           RunAsync(
+               arrange: f =>
+               {
+                   f.Command.PreviousOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
+                   f.Command.GrantedOperations = new HashSet<Operation> { remainingGrantedOperation };
+               },
+               act: async f =>
+               {
+                   await f.Handle();
+               },
+               assert: f =>
+               {
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual(expectedSetPermissionPart1, f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
+               });
+
+        [Test]
+        [TestCase(new Operation[] { Operation.CreateCohort, Operation.Recruitment }, "removed your permission to add apprentice records and recruit apprentices.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
+        [TestCase(new Operation[] { Operation.Recruitment }, "removed your permission to recruit apprentices.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
+        [TestCase(new Operation[] { Operation.CreateCohort }, "removed your permission to add apprentice records.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_AllPermissionsRemoved_ThenShouldCallClientToNotifyWithPermissionRemoved(
+            Operation[] previousSetOperations,
+            string expectedSetPermissionPart1,
+            string expectedSetPermissionPart2) =>
+           RunAsync(
+               arrange: f =>
+               {
+                   f.Command.PreviousOperations = new HashSet<Operation>(previousSetOperations);
+                   f.Command.GrantedOperations = new HashSet<Operation> {  };
+               },
+               act: async f =>
+               {
+                   await f.Handle();
+               },
+               assert: f =>
+               {
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual(expectedSetPermissionPart1, f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
                });
     }
 
@@ -79,7 +156,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public SendUpdatedPermissionsNotificationCommand Command { get; set; }
         public IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
-        public ProviderRelationshipsDbContext Db { get; set; }       
+        public ProviderRelationshipsDbContext Db { get; set; }
         public long Ukprn { get; set; }
 
         public Account Account;
@@ -89,23 +166,32 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AccountProvider AccountProvider;
         public AccountProviderLegalEntity AccountProviderLegalEntity;
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
+        public ProviderEmailRequest ResultEmailRequest { get; set; }
 
 
         public SendUpdatedPermissionsNotificationCommandHandlerTestsFixture()
         {
             UnitOfWorkContext = new UnitOfWorkContext();
-            
-            CreateDb();            
-            CreateDefaultEntities();                       
-            
+
+            CreateDb();
+            CreateDefaultEntities();
+
             Client = new Mock<IPasAccountApiClient>();
             Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
 
             Command = new SendUpdatedPermissionsNotificationCommand(
-                ukprn: 299792458, 
+                ukprn: 299792458,
                 accountLegalEntityId: 12345,
                 new HashSet<Operation>(),
                 new HashSet<Operation>());
+
+            Client
+                .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>()))
+                .Callback((long ukprn, ProviderEmailRequest provEmail) =>
+                {
+                    ResultEmailRequest = provEmail;
+                })
+                .Returns(Task.FromResult(0));
         }
 
         private void CreateDefaultEntities()

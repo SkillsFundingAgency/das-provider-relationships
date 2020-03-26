@@ -31,9 +31,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
 
             var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
 
-            var operations = GetPermissionsEmailText(request.PreviousOperations, request.GrantedOperations, organisation.Name);
+            var permissionUpdatesTokens = GetPermissionsUpdatedTokens(request.PreviousOperations, request.GrantedOperations, organisation.Name);
 
-            if (!string.IsNullOrEmpty(operations))
+            if (permissionUpdatesTokens.Any())
             {
                 await _client.SendEmailToAllProviderRecipients(request.Ukprn, new ProviderEmailRequest {
                     TemplateId = TemplateId,
@@ -41,48 +41,50 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
                     {
                         { "training_provider_name", provider.Name },
                         { "organisation_name", organisation.Name },
-                        { "permissions_set", operations }
                     }
+                    .Concat(permissionUpdatesTokens)
+                    .ToDictionary(x => x.Key, x => x.Value)
                 });
             }
         }
 
-        private string GetPermissionsEmailText(HashSet<Operation> previousOperations, HashSet<Operation> grantedOperations, string organisationName)
+        private Dictionary<string, string> GetPermissionsUpdatedTokens(HashSet<Operation> previousOperations, HashSet<Operation> grantedOperations, string organisationName)
         {
-            string permissionsUpdatedText = string.Empty;
+            var permissionsUpdatedTokens = new Dictionary<string, string>();
 
             if (!previousOperations.Any())
             {
-                permissionsUpdatedText = $"{organisationName} has changed your apprenticeship service permissions. " +
-                    "\r\n \r\n" +
-                    $"You can now {GetOperationText(grantedOperations)} on their behalf."; 
+                permissionsUpdatedTokens.Add("part1_text", "changed your apprenticeship service permissions.");
+                permissionsUpdatedTokens.Add("part2_text", $"You can now { GetOperationText(grantedOperations)} on their behalf.");
             }
-
-            var removedOperations = previousOperations.Except(grantedOperations);
-            var newOperations = grantedOperations.Except(previousOperations);
-            if (removedOperations.Any())
+            else
             {
-                if (!newOperations.Any())
+                var removedOperations = previousOperations.Except(grantedOperations);
+                var newOperations = grantedOperations.Except(previousOperations);
+                if (removedOperations.Any())
                 {
-                    var remainingOperationsText = grantedOperations.Count > 0
-                        ? $"You can still {GetOperationText(grantedOperations)} on their behalf."
-                        : $"You cannot do anything in the apprenticeship service on their behalf at the moment.";
+                    if (!newOperations.Any())
+                    {
+                        var remainingOperationsText = grantedOperations.Count > 0
+                            ? $"You can still {GetOperationText(grantedOperations)} on their behalf."
+                            : $"You cannot do anything in the apprenticeship service on their behalf at the moment.";
 
-                    permissionsUpdatedText = $"{organisationName} has removed your permission to {GetOperationText(removedOperations)}." +
-                        "\r\n \r\n" +
-                        $"{remainingOperationsText}";
-                }
-                else
-                {
-                    permissionsUpdatedText = $"{organisationName} has:" +
-                        "\r\n \r\n" +
-                        $"\u2022 given you permission to {GetOperationText(newOperations)}" +
-                        $"{Environment.NewLine}" +
-                        $"\u2022 removed you permission to {GetOperationText(removedOperations)}";
+                        permissionsUpdatedTokens.Add("part1_text", $"removed your permission to {GetOperationText(removedOperations)}.");
+                        permissionsUpdatedTokens.Add("part2_text", $"{remainingOperationsText}");
+                    }
+                    else
+                    {
+                        permissionsUpdatedTokens.Add("part1_text", ":");
+                        permissionsUpdatedTokens.Add(
+                            "par2_text", 
+                            $"\u2022 given you permission to {GetOperationText(newOperations)}" +
+                            $"{Environment.NewLine}" +
+                            $"\u2022 removed you permission to {GetOperationText(removedOperations)}");
+                    }
                 }
             }
 
-            return permissionsUpdatedText;
+            return permissionsUpdatedTokens;
         }
 
         private string GetOperationText(IEnumerable<Operation> operations)
