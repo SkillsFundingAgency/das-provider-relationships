@@ -40,6 +40,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios
                 userFirstName,
                 userLastName,
                 new HashSet<Operation>(),
+                new HashSet<Operation>(),
                 DateTime.UtcNow));
 
             await _messageSession.Publish(new DeletedPermissionsEventV2(

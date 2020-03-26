@@ -69,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    r.TemplateId == "UpdatedPermissionsEventNotification" &&
                    r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
                    r.Tokens["training_provider_name"] == f.Provider.Name &&
-                   r.Tokens["permissions_set"] == f.GetOperationName(f.AccountProviderLegalEntity.Permissions.Select(x => x.Operation))                   
+                   r.Tokens["permissions_set"] == "add apprentice records and recruit apprentices"
                    )));
                });
     }
@@ -101,7 +101,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Client = new Mock<IPasAccountApiClient>();
             Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
 
-            Command = new SendUpdatedPermissionsNotificationCommand(ukprn: 299792458, accountLegalEntityId: 12345);
+            Command = new SendUpdatedPermissionsNotificationCommand(
+                ukprn: 299792458, 
+                accountLegalEntityId: 12345,
+                new HashSet<Operation>(),
+                new HashSet<Operation>());
         }
 
         private void CreateDefaultEntities()
@@ -158,13 +162,5 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             await Handler.Handle(Command, CancellationToken.None);
         }
-
-        public string GetOperationName(IEnumerable<Operation> permissions)
-        {
-            return string.Join(" and ", permissions?
-             .Where(ope => !string.IsNullOrEmpty(ope.ToString()))
-             .Select(ope => $"{ope.GetType().GetMember(ope.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name}"));
-        }
-
     }
 }
