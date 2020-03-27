@@ -61,6 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
             {
                 var removedOperations = previousOperations.Except(grantedOperations);
                 var newOperations = grantedOperations.Except(previousOperations);
+                
                 if (removedOperations.Any())
                 {
                     if (!newOperations.Any())
