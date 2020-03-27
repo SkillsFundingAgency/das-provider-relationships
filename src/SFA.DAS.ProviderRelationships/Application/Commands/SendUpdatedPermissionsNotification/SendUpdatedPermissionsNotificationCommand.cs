@@ -14,8 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
         public SendUpdatedPermissionsNotificationCommand
         (
             long ukprn,
-            long accountLegalEntityId
-,
+            long accountLegalEntityId,
             HashSet<Operation> previousOperations,
             HashSet<Operation> grantedOperations)
         {
