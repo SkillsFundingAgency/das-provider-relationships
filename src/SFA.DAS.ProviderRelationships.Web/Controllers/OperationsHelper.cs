@@ -102,19 +102,25 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         private string GetBackLink()
         {
+            if (_routeValue.IsEditMode)
+            {
+                return _urlHelper.Action("Confirm", "Operations",
+                       new OperationRouteValue {
+                           AccountProviderId = _routeValue.AccountProviderId,
+                           AccountLegalEntityId = _routeValue.AccountLegalEntityId
+                       });
+            }
             if (_routeValue.OperationId < 0 || CurrentOperation == AllowedOperations().First())
             {
                 return _urlHelper.Action("Index", "AccountProviders");
             }
-            else
-            {
-                return _urlHelper.Action("Set", "Operations",
-                        new OperationRouteValue {
-                            AccountProviderId = _routeValue.AccountProviderId,
-                            AccountLegalEntityId = _routeValue.AccountLegalEntityId,
-                            OperationId = (short)AllowedOperations().Previous(CurrentOperation)
-                        });
-            }
+            
+            return _urlHelper.Action("Set", "Operations",
+                new OperationRouteValue {
+                    AccountProviderId = _routeValue.AccountProviderId,
+                    AccountLegalEntityId = _routeValue.AccountLegalEntityId,
+                    OperationId = (short)AllowedOperations().Previous(CurrentOperation)
+                });
         }
 
         private List<Operation> AllowedOperations()

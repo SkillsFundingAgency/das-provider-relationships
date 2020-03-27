@@ -70,14 +70,6 @@
                     </table>
                 </fieldset>
 
-                @*@for (var i = 0; i < Model.Operations.Count; i++)
-                    {
-                        if (!Model.Operations[i].Value.Equals(Model.CurrentOperation))
-                        {
-                            @Html.Hidden($"Operations[{i}].IsEnabled", Model.Operations[i].IsEnabled);
-                        }
-                    }*@
-
                 @Html.HiddenFor(m => m.AccountLegalEntityId)
                 @Html.HiddenFor(m => m.AccountProviderId)
                 @Html.HiddenFor(m => m.IsEditMode)
