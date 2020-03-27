@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     public class SendUpdatedPermissionsNotificationCommandHandlerTests : FluentTest<SendUpdatedPermissionsNotificationCommandHandlerTestsFixture>
     {
         [Test]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotify() =>
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotify() =>
             RunAsync(
                 act: async f =>
                 {
@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 });
 
         [Test]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommandd_ThenShouldCallClientToNotifyWithOrganisationAndProviderName() =>
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithOrganisationAndProviderName() =>
             RunAsync(
                 act: async f =>
                 {
