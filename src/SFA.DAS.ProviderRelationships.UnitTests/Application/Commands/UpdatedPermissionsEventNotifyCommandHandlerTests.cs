@@ -149,6 +149,32 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    Assert.AreEqual(expectedSetPermissionPart1, f.ResultEmailRequest.Tokens["part1_text"]);
                    Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
                });
+ 
+        [Test]
+        [TestCase(Operation.Recruitment, Operation.CreateCohort, "\u2022 given you permission to add apprentice records\r\n\u2022 removed your permission to recruit apprentices")]
+        [TestCase(Operation.CreateCohort, Operation.Recruitment, "\u2022 given you permission to recruit apprentices\r\n\u2022 removed your permission to add apprentice records")]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_AlternatingPermissions_ThenShouldCallClientToNotifyWithPermissionRemovedAndPermissionAdded(
+            Operation previousSetOperations,
+            Operation grantedOperation,
+            string expectedSetPermissionPart2) =>
+           RunAsync(
+               arrange: f =>
+               {
+                   f.Command.PreviousOperations = new HashSet<Operation> { previousSetOperations };
+                   f.Command.GrantedOperations = new HashSet<Operation> { grantedOperation };
+               },
+               act: async f =>
+               {
+                   await f.Handle();
+               },
+               assert: f =>
+               {
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual(":", f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
+               });
     }
 
     public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture

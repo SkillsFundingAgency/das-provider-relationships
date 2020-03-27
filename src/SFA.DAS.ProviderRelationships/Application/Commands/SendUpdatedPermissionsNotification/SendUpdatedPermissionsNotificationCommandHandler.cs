@@ -77,10 +77,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
                     {
                         permissionsUpdatedTokens.Add("part1_text", ":");
                         permissionsUpdatedTokens.Add(
-                            "par2_text", 
+                            "part2_text", 
                             $"\u2022 given you permission to {GetOperationText(newOperations)}" +
                             $"{Environment.NewLine}" +
-                            $"\u2022 removed you permission to {GetOperationText(removedOperations)}");
+                            $"\u2022 removed your permission to {GetOperationText(removedOperations)}");
                     }
                 }
             }
