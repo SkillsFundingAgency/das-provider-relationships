@@ -1,7 +1,7 @@
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.Operations.UpdateOperationViewModel
 
 @{
-    ViewBag.Title = Model.AccountLegalEntityName;
+    ViewBag.Title = $"Do you give your training provider permission to {@Model.Operation.GetDescription().ToLower()}?";
     ViewBag.ZenDeskLabel = "permissions-set-permissions";
     var recruitmentNoOptionId = string.Empty;
 }

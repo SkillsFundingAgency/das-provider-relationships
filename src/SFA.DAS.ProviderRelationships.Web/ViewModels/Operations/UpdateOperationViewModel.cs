@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
         [Required]
         public Operation Operation { get; set; }
         [Required]
-        public bool? IsEnabled { get; set; }
+        public bool IsEnabled { get; set; }
         public string AccountLegalEntityName { get; set; }
         public string ProviderName { get; set; }
         public int AccountLegalEntitiesCount { get; set; }

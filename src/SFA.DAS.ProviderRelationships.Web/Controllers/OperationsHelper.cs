@@ -36,8 +36,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         public void Set(UpdateOperationViewModel model)
         {
+            bool? isEnabled = IsEnabled(model);
             model.Operation = CurrentOperation;
-            model.IsEnabled = IsEnabled(model);
+            model.IsEnabled = isEnabled ?? false;
             model.Operations = Changes;
             model.BackLink = GetBackLink();
             _tempData.Set(Changes);
