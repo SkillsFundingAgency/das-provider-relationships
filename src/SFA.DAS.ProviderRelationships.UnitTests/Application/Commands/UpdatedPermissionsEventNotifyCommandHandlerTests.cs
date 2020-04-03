@@ -57,7 +57,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 assert: f =>
                 {
                     f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r =>
-                    r.TemplateId == "UpdatedPermissionsEventNotification" &&
+                    r.TemplateId == "UpdatedProviderPermissionsNotification" &&
                     r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
                     r.Tokens["training_provider_name"] == f.Provider.Name
                     )));
