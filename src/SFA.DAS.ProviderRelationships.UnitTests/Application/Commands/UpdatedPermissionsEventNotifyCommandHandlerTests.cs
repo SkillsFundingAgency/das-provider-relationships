@@ -30,18 +30,26 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotify() =>
             RunAsync(
+                arrange: f =>
+                {
+                    f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
+                },
                 act: async f =>
                 {
                     await f.Handle();
                 },
                 assert: f =>
                 {
-                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedPermissionsEventNotification")));
+                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedProviderPermissionsNotification")));
                 });
 
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithOrganisationAndProviderName() =>
             RunAsync(
+                arrange: f =>
+                {
+                    f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
+                },
                 act: async f =>
                 {
                     await f.Handle();
@@ -95,6 +103,31 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
                    Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
                    Assert.AreEqual(expectedSetPermissionString, f.ResultEmailRequest.Tokens["part2_text"]);
+               });
+
+        [Test]
+        [TestCase(Operation.CreateCohort, Operation.Recruitment)]
+        [TestCase(Operation.Recruitment, Operation.CreateCohort)]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_SinglePermissionSet_SinglePermissionAdded_ThenShouldCallClientToNotifyWithPermissionSet(
+            Operation previousSetOperation, 
+            Operation grantedOperation) =>
+           RunAsync(
+               arrange: f =>
+               {
+                   f.Command.PreviousOperations = new HashSet<Operation> { previousSetOperation };
+                   f.Command.GrantedOperations = new HashSet<Operation> { previousSetOperation, grantedOperation };
+               },
+               act: async f =>
+               {
+                   await f.Handle();
+               },
+               assert: f =>
+               {
+                   Assert.IsNotNull(f.ResultEmailRequest);
+                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
+                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
+                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual("You can now add apprentice records and recruit apprentices on their behalf.", f.ResultEmailRequest.Tokens["part2_text"]);
                });
 
         [Test]
