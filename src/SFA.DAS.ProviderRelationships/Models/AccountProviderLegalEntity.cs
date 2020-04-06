@@ -25,12 +25,23 @@ namespace SFA.DAS.ProviderRelationships.Models
             AccountProviderId = accountProvider.Id;
             AccountLegalEntity = accountLegalEntity;
             AccountLegalEntityId = accountLegalEntity.Id;
-
             _permissions.AddRange(grantedOperations.Select(o => new Permission(this, o)));
 
             Created = DateTime.UtcNow;
 
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user.Ref, user.Email, user.FirstName, user.LastName, grantedOperations, Created));
+            Publish(() => new UpdatedPermissionsEvent(
+                AccountProvider.AccountId, 
+                AccountLegalEntity.Id, 
+                AccountProvider.Id, 
+                Id, 
+                AccountProvider.ProviderUkprn, 
+                user.Ref, 
+                user.Email, 
+                user.FirstName, 
+                user.LastName, 
+                grantedOperations, 
+                new HashSet<Operation>(),
+                Created));
         }
 
         private AccountProviderLegalEntity()
@@ -59,8 +70,8 @@ namespace SFA.DAS.ProviderRelationships.Models
         internal void UpdatePermissions(User user, HashSet<Operation> grantedOperations)
         {
             var sortedGrantedOperations = grantedOperations.OrderBy(x => x);
-            var sortedPermissionOperations = _permissions.Select(x => x.Operation).OrderBy(x => x);
-            if (sortedGrantedOperations.SequenceEqual(sortedPermissionOperations))
+            var previousPermissionOperations = _permissions.Select(x => x.Operation).ToList();
+            if (sortedGrantedOperations.SequenceEqual(previousPermissionOperations.OrderBy(x => x)))
                 return;
 
             _permissions.Clear();
@@ -68,7 +79,19 @@ namespace SFA.DAS.ProviderRelationships.Models
 
             Updated = DateTime.UtcNow;
 
-            Publish(() => new UpdatedPermissionsEvent(AccountProvider.AccountId, AccountLegalEntity.Id, AccountProvider.Id, Id, AccountProvider.ProviderUkprn, user?.Ref, user?.Email, user?.FirstName, user?.LastName, grantedOperations, Updated.Value));
+            Publish(() => new UpdatedPermissionsEvent(
+                AccountProvider.AccountId, 
+                AccountLegalEntity.Id, 
+                AccountProvider.Id, 
+                Id, 
+                AccountProvider.ProviderUkprn, 
+                user?.Ref, 
+                user?.Email, 
+                user?.FirstName, 
+                user?.LastName, 
+                grantedOperations,
+                new HashSet<Operation>(previousPermissionOperations),
+                Updated.Value));
         }
 
         private void EnsureAccountLegalEntityHasNotBeenDeleted()
