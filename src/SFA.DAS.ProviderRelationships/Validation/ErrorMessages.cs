@@ -2,6 +2,8 @@
 {
     public static class ErrorMessages
     {
-        public const string InvalidUkprn = "Number not recognised. Check the number you've entered is correct or contact your training provider for help.";
+        public const string InvalidUkprn_OnlyNumbers = "UK Provider Reference Number (UKPRN) must only include numbers";
+        public const string RequiredUkprn = "Enter your training provider's UK Provider Reference Number (UKPRN)";
+        public const string InvalidUkprn = "UK Provider Reference Number (UKPRN) must be 8 numbers";
     }
 }
