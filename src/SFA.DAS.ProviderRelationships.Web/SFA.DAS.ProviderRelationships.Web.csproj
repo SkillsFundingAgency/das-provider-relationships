@@ -137,7 +137,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="Controllers\AccountProvidersController.cs" />
-    <Compile Include="Controllers\ProvidersController.cs" />
     <Compile Include="Controllers\OperationsHelper.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
@@ -301,6 +300,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_OperationDefaultDescription.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccountProviders\Find.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
