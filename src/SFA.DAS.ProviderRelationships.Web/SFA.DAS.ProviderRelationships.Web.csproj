@@ -184,7 +184,6 @@
     <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AddAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviders\FindProviderEditModel.cs" />
     <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\Operations\ConfirmOperationViewModel.cs" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Validation;
