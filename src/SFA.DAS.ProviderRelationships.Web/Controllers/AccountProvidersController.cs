@@ -19,7 +19,6 @@ using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Validation.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
@@ -76,16 +75,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
-        public async Task<ActionResult> Find(FindProviderEditModel model)
+        public async Task<ActionResult> Find(FindProviderViewModel model)
         {
-            var ukprn = long.Parse(model.ProviderUkprn);
+            var ukprn = long.Parse(model.Ukprn);
             var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
 
             var result = await _mediator.Send(query);
 
             if (result.ProviderNotFound)
             {
-                ModelState.AddModelError(nameof(model.ProviderUkprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
 
                 return RedirectToAction("Find");
             }

@@ -26,12 +26,12 @@
         {
             @Html.AntiForgeryToken()
             <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-                <label class="govuk-label js-hidden" for="Ukprn">
-                    UKPRN
-                </label>
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
+                <label class="govuk-label js-hidden" for="Ukprn">
+                    UKPRN
+                </label>
                 <select id="Ukprn" name="ProviderUkprn" class="govuk-select">
                     <option value="">Search for a provider </option>
                     @foreach (var provider in Model.ProviderDto)
@@ -40,6 +40,9 @@
                     }
                 </select>
             </div>
+            <p class="govuk-body">
+                <a class="govuk-link" href="@Url.Action("Find")">Clear search</a>
+            </p>
             <button class="govuk-button" type="submit">Continue</button>
         }
     </div>
