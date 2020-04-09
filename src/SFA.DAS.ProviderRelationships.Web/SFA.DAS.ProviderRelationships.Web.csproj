@@ -178,6 +178,7 @@
     <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviders\FindProviderEditModel.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AddedAccountProviderViewModel.cs" />
