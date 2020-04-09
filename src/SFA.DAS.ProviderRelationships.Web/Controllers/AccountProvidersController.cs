@@ -75,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
-        public async Task<ActionResult> Find(FindProviderEditModel model, string Ukprn)
+        public async Task<ActionResult> Find(FindProviderEditModel model)
         {
 
             var ukprn = long.Parse(model.Ukprn);

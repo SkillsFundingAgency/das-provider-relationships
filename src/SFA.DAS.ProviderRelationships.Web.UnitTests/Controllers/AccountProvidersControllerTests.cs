@@ -26,7 +26,6 @@ using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Providers;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
@@ -73,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldAddModelError()
         {
-            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.ProviderUkprn)).Should().BeTrue());
+            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.Ukprn)).Should().BeTrue());
         }
 
         [Test]
@@ -330,7 +329,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             var findProviderEditModel = new FindProviderEditModel {
                 AccountId = accountId,
-                ProviderUkprn = ukprn.ToString()
+                Ukprn = ukprn.ToString()
             };
 
             FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null, providerAlreadyAdded ? accountProviderId : (int?)null);
