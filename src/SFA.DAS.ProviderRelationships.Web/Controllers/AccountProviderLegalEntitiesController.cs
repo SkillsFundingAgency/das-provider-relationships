@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,11 +11,10 @@ using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
-using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
+using SFA.DAS.ProviderRelationships.Web.RouteValues.Operations;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
 using SFA.DAS.Validation.Mvc;
@@ -37,16 +35,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-
+       
+        [HttpGet]
         [HttpNotFoundForNullModel]
         [Route]
-        public async Task<ActionResult> Get(GetAccountProviderLegalEntityRouteValues routeValues)
+        public ActionResult Get(GetAccountProviderLegalEntityRouteValues routeValues)
         {
-            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<GetAccountProviderLegalEntityViewModel>(result);
-
-            return View(model);
+            return RedirectToAction("Set", "Operations", new OperationRouteValue {
+                AccountProviderId = routeValues.AccountProviderId.Value,
+                AccountLegalEntityId = routeValues.AccountLegalEntityId.Value
+            });
         }
 
         [HttpPost]
@@ -59,35 +57,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Update", new UpdateAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountLegalEntityId = model.AccountLegalEntityId.Value });
         }
 
-        [HttpNotFoundForNullModel]
-        [Route("update")]
-        public async Task<ActionResult> Update(UpdateAccountProviderLegalEntityRouteValues routeValues)
-        {
-            var operations = TempData.Get<List<OperationViewModel>>();
-
-            if (operations == null)
-            {
-                return RedirectToAction("Get", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = routeValues.AccountProviderId.Value, AccountLegalEntityId = routeValues.AccountLegalEntityId.Value });
-            }
-
-            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<UpdateAccountProviderLegalEntityViewModel>(result);
-
-            if (model != null)
-            {
-                model.Operations = operations;
-            }
-
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("update")]
         public async Task<ActionResult> Update(UpdateAccountProviderLegalEntityViewModel model)
         {
-            var operations = model.Operations.Where(o => o.IsEnabled).Select(o => o.Value).ToHashSet();
+            var operations = model.Operations.Where(o => o.IsEnabled.HasValue && o.IsEnabled.Value).Select(o => o.Value).ToHashSet();
             var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
 
             await _mediator.Send(command);
@@ -118,6 +93,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("updated")]
@@ -126,7 +102,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             switch (model.Choice)
             {
                 case "YourTrainingProviders":
-                    return RedirectToAction("Index", "AccountProviders");                
+                    return RedirectToAction("Index", "AccountProviders");
                 case "AddTrainingProvider":
                     return RedirectToAction("Find", "AccountProviders");
                 case "GoToHomepage":

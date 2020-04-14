@@ -15,13 +15,14 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
         public string UserEmailAddress { get; }
         public string UserFirstName { get; }
         public string UserLastName { get; }
+        public HashSet<Operation> PreviousOperations { get; set; }
         public HashSet<Operation> GrantedOperations { get; }
         public DateTime Updated { get; }
 
         public UpdatedPermissionsEvent(long accountId, long accountLegalEntityId, long accountProviderId,
                                     long accountProviderLegalEntityId, long ukprn, Guid? userRef,
                                     string userEmailAddress, string userFirstName, string userLastName,
-                                    HashSet<Operation> grantedOperations, DateTime updated)
+                                    HashSet<Operation> grantedOperations, HashSet<Operation> previousOperations, DateTime updated)
         {
             AccountId = accountId;
             AccountLegalEntityId = accountLegalEntityId;
@@ -33,6 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Messages.Events
             UserFirstName = userFirstName;
             UserLastName = userLastName;
             GrantedOperations = grantedOperations;
+            PreviousOperations = previousOperations;
             Updated = updated;
         }
     }
