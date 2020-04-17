@@ -14,36 +14,69 @@
     <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
+
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's UK Provider Reference Number (UKPRN)</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's <abbr>UK</abbr> Provider Reference Number (<abbr>UKPRN</abbr>)</h1>
     </div>
+
     <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body">
-            This is the unique, 8-digit number that we use to identify a training provider.
-            Ask your training provider for their UKPRN if you do not know it.
+            This is the unique, 8-digit number that we use to identify a training provider. Ask your training provider for their <abbr>UKPRN</abbr> if you do not know it.
         </p>
+
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="govuk-form-group @(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-                <span class="govuk-error-message">
-                    @Html.ValidationMessageFor(m => m.Ukprn)
-                </span>
-                <label class="govuk-label js-hidden" for="Ukprn">
-                    UKPRN
-                </label>
-                <select id="Ukprn" name="Ukprn" class="govuk-select">
-                    <option value="">Search for a provider </option>
-                    @foreach (var provider in Model.ProviderDto)
-                    {
-                        <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
-                    }
-                </select>
+
+                <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+
+                    <span class="govuk-error-message">
+                        @Html.ValidationMessageFor(m => m.Ukprn)
+                    </span>
+
+                    <label class="govuk-label js-hidden" for="Ukprn">
+                        UKPRN
+                    </label>
+
+                    <select id="Ukprn" name="Ukprn" class="govuk-select">
+                        <option value="">Search for a provider </option>
+                        @foreach (var provider in Model.ProviderDto)
+                        {
+                            <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
+                        }
+                    </select>
+
+                </div>
+
+                <button class="govuk-button" id="Ukprn-button" type="submit">Continue</button>
+                }
             </div>
-            <p class="govuk-body">
-                <a class="govuk-link" href="@Url.Action("Find")">Clear search</a>
-            </p>
-            <button class="govuk-button" type="submit">Continue</button>
+
+        </div>
+
+<script>
+    window.onload = function() {
+        var ukprn = jQuery('#Ukprn');
+
+        var gfg = ukprn.closest('.govuk-form-group');
+        if (gfg.hasClass('govuk-form-group--error')) {
+            ukprn.css('border', '4px solid #df3034');
         }
-    </div>
-</div>
+        
+        var ukprnForm = ukprn.closest('form');
+
+        jQuery('#Ukprn-button').on('click', function (e) {
+            e.preventDefault();
+
+            var ukprnVal = ukprn.val();
+
+            if (ukprnVal) {//has a value
+                ukprnForm.append('<input type="hidden" id="Ukprn-hidden" name="Ukprn-hidden" value="' + ukprnVal + '">').submit();
+            } else {
+                ukprnForm.submit();
+            }
+        });
+
+        ukprn.attr('type','search');
+    };
+</script>
