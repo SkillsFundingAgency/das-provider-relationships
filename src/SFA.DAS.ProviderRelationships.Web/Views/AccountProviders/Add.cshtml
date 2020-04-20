@@ -33,14 +33,14 @@
                     </span>
                     <div class="govuk-radios">
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "Confirm", new { id = "choice-1", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "Confirm", new { @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-1">
                                 Yes, add @Model.Provider.Name
                             </label>
                             @Html.HiddenFor(m => m.Provider.Name)
                         </div>
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn", new { id = "choice-2", @class = "govuk-radios__input" })
+                            @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn", new { @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="choice-2">
                                 No, change training provider
                             </label>
