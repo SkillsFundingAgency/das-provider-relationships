@@ -85,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             if (result.ProviderNotFound)
             {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.RequiredUkprn);
 
                 return RedirectToAction("Find");
             }

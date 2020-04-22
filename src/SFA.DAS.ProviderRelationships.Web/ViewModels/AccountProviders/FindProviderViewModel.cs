@@ -12,9 +12,8 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
         public long? AccountId { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredUkprn)]
-        [RegularExpression(@"[\d+]{8}", ErrorMessage = ErrorMessages.InvalidUkprn)]
         public string Ukprn { get; set; }
 
-        public List<ProviderDto> ProviderDto { get; set; }
+        public List<ProviderDto> Providers { get; set; }
     }
 }
