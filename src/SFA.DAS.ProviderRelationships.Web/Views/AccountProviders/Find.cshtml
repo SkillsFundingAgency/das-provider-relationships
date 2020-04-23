@@ -16,11 +16,15 @@
     </div>
 
     <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's <abbr>UK</abbr> Provider Reference Number (<abbr>UKPRN</abbr>)</h1>
+        <noscript>
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Select the training provider you want to add</h1>
+        </noscript>
+
+        <h1 class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's <abbr>UK</abbr> Provider Reference Number (<abbr>UKPRN</abbr>)</h1>
     </div>
 
     <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body">
+        <p class="das-js-show govuk-body">
             This is the unique, 8-digit number that we use to identify a training provider. Ask your training provider for their <abbr>UKPRN</abbr> if you do not know it.
         </p>
 
@@ -28,31 +32,31 @@
         {
             @Html.AntiForgeryToken()
 
-                <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+            <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
 
-                    <span class="govuk-error-message">
-                        @Html.ValidationMessageFor(m => m.Ukprn)
-                    </span>
+                <span class="govuk-error-message">
+                    @Html.ValidationMessageFor(m => m.Ukprn)
+                </span>
 
-                    <label class="govuk-label js-hidden" for="Ukprn">
-                        UKPRN
-                    </label>
+                <label class="govuk-label js-hidden" for="Ukprn">
+                    UKPRN
+                </label>
 
-                    <select id="Ukprn" name="Ukprn" class="govuk-select">
-                        <option value="">Search for a provider </option>
-                        @foreach (var provider in Model.Providers)
-                        {
-                            <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
-                        }
-                    </select>
+                <select id="Ukprn" name="Ukprn" class="govuk-select">
+                    <option value="">Search for a provider </option>
+                    @foreach (var provider in Model.Providers)
+                    {
+                        <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
+                    }
+                </select>
 
-                </div>
-
-                <button class="govuk-button" id="Ukprn-button" type="submit">Continue</button>
-                }
             </div>
 
-        </div>
+            <button class="govuk-button" id="Ukprn-button" type="submit">Continue</button>
+        }
+    </div>
+
+</div>
 
 <script>
     window.onload = function() {
