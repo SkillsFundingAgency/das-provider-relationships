@@ -16,9 +16,8 @@
     </div>
 
     <div class="govuk-grid-column-full">
-        <noscript>
-            <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">Select the training provider you want to add</h1>
-        </noscript>
+
+        <h1 class="das-js-hide govuk-heading-xl govuk-!-margin-bottom-6">Select the training provider you want to add</h1>
 
         <h1 class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's <abbr>UK</abbr> Provider Reference Number (<abbr>UKPRN</abbr>)</h1>
     </div>
@@ -59,14 +58,14 @@
 </div>
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
         var ukprn = jQuery('#Ukprn');
 
         var gfg = ukprn.closest('.govuk-form-group');
         if (gfg.hasClass('govuk-form-group--error')) {
             ukprn.css('border', '4px solid #df3034');
         }
-        
+
         var ukprnForm = ukprn.closest('form');
 
         jQuery('#Ukprn-button').on('click', function (e) {
@@ -81,6 +80,6 @@
             }
         });
 
-        ukprn.attr('type','search');
+        ukprn.attr('type', 'search');
     };
 </script>
