@@ -1,7 +1,7 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
 
 @{
-    ViewBag.Title = "Search for a training provider";
+    ViewBag.Title = "Enter your training provider’s name or reference number (UKPRN)";
     ViewBag.ZenDeskLabel = "permissions-search-for-a-training-provider";
 }
 
@@ -36,10 +36,6 @@
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
-
-                <label class="govuk-label js-hidden" for="Ukprn">
-                    UKPRN
-                </label>
 
                 <select id="Ukprn" name="Ukprn" class="govuk-select">
                     <option value="">Search for a provider </option>

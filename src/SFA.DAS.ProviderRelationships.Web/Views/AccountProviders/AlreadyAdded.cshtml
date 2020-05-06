@@ -1,7 +1,7 @@
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AlreadyAddedAccountProviderViewModel
 
 @{
-    ViewBag.Title = "Training provider already added";
+    ViewBag.Title = "You’ve already added this training provider";
 }
 
 @section breadcrumb
@@ -11,44 +11,11 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-        <div aria-labelledby="info-summary-title" class="das-notification" role="alert" tabindex="-1">
-            <h1 class="govuk-heading-m das-notification__heading" id="info-summary-title">
-                Training provider already added
-            </h1>
-            <p class="das-notification__body">You've already added @Model.AccountProvider.ProviderName - UKPRN @Model.AccountProvider.ProviderUkprn to your list of training providers.</p> 
-        </div>
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.AccountProviderId)
-            <div class="govuk-form-group @(Html.IsValid(m => m.Choice) ? "" : " govuk-form-group--error")">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h2 class="govuk-fieldset__heading">
-                            What's next?
-                        </h2>
-                    </legend>
-                    <span class="govuk-error-message">
-                        @Html.ValidationMessageFor(m => m.Choice)
-                    </span>
-                    <div class="govuk-radios">
-                        <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "SetPermissions", new { id = "choice-1", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="choice-1">
-                                Edit permissions for @Model.AccountProvider.ProviderName
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Choice, "AddTrainingProvider", new { id = "choice-2", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="choice-2">
-                                Search for a different training provider via UKPRN
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            <button class="govuk-button" type="submit">Continue</button>
-        }  
+        <h1 class="govuk-panel__title">You’ve already added this training provider</h1>
+        <p class="govuk-body">
+            You cannot add @Model.AccountProvider.ProviderName,(@Model.AccountProvider.ProviderUkprn) because they're already on your
+            list of training providers.
+        </p>
+        <a class="govuk-button" href="@Url.Action("Index")" role="button">Return to your training providers</a>
     </div>
 </div>
