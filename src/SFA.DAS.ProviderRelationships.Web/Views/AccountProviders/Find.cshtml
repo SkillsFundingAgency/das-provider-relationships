@@ -75,7 +75,13 @@
                 ukprnForm.submit();
             }
         });
-
         ukprn.attr('type', 'search');
+        document.getElementById('Ukprn').addEventListener('search', function () {
+            ukprn.keyup( function() {
+                if (this.value.length === 3) {
+                    document.getElementById('Ukprn__listbox').scrollTop = 0;
+                }
+            });
+        });//chrome supported to resolve chrome behaviour (resets list if cleared)
     };
 </script>

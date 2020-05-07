@@ -10,12 +10,14 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-panel__title">You’ve already added this training provider</h1>
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-l">
+            You've already added this training provider
+        </h1>
         <p class="govuk-body">
             You cannot add @Model.AccountProvider.ProviderName,(@Model.AccountProvider.ProviderUkprn) because they're already on your
             list of training providers.
         </p>
         <a class="govuk-button" href="@Url.Action("Index")" role="button">Return to your training providers</a>
     </div>
-</div>
+</div> 
