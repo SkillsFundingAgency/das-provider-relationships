@@ -19,12 +19,12 @@
 
         <h1 class="das-js-hide govuk-heading-xl govuk-!-margin-bottom-6">Select the training provider you want to add</h1>
 
-        <h1 class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider's <abbr>UK</abbr> Provider Reference Number (<abbr>UKPRN</abbr>)</h1>
+        <h1 class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider’s name or reference number (UKPRN)</h1>
     </div>
 
     <div class="govuk-grid-column-two-thirds">
         <p class="das-js-show govuk-body">
-            This is the unique, 8-digit number that we use to identify a training provider. Ask your training provider for their <abbr>UKPRN</abbr> if you do not know it.
+            A UKPRN is the unique, 8-digit number we use to identify a training provider. Ask your training provider if you do not know it.
         </p>
 
         @using (Html.BeginForm())
@@ -38,7 +38,7 @@
                 </span>
 
                 <select id="Ukprn" name="Ukprn" class="govuk-select">
-                    <option value="">Search for a provider </option>
+                    <option class="das-js-hide" value="">Select training provider</option>
                     @foreach (var provider in Model.Providers)
                     {
                         <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
@@ -77,7 +77,7 @@
         });
         ukprn.attr('type', 'search');
         document.getElementById('Ukprn').addEventListener('search', function () {
-            ukprn.keyup( function() {
+            ukprn.keyup(function () {
                 if (this.value.length === 3) {
                     document.getElementById('Ukprn__listbox').scrollTop = 0;
                 }
