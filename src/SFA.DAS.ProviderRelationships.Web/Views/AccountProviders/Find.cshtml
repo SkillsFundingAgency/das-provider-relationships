@@ -1,7 +1,9 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
 
 @{
-    ViewBag.Title = "Enter your training provider’s name or reference number (UKPRN)";
+    var pageTitleNonJs = "Select the training provider you want to add";
+    var pageTitleJs = "Enter your training provider’s name or reference number (UKPRN)";
+    ViewBag.Title = pageTitleNonJs;
     ViewBag.ZenDeskLabel = "permissions-search-for-a-training-provider";
 }
 
@@ -17,9 +19,9 @@
 
     <div class="govuk-grid-column-full">
 
-        <h1 class="das-js-hide govuk-heading-xl govuk-!-margin-bottom-6">Select the training provider you want to add</h1>
+        <h1 class="das-js-hide govuk-heading-xl govuk-!-margin-bottom-6">@pageTitleNonJs</h1>
 
-        <h1 class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">Enter your training provider’s name or reference number (UKPRN)</h1>
+        <h1 id="jsChgTitle" class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">@pageTitleJs</h1>
     </div>
 
     <div class="govuk-grid-column-two-thirds">
@@ -54,6 +56,7 @@
 </div>
 
 <script>
+    document.title = document.getElementById('jsChgTitle').textContent;
     window.onload = function () {
         var ukprn = jQuery('#Ukprn');
 
