@@ -11,6 +11,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Validation;
@@ -36,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-        
+
         [DasAuthorize(EmployerUserRole.Any)]
         [Route]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
@@ -44,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
-            
+
             return View(model);
         }
 
@@ -62,24 +63,29 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [DasAuthorize(EmployerUserRole.Owner)]
         [Route("find")]
-        public ActionResult Find()
+        public async Task<ActionResult> Find()
         {
-            return View(new FindProviderViewModel());
+            var query = new GetAllProvidersQuery();
+            var result = await _mediator.Send(query);
+            var model = _mapper.Map<FindProviderViewModel>(result);
+            return View(model);
         }
-        
+
         [DasAuthorize(EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
-        public async Task<ActionResult> Find(FindProviderViewModel model)
+        public async Task<ActionResult> Find(FindProviderEditModel model)
         {
+
             var ukprn = long.Parse(model.Ukprn);
             var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
+
             var result = await _mediator.Send(query);
 
             if (result.ProviderNotFound)
             {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.InvalidUkprn);
+                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.RequiredUkprn);
 
                 return RedirectToAction("Find");
             }
@@ -109,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [ValidateAntiForgeryToken]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderViewModel model)
-        {           
+        {
             switch (model.Choice)
             {
                 case "Confirm":
@@ -132,7 +138,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AddedAccountProviderViewModel>(result);
-            
+
             return View(model);
         }
 
@@ -197,7 +203,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             {
                 return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
-            
+
             return View(model);
         }
 
@@ -217,7 +223,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
 
             var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
-            
+
             return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
         }
     }
