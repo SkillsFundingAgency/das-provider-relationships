@@ -49,6 +49,22 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return configuration.ZenDeskSectionId;
         }
 
+        public static ICookieBannerViewModel GetCookieBannerViewModel(this HtmlHelper html)
+        {
+            var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
+
+            return new CookieBannerViewModel(new CookieBannerConfiguration
+            {
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
+            },
+            new UserContext
+            {
+                User = html.ViewContext.HttpContext.User,
+                HashedAccountId = html.ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString()
+            }
+            );
+        }
+
         public static IHeaderViewModel GetHeaderViewModel(this HtmlHelper html)
         {   
             var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
