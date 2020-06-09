@@ -90,7 +90,7 @@
     </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
-    <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.0.0.61553" />
+    <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.1.4" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus">
       <Version>9.0.13</Version>
     </PackageReference>
