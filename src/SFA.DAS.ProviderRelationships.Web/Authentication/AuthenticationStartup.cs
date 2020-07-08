@@ -53,6 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
             _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
+                CookieName = "provider-relationships",
                 AuthenticationType = "Cookies",
                 ExpireTimeSpan = new TimeSpan(0, 10, 0),
                 SlidingExpiration = true
@@ -60,6 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
             _app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
+                CookieName = "provider-relationships-temp",
                 AuthenticationType = "TempState",
                 AuthenticationMode = AuthenticationMode.Passive
             });
