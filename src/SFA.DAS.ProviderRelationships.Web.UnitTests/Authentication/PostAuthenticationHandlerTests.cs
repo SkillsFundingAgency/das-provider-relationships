@@ -12,6 +12,7 @@ using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing;
 using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 using StructureMap;
+using SFA.DAS.NLog.Logger;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
 {
@@ -38,6 +39,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public IPostAuthenticationHandler Handler { get; set; }
         public Mock<IUnitOfWorkScope> UnitOfWorkScope { get; set; }
         public Mock<IContainer> Container { get; set; }
+        public Mock<ILog> Log { get; set; }
         
         public PostAuthenticationHandlerTestsFixture()
         {
@@ -57,11 +59,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
 
             UnitOfWorkScope = new Mock<IUnitOfWorkScope>();
             Container = new Mock<IContainer>();
+            Log = new Mock<ILog>();
             
             UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IContainer, Task>>())).Returns(Task.CompletedTask).Callback<Func<IContainer, Task>>(o => o(Container.Object));
             Container.Setup(c => c.GetInstance<IMediator>()).Returns(Mediator.Object);
             
-            Handler = new PostAuthenticationHandler(UnitOfWorkScope.Object);
+            Handler = new PostAuthenticationHandler(UnitOfWorkScope.Object, Log.Object);
         }
 
         public void Handle()
