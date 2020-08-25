@@ -121,11 +121,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
-    <Compile Include="Authentication\AuthenticationStartup.cs" />
     <Compile Include="Authentication\AuthenticationUrls.cs" />
     <Compile Include="Authentication\IAuthenticationService.cs" />
-    <Compile Include="Authentication\IAuthenticationStartup.cs" />
     <Compile Include="Authentication\IAuthenticationUrls.cs" />
+    <Compile Include="Authentication\IdentityServerConfigurationFactory.cs" />
     <Compile Include="Authentication\IPostAuthenticationHandler.cs" />
     <Compile Include="Authentication\OidcConfigurationFactory.cs" />
     <Compile Include="Authentication\OwinAuthenticationService.cs" />
@@ -331,5 +330,5 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
-  </ProjectExtensions>  
+  </ProjectExtensions>
 </Project>
