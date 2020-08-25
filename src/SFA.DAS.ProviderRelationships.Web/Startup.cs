@@ -46,6 +46,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             });
 
             app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
+                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
                 BaseUrl = config.BaseAddress,
                 ClientId = config.ClientId,
                 ClientSecret = config.ClientSecret,
