@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Owin;
+using Microsoft.Owin.Host.SystemWeb;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using NLog;
@@ -32,17 +33,24 @@ namespace SFA.DAS.ProviderRelationships.Web
             Logger.Info("Starting Provider Relationships web application");
             Logger.Info("Initializing Authentication");
 
+            // Use SystemWebCookieManager to prevent conflict between
+            // Owin Cookies modifying collection via Set-Cookie
+            // And System.Web modifying Response.Cookies Collection
+            // https://web.archive.org/web/20170912171644/https:/katanaproject.codeplex.com/workitem/197
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
                 CookieName = "provider-relationships",
                 AuthenticationType = "Cookies",
                 ExpireTimeSpan = new TimeSpan(0, 10, 0),
-                SlidingExpiration = true
+                SlidingExpiration = true,
+                CookieManager = new SystemWebCookieManager()
             });
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
                 CookieName = "provider-relationships-temp",
                 AuthenticationType = "TempState",
-                AuthenticationMode = AuthenticationMode.Passive
+                AuthenticationMode = AuthenticationMode.Passive,
+                CookieManager = new SystemWebCookieManager()
             });
 
             app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {

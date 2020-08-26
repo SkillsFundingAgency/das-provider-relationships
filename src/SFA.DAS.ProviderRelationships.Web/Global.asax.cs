@@ -40,5 +40,13 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             logger.Error(ex, ex.GetAggregateMessage());
         }
+
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            // Ensure Session is created on first page interaction before
+            // establishing an attempt an authentication
+            // https://web.archive.org/web/20170912171644/https:/katanaproject.codeplex.com/workitem/197
+            HttpContext.Current.Session["RunSession"] = "1";
+        }
     }
 }
