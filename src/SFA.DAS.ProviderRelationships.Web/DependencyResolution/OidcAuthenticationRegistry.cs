@@ -11,7 +11,6 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
             For<ConfigurationFactory>().Use<OidcConfigurationFactory>();
             For<IAuthenticationUrls>().Use<AuthenticationUrls>();
             For<IAuthenticationService>().Use<OwinAuthenticationService>();
-            For<IAuthenticationStartup>().Use<AuthenticationStartup>();
         }
     }
 }
