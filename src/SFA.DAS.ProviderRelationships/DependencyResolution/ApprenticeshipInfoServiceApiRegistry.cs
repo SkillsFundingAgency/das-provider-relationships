@@ -11,8 +11,8 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         public ApprenticeshipInfoServiceApiRegistry()
         {
             IncludeRegistry<AutoConfigurationRegistry>();
-            For<ApprenticeshipInfoServiceApiConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ApprenticeshipInfoServiceApiConfiguration>(ConfigurationKeys.ApprenticeshipInfoServiceApi)).Singleton();
-            For<IProviderApiClient>().Use(c => new ProviderApiClient(c.GetInstance<ApprenticeshipInfoServiceApiConfiguration>().BaseUrl));
+            
+            For<IProviderApiClient>().Use(c => new ProviderApiClient(c.GetInstance<ProviderRelationshipsConfiguration>().ApprenticeshipProgrammesApiBaseUrl));
         }
     }
 }
