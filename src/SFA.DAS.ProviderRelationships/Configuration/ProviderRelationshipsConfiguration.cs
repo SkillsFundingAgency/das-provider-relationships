@@ -28,5 +28,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         private string _decodedNServiceBusLicense;
         public string ZenDeskSnippetKey { get; set; }
         public string ZenDeskSectionId { get; set; }
+        public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
     }
 }   

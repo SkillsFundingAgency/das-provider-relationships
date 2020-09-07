@@ -4,7 +4,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
     {
         public const string ProviderRelationships = "SFA.DAS.ProviderRelationshipsV2";
         public const string EmployerFeatures = "SFA.DAS.ProviderRelationships.EmployerFeatures";
-        public const string ApprenticeshipInfoServiceApi = "SFA.DAS.ApprenticeshipInfoServiceAPI";
         public const string EncodingConfig = "SFA.DAS.Encoding";
     }
 }
