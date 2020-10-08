@@ -184,7 +184,7 @@
                         "value": 1
                     },
                     "subnetResourceId": {
-                        "value": "[reference('function-subnet').outputs.SubnetResourceId.value]"
+                        "value": "[reference('worker-app-subnet').outputs.SubnetResourceId.value]"
                     }
                 }
             }
