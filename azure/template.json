@@ -17,6 +17,9 @@
         "sharedEnvResourceGroup": {
             "type": "string"
         },
+        "sharedEnvVirtualNetworkName": {
+            "type": "string"
+        },
         "subnetObject": {
             "type": "object"
         },
