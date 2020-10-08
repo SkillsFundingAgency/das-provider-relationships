@@ -5,11 +5,26 @@
         "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },
+        "sharedFrontEndSubnetResourceId": {
+            "type": "string"
+        },
         "sharedBackEndAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedBackEndSubnetResourceId": {
             "type": "string"
         },
         "sharedEnvResourceGroup": {
             "type": "string"
+        },
+        "subnetObject": {
+            "type": "object"
+        },
+        "subnetServiceEndpointList": {
+            "type": "array"
+        },
+        "subnetDelegations": {
+            "type": "array"
         },
         "appServiceName": {
             "type": "string"
@@ -117,6 +132,36 @@
         },
         {
             "apiVersion": "2017-05-10",
+            "name": "workerapp-subnet",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetObject').name]"
+                    },
+                    "subnetAddressPrefix": {
+                        "value": "[parameters('subnetObject').addressSpace]"
+                    },
+                    "serviceEndpointList": {
+                        "value": "[parameters('subnetServiceEndpointList')]"
+                    },
+                    "delegations": {
+                        "value": "[parameters('subnetDelegations')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
             "name": "worker-app-service-plan-deployment",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -137,6 +182,9 @@
                     },
                     "aspInstances": {
                         "value": 1
+                    },
+                    "subnetResourceId": {
+                        "value": "[reference('function-subnet').outputs.SubnetResourceId.value]"
                     }
                 }
             }
@@ -161,9 +209,6 @@
                     },
                     "keyVaultResourceGroup": {
                         "value": "[parameters('sharedManagementResourceGroup')]"
-                    },
-                    "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontEndAppServicePlanName'))]"
                     }
                 }
             }
@@ -187,6 +232,9 @@
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "deployStagingSlot": {
                         "value": true
@@ -254,9 +302,6 @@
                     },
                     "keyVaultResourceGroup": {
                         "value": "[parameters('sharedManagementResourceGroup')]"
-                    },
-                    "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedBackendAppServicePlanName'))]"
                     }
                 }
             }
@@ -277,6 +322,9 @@
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedBackEndAppServicePlanName')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedBackEndSubnetResourceId')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedEnvResourceGroup')]"
