@@ -185,9 +185,6 @@
                     },
                     "aspInstances": {
                         "value": 1
-                    },
-                    "subnetResourceId": {
-                        "value": "[reference('worker-app-subnet').outputs.SubnetResourceId.value]"
                     }
                 }
             }
@@ -393,6 +390,9 @@
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[resourceGroup().name]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[reference('worker-app-subnet').outputs.SubnetResourceId.value]"
                     },
                     "deployStagingSlot": {
                         "value": false
