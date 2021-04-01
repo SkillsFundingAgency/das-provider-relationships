@@ -179,8 +179,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         Operation.CreateCohort
                     }
                 },
-                2,
-                false);
+                2);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q => 
                     q.AccountId == GetAccountProviderLegalEntityRouteValues.AccountId &&

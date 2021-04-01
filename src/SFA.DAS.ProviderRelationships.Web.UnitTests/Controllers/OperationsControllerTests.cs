@@ -78,8 +78,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderDto(),
                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto(),
-               0,
-               false);
+               0);
 
             Mediator.Setup(m => m.Send(
                     It.Is<GetAccountProviderLegalEntityQuery>(q =>

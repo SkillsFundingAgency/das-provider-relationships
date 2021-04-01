@@ -23,6 +23,5 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
         public AccountLegalEntityDto AccountLegalEntity { get; set; }
 
         public string BackLink { get; set; }
-        public bool IsProviderBlockedFromRecruit { get; }
     }
 }

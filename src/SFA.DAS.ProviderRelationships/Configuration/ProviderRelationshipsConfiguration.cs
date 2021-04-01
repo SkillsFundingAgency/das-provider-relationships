@@ -10,7 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public ReadStoreConfiguration ReadStore { get; set; }
         public EmployerUrlsConfiguration EmployerUrls { get; set; }
         public PasAccountApiConfiguration PasAccountApi { get; set; }
-        public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
         public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
         public string CdnBaseUrl { get; set; }
 

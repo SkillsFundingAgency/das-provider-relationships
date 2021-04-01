@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
             CreateMap<GetAccountProviderLegalEntityQueryResult, GetAccountProviderLegalEntityViewModel>()
                 .ForMember(d => d.AccountProviderId, o => o.Ignore())
                 .ForMember(d => d.AccountLegalEntityId, o => o.Ignore())
-                .ForMember(d => d.NoOfProviderCreatedVacancies, o => o.Ignore())
                 .ForMember(d => d.Operations, x => x.MapFrom(s => s.AccountProviderLegalEntity == null ?
                     null
                     :
