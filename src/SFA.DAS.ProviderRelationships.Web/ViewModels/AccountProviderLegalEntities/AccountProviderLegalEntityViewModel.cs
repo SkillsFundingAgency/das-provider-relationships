@@ -7,10 +7,11 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.Operations;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
-    public class UpdateAccountProviderLegalEntityViewModel : IAuthorizationContextModel
+    public class AccountProviderLegalEntityViewModel : IAuthorizationContextModel
     {
         public AccountProviderDto AccountProvider { get; set; }
         public AccountLegalEntityDto AccountLegalEntity { get; set; }
+        public int AccountLegalEntitiesCount { get; set; }
 
         [Required]
         public long? AccountId { get; set; }
@@ -23,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
 
         [Required]
         public Guid? UserRef { get; set; }
-        
+
         [Required]
         public List<OperationViewModel> Operations { get; set; }
     }

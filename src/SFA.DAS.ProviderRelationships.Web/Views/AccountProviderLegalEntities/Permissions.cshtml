@@ -1,0 +1,101 @@
+﻿@using SFA.DAS.ProviderRelationships.Extensions
+@using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
+@using SFA.DAS.ProviderRelationships.Types.Models
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
+
+@{
+    ViewBag.Title = Model.AccountLegalEntity.Name;
+    ViewBag.ZenDeskLabel = "permissions-set-permissions";
+}
+
+@section breadcrumb
+{
+    <a class="govuk-back-link" href="@Url.Action("Index", "AccountProviders")">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-heading-l">
+                        Set permissions for @Model.AccountProvider.ProviderName
+                    </h1>
+                </legend>
+
+                <p class="govuk-!-margin-bottom-6">
+                    These permissions are on behalf of @Model.AccountLegalEntity.Name
+                </p>
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        @Model.Operations[0].Value.GetDisplayName()
+                    </h2>
+                </legend>
+
+                <div class="govuk-hint govuk-!-margin-bottom-3">
+                    This allows your training provider to add apprentice records. If you do not pay the levy, this permission also allows your training provider to reserve funding.
+                </div>
+
+                <div class="govuk-form-group">
+                    <div class="govuk-radios" data-module="radios">
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Operations[0].IsEnabled, true, new { id = "operation-0-yes", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-0-yes">
+                                Allow
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Operations[0].IsEnabled, false, new { id = "operation-0-no", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-0-no">
+                                Do not allow
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        @Model.Operations[1].Value.GetDisplayName()
+                    </h2>
+                </legend>
+
+                <div class="govuk-hint govuk-!-margin-bottom-3">
+                    This allows your training provider to create and manage job adverts. It also allows them to receive and manage applications.
+                </div>
+
+                <div class="govuk-form-group">
+                    <div class="govuk-radios" data-module="radios">
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Operations[1].IsEnabled, true, new { id = "operation-1-yes", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-yes">
+                                Allow
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Operations[1].IsEnabled, false, new { id = "operation-1-no", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-no">
+                                Do not allow
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            @Html.HiddenFor(m => m.AccountLegalEntityId)
+            @Html.HiddenFor(m => m.AccountProviderId)
+            @Html.HiddenFor(m => m.AccountLegalEntity.Name)
+            @Html.HiddenFor(m => m.AccountProvider.ProviderName)
+            @Html.HiddenFor(m => m.Operations[0].Value)
+            @Html.HiddenFor(m => m.Operations[1].Value)
+
+            <button class="govuk-button" type="submit">Save changes</button>
+        }
+    </div>
+</div>

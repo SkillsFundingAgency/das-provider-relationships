@@ -201,7 +201,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {
-                return RedirectToAction("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
+                return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
 
             return View(model);

@@ -3,7 +3,7 @@ using SFA.DAS.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 {
-    public class GetAccountProviderLegalEntityRouteValues : IAuthorizationContextModel
+    public class AccountProviderLegalEntityRouteValues : IAuthorizationContextModel
     {
         [Required]
         public long? AccountId { get; set; }

@@ -38,7 +38,7 @@
                     @if (Model.IsUpdatePermissionsOperationAuthorized)
                     {
                         <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
-                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
+                            <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
                                 @if (accountProviderLegalEntity.Operations.Count == 0)
                                 {
                                     @:Set permissions

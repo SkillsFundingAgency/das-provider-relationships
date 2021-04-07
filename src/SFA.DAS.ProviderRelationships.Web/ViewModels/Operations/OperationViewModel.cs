@@ -23,10 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
         public bool Equals(OperationViewModel operationtoCompare)
         {
             if (operationtoCompare == null) return false;
-            if (operationtoCompare.Value == Operation.NotSet) return false;
-
             return Value.Equals(operationtoCompare.Value);
         }
-
     }
 }

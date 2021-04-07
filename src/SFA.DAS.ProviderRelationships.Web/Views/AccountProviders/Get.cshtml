@@ -56,7 +56,7 @@
                         @if (Model.IsUpdatePermissionsOperationAuthorized)
                         {
                             <td class="govuk-table__cell">
-                                <a href="@Url.Action("Get", "AccountProviderLegalEntities", new GetAccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
+                                <a href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
                             </td>
                         }
                     </tr>
