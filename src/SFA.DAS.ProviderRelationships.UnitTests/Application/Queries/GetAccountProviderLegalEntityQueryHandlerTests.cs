@@ -60,6 +60,28 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         }
 
         [Test]
+        public Task Handle_WhenHandlingGetAccountProviderLegalEntityQueryForNotBlockedProvider_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
+        {
+            return RunAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+
+                r.IsProviderBlockedFromRecruit.Should().BeFalse();
+            });
+        }
+
+        [Test]
+        public Task Handle_WhenHandlingGetAccountProviderLegalEntityQueryForBlockedProvider_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
+        {
+            return RunAsync(f => f.SetAccountProviderLegalEntities(GetAccountProviderLegalEntityQueryHandlerFixture.BlockedRecruitProviderUkrpn), f => f.Handle(), (f, r) =>
+            {
+                r.Should().NotBeNull();
+
+                r.IsProviderBlockedFromRecruit.Should().BeTrue();
+            });
+        }
+
+        [Test]
         public Task Handle_WhenAccountProviderIsNotFound_ThenShouldReturnNull()
         {
             return RunAsync(f => f.SetAccountLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeNull());
@@ -86,13 +108,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
+        public Mock<IDasRecruitService> MockRecruitService { get; set; }
 
         public GetAccountProviderLegalEntityQueryHandlerFixture()
         {
             Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
-            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
+            MockRecruitService = new Mock<IDasRecruitService>();
+            SetDasRecruitBlockedProvider();
+            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);
         }
 
         public Task<GetAccountProviderLegalEntityQueryResult> Handle()
@@ -151,6 +176,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.AccountProviders.Add(AccountProvider);
             Db.SaveChanges();
             
+            return this;
+        }
+
+        public GetAccountProviderLegalEntityQueryHandlerFixture SetDasRecruitBlockedProvider()
+        {
+            MockRecruitService.Setup(x => x.GetProviderBlockedStatusAsync(BlockedRecruitProviderUkrpn, default)).ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.Blocked });
+            MockRecruitService.Setup(x => x.GetProviderBlockedStatusAsync(It.IsNotIn(new[] { BlockedRecruitProviderUkrpn }), default)).ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.NotBlocked });
             return this;
         }
     }
