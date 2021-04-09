@@ -18,7 +18,6 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
-using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -110,15 +109,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             
             GetAccountProviderLegalEntityQueryResult = new GetAccountProviderLegalEntityQueryResult(
                 new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderDto(),
-                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountLegalEntityDto(),
-                new Application.Queries.GetAccountProviderLegalEntity.Dtos.AccountProviderLegalEntityDto
+                new AccountLegalEntityDto(),
+                new AccountProviderLegalEntityDto
                 {
                     Operations = new List<Operation>
                     {
                         Operation.CreateCohort
                     }
                 },
-                2);
+                2,
+                false);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q => 
                     q.AccountId == AccountProviderLegalEntityRouteValues.AccountId &&
