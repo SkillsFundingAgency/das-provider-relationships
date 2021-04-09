@@ -115,9 +115,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
-            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);
             MockRecruitService = new Mock<IDasRecruitService>();
             SetDasRecruitBlockedProvider();
+            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);
         }
 
         public Task<GetAccountProviderLegalEntityQueryResult> Handle()
