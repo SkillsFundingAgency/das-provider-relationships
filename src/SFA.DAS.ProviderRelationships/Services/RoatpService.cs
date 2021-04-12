@@ -1,19 +1,39 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SFA.DAS.Http;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Services
 {
     public class RoatpService : IRoatpService
     {
-        public Task<bool> Ping()
+        private IRestHttpClient _client;
+
+        public RoatpService(IRoatpApiHttpClientFactory roatpApiHttpClientFactory)
         {
-            throw new System.NotImplementedException();
+            _client = roatpApiHttpClientFactory.CreateRestHttpClient();
         }
 
-        public Task<IEnumerable<ProviderRegistration>> GetProviders()
+        public async Task<bool> Ping()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                await _client.Get("ping");
+            }
+            catch (RestHttpClientException )
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        public async Task<IEnumerable<ProviderRegistration>> GetProviders()
+        {
+            var providers = await _client.Get<List<ProviderRegistration>>("v1/fat-data-export");
+
+            return providers;
         }
     }
 }
