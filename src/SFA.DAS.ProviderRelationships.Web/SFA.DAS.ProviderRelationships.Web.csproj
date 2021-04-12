@@ -277,12 +277,6 @@
     <Content Include="Views\AccountProviders\AccountProvidersWithSingleOrganisation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_OperationRecruitmentDescription.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_OperationDefaultDescription.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\AccountProviders\Find.cshtml" />
   </ItemGroup>
   <ItemGroup>
