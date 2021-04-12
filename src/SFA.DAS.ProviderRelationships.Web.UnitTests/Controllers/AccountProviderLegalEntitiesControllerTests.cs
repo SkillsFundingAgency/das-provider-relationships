@@ -18,6 +18,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -50,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
                     c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
-                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.ToOperations())),
                 CancellationToken.None), Times.Once));
         }
 
@@ -149,8 +150,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 {
                     new PermissionViewModel
                     {
-                        Value = Operation.CreateCohort,
-                        IsEnabled = true
+                        Value = Permission.CreateCohort,
+                        State = State.Yes
                     }
                 }
             };

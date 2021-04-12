@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public AccountProvider AccountProvider { get; set; }
         public AccountLegalEntity AccountLegalEntity { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public Permission Permission { get; set; }
+        public ProviderRelationships.Models.Permission Permission { get; set; }
 
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture()
         {
@@ -108,7 +108,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 .Set(aple => aple.AccountProviderId, AccountProvider.Id)
                 .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
             
-            Permission = EntityActivator.CreateInstance<Permission>()
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>()
                 .Set(p => p.Id, 3)
                 .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
                 .Set(p => p.Operation, Query.Operation);

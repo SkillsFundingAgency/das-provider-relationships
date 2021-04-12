@@ -105,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public AccountLegalEntity AccountLegalEntity { get; set; }
         public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public Permission Permission { get; set; }
+        public ProviderRelationships.Models.Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public Mock<IDasRecruitService> MockRecruitService { get; set; }
@@ -140,7 +140,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             };
 
             AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 7).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
-            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 8).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>().Set(p => p.Id, 8).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

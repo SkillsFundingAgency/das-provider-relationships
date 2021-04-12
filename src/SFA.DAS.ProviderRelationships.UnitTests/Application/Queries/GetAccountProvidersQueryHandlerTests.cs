@@ -96,7 +96,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public Provider Provider { get; set; }
         public AccountProvider AccountProvider { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public Permission Permission { get; set; }
+        public ProviderRelationships.Models.Permission Permission { get; set; }
         public List<AccountLegalEntity> AccountLegalEntities { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
@@ -133,7 +133,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 .Set(aple => aple.Id, 8).Set(aple => aple.AccountLegalEntityId, 3)
                 .Set(aple => aple.AccountProviderId, 2);
 
-            Permission = EntityActivator.CreateInstance<Permission>().Set(p => p.Id, 4)
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>().Set(p => p.Id, 4)
                 .Set(p => p.Operation, Operation.CreateCohort).Set(p => p.AccountProviderLegalEntityId, 8);
 
             Db.Accounts.Add(Account);
