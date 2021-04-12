@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using MoreLinq.Extensions;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
@@ -50,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public async Task<ActionResult> Permissions(AccountProviderLegalEntityViewModel model)
         {
-            var operations = model.Operations.Where(o => o.IsEnabled.HasValue && o.IsEnabled.Value).Select(o => o.Value).ToHashSet();
+            var operations = model.Permissions.ToOperations(); 
             var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
 
             await _mediator.Send(command);

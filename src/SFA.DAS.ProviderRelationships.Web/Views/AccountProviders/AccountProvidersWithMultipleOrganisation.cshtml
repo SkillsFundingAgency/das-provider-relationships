@@ -1,4 +1,5 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
+@using SFA.DAS.ProviderRelationships.Types.Models
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 
 <div class="govuk-grid-column-full">
@@ -29,9 +30,9 @@
                         }
                         else
                         {
-                            foreach (var operation in accountProviderLegalEntity.Operations)
+                            foreach (var permission in accountProviderLegalEntity.Operations.ToPermissions().Where(p => p.State != State.No))
                             {
-                                <span>@operation.GetDescription()</span><br />
+                                <span>@permission.Value.GetDescription()</span><br />
                             }
                         }
                     </td>

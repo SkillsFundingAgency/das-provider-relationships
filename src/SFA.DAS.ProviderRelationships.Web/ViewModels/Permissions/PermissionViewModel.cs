@@ -1,26 +1,27 @@
 ﻿using System;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
+namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
 {
     [Serializable]
-    public class OperationViewModel
+    public class PermissionViewModel
     {
-        public bool? IsEnabled { get; set; }
-        public Operation Value { get; set; }
+        public State State { get; set; }
+        public Permission Value { get; set; }
 
         public override bool Equals(object obj)
         {
-            var operationViewModel = obj as OperationViewModel;
+            var operationViewModel = obj as PermissionViewModel;
 
             return Equals(operationViewModel);
         }
+
         public override int GetHashCode()
         {
             return ((short)Value).GetHashCode();
         }
 
-        public bool Equals(OperationViewModel operationtoCompare)
+        public bool Equals(PermissionViewModel operationtoCompare)
         {
             if (operationtoCompare == null) return false;
             return Value.Equals(operationtoCompare.Value);

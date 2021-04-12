@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Operations;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         public Guid? UserRef { get; set; }
 
         [Required]
-        public List<OperationViewModel> Operations { get; set; }
+        public List<PermissionViewModel> Permissions { get; set; }
 
         public int NoOfProviderCreatedVacancies { get; set; }
         public bool IsProviderBlockedFromRecruit { get; internal set; }

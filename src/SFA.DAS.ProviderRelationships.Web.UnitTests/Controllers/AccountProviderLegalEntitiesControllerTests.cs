@@ -22,7 +22,7 @@ using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Operations;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 using SFA.DAS.Testing;
 using AccountProviderDto = SFA.DAS.ProviderRelationships.Types.Dtos.AccountProviderDto;
 
@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
                     c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
-                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Operations.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
                 CancellationToken.None), Times.Once));
         }
 
@@ -145,9 +145,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 {
                     ProviderName = "PROVIDER COLLEGE"
                 },
-                Operations = new List<OperationViewModel>
+                Permissions = new List<PermissionViewModel>
                 {
-                    new OperationViewModel
+                    new PermissionViewModel
                     {
                         Value = Operation.CreateCohort,
                         IsEnabled = true
