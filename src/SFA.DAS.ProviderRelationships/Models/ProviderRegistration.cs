@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Models
     {
         [JsonProperty("UKPRN")]
         public int Ukprn { get; set; }
-        [JsonProperty]
-        public string LegalName { get; set; }
+        [JsonProperty("legalName")]
+        public string ProviderName { get; set; }
     }
 }
