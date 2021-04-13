@@ -9,8 +9,8 @@ namespace SFA.DAS.ProviderRelationships.Jobs.DependencyResolution
         {
             return new Container(c =>
             {
-                c.AddRegistry<RoatpApiRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
+                c.AddRegistry<RoatpApiRegistry>();
                 c.AddRegistry<DataRegistry>();
                 c.AddRegistry<LoggerRegistry>();
                 c.AddRegistry<ReadStoreDataRegistry>();
