@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.SystemWeb;
@@ -68,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             });
 
             ConfigurationFactory.Current = new IdentityServerConfigurationFactory(config);
-            JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
         }
 
         private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironement, string certThumbprint)
