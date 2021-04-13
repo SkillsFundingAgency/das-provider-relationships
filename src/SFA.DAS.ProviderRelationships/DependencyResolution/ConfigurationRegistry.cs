@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ReadStore).Singleton();
             For<IGoogleAnalyticsConfigurationFactory>().Use<GoogleAnalyticsConfigurationFactory>();
             For<EncodingConfig>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<EncodingConfig>(ConfigurationKeys.EncodingConfig)).Singleton();
+            For<RoatpApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().RoatpApiClientSettings).Singleton();
         }
     }
 }
