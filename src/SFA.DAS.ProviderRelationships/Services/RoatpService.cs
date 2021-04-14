@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Services
 
         public async Task<IEnumerable<ProviderRegistration>> GetProviders()
         {
-            var providers = await _client.Get<List<ProviderRegistration>>("v1/fat-data-export");
+            var providers = await _client.Get<List<ProviderRegistration>>("api/v1/fat-data-export");
 
             return providers;
         }

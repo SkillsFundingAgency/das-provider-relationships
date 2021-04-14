@@ -26,12 +26,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
                 Content = new StringContent(JsonConvert.SerializeObject("test")),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = SetupMessageHandlerMock(response, new Uri("https://test.local/api/ping"), HttpMethod.Get);
+            var httpMessageHandler = SetupMessageHandlerMock(response, new Uri("https://test.local/ping"), HttpMethod.Get);
             
             var mockClient = new Mock<IRoatpApiHttpClientFactory>();
             mockClient.Setup(x => x.CreateRestHttpClient()).Returns(new RestHttpClient(new HttpClient(httpMessageHandler.Object)
             {
-                BaseAddress = new Uri("https://test.local/api/")
+                BaseAddress = new Uri("https://test.local/")
             }));
             var service = new RoatpService(mockClient.Object);
             
@@ -54,12 +54,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
                 ReasonPhrase = "test",
                 RequestMessage = new HttpRequestMessage()
             };
-            var httpMessageHandler = SetupMessageHandlerMock(response, new Uri("https://test.local/api/ping"), HttpMethod.Get);
+            var httpMessageHandler = SetupMessageHandlerMock(response, new Uri("https://test.local/ping"), HttpMethod.Get);
             
             var mockClient = new Mock<IRoatpApiHttpClientFactory>();
             mockClient.Setup(x => x.CreateRestHttpClient()).Returns(new RestHttpClient(new HttpClient(httpMessageHandler.Object)
             {
-                BaseAddress = new Uri("https://test.local/api/")
+                BaseAddress = new Uri("https://test.local/")
             }));
             var service = new RoatpService(mockClient.Object);
             
@@ -99,7 +99,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
             var mockClient = new Mock<IRoatpApiHttpClientFactory>();
             mockClient.Setup(x => x.CreateRestHttpClient()).Returns(new RestHttpClient(new HttpClient(httpMessageHandler.Object)
             {
-                BaseAddress = new Uri("https://test.local/api/"),
+                BaseAddress = new Uri("https://test.local/"),
             }));
             var service = new RoatpService(mockClient.Object);
             
