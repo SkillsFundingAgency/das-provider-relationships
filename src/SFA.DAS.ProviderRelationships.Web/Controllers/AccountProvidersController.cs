@@ -45,6 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
+            model.AccountHashedId = routeValues.AccountHashedId;
 
             return View(model);
         }
@@ -106,7 +107,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AddAccountProviderViewModel>(result);
-
+          
             return View(model);
         }
 
@@ -198,10 +199,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
+            model.AccountHashedId = routeValues.AccountHashedId;
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {
-                return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
+                return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountHashedId = routeValues.AccountHashedId, AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
             }
 
             return View(model);

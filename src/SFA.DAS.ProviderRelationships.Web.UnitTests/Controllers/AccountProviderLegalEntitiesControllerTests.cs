@@ -118,7 +118,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     }
                 },
                 2,
-                false);
+                false,
+                0);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q => 
                     q.AccountId == AccountProviderLegalEntityRouteValues.AccountId &&
@@ -152,7 +153,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         Value = Operation.CreateCohort,
                         IsEnabled = true
                     }
-                }
+                },
+                Confirmation = true
             };
 
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
@@ -165,7 +167,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None)).ReturnsAsync(Unit.Value);
             Mediator.Setup(m => m.Send(It.IsAny<GetAccountProviderQuery>(), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
 
-            return AccountProviderLegalEntitiesController.Permissions(AccountProviderLegalEntityViewModel);
+            return AccountProviderLegalEntitiesController.Confirm(AccountProviderLegalEntityViewModel, null);
         }
 
         public Task<ActionResult> Updated()

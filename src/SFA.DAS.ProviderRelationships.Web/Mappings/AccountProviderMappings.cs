@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
@@ -11,7 +12,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
     {
         public AccountProviderMappings()
         {
-            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>();
+            CreateMap<GetAccountProvidersQueryResult, AccountProvidersViewModel>()
+                .ForMember(d => d.AccountHashedId, o => o.Ignore());
+
+            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>()
+                .ForMember(d => d.AccountHashedId, o => o.Ignore());
 
             CreateMap<GetAddedAccountProviderQueryResult, AddedAccountProviderViewModel>()
                 .ForMember(d => d.Choice, o => o.Ignore());
