@@ -78,5 +78,25 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
             return new List<Operation>();
         }
+
+        public static string Status(this PermissionViewModel permissionViewModel)
+        {
+            switch (permissionViewModel.State)
+            {
+                case State.No: return "Do not allow";
+                case State.Yes: return "Allow";
+                case State.Conditional:
+                {
+                    switch (permissionViewModel.Value)
+                    {
+                        case Permission.CreateCohort: return string.Empty;
+                        case Permission.Recruitment: return "Allow, but I want to review job adverts before they’re advertised";
+                        default: return string.Empty;
+                    }
+                }
+
+                default: return string.Empty;
+            }
+        }
     }
 }

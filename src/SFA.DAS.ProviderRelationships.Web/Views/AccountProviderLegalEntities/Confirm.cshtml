@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.ProviderRelationships.Extensions
+@using SFA.DAS.ProviderRelationships.Types.Models
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
 
 @{
@@ -26,7 +27,7 @@
                     </h1>
                 </legend>
 
-                @if (Model.NoOfProviderCreatedVacancies > 0 && !Model.Operations[1].IsEnabled.Value)
+                @if (Model.NoOfProviderCreatedVacancies > 0 && Model.Permissions[1].State == State.No)
                 {
                     <div class="error-panel">
                         <div class="govuk-warning-text">
@@ -48,13 +49,13 @@
 
                 <dl class="govuk-summary-list govuk-!-margin-bottom-9">
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">@Model.Operations[0].Value.GetDisplayName()</dt>
-                        <dd class="govuk-summary-list__value">@(Model.Operations[0].IsEnabled.HasValue && Model.Operations[0].IsEnabled.Value ? "Allow" : "Do not allow")</dd>
+                        <dt class="govuk-summary-list__key">Add apprentice records</dt>
+                        <dd class="govuk-summary-list__value">@Model.Permissions[0].Status()</dd>
                         <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">@Model.Operations[1].Value.GetDisplayName()</dt>
-                        <dd class="govuk-summary-list__value">@(Model.Operations[1].IsEnabled.HasValue && Model.Operations[1].IsEnabled.Value ? "Allow" : "Do not allow")</dd>
+                        <dt class="govuk-summary-list__key">Recruit apprentices</dt>
+                        <dd class="govuk-summary-list__value">@Model.Permissions[1].Status()</dd>
                         <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                 </dl>
@@ -92,10 +93,10 @@
             @Html.HiddenFor(m => m.AccountProviderId)
             @Html.HiddenFor(m => m.AccountLegalEntity.Name)
             @Html.HiddenFor(m => m.AccountProvider.ProviderName)
-            @Html.HiddenFor(m => m.Operations[0].Value)
-            @Html.HiddenFor(m => m.Operations[1].Value)
-            @Html.HiddenFor(m => m.Operations[0].IsEnabled)
-            @Html.HiddenFor(m => m.Operations[1].IsEnabled)
+            @Html.HiddenFor(m => m.Permissions[0].Value)
+            @Html.HiddenFor(m => m.Permissions[1].Value)
+            @Html.HiddenFor(m => m.Permissions[0].State)
+            @Html.HiddenFor(m => m.Permissions[1].State)
             @Html.HiddenFor(m => m.NoOfProviderCreatedVacancies)
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 

@@ -20,6 +20,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
             Run(f => Permission.Recruitment.GetDescription(), (f, r) => r.Should().Be("Recruit apprentices"));
         }
 
+        [TestCase(Permission.CreateCohort, State.No, "Do not allow")]
+        [TestCase(Permission.CreateCohort, State.Yes, "Allow")]
+        [TestCase(Permission.CreateCohort, State.Conditional, "")]
+        [TestCase(Permission.Recruitment, State.No, "Do not allow")]
+        [TestCase(Permission.Recruitment, State.Yes, "Allow")]
+        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review job adverts before they’re advertised")]
+
+        public void GetStateDescription_WhenGettingStateDescription_ThenShouldReturnDescription(Permission permission, State state, string expected)
+        {
+            var permissionViewModel = new PermissionViewModel {State = state, Value = permission};
+            Assert.AreEqual(expected, permissionViewModel.Status());
+        }
+
         [TestCaseSource(nameof(OperationToPermissions))]
         public void ToPermissions_WhenMappingOperationsToPermissions_ThenShouldMapCorrectly(List<Operation> operations, List<PermissionViewModel> permissions)
         {
