@@ -106,7 +106,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AddAccountProviderViewModel>(result);
-
+          
             return View(model);
         }
 

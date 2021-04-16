@@ -47,23 +47,45 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route]
-        public async Task<ActionResult> Permissions(AccountProviderLegalEntityViewModel model)
+        public ViewResult Permissions(AccountProviderLegalEntityViewModel model)
         {
-            var operations = model.Permissions.ToOperations(); 
-            var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
+            return View("Confirm", model);
+        }
 
-            await _mediator.Send(command);
-
-            if (Session["Invitation"] as bool? == true)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Confirm")]
+        public async Task<ActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
+        {
+            if (command == "Change")
             {
-                var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+                return View("Permissions", model);
             }
 
-            TempData["PermissionsChanged"] = true;
-            TempData["ProviderName"] = model.AccountProvider.ProviderName;
-            TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
-            
+            if (!model.Confirmation.HasValue)
+            {
+                ModelState.AddModelError("confirmation", $"Select if you want to change {model.AccountProvider.ProviderName} permissions");
+                return View("Confirm", model);
+            }
+
+            if (model.Confirmation.Value)
+            {
+                var operations = model.Permissions.ToOperations(); 
+                var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
+                
+                await _mediator.Send(update);
+
+                if (Session["Invitation"] as bool? == true)
+                {
+                    var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
+                    return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+                }
+
+                TempData["PermissionsChanged"] = true;
+                TempData["ProviderName"] = model.AccountProvider.ProviderName;
+                TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
+            }
+
             return RedirectToAction("Index", "AccountProviders");
         }
     }

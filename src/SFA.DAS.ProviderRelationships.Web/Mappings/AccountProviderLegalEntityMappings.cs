@@ -12,11 +12,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         public AccountProviderLegalEntityMappings()
         {
             CreateMap<GetAccountProviderLegalEntityQueryResult, AccountProviderLegalEntityViewModel>()
+                .ForMember(d => d.Confirmation, o => o.Ignore())
                 .ForMember(d => d.AccountId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.MapFrom(s => s.AccountProvider.Id))
                 .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(s => s.AccountLegalEntity.Id))
-                .ForMember(d => d.NoOfProviderCreatedVacancies, o => o.Ignore())
+                .ForMember(d => d.NoOfProviderCreatedVacancies, o => o.MapFrom(d => d.NoOfProviderCreatedVacancies))
                 .ForMember(d => d.Permissions, x => x.MapFrom(s => s.AccountProviderLegalEntity != null ? s.AccountProviderLegalEntity.Operations.ToPermissions() : new List<Operation>().ToPermissions()));
         }
     }

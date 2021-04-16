@@ -20,11 +20,5 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
         {
             return ((short)Value).GetHashCode();
         }
-
-        public bool Equals(PermissionViewModel operationtoCompare)
-        {
-            if (operationtoCompare == null) return false;
-            return Value.Equals(operationtoCompare.Value);
-        }
     }
 }

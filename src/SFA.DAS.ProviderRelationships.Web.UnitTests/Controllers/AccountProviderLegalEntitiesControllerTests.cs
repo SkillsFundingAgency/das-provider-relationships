@@ -43,10 +43,18 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
         
         [Test]
-        public Task Update_WhenPostingPermissionsAction_ThenShouldSendUpdatePermissionsCommand()
+        public Task Update_WhenPostingPermissionsActionWithoutConfirmationSet_ThenShouldSetErrorState()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(), f => f.Mediator.Verify(m => m.Send(
-                It.Is<UpdatePermissionsCommand>(c => 
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(null, null), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
+                v => v.ViewName.Equals("Confirm") && 
+                     f.AccountProviderLegalEntitiesController.ModelState.ContainsKey("Confirmation")));
+        }
+
+        [Test]
+        public Task Update_WhenPostingPermissionsActionWithConfirmation_ThenShouldSendUpdatePermissionsCommand()
+        {
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null), f => f.Mediator.Verify(m => m.Send(
+                It.Is<UpdatePermissionsCommand>(c =>
                     c.AccountId == f.AccountProviderLegalEntityViewModel.AccountId &&
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
@@ -56,9 +64,29 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         }
 
         [Test]
-        public Task Update_WhenPostingPermissionsAction_ThenShouldRedirectToAccountProvidersIndexActionWithTempDataSetCorrectly()
+        public Task Update_WhenPostingPermissionsActionWithNoConfirmation_ThenShouldNotSendUpdatePermissionsCommand()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(), (f , r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, null), f => f.Mediator.Verify(m => m.Send(
+                It.Is<UpdatePermissionsCommand>(c =>
+                    c.AccountId == f.AccountProviderLegalEntityViewModel.AccountId &&
+                    c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
+                    c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
+                    c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Operations.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                CancellationToken.None), Times.Never));
+        }
+
+        [Test]
+        public Task Update_WhenPostingPermissionsActionWithChangeCommand_ThenShouldReturnPermissionsView()
+        {
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, "Change"), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
+                v => v.ViewName.Equals("Permissions")));
+        }
+
+        [Test]
+        public Task Update_WhenPostingPermissionsActionWithConfirmation_ThenShouldRedirectToAccountProvidersIndexActionWithTempDataSetCorrectly()
+        {
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null), (f , r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Index") &&
                 a.RouteValues["Controller"].Equals("AccountProviders") && 
                 f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
@@ -72,7 +100,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingPermissionsActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
         {
-            return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+            return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(true, null), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url.Equals("https://localhost/accounts/ABC123/teams/addedprovider/Foo+Bar")));
         }
     }
@@ -119,7 +147,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     }
                 },
                 2,
-                false);
+                false,
+                0);
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntityQuery>(q => 
                     q.AccountId == AccountProviderLegalEntityRouteValues.AccountId &&
@@ -130,7 +159,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProviderLegalEntitiesController.Permissions(AccountProviderLegalEntityRouteValues);
         }
 
-        public Task<ActionResult> PostUpdate()
+        public Task<ActionResult> PostUpdate(bool? confirmation, string command)
         {
             AccountProviderLegalEntityViewModel = new AccountProviderLegalEntityViewModel
             {
@@ -153,7 +182,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         Value = Permission.CreateCohort,
                         State = State.Yes
                     }
-                }
+                },
+                Confirmation = confirmation
             };
 
             GetAccountProviderQueryResult = new GetAccountProviderQueryResult(
@@ -166,7 +196,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None)).ReturnsAsync(Unit.Value);
             Mediator.Setup(m => m.Send(It.IsAny<GetAccountProviderQuery>(), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
 
-            return AccountProviderLegalEntitiesController.Permissions(AccountProviderLegalEntityViewModel);
+            return AccountProviderLegalEntitiesController.Confirm(AccountProviderLegalEntityViewModel, command);
         }
 
         public Task<ActionResult> Updated()
