@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.Services
             int maxVacanciesToGet = int.MaxValue,
             CancellationToken cancellationToken = default)
         {
-            _log.Info($"Getting VacanciesSummaries for Employer Account ID {hashedAccountId}");
+            _log.Info($"Getting Vacancies Summaries for Employer Account ID {hashedAccountId}");
 
             var vacanciesSummaryUri = $"/api/vacancies/?employerAccountId={hashedAccountId}&pageSize={maxVacanciesToGet}";
 
@@ -69,12 +69,12 @@ namespace SFA.DAS.ProviderRelationships.Services
                     return new VacanciesSummary(new List<VacancySummary>(), 0, 0, 0, 0);
                 }
 
-                _log.Warn($"Failed to call Provider Blocked Status endpoint of Recruit API: {ex.Message}");
+                _log.Warn($"Failed to call Vacancies Summary endpoint of Recruit API: {ex.Message}");
                 throw;
             }
             catch (Exception ex)
             {
-                _log.Warn($"Failed to call Vancancies Summary endpoint of Recruit API: {ex.Message}");
+                _log.Warn($"Failed to call Vacancies Summary endpoint of Recruit API: {ex.Message}");
                 throw;
             }
         }

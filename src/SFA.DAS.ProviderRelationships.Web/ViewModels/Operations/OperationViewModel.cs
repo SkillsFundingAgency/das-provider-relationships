@@ -19,11 +19,5 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Operations
         {
             return ((short)Value).GetHashCode();
         }
-
-        public bool Equals(OperationViewModel operationtoCompare)
-        {
-            if (operationtoCompare == null) return false;
-            return Value.Equals(operationtoCompare.Value);
-        }
     }
 }

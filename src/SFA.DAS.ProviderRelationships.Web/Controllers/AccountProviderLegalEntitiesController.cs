@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public async Task<ActionResult> Permissions(AccountProviderLegalEntityRouteValues routeValues)
         {
-            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountHashedId, routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
+            var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProviderLegalEntityViewModel>(result);
 
@@ -65,13 +65,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             if (!model.Confirmation.HasValue)
             {
-                ModelState.AddModelError("confirmation", "Please confirm you are sure you want to change permissions");
+                ModelState.AddModelError("confirmation", $"Select if you want to change {model.AccountProvider.ProviderName} permissions");
                 return View("Confirm", model);
             }
 
             if (model.Confirmation.Value)
             {
-                var operations = model.Operations.Where(o => o.IsEnabled.HasValue && o.IsEnabled.Value).Select(o => o.Value).ToHashSet();
+                var operations = model.Operations.Where(o => o.IsEnabled.GetValueOrDefault()).Select(o => o.Value).ToHashSet();
                 var update = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
 
                 await _mediator.Send(update);
