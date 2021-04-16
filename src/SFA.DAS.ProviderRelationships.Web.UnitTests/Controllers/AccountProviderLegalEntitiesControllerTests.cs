@@ -72,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
                     c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
-                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Operations.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.ToOperations())),
                 CancellationToken.None), Times.Never));
         }
 

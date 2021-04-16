@@ -71,7 +71,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             if (model.Confirmation.Value)
             {
                 var operations = model.Permissions.ToOperations(); 
-                var command = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
+                var update = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
                 
                 await _mediator.Send(update);
 
