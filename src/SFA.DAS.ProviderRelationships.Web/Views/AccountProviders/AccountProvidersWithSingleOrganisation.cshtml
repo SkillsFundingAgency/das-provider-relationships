@@ -20,15 +20,15 @@
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
                 <td class="govuk-table__cell das-table-cell-width-50">
-                    @if (accountProvider.AccountLegalEntities.First().Operations.Count == 0)
+                    @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
                     {
                         @:No permissions set
                     }
                     else
                     {
-                        foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions().Where(p => p.State != State.No))
+                        foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions())
                         {
-                            <span>@permission.Value.GetDescription()</span><br />
+                            <span>@permission.ToString()</span><br />
                         }
                     }
                 </td>
@@ -36,7 +36,7 @@
                 {
                     <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
-                            @if (accountProvider.AccountLegalEntities.First().Operations.Count == 0)
+                            @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
                             {
                                 @:Set permissions
                             }

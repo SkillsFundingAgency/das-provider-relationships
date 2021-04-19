@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Mappings
 
             CreateMap<AccountLegalEntity, AccountLegalEntityDto>()
                 .ForMember(d => d.HadPermissions, o => o.MapFrom(s => s.AccountProviderLegalEntities
-                    .Any(aple => aple.AccountProviderId == accountProviderId && aple.Updated.HasValue)))
+                    .Any(aple => aple.AccountProviderId == accountProviderId)))
                 .ForMember(d => d.Operations, o => o.MapFrom(s => s.AccountProviderLegalEntities
                     .Where(aple => aple.AccountProviderId == accountProviderId)
                     .SelectMany(aple => aple.Permissions.Select(p => p.Operation))));
