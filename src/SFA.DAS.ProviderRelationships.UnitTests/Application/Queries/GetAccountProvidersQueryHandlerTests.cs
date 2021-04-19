@@ -42,10 +42,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                         AccountLegalEntities = new List<AccountLegalEntityDto> {
                             new AccountLegalEntityDto {
                                 Id = 3,
+                                HadPermissions = true,
                                 Operations = new List<Operation> {Operation.CreateCohort}
                             },
                             new AccountLegalEntityDto {
                                 Id = 4,
+                                HadPermissions = false,
                                 Operations = new List<Operation>()
                             }
                         }
