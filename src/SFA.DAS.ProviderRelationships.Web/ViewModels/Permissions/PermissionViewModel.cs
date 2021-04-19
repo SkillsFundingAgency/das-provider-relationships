@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Ajax.Utilities;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -41,7 +42,8 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
                     {
                         case Types.Models.State.Yes: return "Create and publish job adverts";
                         case Types.Models.State.No: return "Cannot create job adverts";
-                        default: return "Create job adverts";
+                        case Types.Models.State.Conditional: return "Create job adverts";
+                        default: return string.Empty;
                     }
                 }
 
