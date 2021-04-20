@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Ajax.Utilities;
+﻿using System.ComponentModel.DataAnnotations;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
