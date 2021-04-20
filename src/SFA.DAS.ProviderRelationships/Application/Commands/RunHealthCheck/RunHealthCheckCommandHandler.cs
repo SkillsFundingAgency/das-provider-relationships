@@ -5,20 +5,20 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Api.Client;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.Providers.Api.Client;
+using SFA.DAS.ProviderRelationships.Services;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck
 {
     public class RunHealthCheckCommandHandler : AsyncRequestHandler<RunHealthCheckCommand>
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
-        private readonly IProviderApiClient _providerApiClient;
+        private readonly IRoatpService _roatpService;
         private readonly IProviderRelationshipsApiClient _providerRelationshipsApiClient;
 
-        public RunHealthCheckCommandHandler(Lazy<ProviderRelationshipsDbContext> db, IProviderApiClient providerApiClient, IProviderRelationshipsApiClient providerRelationshipsApiClient)
+        public RunHealthCheckCommandHandler(Lazy<ProviderRelationshipsDbContext> db, IRoatpService roatpService, IProviderRelationshipsApiClient providerRelationshipsApiClient)
         {
             _db = db;
-            _providerApiClient = providerApiClient;
+            _roatpService = roatpService;
             _providerRelationshipsApiClient = providerRelationshipsApiClient;
         }
 
@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck
             var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var healthCheck = user.CreateHealthCheck();
             
-            await healthCheck.Run(_providerApiClient.FindAllAsync, () => _providerRelationshipsApiClient.Ping(cancellationToken));
+            await healthCheck.Run(() => _roatpService.Ping(), () => _providerRelationshipsApiClient.Ping(cancellationToken));
 
             _db.Value.HealthChecks.Add(healthCheck);
         }
