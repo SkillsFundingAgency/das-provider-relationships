@@ -1,7 +1,23 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "resourceEnvironmentName": {
+            "type": "string"
+        },
+        "environmentName": {
+            "type": "string"
+        },
+        "serviceName": {
+            "type": "string"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": ""
+        },
         "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },
@@ -29,12 +45,6 @@
         "subnetDelegations": {
             "type": "array"
         },
-        "appServiceName": {
-            "type": "string"
-        },
-        "apiAppServiceName": {
-            "type": "string"
-        },
         "customHostName": {
             "type": "string"
         },
@@ -50,9 +60,6 @@
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
-        "environmentName": {
-            "type": "string"
-        },
         "loggingRedisConnectionString": {
             "type": "securestring"
         },
@@ -62,25 +69,10 @@
         "TokenCertificateThumbprint": {
             "type": "string"
         },
-        "workerAppServiceName": {
-            "type": "string"
-        },
-        "workerAppServicePlanName": {
-            "type": "string"
-        },
-        "cosmosDbName": {
-            "type": "string"
-        },
         "webJobStorageAccountName": {
             "type": "string"
         },
-        "sqlServerResourceGroupName": {
-            "type": "string"
-        },
-        "sqlServerName": {
-            "type": "string"
-        },
-        "databaseName": {
+        "sharedSQLServerName": {
             "type": "string"
         },
         "elasticPoolName": {
@@ -107,18 +99,33 @@
             "type": "string"
         },
         "appServiceAllowedIPs": {
-            "type": "array",
-            "defaultValue": [
-            ]
+            "type": "array"
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/"
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+        "uiAppServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
+        "apiAppServiceName": "[concat(variables('resourceNamePrefix'), 'api-as')]",
+        "workerAppServiceName": "[concat(variables('resourceNamePrefix'), 'wkr-as')]",
+        "workerAppServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
+        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
+        "cosmosDbName": "[concat(variables('resourceNamePrefix'), '-cdb')]"
     },
     "resources": [
         {
-            "apiVersion": "2017-05-10",
-            "name": "StorageAccount",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {}
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "storage-account",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -134,7 +141,7 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-10-01",
             "name": "worker-app-subnet",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -164,8 +171,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
-            "name": "worker-app-service-plan-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "worker-app-service-plan",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -175,10 +183,7 @@
                 },
                 "parameters": {
                     "appServicePlanName": {
-                        "value": "[parameters('workerAppServicePlanName')]"
-                    },
-                    "aspLocation": {
-                        "value": "West Europe"
+                        "value": "[variables('workerAppServicePlanName')]"
                     },
                     "aspSize": {
                         "value": "1"
@@ -190,7 +195,7 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-10-01",
             "name": "app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -214,8 +219,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
-            "name": "app-service-resources-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "app-service",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -225,7 +231,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('uiAppServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
@@ -260,7 +266,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('app-insights-deployment').outputs.InstrumentationKey.value]"
+                                    "value": "[reference('app-insights').outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
@@ -285,7 +291,7 @@
             ]
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-10-01",
             "name": "api-app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -309,8 +315,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-10-01",
             "name": "api-app-service-resources-deployment",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -320,7 +327,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[parameters('apiAppServiceName')]"
+                        "value": "[variables('apiAppServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedBackEndAppServicePlanName')]"
@@ -355,7 +362,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('api-app-insights-deployment').outputs.InstrumentationKey.value]"
+                                    "value": "[reference('api-app-insights').outputs.InstrumentationKey.value]"
                                 }
                             ]
                         }
@@ -376,8 +383,9 @@
             ]
         },
         {
-            "apiVersion": "2017-05-10",
-            "name": "worker-app-service-resources-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "worker-app-service",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -387,10 +395,10 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[parameters('workerAppServiceName')]"
+                        "value": "[variables('workerAppServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('workerAppServicePlanName')]"
+                        "value": "[variables('workerAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[resourceGroup().name]"
@@ -422,7 +430,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('worker-app-insights-deployment').outputs.InstrumentationKey.value]"
+                                    "value": "[reference('worker-app-insights').outputs.InstrumentationKey.value]"
                                 }
                             ]
                         }
@@ -432,12 +440,12 @@
                             "array": [
                                 {
                                     "name": "AzureWebJobsDashboard",
-                                    "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                    "connectionString": "[reference('storage-account').outputs.storageConnectionString.value]",
                                     "type": "Custom"
                                 },
                                 {
                                     "name": "AzureWebJobsStorage",
-                                    "connectionString": "[reference('StorageAccount').outputs.storageConnectionString.value]",
+                                    "connectionString": "[reference('storage-account').outputs.storageConnectionString.value]",
                                     "type": "Custom"
                                 }
                             ]
@@ -451,8 +459,9 @@
             ]
         },
         {
-            "apiVersion": "2017-08-01",
-            "name": "app-insights-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "app-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -462,10 +471,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('uiAppServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('uiAppServiceName')]"
                     }
                 }
             },
@@ -473,8 +482,9 @@
             ]
         },
         {
-            "apiVersion": "2017-08-01",
-            "name": "api-app-insights-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "api-app-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -484,10 +494,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('apiAppServiceName')]"
+                        "value": "[variables('apiAppServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[parameters('apiAppServiceName')]"
+                        "value": "[variables('apiAppServiceName')]"
                     }
                 }
             },
@@ -495,8 +505,9 @@
             ]
         },
         {
-            "apiVersion": "2017-08-01",
-            "name": "worker-app-insights-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "worker-app-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -506,10 +517,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('workerAppServiceName')]"
+                        "value": "[variables('workerAppServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[parameters('workerAppServiceName')]"
+                        "value": "[variables('workerAppServiceName')]"
                     }
                 }
             },
@@ -517,8 +528,9 @@
             ]
         },
         {
-            "apiVersion": "2017-05-10",
-            "name": "cosmos-db-resources-deployment",
+            "apiVersion": "2020-10-01",
+            "name": "cosmos-db",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "dependsOn": [
             ],
             "type": "Microsoft.Resources/deployments",
@@ -530,7 +542,7 @@
                 },
                 "parameters": {
                     "cosmosDbName": {
-                        "value": "[parameters('cosmosDbName')]"
+                        "value": "[variables('cosmosDbName')]"
                     },
                     "cosmosDbType": {
                         "value": "GlobalDocumentDB"
@@ -545,10 +557,10 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
-            "name": "SQLDatabase",
+            "apiVersion": "2020-10-01",
+            "name": "sql-database",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sqlServerResourceGroupName')]",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -557,10 +569,10 @@
                 },
                 "parameters": {
                     "databaseName": {
-                        "value": "[parameters('databaseName')]"
+                        "value": "[variables('databaseName')]"
                     },
                     "sqlServerName": {
-                        "value": "[parameters('sqlServerName')]"
+                        "value": "[parameters('sharedSQLServerName')]"
                     },
                     "elasticPoolName": {
                         "value": "[parameters('elasticPoolName')]"
@@ -579,5 +591,29 @@
         }
     ],
     "outputs": {
+        "ResourceGroupName": {
+            "type": "string",
+            "value": "[variables('resourceGroupName')]"
+        },
+        "UiAppServiceName": {
+            "type": "string",
+            "value": "[variables('uiAppServiceName')]"
+        },
+        "ApiAppServiceName": {
+            "type": "string",
+            "value": "[variables('apiAppServiceName')]"
+        },
+        "workerAppServiceName": {
+            "type": "string",
+            "value": "[variables('workerAppServiceName')]"
+        },
+        "DatabaseName": {
+            "type": "string",
+            "value": "[variables('databaseName')]"
+        },
+        "CosmosDbName": {
+            "type": "string",
+            "value": "[variables('cosmosDbName')]"
+        }
     }
 }
