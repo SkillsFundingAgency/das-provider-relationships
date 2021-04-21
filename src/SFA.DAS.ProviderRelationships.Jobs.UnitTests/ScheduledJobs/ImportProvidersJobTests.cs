@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Apprenticeships.Api.Types.Providers;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs;
-using SFA.DAS.Providers.Api.Client;
+using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.Testing;
 
 namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
@@ -40,16 +40,16 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
         public DateTime Now { get; set; }
         public Mock<ProviderRelationshipsDbContext> Db { get; set; }
         public ImportProvidersJob Job { get; set; }
-        public Mock<IProviderApiClient> ProviderApiClient { get; set; }
-        public List<ProviderSummary> Providers { get; set; }
-        public List<ProviderSummary> ImportedProviders { get; set; }
+        public Mock<IRoatpService> RoatpService { get; set; }
+        public List<ProviderRegistration> Providers { get; set; }
+        public List<ProviderRegistration> ImportedProviders { get; set; }
 
         public ImportProvidersJobTestsFixture()
         {
             Now = DateTime.UtcNow;
             Db = new Mock<ProviderRelationshipsDbContext>();
-            ProviderApiClient = new Mock<IProviderApiClient>();
-            ImportedProviders = new List<ProviderSummary>();
+            RoatpService = new Mock<IRoatpService>();
+            ImportedProviders = new List<ProviderRegistration>();
             
             Db.Setup(d => d.ExecuteSqlCommandAsync(It.IsAny<string>(), It.IsAny<SqlParameter>(), It.IsAny<SqlParameter>()))
                 .Returns(Task.CompletedTask)
@@ -58,14 +58,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
                     var sqlParameter = (SqlParameter)p[0];
                     var dataTable = (DataTable)sqlParameter.Value;
                     
-                    ImportedProviders.AddRange(dataTable.AsEnumerable().Select(r => new ProviderSummary
+                    ImportedProviders.AddRange(dataTable.AsEnumerable().Select(r => new ProviderRegistration
                     {
-                        Ukprn = (long)r[0],
+                        Ukprn = (int)r[0],
                         ProviderName = (string)r[1]
                     }));
                 });
             
-            Job = new ImportProvidersJob(ProviderApiClient.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db.Object));
+            Job = new ImportProvidersJob(RoatpService.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db.Object));
         }
 
         public Task Run()
@@ -76,14 +76,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests.ScheduledJobs
         public ImportProvidersJobTestsFixture SetProviders(int count)
         {
             Providers = Enumerable.Range(1, count)
-                .Select(i => new ProviderSummary
+                .Select(i => new ProviderRegistration
                 {
                     Ukprn = i,
                     ProviderName = i.ToString()
                 })
                 .ToList();
             
-            ProviderApiClient.Setup(c => c.FindAllAsync()).ReturnsAsync(Providers);
+            RoatpService.Setup(c => c.GetProviders()).ReturnsAsync(Providers);
             
             return this;
         }
