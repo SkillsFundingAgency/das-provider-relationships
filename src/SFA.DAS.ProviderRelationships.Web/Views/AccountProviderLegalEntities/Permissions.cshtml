@@ -75,12 +75,15 @@
                                 Allow
                             </label>
                         </div>
-                        <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Conditional, new { id = "operation-1-conditional", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="operation-1-conditional">
-                                Allow, but I want to review job adverts before they’re advertised
-                            </label>
-                        </div>
+                        @if (ViewBag.AllowCollaborationPermission)
+                        {
+                            <div class="govuk-radios__item">
+                                @Html.RadioButtonFor(m => m.Permissions[1].State, State.Conditional, new {id = "operation-1-conditional", @class = "govuk-radios__input"})
+                                <label class="govuk-label govuk-radios__label" for="operation-1-conditional">
+                                    Allow, but I want to review job adverts before they’re advertised
+                                </label>
+                            </div>
+                        }
                         <div class="govuk-radios__item">
                             @Html.RadioButtonFor(m => m.Permissions[1].State, State.No, new { id = "operation-1-no", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="operation-1-no">

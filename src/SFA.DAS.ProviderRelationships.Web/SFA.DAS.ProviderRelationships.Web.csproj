@@ -147,6 +147,7 @@
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
     <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
+    <Compile Include="Filters\ConfigurationViewBagFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
