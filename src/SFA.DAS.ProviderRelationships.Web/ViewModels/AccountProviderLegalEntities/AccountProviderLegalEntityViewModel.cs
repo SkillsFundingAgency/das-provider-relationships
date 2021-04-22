@@ -28,7 +28,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         [Required]
         public List<OperationViewModel> Operations { get; set; }
 
-        public int NoOfProviderCreatedVacancies { get; set; }
         public bool IsProviderBlockedFromRecruit { get; set; }
        
         public bool? Confirmation { get; set; }

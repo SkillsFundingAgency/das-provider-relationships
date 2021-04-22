@@ -26,16 +26,17 @@
                     </h1>
                 </legend>
 
-                @if (Model.NoOfProviderCreatedVacancies > 0 && !Model.Operations[1].IsEnabled.Value)
+                @if (!Model.Operations[1].IsEnabled.Value)
                 {
                     <div class="error-panel">
                         <div class="govuk-warning-text">
                             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
                             <strong class="govuk-warning-text__text">
                                 <span class="govuk-warning-text__assistive">Warning</span>
-                                @Model.NoOfProviderCreatedVacancies advert@($"{(Model.NoOfProviderCreatedVacancies > 1 ? "s" : "")}") will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.<br><br>
-                                Any live adverts will be closed. Adverts pending review will be sent back to draft. You will be able to clone closed adverts if you want to republish them.
-                            </strong>
+                                All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.
+                                <br />
+                                <br />
+                                Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.                            </strong>
                         </div>
                     </div>
                 }
@@ -96,7 +97,6 @@
             @Html.HiddenFor(m => m.Operations[1].Value)
             @Html.HiddenFor(m => m.Operations[0].IsEnabled)
             @Html.HiddenFor(m => m.Operations[1].IsEnabled)
-            @Html.HiddenFor(m => m.NoOfProviderCreatedVacancies)
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 
             <button class="govuk-button" type="submit">Save changes</button>
