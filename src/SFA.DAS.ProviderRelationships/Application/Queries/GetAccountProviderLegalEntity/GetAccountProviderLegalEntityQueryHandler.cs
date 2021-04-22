@@ -53,11 +53,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
             var accountLegalEntitiesCount = await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
 
             var providerOrgBlockStatus = await _dasRecruitService.GetProviderBlockedStatusAsync(accountProvider.ProviderUkprn, cancellationToken);
-            var vacancies = await _dasRecruitService.GetVacanciesAsync(_hashingService.HashValue(request.AccountId), request.AccountLegalEntityId, accountProvider.ProviderUkprn);
-
+         
             var isProviderBlockedFromRecruit = providerOrgBlockStatus != null && providerOrgBlockStatus.Status.Equals(BlockedOrganisationStatusConstants.Blocked);
 
-            return new GetAccountProviderLegalEntityQueryResult(accountProvider, accountLegalEntity, accountProviderLegalEntity, accountLegalEntitiesCount, isProviderBlockedFromRecruit, vacancies.TotalResults);
+            return new GetAccountProviderLegalEntityQueryResult(accountProvider, accountLegalEntity, accountProviderLegalEntity, accountLegalEntitiesCount, isProviderBlockedFromRecruit);
         }
     }
 }
