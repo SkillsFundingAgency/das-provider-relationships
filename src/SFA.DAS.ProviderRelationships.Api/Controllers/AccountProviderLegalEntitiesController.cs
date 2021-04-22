@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
         [Route]
         public async Task<IHttpActionResult> Get([FromUri] GetAccountProviderLegalEntitiesRouteValues routeValues, CancellationToken cancellationToken)
         {
-            if (routeValues.Ukprn == null && routeValues.AccountHashedId == null)
+            if (routeValues.Ukprn == null && string.IsNullOrWhiteSpace(routeValues.AccountHashedId))
             {
                 ModelState.AddModelError(nameof(routeValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
                 ModelState.AddModelError(nameof(routeValues.AccountHashedId), "Currently an AccountHashedId filter needs to be supplied");
@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 return BadRequest(ModelState);
             }
             
-            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn.Value, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operation.Value), cancellationToken);
+            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operation.Value), cancellationToken);
 
             return Ok(new GetAccountProviderLegalEntitiesWithPermissionResponse { AccountProviderLegalEntities = result.AccountProviderLegalEntities });
         }

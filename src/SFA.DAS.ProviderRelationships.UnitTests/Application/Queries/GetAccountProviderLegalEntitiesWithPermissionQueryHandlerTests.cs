@@ -93,17 +93,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Account = EntityActivator.CreateInstance<Account>()
                 .Set(a => a.Id, 4660117L)
-                .Set(a => a.HashedId, "DSFGHF");
+                .Set(a => a.HashedId, Query.AccountHashedId);
             
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
                 .Set(ap => ap.Id, 49L)
                 .Set(ap => ap.AccountId, Account.Id)
-                .Set(ap => ap.ProviderUkprn, Query.Ukprn);
+                .Set(ap => ap.ProviderUkprn, Query.Ukprn.GetValueOrDefault());
 
             AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
                 .Set(ale =>ale.Id,413L)
                 .Set(ale => ale.Name, "Legal Entity Name")
-                .Set(ale => ale.PublicHashedId, "ABC123")
+                .Set(ale => ale.PublicHashedId, Query.AccountLegalEntityPublicHashedId)
                 .Set(ale => ale.AccountId, Account.Id);
             
             AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()

@@ -7,12 +7,12 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions
 {
     public static class IHttpActionResultExtensions
     {
-        public static void AssertSingleModelError(this IHttpActionResult result, string propertyName, string expectedErrorMessage)
+        public static void AssertModelError(this IHttpActionResult result, string propertyName, string expectedErrorMessage)
         {
             result.Should().NotBeNull();
             var modelStateDictionary = result.GetModelStateDictionary();
             modelStateDictionary.Should().NotBeNull();
-            modelStateDictionary.HasSingleModelError(propertyName, expectedErrorMessage).Should().BeTrue();
+            modelStateDictionary.HasModelError(propertyName, expectedErrorMessage).Should().BeTrue();
         }
 
         public static ModelStateDictionary GetModelStateDictionary(this IHttpActionResult result)
