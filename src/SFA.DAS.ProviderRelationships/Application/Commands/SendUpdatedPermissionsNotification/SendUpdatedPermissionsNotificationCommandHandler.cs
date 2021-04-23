@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification
@@ -31,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
 
             var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
 
-            var permissionUpdatesTokens = GetPermissionsUpdatedTokens(request.PreviousOperations, request.GrantedOperations, organisation.Name);
+            var permissionUpdatesTokens = GetPermissionsUpdatedTokens(request.GrantedOperations);
 
             if (permissionUpdatesTokens.Any())
             {
@@ -48,50 +47,37 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
             }
         }
 
-        private Dictionary<string, string> GetPermissionsUpdatedTokens(HashSet<Operation> previousOperations, HashSet<Operation> grantedOperations, string organisationName)
+        private Dictionary<string, string> GetPermissionsUpdatedTokens(HashSet<Operation> grantedOperations)
         {
             var permissionsUpdatedTokens = new Dictionary<string, string>();
-            var removedOperations = previousOperations.Except(grantedOperations);
-            var newOperations = grantedOperations.Except(previousOperations);
+            var part2 = string.Empty;
 
-            if (removedOperations.Any())
+            if (grantedOperations.Contains(Operation.CreateCohort))
             {
-                if (!newOperations.Any())
-                {
-                    var remainingOperationsText = grantedOperations.Count > 0
-                        ? $"You can still {GetOperationText(grantedOperations)} on their behalf."
-                        : $"You cannot do anything in the apprenticeship service on their behalf at the moment.";
-
-                    permissionsUpdatedTokens.Add("part1_text", $"removed your permission to {GetOperationText(removedOperations)}.");
-                    permissionsUpdatedTokens.Add("part2_text", $"{remainingOperationsText}");
-                }
-                else
-                {
-                    permissionsUpdatedTokens.Add("part1_text", ":");
-                    permissionsUpdatedTokens.Add(
-                        "part2_text",
-                        $"\u2022 given you permission to {GetOperationText(newOperations)}" +
-                        $"{Environment.NewLine}" +
-                        $"\u2022 removed your permission to {GetOperationText(removedOperations)}");
-                }
+                part2 += "\u2022 add apprentice records" + Environment.NewLine;
             }
             else
             {
-                if (newOperations.Any())
-                {
-                    permissionsUpdatedTokens.Add("part1_text", "changed your apprenticeship service permissions.");
-                    permissionsUpdatedTokens.Add("part2_text", $"You can now { GetOperationText(grantedOperations)} on their behalf.");
-                }
+                part2 += "\u2022 cannot add apprentice records" + Environment.NewLine;
             }
 
-            return permissionsUpdatedTokens;
-        }
+            if (grantedOperations.Contains(Operation.RecruitmentRequiresReview))
+            {
+                part2 += "\u2022 create job adverts" + Environment.NewLine;
+            }
+            else if (grantedOperations.Contains(Operation.Recruitment))
+            {
+                part2 += "\u2022 create and publish job adverts" + Environment.NewLine;
+            }
+            else
+            {
+                part2 += "\u2022 cannot create job adverts" + Environment.NewLine;
+            }
 
-        private string GetOperationText(IEnumerable<Operation> operations)
-        {
-            return  string.Join(" and ", operations?.OrderBy(x => x)
-              .Where(ope => !string.IsNullOrEmpty(ope.ToString()))
-              .Select(ope => ope.GetDisplayName().ToLower()));
+            permissionsUpdatedTokens.Add("part1_text", "set your apprenticeship service permissions to:");
+            permissionsUpdatedTokens.Add("part2_text", part2);
+
+            return permissionsUpdatedTokens;
         }
     }
 }
