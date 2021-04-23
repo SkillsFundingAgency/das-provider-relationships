@@ -49,6 +49,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public ViewResult Permissions(AccountProviderLegalEntityViewModel model)
         {
+            for (var index = 0; index < model.Permissions.Count; index++)
+            {
+                if (!model.Permissions[index].State.HasValue)
+                {
+                    ModelState.AddModelError($"Permissions[{index}].State", $"Select the permissions you give {model.AccountProvider.ProviderName}");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             return View("Confirm", model);
         }
 

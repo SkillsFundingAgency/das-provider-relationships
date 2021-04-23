@@ -5,7 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
 {
     public class PermissionViewModel
     {
-        [Required(ErrorMessage = "Select the permission required")]
         public State? State { get; set; }
 
         public Permission Value { get; set; }
