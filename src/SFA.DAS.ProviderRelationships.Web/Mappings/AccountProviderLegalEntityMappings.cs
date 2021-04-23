@@ -15,7 +15,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.MapFrom(s => s.AccountProvider.Id))
                 .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(s => s.AccountLegalEntity.Id))
-                .ForMember(d => d.NoOfProviderCreatedVacancies, o => o.MapFrom(d => d.NoOfProviderCreatedVacancies))
                 .ForMember(d => d.Permissions,
                     o =>
                     {
