@@ -9,6 +9,7 @@ using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -75,13 +76,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 return View("Permissions", model);
             }
 
-            if (!model.Confirmation.HasValue)
+            if (model.Permissions[1].State == State.No && !model.Confirmation.HasValue)
             {
                 ModelState.AddModelError("confirmation", $"Select if you want to change {model.AccountProvider.ProviderName} permissions");
                 return View("Confirm", model);
             }
 
-            if (model.Confirmation.Value)
+            if (model.Confirmation.GetValueOrDefault() || model.Permissions[1].State != State.No)
             {
                 var operations = model.Permissions.ToOperations(); 
                 var update = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
