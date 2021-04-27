@@ -1,5 +1,4 @@
-﻿@using SFA.DAS.ProviderRelationships.Extensions
-@using SFA.DAS.ProviderRelationships.Types.Models
+﻿@using SFA.DAS.ProviderRelationships.Types.Models
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
 
 @{
@@ -20,75 +19,88 @@
         {
             @Html.AntiForgeryToken()
 
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-heading-l">
-                        Confirm permissions for @Model.AccountProvider.ProviderName
-                    </h1>
-                </legend>
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-heading-l">
+                    Confirm permissions for @Model.AccountProvider.ProviderName
+                </h1>
+            </legend>
 
-                @if (Model.Permissions[1].State == State.No)
-                {
-                    <div class="error-panel">
-                        <div class="govuk-warning-text">
-                            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                            <strong class="govuk-warning-text__text">
-                                <span class="govuk-warning-text__assistive">Warning</span>
-                                All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.
-                                <br />
-                                <br />
-                                Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.                            </strong>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <p class="govuk-!-margin-bottom-6">
-                        These permissions are on behalf of @Model.AccountLegalEntity.Name
-                    </p>
-                }
-
-                <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Add apprentice records</dt>
-                        <dd class="govuk-summary-list__value">@Model.Permissions[0].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Recruit apprentices</dt>
-                        <dd class="govuk-summary-list__value">@Model.Permissions[1].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
-                    </div>
-                </dl>
-
-                <div class="govuk-form-group @(Html.IsValid(m => m.Confirmation) ? "" : "govuk-form-group--error")">
-                    <div class="govuk-radios" data-module="radios">
-                        <h2 class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                            Are you sure you want to change the permissions for @Model.AccountProvider.ProviderName?
-                        </h2>
-
-                        @if (!Html.IsValid(m => m.Confirmation))
-                        {
-                            <span id="confirmation-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Confirmation)
-                            </span>
-                        }
-
-                        <div class="govuk-radios__item" id="confirmation">
-                            @Html.RadioButtonFor(m => m.Confirmation, true, new { id = "confirmation-yes", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="confirmation-yes">
-                                Yes
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Confirmation, false, new { id = "confirmation-no", @class = "govuk-radios__input" })
-                            <label class="govuk-label govuk-radios__label" for="confirmation-no">
-                                No
-                            </label>
-                        </div>
+            @if (Model.Permissions[1].State == State.No)
+            {
+                <div class="error-panel">
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.
+                            <br />
+                            <br />
+                            Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.
+                        </strong>
                     </div>
                 </div>
-            </fieldset>
+            }
+            else if (Model.Permissions[1].State == State.Conditional)
+            {
+                <div class="error-panel">
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            Changing permissions now will only apply to new adverts; you will not be able to review adverts currently submitted for approval.
+                        </strong>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="govuk-!-margin-bottom-6">
+                    These permissions are on behalf of @Model.AccountLegalEntity.Name
+                </p>
+            }
+
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Add apprentice records</dt>
+                    <dd class="govuk-summary-list__value">@Model.Permissions[0].Status()</dd>
+                    <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Recruit apprentices</dt>
+                    <dd class="govuk-summary-list__value">@Model.Permissions[1].Status()</dd>
+                    <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
+                </div>
+            </dl>
+
+            <div class="govuk-form-group @(Html.IsValid(m => m.Confirmation) ? "" : "govuk-form-group--error")">
+                <div class="govuk-radios" data-module="radios">
+                    <h2 class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        Are you sure you want to change the permissions for @Model.AccountProvider.ProviderName?
+                    </h2>
+
+                    @if (!Html.IsValid(m => m.Confirmation))
+                    {
+                        <span id="confirmation-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Confirmation)
+                        </span>
+                    }
+
+                    <div class="govuk-radios__item" id="confirmation">
+                        @Html.RadioButtonFor(m => m.Confirmation, true, new { id = "confirmation-yes", @class = "govuk-radios__input" })
+                        <label class="govuk-label govuk-radios__label" for="confirmation-yes">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        @Html.RadioButtonFor(m => m.Confirmation, false, new { id = "confirmation-no", @class = "govuk-radios__input" })
+                        <label class="govuk-label govuk-radios__label" for="confirmation-no">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
 
             @Html.HiddenFor(m => m.AccountLegalEntityId)
             @Html.HiddenFor(m => m.AccountProviderId)
