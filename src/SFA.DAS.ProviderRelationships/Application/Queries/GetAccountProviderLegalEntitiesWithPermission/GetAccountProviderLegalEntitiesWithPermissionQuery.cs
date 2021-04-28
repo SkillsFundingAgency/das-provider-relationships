@@ -5,11 +5,15 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
 {
     public class GetAccountProviderLegalEntitiesWithPermissionQuery : IRequest<GetAccountProviderLegalEntitiesWithPermissionQueryResult>
     {
-        public long Ukprn { get; }
+        public string AccountHashedId { get; }
+        public string AccountLegalEntityPublicHashedId { get; }
+        public long? Ukprn { get; }
         public Operation Operation { get; }
 
-        public GetAccountProviderLegalEntitiesWithPermissionQuery(long ukprn, Operation operation)
+        public GetAccountProviderLegalEntitiesWithPermissionQuery(long? ukprn, string accountHashedId, string accountLegalEntityPublicHashedId, Operation operation)
         {
+            AccountHashedId = accountHashedId;
+            AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
             Ukprn = ukprn;
             Operation = operation;
         }

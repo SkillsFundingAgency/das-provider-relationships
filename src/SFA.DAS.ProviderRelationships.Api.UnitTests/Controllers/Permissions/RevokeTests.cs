@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                 assert: (f, r) =>
                 {
                     r.Should().BeAssignableTo<InvalidModelStateResult>();
-                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A Ukprn needs to be supplied");
+                    r.AssertModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A Ukprn needs to be supplied");
                 }
             );
 
@@ -51,7 +51,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                 assert: (f, r) =>
                 {
                     r.Should().BeAssignableTo<InvalidModelStateResult>();
-                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
+                    r.AssertModelError(nameof(RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
                 }
             );
 
@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.Permissions
                 assert: (f, r) =>
                 {
                     r.Should().BeAssignableTo<InvalidModelStateResult>();
-                    r.AssertSingleModelError(nameof(RevokePermissionsRouteValues.OperationsToRevoke), "One or more operations need to be supplied");
+                    r.AssertModelError(nameof(RevokePermissionsRouteValues.OperationsToRevoke), "One or more operations need to be supplied");
                 }
             );
 
