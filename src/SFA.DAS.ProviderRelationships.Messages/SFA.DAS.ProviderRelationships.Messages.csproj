@@ -7,7 +7,7 @@
 
         <Authors>DAS</Authors>
         <Description>SFA.DAS.ProviderRelationships message library</Description>
-        <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicense>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicense>
         <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-provider-relationships</PackageProjectUrl>
 
         <EmbedUntrackedSources>false</EmbedUntrackedSources>
@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <PackageReference Include="SFA.DAS.NServiceBus" Version="15.0.25" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>

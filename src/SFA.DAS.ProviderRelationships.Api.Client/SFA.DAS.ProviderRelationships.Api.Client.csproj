@@ -7,7 +7,7 @@
 
         <Authors>DAS</Authors>
         <Description>API Client for SFA.DAS.ProviderRelationships</Description>
-        <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicense>https://github.com/SkillsFundingAgency/das-provider-relationships/blob/master/LICENSE</PackageLicense>
         <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-provider-relationships</PackageProjectUrl>
 
         <EmbedUntrackedSources>false</EmbedUntrackedSources>
@@ -22,7 +22,6 @@
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All" />
         <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.2.6" />
         <PackageReference Include="SFA.DAS.Http" Version="3.2.62" />
         <PackageReference Include="StructureMap" Version="4.7.1" />
