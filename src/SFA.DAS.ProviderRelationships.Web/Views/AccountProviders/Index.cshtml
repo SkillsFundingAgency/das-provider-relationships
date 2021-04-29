@@ -10,11 +10,11 @@
     <a href="@Html.EmployerUrls().Account()" class="govuk-back-link">Back</a>
 }
   
-@if (TempData.ContainsKey("LegalEntityName") && TempData.ContainsKey("ProviderName"))
+@if (TempData.ContainsKey("ProviderName"))
 {
     <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-8">
         <h1 class="govuk-panel__title">
-            You've successfully changed @TempData["LegalEntityName"] permissions
+            You've successfully changed @TempData["ProviderName"] permissions
         </h1>
         <div class="govuk-panel__body">
             We’ll send @TempData["ProviderName"] an email to let them know that you’ve changed their permissions and what their new permissions are.
