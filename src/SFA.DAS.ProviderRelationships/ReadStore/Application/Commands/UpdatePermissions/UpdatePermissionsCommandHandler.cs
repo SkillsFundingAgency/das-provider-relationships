@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using NServiceBus.Logging;
 using SFA.DAS.CosmosDb;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
@@ -41,9 +41,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePer
 
                     await _accountProviderLegalEntitiesRepository.Add(accountProviderLegalEntity, null, cancellationToken);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    _log.Error($"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}", e);
+                    _log.Error(ex, $"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}");
                     throw;
                 }
             }
