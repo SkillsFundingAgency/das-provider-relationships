@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 
         public Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
         {
-            return Task.WhenAll(
+            var tasks = Task.WhenAll(
                 _mediator.Send(new UpdatedPermissionsEventAuditCommand(
                     message.AccountId,
                     message.AccountLegalEntityId,
@@ -37,12 +37,20 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
                     message.Ukprn,
                     message.GrantedOperations,
                     message.Updated,
-                    context.MessageId)),
-                _mediator.Send(new SendUpdatedPermissionsNotificationCommand(
+                    context.MessageId)));
+
+            tasks.Wait();
+
+            if (tasks.Status == TaskStatus.RanToCompletion)
+            {
+                return _mediator.Send(new SendUpdatedPermissionsNotificationCommand(
                     message.Ukprn,
                     message.AccountLegalEntityId,
                     message.PreviousOperations,
-                    message.GrantedOperations)));
+                    message.GrantedOperations));
+            }
+
+            return null;
         }
     }
 }
