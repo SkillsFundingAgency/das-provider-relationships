@@ -64,84 +64,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 });
 
         [Test]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_BothPermissionsAdded_ThenShouldCallClientToNotifyPermissionSet() =>
-           RunAsync(
-               arrange: f =>
-               {
-                   f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
-               },
-               act: async f =>
-               {
-                   await f.Handle();
-               },
-               assert: f =>
-               {
-                   Assert.IsNotNull(f.ResultEmailRequest);
-                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
-                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual("You can now add apprentice records and recruit apprentices on their behalf.", f.ResultEmailRequest.Tokens["part2_text"]);
-               });
-
-        [Test]
-        [TestCase(Operation.CreateCohort, "You can now add apprentice records on their behalf.")]
-        [TestCase(Operation.Recruitment, "You can now recruit apprentices on their behalf.")]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_SinglePermissionAdded_ThenShouldCallClientToNotifyWithPermissionSet(Operation grantedOperation, string expectedSetPermissionString) =>
-           RunAsync(
-               arrange: f =>
-               {
-                   f.Command.GrantedOperations = new HashSet<Operation> { grantedOperation };
-               },
-               act: async f =>
-               {
-                   await f.Handle();
-               },
-               assert: f =>
-               {
-                   Assert.IsNotNull(f.ResultEmailRequest);
-                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
-                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual(expectedSetPermissionString, f.ResultEmailRequest.Tokens["part2_text"]);
-               });
-
-        [Test]
-        [TestCase(Operation.CreateCohort, Operation.Recruitment)]
-        [TestCase(Operation.Recruitment, Operation.CreateCohort)]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_SinglePermissionSet_SinglePermissionAdded_ThenShouldCallClientToNotifyWithPermissionSet(
-            Operation previousSetOperation, 
-            Operation grantedOperation) =>
-           RunAsync(
-               arrange: f =>
-               {
-                   f.Command.PreviousOperations = new HashSet<Operation> { previousSetOperation };
-                   f.Command.GrantedOperations = new HashSet<Operation> { previousSetOperation, grantedOperation };
-               },
-               act: async f =>
-               {
-                   await f.Handle();
-               },
-               assert: f =>
-               {
-                   Assert.IsNotNull(f.ResultEmailRequest);
-                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
-                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual("changed your apprenticeship service permissions.", f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual("You can now add apprentice records and recruit apprentices on their behalf.", f.ResultEmailRequest.Tokens["part2_text"]);
-               });
-
-        [Test]
-        [TestCase(Operation.CreateCohort, "removed your permission to recruit apprentices.", "You can still add apprentice records on their behalf.")]
-        [TestCase(Operation.Recruitment, "removed your permission to add apprentice records.", "You can still recruit apprentices on their behalf.")]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_BothPermissionSet_SinglePermissionRemoved_ThenShouldCallClientToNotifyWithPermissionRemoved(
-            Operation remainingGrantedOperation, 
-            string expectedSetPermissionPart1, 
+        [TestCase(new Operation[] { Operation.CreateCohort, Operation.Recruitment }, "• add apprentice records\r\n• create and publish job adverts\r\n")]
+        [TestCase(new Operation[] { Operation.CreateCohort, Operation.Recruitment, Operation.RecruitmentRequiresReview }, "• add apprentice records\r\n• create job adverts\r\n")]
+        [TestCase(new Operation[] { Operation.Recruitment, Operation.RecruitmentRequiresReview }, "• cannot add apprentice records\r\n• create job adverts\r\n")]
+        [TestCase(new Operation[] { Operation.Recruitment }, "• cannot add apprentice records\r\n• create and publish job adverts\r\n")]
+        [TestCase(new Operation[] { Operation.CreateCohort }, "• add apprentice records\r\n• cannot create job adverts\r\n")]
+        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithPermissions(
+            Operation[] operations,
             string expectedSetPermissionPart2) =>
            RunAsync(
                arrange: f =>
                {
-                   f.Command.PreviousOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
-                   f.Command.GrantedOperations = new HashSet<Operation> { remainingGrantedOperation };
+                   f.Command.PreviousOperations = new HashSet<Operation> { };
+                   f.Command.GrantedOperations = new HashSet<Operation>(operations);
                },
                act: async f =>
                {
@@ -152,60 +87,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    Assert.IsNotNull(f.ResultEmailRequest);
                    Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
                    Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual(expectedSetPermissionPart1, f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
-               });
-
-        [Test]
-        [TestCase(new Operation[] { Operation.CreateCohort, Operation.Recruitment }, "removed your permission to add apprentice records and recruit apprentices.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
-        [TestCase(new Operation[] { Operation.Recruitment }, "removed your permission to recruit apprentices.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
-        [TestCase(new Operation[] { Operation.CreateCohort }, "removed your permission to add apprentice records.", "You cannot do anything in the apprenticeship service on their behalf at the moment.")]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_AllPermissionsRemoved_ThenShouldCallClientToNotifyWithPermissionRemoved(
-            Operation[] previousSetOperations,
-            string expectedSetPermissionPart1,
-            string expectedSetPermissionPart2) =>
-           RunAsync(
-               arrange: f =>
-               {
-                   f.Command.PreviousOperations = new HashSet<Operation>(previousSetOperations);
-                   f.Command.GrantedOperations = new HashSet<Operation> {  };
-               },
-               act: async f =>
-               {
-                   await f.Handle();
-               },
-               assert: f =>
-               {
-                   Assert.IsNotNull(f.ResultEmailRequest);
-                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
-                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual(expectedSetPermissionPart1, f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
-               });
- 
-        [Test]
-        [TestCase(Operation.Recruitment, Operation.CreateCohort, "\u2022 given you permission to add apprentice records\r\n\u2022 removed your permission to recruit apprentices")]
-        [TestCase(Operation.CreateCohort, Operation.Recruitment, "\u2022 given you permission to recruit apprentices\r\n\u2022 removed your permission to add apprentice records")]
-        public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_AlternatingPermissions_ThenShouldCallClientToNotifyWithPermissionRemovedAndPermissionAdded(
-            Operation previousSetOperations,
-            Operation grantedOperation,
-            string expectedSetPermissionPart2) =>
-           RunAsync(
-               arrange: f =>
-               {
-                   f.Command.PreviousOperations = new HashSet<Operation> { previousSetOperations };
-                   f.Command.GrantedOperations = new HashSet<Operation> { grantedOperation };
-               },
-               act: async f =>
-               {
-                   await f.Handle();
-               },
-               assert: f =>
-               {
-                   Assert.IsNotNull(f.ResultEmailRequest);
-                   Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
-                   Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
-                   Assert.AreEqual(":", f.ResultEmailRequest.Tokens["part1_text"]);
+                   Assert.AreEqual("set your apprenticeship service permissions to:", f.ResultEmailRequest.Tokens["part1_text"]);
                    Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
                });
     }

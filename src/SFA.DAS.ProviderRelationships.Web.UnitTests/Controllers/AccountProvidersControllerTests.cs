@@ -253,7 +253,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
         {
             return RunAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Get") &&
+                a.RouteValues["Action"].Equals("Permissions") &&
                 a.RouteValues["Controller"].Equals("AccountProviderLegalEntities") &&
                 a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&
                 a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.AccountLegalEntities[0].Id)));

@@ -134,12 +134,10 @@
     <Compile Include="Authentication\PostAuthenticationHandler.cs" />
     <Compile Include="Authorization\AuthorizationContextProvider.cs" />
     <Compile Include="Authorization\LocalAuthorizationHandler.cs" />
-    <Compile Include="Controllers\OperationsController.cs" />
     <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountProviderLegalEntitiesController.cs" />
     <Compile Include="Controllers\AccountProvidersController.cs" />
-    <Compile Include="Controllers\OperationsHelper.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
@@ -149,11 +147,12 @@
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
     <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
+    <Compile Include="Filters\ConfigurationViewBagFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
-    <Compile Include="Extensions\OperationExtensions.cs" />
+    <Compile Include="Extensions\PermissionOperationExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Filters\UrlsViewBagFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -162,9 +161,7 @@
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Mappings\AccountProviderMappings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteValues\AccountProviderLegalEntities\GetAccountProviderLegalEntityRouteValues.cs" />
-    <Compile Include="RouteValues\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityRouteValues.cs" />
-    <Compile Include="RouteValues\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityRouteValues.cs" />
+    <Compile Include="RouteValues\AccountProviderLegalEntities\AccountProviderLegalEntityRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AccountProvidersRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AddAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\AddedAccountProviderRouteValues.cs" />
@@ -172,14 +169,11 @@
     <Compile Include="RouteValues\AccountProviders\GetAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\AccountProviders\InvitationAccountProviderRouteValues.cs" />
     <Compile Include="RouteValues\HealthCheck\HealthCheckRouteValues.cs" />
-    <Compile Include="RouteValues\Operations\OperationRouteValue.cs" />
     <Compile Include="RouteValues\RouteValueKeys.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Urls\EmployerUrls.cs" />
     <Compile Include="Urls\IEmployerUrls.cs" />
-    <Compile Include="ViewModels\AccountProviderLegalEntities\GetAccountProviderLegalEntityViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviderLegalEntities\UpdateAccountProviderLegalEntityViewModel.cs" />
-    <Compile Include="ViewModels\AccountProviderLegalEntities\UpdatedAccountProviderLegalEntityViewModel.cs" />
+    <Compile Include="ViewModels\AccountProviderLegalEntities\AccountProviderLegalEntityViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\FindProviderEditModel.cs" />
     <Compile Include="ViewModels\HealthCheck\HealthCheckViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\AccountProvidersViewModel.cs" />
@@ -188,9 +182,7 @@
     <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
-    <Compile Include="ViewModels\Operations\ConfirmOperationViewModel.cs" />
-    <Compile Include="ViewModels\Operations\OperationViewModel.cs" />
-    <Compile Include="ViewModels\Operations\UpdateOperationViewModel.cs" />
+    <Compile Include="ViewModels\Permissions\PermissionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\lib\esfa-stacker\stacker.js" />
@@ -223,9 +215,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\AccountProviderLegalEntities\Get.cshtml" />
-    <Content Include="Views\AccountProviderLegalEntities\Update.cshtml" />
-    <Content Include="Views\AccountProviderLegalEntities\Updated.cshtml" />
     <Content Include="Views\HealthCheck\Index.cshtml" />
     <Content Include="Views\AccountProviders\Add.cshtml" />
     <Content Include="Views\AccountProviders\Added.cshtml" />
@@ -292,19 +281,13 @@
     <Content Include="Views\AccountProviders\AccountProvidersWithSingleOrganisation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Operations\Set.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Operations\Confirm.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_OperationRecruitmentDescription.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_OperationDefaultDescription.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\AccountProviders\Find.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccountProviderLegalEntities\Permissions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AccountProviderLegalEntities\Confirm.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

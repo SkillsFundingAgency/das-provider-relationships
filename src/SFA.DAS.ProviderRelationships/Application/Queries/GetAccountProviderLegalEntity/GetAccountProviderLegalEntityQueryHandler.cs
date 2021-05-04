@@ -6,6 +6,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Services;
@@ -17,12 +18,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly IDasRecruitService _dasRecruitService;
+        private readonly IHashingService _hashingService;
 
-        public GetAccountProviderLegalEntityQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IDasRecruitService dasRecruitService, IConfigurationProvider configurationProvider)
+        public GetAccountProviderLegalEntityQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IDasRecruitService dasRecruitService, IConfigurationProvider configurationProvider, IHashingService hashingService)
         {
             _db = db;
-            _dasRecruitService = dasRecruitService;
             _configurationProvider = configurationProvider;
+            _dasRecruitService = dasRecruitService;
+            _hashingService = hashingService;
         }
 
         public async Task<GetAccountProviderLegalEntityQueryResult> Handle(GetAccountProviderLegalEntityQuery request, CancellationToken cancellationToken)
@@ -50,6 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
             var accountLegalEntitiesCount = await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
 
             var providerOrgBlockStatus = await _dasRecruitService.GetProviderBlockedStatusAsync(accountProvider.ProviderUkprn, cancellationToken);
+         
             var isProviderBlockedFromRecruit = providerOrgBlockStatus != null && providerOrgBlockStatus.Status.Equals(BlockedOrganisationStatusConstants.Blocked);
 
             return new GetAccountProviderLegalEntityQueryResult(accountProvider, accountLegalEntity, accountProviderLegalEntity, accountLegalEntitiesCount, isProviderBlockedFromRecruit);
