@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
@@ -113,7 +114,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
 
             RelationshipsRepository.SetupInMemoryCollection(Relationships);
 
-            Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object);
+            Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object, Mock.Of<ILog>());
             Command = new UpdatePermissionsCommand(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, Operations, Updated, UpdateMessageId);
         }
 
