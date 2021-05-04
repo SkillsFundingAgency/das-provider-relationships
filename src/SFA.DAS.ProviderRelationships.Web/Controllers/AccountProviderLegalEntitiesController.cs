@@ -1,16 +1,16 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
-using MoreLinq.Extensions;
 using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.Authorization.EmployerUserRoles;
 using SFA.DAS.Authorization.Mvc;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
@@ -50,6 +50,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route]
         public ViewResult Permissions(AccountProviderLegalEntityViewModel model)
         {
+            for (var index = 0; index < model.Permissions.Count; index++)
+            {
+                if (!model.Permissions[index].State.HasValue)
+                {
+                    ModelState.AddModelError($"Permissions[{index}].State", $"Select the permissions you give {model.AccountProvider.ProviderName}");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             return View("Confirm", model);
         }
 
@@ -63,17 +76,17 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 return View("Permissions", model);
             }
 
-            if (!model.Confirmation.HasValue)
+            if (model.Permissions[1].State == State.No && !model.Confirmation.HasValue)
             {
                 ModelState.AddModelError("confirmation", $"Select if you want to change {model.AccountProvider.ProviderName} permissions");
                 return View("Confirm", model);
             }
 
-            if (model.Confirmation.Value)
+            if (model.Confirmation.GetValueOrDefault() || model.Permissions[1].State != State.No)
             {
-                var operations = model.Operations.Where(o => o.IsEnabled.GetValueOrDefault()).Select(o => o.Value).ToHashSet();
+                var operations = model.Permissions.ToOperations(); 
                 var update = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
-
+                
                 await _mediator.Send(update);
 
                 if (Session["Invitation"] as bool? == true)

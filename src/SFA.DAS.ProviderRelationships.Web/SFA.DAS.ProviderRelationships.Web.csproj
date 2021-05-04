@@ -147,10 +147,12 @@
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
     <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
+    <Compile Include="Filters\ConfigurationViewBagFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Extensions\PermissionOperationExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Filters\UrlsViewBagFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -180,7 +182,7 @@
     <Compile Include="ViewModels\AccountProviders\AlreadyAddedAccountProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\FindProviderViewModel.cs" />
     <Compile Include="ViewModels\AccountProviders\GetAccountProviderViewModel.cs" />
-    <Compile Include="ViewModels\Operations\OperationViewModel.cs" />
+    <Compile Include="ViewModels\Permissions\PermissionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\lib\esfa-stacker\stacker.js" />

@@ -18,11 +18,12 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
-using SFA.DAS.ProviderRelationships.Web.ViewModels.Operations;
+using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 using SFA.DAS.Testing;
 using AccountProviderDto = SFA.DAS.ProviderRelationships.Types.Dtos.AccountProviderDto;
 
@@ -44,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingPermissionsActionWithoutConfirmationSet_ThenShouldSetErrorState()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(null, null), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(null, null, State.No), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
                 v => v.ViewName.Equals("Confirm") && 
                      f.AccountProviderLegalEntitiesController.ModelState.ContainsKey("Confirmation")));
         }
@@ -52,40 +53,40 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingPermissionsActionWithConfirmation_ThenShouldSendUpdatePermissionsCommand()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null), f => f.Mediator.Verify(m => m.Send(
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null, State.No), f => f.Mediator.Verify(m => m.Send(
                 It.Is<UpdatePermissionsCommand>(c =>
                     c.AccountId == f.AccountProviderLegalEntityViewModel.AccountId &&
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
                     c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
-                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Operations.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.ToOperations())),
                 CancellationToken.None), Times.Once));
         }
 
         [Test]
         public Task Update_WhenPostingPermissionsActionWithNoConfirmation_ThenShouldNotSendUpdatePermissionsCommand()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, null), f => f.Mediator.Verify(m => m.Send(
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, null, State.No), f => f.Mediator.Verify(m => m.Send(
                 It.Is<UpdatePermissionsCommand>(c =>
                     c.AccountId == f.AccountProviderLegalEntityViewModel.AccountId &&
                     c.UserRef == f.AccountProviderLegalEntityViewModel.UserRef &&
                     c.AccountProviderId == f.AccountProviderLegalEntityViewModel.AccountProviderId &&
                     c.AccountLegalEntityId == f.AccountProviderLegalEntityViewModel.AccountLegalEntityId &&
-                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Operations.Where(o => o.IsEnabled.Value).Select(o => o.Value))),
+                    c.GrantedOperations.SetEquals(f.AccountProviderLegalEntityViewModel.Permissions.ToOperations())),
                 CancellationToken.None), Times.Never));
         }
 
         [Test]
         public Task Update_WhenPostingPermissionsActionWithChangeCommand_ThenShouldReturnPermissionsView()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, "Change"), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(false, "Change", State.Yes), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
                 v => v.ViewName.Equals("Permissions")));
         }
 
         [Test]
         public Task Update_WhenPostingPermissionsActionWithConfirmation_ThenShouldRedirectToAccountProvidersIndexActionWithTempDataSetCorrectly()
         {
-            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null), (f , r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return RunAsync(f => f.CreateSession(), f => f.PostUpdate(true, null, State.No), (f , r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Index") &&
                 a.RouteValues["Controller"].Equals("AccountProviders") && 
                 f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
@@ -99,7 +100,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingPermissionsActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
         {
-            return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(true, null), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+            return RunAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(true, null, State.No), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url.Equals("https://localhost/accounts/ABC123/teams/addedprovider/Foo+Bar")));
         }
     }
@@ -157,7 +158,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProviderLegalEntitiesController.Permissions(AccountProviderLegalEntityRouteValues);
         }
 
-        public Task<ActionResult> PostUpdate(bool? confirmation, string command)
+        public Task<ActionResult> PostUpdate(bool? confirmation, string command, State recruitState)
         {
             AccountProviderLegalEntityViewModel = new AccountProviderLegalEntityViewModel
             {
@@ -173,12 +174,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 {
                     ProviderName = "PROVIDER COLLEGE"
                 },
-                Operations = new List<OperationViewModel>
+                Permissions = new List<PermissionViewModel>
                 {
-                    new OperationViewModel
+                    new PermissionViewModel
                     {
-                        Value = Operation.CreateCohort,
-                        IsEnabled = true
+                        Value = Permission.CreateCohort,
+                        State = State.Yes
+                    },
+                    new PermissionViewModel
+                    {
+                        Value = Permission.Recruitment,
+                        State = recruitState
                     }
                 },
                 Confirmation = confirmation

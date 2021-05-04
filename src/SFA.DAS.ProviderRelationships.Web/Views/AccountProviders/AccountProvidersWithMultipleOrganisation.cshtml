@@ -1,5 +1,5 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
-@using SFA.DAS.ProviderRelationships.Extensions
+@using SFA.DAS.ProviderRelationships.Types.Models
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 
 <div class="govuk-grid-column-full">
@@ -24,15 +24,15 @@
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell das-table-cell-width-30">@accountProviderLegalEntity.Name</td>
                     <td class="govuk-table__cell das-table-cell-width-50">
-                        @if (accountProviderLegalEntity.Operations.Count == 0)
+                        @if (!accountProviderLegalEntity.HadPermissions)
                         {
                             @:No permissions set
                         }
                         else
                         {
-                            foreach (var operation in accountProviderLegalEntity.Operations)
+                            foreach (var permission in accountProviderLegalEntity.Operations.ToPermissions())
                             {
-                                <span>@operation.GetDisplayName()</span><br />
+                                <span>@permission.ToString()</span><br />
                             }
                         }
                     </td>
@@ -40,7 +40,7 @@
                     {
                         <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
                             <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
-                                @if (accountProviderLegalEntity.Operations.Count == 0)
+                                @if (!accountProviderLegalEntity.HadPermissions)
                                 {
                                     @:Set permissions
                                 }
