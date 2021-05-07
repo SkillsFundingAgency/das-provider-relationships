@@ -139,7 +139,9 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
             GetAccountProviderLegalEntitiesWithPermissionRequest = new GetAccountProviderLegalEntitiesWithPermissionRequest
             {
                 Ukprn = 11111111,
-                Operation = Operation.CreateCohort
+                Operation = Operation.CreateCohort,
+                AccountLegalEntityPublicHashedId = "ABC123",
+                AccountHashedId = "XYZ789"
             };
             
             return ProviderRelationshipsApiClient.GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest, CancellationToken);

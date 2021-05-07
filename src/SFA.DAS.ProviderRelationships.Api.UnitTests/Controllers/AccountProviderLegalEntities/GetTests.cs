@@ -23,7 +23,12 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
         [Test]
         public Task WhenValidUkprnAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
         {
-            return RunAsync(f => f.CallGet(), 
+            return RunAsync(f =>
+                {
+                    f.SetUkprn(12345678);
+                    f.SetOperation(Operation.CreateCohort);
+                },
+                f => f.CallGet(), 
                 (f, r) =>
                 {
                     r.Should().NotBeNull();
@@ -33,17 +38,65 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
         }
 
         [Test]
-        public Task WhenUkprIsMissing_ThenShouldReturnBadRequest()
+        public Task WhenValidAccountHashedIdAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
         {
-            return RunAsync(f => f.SetUkprn(null), f => f.CallGet(),
-                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied"));
+            return RunAsync(f =>
+                {
+                    f.SetAccountHashedId("TEST");
+                    f.SetOperation(Operation.CreateCohort);
+                },
+                f => f.CallGet(),
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
+                    r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
+                    ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                });
         }
-        
+
+        [Test]
+        public Task WhenValidAccountHashedIdAndAccountLegalIdPublicHashedIdAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
+        {
+            return RunAsync(f =>
+                {
+                    f.SetAccountHashedId("XYZ123");
+                    f.SetAccountLegalEntityPublicHashedId("ABC123");
+                    f.SetOperation(Operation.CreateCohort);
+                },
+                f => f.CallGet(),
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
+                    r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
+                    ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                });
+        }
+
+        [Test]
+        public Task WhenUkprnAndAccountHashedIdIsMissing_ThenShouldReturnBadRequest()
+        {
+            return RunAsync(f =>
+                {
+                    f.SetOperation(Operation.Recruitment);
+                },
+                f => f.CallGet(),
+                (f, r) =>
+                {
+                    r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
+                    r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.AccountHashedId), "Currently an AccountHashedId filter needs to be supplied");
+                });
+        }
+
         [Test]
         public Task WhenOperationIsMissing_ThenShouldReturnBadRequest()
         {
-            return RunAsync(f => f.SetOperation(null), f => f.CallGet(),
-                (f, r) => r.AssertSingleModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
+            return RunAsync(f =>
+                {
+                    f.SetAccountHashedId("ABC123");
+                    f.SetUkprn(12345678);
+                },
+                f => f.CallGet(),
+                (f, r) => r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
         }
     }
 
@@ -56,21 +109,31 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
 
         public GetTestsFixture()
         {
-            GetAccountProviderLegalEntitiesRouteValues = new GetAccountProviderLegalEntitiesRouteValues
-            {
-                Ukprn = 12345678L,
-                Operation = Operation.CreateCohort
-            };
-
             Mediator = new Mock<IMediator>();
 
-            Result = new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new [] {
-                new AccountProviderLegalEntityDto {AccountId = 41L, AccountLegalEntityId = 4131L, AccountLegalEntityName = "AccountLegalEntityName", AccountLegalEntityPublicHashedId = "ALEPHI", AccountName = "AccountName", AccountProviderId = 491L, AccountPublicHashedId = "ACCPHI" }
+            GetAccountProviderLegalEntitiesRouteValues = new GetAccountProviderLegalEntitiesRouteValues();
+
+            Result = new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new[] {
+                new AccountProviderLegalEntityDto {
+                    AccountId = 41L, 
+                    AccountLegalEntityId = 4131L, 
+                    AccountLegalEntityName = "AccountLegalEntityName",
+                    AccountLegalEntityPublicHashedId = "ALEPHI", 
+                    AccountName = "AccountName", 
+                    AccountProviderId = 491L,
+                    AccountPublicHashedId = "ACCPHI"
+                }
             });
-            
-            Mediator.Setup(m => m.Send(It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q => q.Ukprn == GetAccountProviderLegalEntitiesRouteValues.Ukprn.Value && q.Operation == Operation.CreateCohort), It.IsAny<CancellationToken>()))
+
+            Mediator.Setup(m =>
+                    m.Send(
+                        It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q =>
+                            q.Ukprn == GetAccountProviderLegalEntitiesRouteValues.Ukprn &&
+                            q.Operation == Operation.CreateCohort &&
+                            q.AccountHashedId == GetAccountProviderLegalEntitiesRouteValues.AccountHashedId &&
+                            q.AccountLegalEntityPublicHashedId == GetAccountProviderLegalEntitiesRouteValues.AccountLegalEntityPublicHashedId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result);
-            
+
             AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object);
         }
 
@@ -84,7 +147,19 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
             GetAccountProviderLegalEntitiesRouteValues.Ukprn = ukprn;
             return this;
         }
-        
+
+        public GetTestsFixture SetAccountHashedId(string accountHashedId)
+        {
+            GetAccountProviderLegalEntitiesRouteValues.AccountHashedId = accountHashedId;
+            return this;
+        }
+
+        public GetTestsFixture SetAccountLegalEntityPublicHashedId(string accountLegalEntityPublicHashedId)
+        {
+            GetAccountProviderLegalEntitiesRouteValues.AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
+            return this;
+        }
+
         public GetTestsFixture SetOperation(Operation? operation)
         {
             GetAccountProviderLegalEntitiesRouteValues.Operation = operation;

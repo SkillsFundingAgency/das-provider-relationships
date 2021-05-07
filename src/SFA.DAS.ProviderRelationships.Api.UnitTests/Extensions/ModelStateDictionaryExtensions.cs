@@ -7,23 +7,20 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions
     public static class ModelStateDictionaryExtensions
     {
 
-        public static bool HasSingleModelError(this ModelStateDictionary modelStateDictionary, string propertyName, string expectedErrorMessage)
+        public static bool HasModelError(this ModelStateDictionary modelStateDictionary, string propertyName, string expectedErrorMessage)
         {
             if (modelStateDictionary == null)
                 return false;
 
-            if (modelStateDictionary.Count != 1)
+            if (!modelStateDictionary.ContainsKey(propertyName))
                 return false;
 
-            KeyValuePair<string, ModelState> firstError = modelStateDictionary.First();
+            var error = modelStateDictionary.Single(m => m.Key == propertyName);
 
-            if (firstError.Key != propertyName)
+            if (error.Value.Errors.Count != 1)
                 return false;
 
-            if (firstError.Value.Errors.Count != 1)
-                return false;
-
-            string errorMessage = firstError.Value.Errors.Single().ErrorMessage;
+            string errorMessage = error.Value.Errors.Single().ErrorMessage;
             return errorMessage == expectedErrorMessage;
         }
 
