@@ -224,7 +224,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
-            return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = accountProviderId });
+            return RedirectToAction("Get", new { AccountProviderId = accountProviderId });
         }
     }
 }
