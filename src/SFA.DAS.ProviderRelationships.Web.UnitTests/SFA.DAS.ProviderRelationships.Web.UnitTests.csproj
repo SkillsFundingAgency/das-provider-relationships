@@ -26,4 +26,8 @@
         <Reference Include="System.Web" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Filters\" />
+    </ItemGroup>
+
 </Project>
