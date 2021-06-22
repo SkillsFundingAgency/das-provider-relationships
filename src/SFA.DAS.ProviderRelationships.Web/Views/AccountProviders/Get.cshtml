@@ -5,6 +5,8 @@
 @{
     ViewBag.Title = Model.AccountProvider.ProviderName;
     ViewBag.ZenDeskLabel = "permissions-view-training-provider-permissions";
+    ViewBag.GaData.Vpv = "/permissions/accountproviders/get";
+    ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
 }
 
 @section breadcrumb

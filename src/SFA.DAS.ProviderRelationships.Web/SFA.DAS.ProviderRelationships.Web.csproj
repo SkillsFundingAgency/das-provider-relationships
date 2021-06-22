@@ -146,8 +146,8 @@
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Extensions\TempDataDictionaryExtensions.cs" />
-    <Compile Include="Filters\GoogleAnalyticsViewBagFilter.cs" />
     <Compile Include="Filters\ConfigurationViewBagFilter.cs" />
+    <Compile Include="Filters\GoogleAnalyticsFilter.cs" />
     <Compile Include="Mappings\AccountProviderLegalEntityMappings.cs" />
     <Compile Include="Mappings\ProviderMappings.cs" />
     <Compile Include="NServiceBusStartup.cs" />
@@ -288,6 +288,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AccountProviderLegalEntities\Confirm.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_GoogleAnalyticsInfo.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

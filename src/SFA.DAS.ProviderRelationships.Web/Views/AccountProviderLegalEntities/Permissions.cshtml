@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = "Set permissions for your training provider";
     ViewBag.ZenDeskLabel = "permissions-set-permissions";
+    ViewBag.GaData.Vpv = "/permissions/accountproviderlegalentities/permissions";
+    ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
+    ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
 }
 
 @section breadcrumb

@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = $"Confirm permissions for {Model.AccountProvider.ProviderName}";
     ViewBag.ZenDeskLabel = "permissions-confirm-permissions";
+    ViewBag.GaData.Vpv = "/permissions/accountproviderslegalentities/confirm";
+    ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
+    ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
 }
 
 @section breadcrumb

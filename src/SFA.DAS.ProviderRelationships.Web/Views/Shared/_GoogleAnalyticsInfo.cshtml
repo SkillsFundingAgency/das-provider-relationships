@@ -1,0 +1,12 @@
+﻿@using System.Web.UI.WebControls
+<script>
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'event': 'dataLoaded',
+        'vpv': '@ViewBag.GaData.Vpv',
+        'userID': '@ViewBag.GaData.UserId',
+        'acc': '@ViewBag.GaData.Acc',
+        'providerID': '@ViewBag.GaData.Ukprn',
+        'org': '@ViewBag.GaData.Org'
+    });
+</script>
