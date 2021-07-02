@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -8,7 +9,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
     {
         public long Ukprn { get; }
         public string AccountLegalEntityPublicHashedId { get; }
-        public IEnumerable<Operation> OperationsToRevoke { get; }
+        public List<Operation> OperationsToRevoke { get; }
 
         public RevokePermissionsCommand(
             long ukprn,
@@ -17,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions
         {
             Ukprn = ukprn;
             AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
-            OperationsToRevoke = operationsToRevoke;
+            OperationsToRevoke = operationsToRevoke.ToList();
         }
     }
 }

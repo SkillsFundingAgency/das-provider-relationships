@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Messages.Events;
@@ -24,23 +23,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     [TestFixture]
     public class RevokePermissionsCommandHandlerTests : FluentTest<RevokePermissionsCommandHandlerTestsFixture>
     {
-        [Test]
-        public void WhenPublicHashedIdIsInvalid_ThenShouldThrowKeyNotFoundException()
-        {
-            var f = new RevokePermissionsCommandHandlerTestsFixture();
-            f.RevokePermissionsCommand = new RevokePermissionsCommand(
-                ukprn: f.RevokePermissionsCommand.Ukprn,
-                accountLegalEntityPublicHashedId: "DoesNotExist",
-                operationsToRevoke: f.RevokePermissionsCommand.OperationsToRevoke);
-            f.EncodingService
-                .Setup(x =>
-                    x.Decode(f.RevokePermissionsCommand.AccountLegalEntityPublicHashedId, EncodingType.PublicAccountLegalEntityId))
-                .Throws<KeyNotFoundException>();
-
-            Assert.ThrowsAsync<KeyNotFoundException>(() => f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None));
-        }
-                
-
         [Test]
         public Task WhenUkPrnIsInvalid_ThenShouldDoNothing() =>
             RunAsync(
@@ -63,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         [Test]
         [Parallelizable]
-        public Task WhenExecuted_ThenShouldRemoveMatchingOperationsOnly() =>
+        public Task WhenExecuted_ThenShouldRemoveMatchingOperations() =>
             RunAsync(
                 act: async f =>
                 {
@@ -135,7 +117,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public IRequestHandler<RevokePermissionsCommand, Unit> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
-        public Mock<IEncodingService> EncodingService { get; set; }
 
         public Account Account;
         public Provider Provider;
@@ -151,13 +132,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             CreateDb();
             CreateDefaultEntities();
 
-            EncodingService = new Mock<IEncodingService>();
-            EncodingService
-                .Setup(x => x.Decode(AccountLegalEntity.PublicHashedId, EncodingType.PublicAccountLegalEntityId))
-                .Returns(AccountLegalEntity.Id);
-
             var lazyDb = new Lazy<ProviderRelationshipsDbContext>(() => Db);
-            Handler = new RevokePermissionsCommandHandler(lazyDb, EncodingService.Object);
+            Handler = new RevokePermissionsCommandHandler(lazyDb);
 
             RevokePermissionsCommand = new RevokePermissionsCommand(
                 ukprn: 299792458,
@@ -212,7 +188,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 accountProvider: AccountProvider,
                 accountLegalEntity: AccountLegalEntity,
                 user: User,
-                grantedOperations: new HashSet<Operation>(new[] { Operation.CreateCohort, Operation.Recruitment }));
+                grantedOperations: new HashSet<Operation>(new[] { Operation.CreateCohort, Operation.Recruitment, Operation.RecruitmentRequiresReview }));
             AccountProviderLegalEntity.Set(x => x.Id, 34);
             Db.Add(AccountProviderLegalEntity);
 
