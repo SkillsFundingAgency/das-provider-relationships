@@ -55,9 +55,16 @@ namespace SFA.DAS.ProviderRelationships.Models
             Publish(() => new DeletedPermissionsEventV2(Id, AccountProvider.ProviderUkprn, AccountLegalEntityId, deleted));
         }
 
-        internal void RevokePermissions(User user, IEnumerable<Operation> operationsToRevoke)
+        internal void RevokePermissions(User user, IList<Operation> operationsToRevoke)
         {
             EnsureAccountLegalEntityHasNotBeenDeleted();
+
+            if (operationsToRevoke.Contains(Operation.Recruitment) &&
+                !operationsToRevoke.Contains(Operation.RecruitmentRequiresReview))
+            {
+                operationsToRevoke.Add(Operation.RecruitmentRequiresReview);
+            }
+
             var remainingOperations = Permissions
                 .Where(x => !operationsToRevoke.Contains(x.Operation))
                 .Select(x => x.Operation);

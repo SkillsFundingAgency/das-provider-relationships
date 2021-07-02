@@ -1,7 +1,6 @@
 ﻿using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
-using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
@@ -20,7 +19,6 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IOidcConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Oidc).Singleton();
             For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsConfiguration>(ConfigurationKeys.ProviderRelationships)).Singleton();
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ReadStore).Singleton();
-            For<EncodingConfig>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<EncodingConfig>(ConfigurationKeys.EncodingConfig)).Singleton();
         }
     }
 }
