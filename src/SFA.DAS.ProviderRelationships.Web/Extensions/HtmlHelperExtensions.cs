@@ -98,7 +98,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
 
             return new FooterViewModel(new FooterConfiguration {
-                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl,
+                AuthenticationAuthorityUrl = configuration.EmployerUsersBaseUrl
             },
             new UserContext {
                 User = html.ViewContext.HttpContext.User,
