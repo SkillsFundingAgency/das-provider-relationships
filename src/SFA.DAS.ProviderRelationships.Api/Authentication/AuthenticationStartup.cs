@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Authentication
                 TokenValidationParameters = new TokenValidationParameters
                 {
                     RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-                    ValidAudience = _config.Audience
+                    ValidAudiences = _config.Audience.Split(',')
                 }
             });
         }
