@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -8,14 +9,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         public string AccountHashedId { get; }
         public string AccountLegalEntityPublicHashedId { get; }
         public long? Ukprn { get; }
-        public Operation Operation { get; }
+        public List<Operation> Operations { get; }
 
-        public GetAccountProviderLegalEntitiesWithPermissionQuery(long? ukprn, string accountHashedId, string accountLegalEntityPublicHashedId, Operation operation)
+        public GetAccountProviderLegalEntitiesWithPermissionQuery(long? ukprn, string accountHashedId, string accountLegalEntityPublicHashedId, List<Operation> operations)
         {
             AccountHashedId = accountHashedId;
             AccountLegalEntityPublicHashedId = accountLegalEntityPublicHashedId;
             Ukprn = ukprn;
-            Operation = operation;
+            Operations = operations;
         }
     }
 }

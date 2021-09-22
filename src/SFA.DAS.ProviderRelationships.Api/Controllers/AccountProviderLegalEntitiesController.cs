@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -6,6 +8,7 @@ using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
+using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
@@ -39,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 ModelState.AddModelError(nameof(routeValues.AccountHashedId), "Currently an AccountHashedId filter needs to be supplied");
             }
 
-            if (routeValues.Operation == null)
+            if (routeValues.Operation == null && (routeValues.Operations == null || !routeValues.Operations.Any()))
             {
                 ModelState.AddModelError(nameof(routeValues.Operation), "Currently an Operation filter needs to be supplied");
             }
@@ -49,7 +52,12 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
                 return BadRequest(ModelState);
             }
             
-            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operation.Value), cancellationToken);
+            if (routeValues.Operations == null)
+            {
+                routeValues.Operations = new List<Operation> {routeValues.Operation.Value};
+            }
+            
+            var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operations), cancellationToken);
 
             return Ok(new GetAccountProviderLegalEntitiesWithPermissionResponse { AccountProviderLegalEntities = result.AccountProviderLegalEntities });
         }
