@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,7 +78,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture()
         {
-            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, Operation.CreateCohort);
+            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.CreateCohort});
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>());
@@ -114,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>()
                 .Set(p => p.Id, 3)
                 .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
-                .Set(p => p.Operation, Query.Operation);
+                .Set(p => p.Operation, Query.Operations.First());
             
             //todo: if these don't clone, we should
             Db.Accounts.Add(Account);

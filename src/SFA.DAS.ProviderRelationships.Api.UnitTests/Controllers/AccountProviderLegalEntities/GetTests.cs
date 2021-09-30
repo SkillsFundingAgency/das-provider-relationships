@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -71,6 +72,24 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
                     ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
                 });
         }
+        
+        [Test]
+        public Task WhenValidAccountHashedIdAndAccountLegalIdPublicHashedIdAndOperationsAreSupplied_ThenShouldReturnRelationshipsFromQuery()
+        {
+            return RunAsync(f =>
+                {
+                    f.SetAccountHashedId("XYZ123");
+                    f.SetAccountLegalEntityPublicHashedId("ABC123");
+                    f.SetOperations(new List<Operation>{Operation.CreateCohort});
+                },
+                f => f.CallGet(),
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
+                    r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
+                    ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                });
+        }
 
         [Test]
         public Task WhenUkprnAndAccountHashedIdIsMissing_ThenShouldReturnBadRequest()
@@ -129,7 +148,7 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
                     m.Send(
                         It.Is<GetAccountProviderLegalEntitiesWithPermissionQuery>(q =>
                             q.Ukprn == GetAccountProviderLegalEntitiesRouteValues.Ukprn &&
-                            q.Operation == Operation.CreateCohort &&
+                            q.Operations.Contains(Operation.CreateCohort) &&
                             q.AccountHashedId == GetAccountProviderLegalEntitiesRouteValues.AccountHashedId &&
                             q.AccountLegalEntityPublicHashedId == GetAccountProviderLegalEntitiesRouteValues.AccountLegalEntityPublicHashedId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result);
@@ -163,6 +182,12 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
         public GetTestsFixture SetOperation(Operation? operation)
         {
             GetAccountProviderLegalEntitiesRouteValues.Operation = operation;
+            return this;
+        }
+
+        public GetTestsFixture SetOperations(List<Operation> operations)
+        {
+            GetAccountProviderLegalEntitiesRouteValues.Operations = operations;
             return this;
         }
 

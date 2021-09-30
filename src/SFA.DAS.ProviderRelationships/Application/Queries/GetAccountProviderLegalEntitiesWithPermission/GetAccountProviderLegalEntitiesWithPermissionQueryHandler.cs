@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
                     aple.AccountProvider.ProviderUkprn == (request.Ukprn ?? aple.AccountProvider.ProviderUkprn) && 
                     aple.AccountProvider.Account.HashedId == (request.AccountHashedId ?? aple.AccountProvider.Account.HashedId) &&
                     aple.AccountLegalEntity.PublicHashedId == (request.AccountLegalEntityPublicHashedId ?? aple.AccountLegalEntity.PublicHashedId) &&
-                    aple.Permissions.Any(p => p.Operation == request.Operation))
+                    aple.Permissions.Any(p => request.Operations.Contains(p.Operation)))
                 .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
