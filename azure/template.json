@@ -130,6 +130,9 @@
                 "parameters": {
                     "storageAccountName": {
                         "value": "[variables('workerStorageAccountName')]"
+                    },
+                    "allowSharedKeyAccess": {
+                        "value": true
                     }
                 }
             }
