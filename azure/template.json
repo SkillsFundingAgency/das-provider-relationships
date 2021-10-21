@@ -74,6 +74,14 @@
         "elasticPoolName": {
             "type": "string"
         },
+        "databaseSkuName": {
+            "type": "string",
+            "defaultValue": "S0"
+        },
+        "databaseTier": {
+            "type": "string",
+            "defaultValue": "Standard"
+        },
         "logAnalyticsSubscriptionId": {
             "type": "string",
             "defaultValue": "[subscription().subscriptionId]"
@@ -573,6 +581,12 @@
                     },
                     "elasticPoolName": {
                         "value": "[parameters('elasticPoolName')]"
+                    },
+                    "databaseSkuName": {
+                        "value": "[parameters('databaseSkuName')]"
+                    },
+                    "databaseTier": {
+                        "value": "[parameters('databaseTier')]"
                     },
                     "logAnalyticsSubscriptionId": {
                         "value": "[parameters('logAnalyticsSubscriptionId')]"
