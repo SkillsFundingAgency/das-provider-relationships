@@ -30,8 +30,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
 
         private string GetConnectionString(IContext context)
         {
-            var config = context.GetInstance<ProviderRelationshipsConfiguration>();
-            return config.DatabaseConnectionString;
+            return context.GetInstance<ProviderRelationshipsConfiguration>().DatabaseConnectionString;            
         }
     }
 }
