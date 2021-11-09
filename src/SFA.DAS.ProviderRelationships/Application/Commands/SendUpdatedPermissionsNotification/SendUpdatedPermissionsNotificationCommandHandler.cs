@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
@@ -15,12 +16,14 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
     public class SendUpdatedPermissionsNotificationCommandHandler : AsyncRequestHandler<SendUpdatedPermissionsNotificationCommand>
     {
         private readonly IPasAccountApiClient _client;
+        private readonly IEmployerUrlsConfiguration _employerUrlsConfiguration;
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private const string TemplateId = "UpdatedProviderPermissionsNotification";
 
-        public SendUpdatedPermissionsNotificationCommandHandler(IPasAccountApiClient client, Lazy<ProviderRelationshipsDbContext> db)
+        public SendUpdatedPermissionsNotificationCommandHandler(IPasAccountApiClient client, IEmployerUrlsConfiguration employerUrlsConfiguration, Lazy<ProviderRelationshipsDbContext> db)
         {
             _client = client;
+            _employerUrlsConfiguration = employerUrlsConfiguration;
             _db = db;
         }
 
@@ -29,6 +32,8 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
             var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
             var provider = await _db.Value.Providers.SingleAsync(p => p.Ukprn == request.Ukprn, cancellationToken);
+
+            var manageNotificationsUrl = _employerUrlsConfiguration.EmployerRecruitBaseUrl + "/accounts/" + request.Ukprn + "/notifications-manage";
 
             var permissionUpdatesTokens = GetPermissionsUpdatedTokens(request.GrantedOperations);
 
@@ -40,6 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissi
                     {
                         { "training_provider_name", provider.Name },
                         { "organisation_name", organisation.Name },
+                        { "manage_recruitment_emails_url", manageNotificationsUrl },
                     }
                     .Concat(permissionUpdatesTokens)
                     .ToDictionary(x => x.Key, x => x.Value)
