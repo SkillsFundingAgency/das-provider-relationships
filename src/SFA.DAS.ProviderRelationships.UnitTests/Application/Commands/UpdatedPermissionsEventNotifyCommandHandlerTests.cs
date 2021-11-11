@@ -14,6 +14,7 @@ using SFA.DAS.PAS.Account.Api.Client;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Helpers;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
@@ -59,7 +60,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r =>
                     r.TemplateId == "UpdatedProviderPermissionsNotification" &&
                     r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
-                    r.Tokens["training_provider_name"] == f.Provider.Name
+                    r.Tokens["training_provider_name"] == f.Provider.Name &&
+                    r.Tokens["manage_recruitment_emails_url"] == f.ManageNotificationsUrl
                     )));
                 });
 
@@ -108,17 +110,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AccountProviderLegalEntity AccountProviderLegalEntity;
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public ProviderEmailRequest ResultEmailRequest { get; set; }
-
+        public string ManageNotificationsUrl = "http://recruit/notifications";
 
         public SendUpdatedPermissionsNotificationCommandHandlerTestsFixture()
         {
+            var providerUrls = new Mock<IProviderUrls>();
+            providerUrls.Setup(x => x.ProviderManageRecruitEmails(It.Is<string>(s => s == Provider.Ukprn.ToString()))).Returns(ManageNotificationsUrl);
             UnitOfWorkContext = new UnitOfWorkContext();
 
             CreateDb();
             CreateDefaultEntities();
 
             Client = new Mock<IPasAccountApiClient>();
-            Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            Handler = new SendUpdatedPermissionsNotificationCommandHandler(Client.Object, providerUrls.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));
 
             Command = new SendUpdatedPermissionsNotificationCommand(
                 ukprn: 299792458,
