@@ -1,8 +1,8 @@
-namespace SFA.DAS.ProviderRelationships.Web.Urls
+namespace SFA.DAS.ProviderRelationships.Helpers
 {
     public interface IProviderUrls
     {
-        string Recruit(long ukprn);
+        string Recruit(string ukprn);
         string ProviderManageRecruitEmails(string ukprn);
     }
 }
