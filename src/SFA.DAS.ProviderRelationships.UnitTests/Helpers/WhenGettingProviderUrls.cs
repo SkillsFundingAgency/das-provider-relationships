@@ -8,40 +8,40 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
     [TestFixture]
     public class WhenGettingProviderUrls
     {
-        private string ukprn;
-        private string baseUrl;
-        private ProviderRelationshipsConfiguration providerRelationshipConfig;
-        private ProviderUrls providerUrls;
+        private string _ukprn;
+        private string _baseUrl;
+        private ProviderRelationshipsConfiguration _providerRelationshipConfig;
+        private ProviderUrls _providerUrls;
 
         [SetUp]
         public void Init()
         {
             //Arrange
-            ukprn = "10024689";
-            baseUrl = "http://somewhere/";
-            providerRelationshipConfig = new ProviderRelationshipsConfiguration();
-            providerRelationshipConfig.ProviderPortalBaseUrl = baseUrl;
-            providerUrls = new ProviderUrls(providerRelationshipConfig);
+            _ukprn = "10024689";
+            _baseUrl = "http://somewhere/";
+            _providerRelationshipConfig = new ProviderRelationshipsConfiguration();
+            _providerRelationshipConfig.ProviderPortalBaseUrl = _baseUrl;
+            _providerUrls = new ProviderUrls(_providerRelationshipConfig);
         }
 
         [Test]
         public void Then_The_Recruit_Home_Url_Is_Returned()
         {
             //Act
-            var result = providerUrls.Recruit(ukprn);
+            var result = _providerUrls.Recruit(_ukprn);
 
             //Assert
-            result.Should().Be($"{baseUrl}/{ukprn}");
+            result.Should().Be($"{_baseUrl}/{_ukprn}");
         }
 
         [Test]
         public void Then_The_ProviderManageRecruitEmails_Is_Returned()
         {
             //Act
-            var result = providerUrls.ProviderManageRecruitEmails(ukprn);
+            var result = _providerUrls.ProviderManageRecruitEmails(_ukprn);
 
             //Assert
-            result.Should().Be($"{baseUrl}/{ukprn}/notifications-manage");
+            result.Should().Be($"{_baseUrl}/{_ukprn}/notifications-manage");
         }
     }
 }
