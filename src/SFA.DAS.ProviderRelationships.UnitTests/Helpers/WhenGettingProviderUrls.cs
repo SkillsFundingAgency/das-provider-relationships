@@ -5,18 +5,28 @@ using SFA.DAS.ProviderRelationships.Helpers;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Services
 {
+    [TestFixture]
     public class WhenGettingProviderUrls
     {
+        private string ukprn;
+        private string baseUrl;
+        private ProviderRelationshipsConfiguration providerRelationshipConfig;
+        private ProviderUrls providerUrls;
+
+        [SetUp]
+        public void Init()
+        {
+            //Arrange
+            ukprn = "10024689";
+            baseUrl = "http://somewhere/";
+            providerRelationshipConfig = new ProviderRelationshipsConfiguration();
+            providerRelationshipConfig.ProviderPortalBaseUrl = baseUrl;
+            providerUrls = new ProviderUrls(providerRelationshipConfig);
+        }
+
         [Test]
         public void Then_The_Recruit_Home_Url_Is_Returned()
         {
-            //Arrange
-            var ukprn = "10024689";
-            var baseUrl = "http://somewhere/";
-            var providerRelationshipConfig = new ProviderRelationshipsConfiguration();
-            providerRelationshipConfig.ProviderPortalBaseUrl = baseUrl;
-            var providerUrls = new ProviderUrls(providerRelationshipConfig);
-
             //Act
             var result = providerUrls.Recruit(ukprn);
 
@@ -27,13 +37,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
         [Test]
         public void Then_The_ProviderManageRecruitEmails_Is_Returned()
         {
-            //Arrange
-            var ukprn = "10024689";
-            var baseUrl = "http://somewhere/";
-            var providerRelationshipConfig = new ProviderRelationshipsConfiguration();
-            providerRelationshipConfig.ProviderPortalBaseUrl = baseUrl;
-            var providerUrls = new ProviderUrls(providerRelationshipConfig);
-
             //Act
             var result = providerUrls.ProviderManageRecruitEmails(ukprn);
 
