@@ -101,6 +101,13 @@
         },
         "appServiceAllowedIPs": {
             "type": "array"
+        },
+        "utcNow": {
+            "type": "string",
+            "defaultValue": "[utcNow()]",
+            "metadata": {
+                "description": "Used to datestamp resource names to ensure that a unique record is added to deployment history"
+            }
         }
     },
     "variables": {
@@ -117,7 +124,7 @@
     },
     "resources": [
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/resourceGroups",
             "location": "[parameters('resourceGroupLocation')]",
@@ -125,8 +132,8 @@
             "properties": {}
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "storage-account",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('workerStorageAccountName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -146,8 +153,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "worker-app-subnet",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(parameters('subnetObject').name, '-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -176,8 +183,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "worker-app-service-plan",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('workerAppServicePlanName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -200,8 +207,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "app-service-certificate",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -224,8 +231,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "app-service",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('uiAppServiceName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -271,7 +278,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('app-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
@@ -284,20 +291,17 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
-            },
-            "dependsOn": [
-                "app-service-certificate"
-            ]
+            }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "api-app-service-certificate",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -320,8 +324,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "api-app-service",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('apiAppServiceName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -367,7 +371,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('api-app-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
                                 }
                             ]
                         }
@@ -376,20 +380,17 @@
                         "value": "[parameters('apiCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('api-app-service-certificate').outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
                     }
                 }
-            },
-            "dependsOn": [
-                "api-app-service-certificate"
-            ]
+            }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "worker-app-service",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('workerAppServiceName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -409,7 +410,7 @@
                         "value": "[variables('resourceGroupName')]"
                     },
                     "subnetResourceId": {
-                        "value": "[reference('worker-app-subnet').outputs.SubnetResourceId.value]"
+                        "value": "[reference(concat(parameters('subnetObject').name, '-', parameters('utcNow'))).outputs.SubnetResourceId.value]"
                     },
                     "deployStagingSlot": {
                         "value": false
@@ -435,7 +436,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('worker-app-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
                                 }
                             ]
                         }
@@ -445,12 +446,12 @@
                             "array": [
                                 {
                                     "name": "AzureWebJobsDashboard",
-                                    "connectionString": "[reference('storage-account').outputs.storageConnectionString.value]",
+                                    "connectionString": "[reference(concat(variables('workerStorageAccountName'), '-', parameters('utcNow'))).outputs.storageConnectionString.value]",
                                     "type": "Custom"
                                 },
                                 {
                                     "name": "AzureWebJobsStorage",
-                                    "connectionString": "[reference('storage-account').outputs.storageConnectionString.value]",
+                                    "connectionString": "[reference(concat(variables('workerStorageAccountName'), '-', parameters('utcNow'))).outputs.storageConnectionString.value]",
                                     "type": "Custom"
                                 }
                             ]
@@ -459,13 +460,12 @@
                 }
             },
             "dependsOn": [
-                "worker-app-service-plan",
-                "storage-account"
+                "[concat(variables('workerAppServicePlanName'), '-', parameters('utcNow'))]"
             ]
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "app-insights",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -482,13 +482,11 @@
                         "value": "[variables('uiAppServiceName')]"
                     }
                 }
-            },
-            "dependsOn": [
-            ]
+            }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "api-app-insights",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -505,13 +503,11 @@
                         "value": "[variables('apiAppServiceName')]"
                     }
                 }
-            },
-            "dependsOn": [
-            ]
+            }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "worker-app-insights",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -528,16 +524,12 @@
                         "value": "[variables('workerAppServiceName')]"
                     }
                 }
-            },
-            "dependsOn": [
-            ]
+            }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "cosmos-db",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('cosmosDbName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
-            "dependsOn": [
-            ],
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -562,8 +554,8 @@
             }
         },
         {
-            "apiVersion": "2020-10-01",
-            "name": "sql-database",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('databaseName'), '-', parameters('utcNow'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
