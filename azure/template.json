@@ -208,7 +208,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(parameters('keyVaultCertificateName'), '-', parameters('utcNow'))]",
+            "name": "[concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -291,7 +291,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(parameters('keyVaultCertificateName'), '-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
@@ -301,7 +301,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(parameters('apiKeyVaultCertificateName'), '-', parameters('utcNow'))]",
+            "name": "[concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -380,7 +380,7 @@
                         "value": "[parameters('apiCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(parameters('apiKeyVaultCertificateName'), '-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
@@ -530,8 +530,6 @@
             "apiVersion": "2021-04-01",
             "name": "[concat(variables('cosmosDbName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
-            "dependsOn": [
-            ],
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
