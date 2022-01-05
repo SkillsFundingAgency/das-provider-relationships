@@ -410,7 +410,7 @@
                         "value": "[variables('resourceGroupName')]"
                     },
                     "subnetResourceId": {
-                        "value": "[reference('worker-app-subnet').outputs.SubnetResourceId.value]"
+                        "value": "[reference(concat(parameters('subnetObject').name, '-', parameters('utcNow'))).outputs.SubnetResourceId.value]"
                     },
                     "deployStagingSlot": {
                         "value": false
