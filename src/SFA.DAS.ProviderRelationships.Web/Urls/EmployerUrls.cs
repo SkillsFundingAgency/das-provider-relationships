@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
 
         public string Apprentices(string accountHashedId = null) => Commitments("apprentices/home", accountHashedId);
         
-        private string Commitments(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerCommitmentsBaseUrl, path, accountHashedId);
+        private string Commitments(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerCommitmentsV2BaseUrl, path, accountHashedId);
 
         #endregion Commitments
         

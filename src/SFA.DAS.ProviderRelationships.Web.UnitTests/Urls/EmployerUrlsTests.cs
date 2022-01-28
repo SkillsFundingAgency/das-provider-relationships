@@ -110,7 +110,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Urls
             const string baseUrl = "http://example.com:12345/";
 
             EmployerUrlsConfiguration.Setup(c => c.EmployerAccountsBaseUrl).Returns(baseUrl);
-            EmployerUrlsConfiguration.Setup(c => c.EmployerCommitmentsBaseUrl).Returns(baseUrl);
+            EmployerUrlsConfiguration.Setup(c => c.EmployerCommitmentsV2BaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerFinanceBaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerPortalBaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerProjectionsBaseUrl).Returns(baseUrl);
@@ -123,7 +123,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Urls
             const string baseUrl = "http://example.com:12345";
 
             EmployerUrlsConfiguration.Setup(c => c.EmployerAccountsBaseUrl).Returns(baseUrl);
-            EmployerUrlsConfiguration.Setup(c => c.EmployerCommitmentsBaseUrl).Returns(baseUrl);
+            EmployerUrlsConfiguration.Setup(c => c.EmployerCommitmentsV2BaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerFinanceBaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerPortalBaseUrl).Returns(baseUrl);
             EmployerUrlsConfiguration.Setup(c => c.EmployerProjectionsBaseUrl).Returns(baseUrl);
