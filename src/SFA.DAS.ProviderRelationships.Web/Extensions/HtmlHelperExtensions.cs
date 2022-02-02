@@ -74,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             var headerModel = new HeaderViewModel(new HeaderConfiguration {
                 ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl,
                 ApplicationBaseUrl = configuration.EmployerAccountsBaseUrl,
-                EmployerCommitmentsBaseUrl = configuration.EmployerCommitmentsBaseUrl,
+                EmployerCommitmentsV2BaseUrl = configuration.EmployerCommitmentsBaseUrl,
                 EmployerFinanceBaseUrl = configuration.EmployerFinanceBaseUrl,
                 AuthenticationAuthorityUrl = oidcConfiguration.BaseAddress,
                 ClientId = oidcConfiguration.ClientId,
