@@ -208,7 +208,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))]",
+            "name": "[concat('das-provider-relationships-ui-cert-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -301,7 +301,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))]",
+            "name": "[concat('das-provider-relationships-api-cert-', parameters('utcNow'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
