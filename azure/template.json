@@ -291,7 +291,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(parameters('keyVaultCertificateName'), '-ui-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat('das-provider-relationships-ui-cert-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
@@ -380,7 +380,7 @@
                         "value": "[parameters('apiCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(parameters('apiKeyVaultCertificateName'), '-api-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat('das-provider-relationships-api-cert-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIPs')]"
