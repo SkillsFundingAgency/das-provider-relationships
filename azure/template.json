@@ -86,6 +86,10 @@
             "type": "string",
             "defaultValue": "[subscription().subscriptionId]"
         },
+        "cosmosDbSubnetResourceIdList": {
+            "type": "array",
+            "defaultValue": []
+        },
         "logAnalyticsWorkspaceName": {
             "type": "string"
         },
@@ -568,8 +572,17 @@
                     "defaultConsistencyLevel": {
                         "value": "Strong"
                     },
+                    "subnetResourceIdList": {
+                        "value": "[parameters('cosmosDbSubnetResourceIdList')]"
+                    },
                     "ipRangeFilter": {
                         "value": "[parameters('cosmosDbIpRangeFilter')]"
+                    },
+                    "logAnalyticsWorkspaceName": {
+                        "value": "[parameters('logAnalyticsWorkspaceName')]"
+                    },
+                    "logAnalyticsWorkspaceResourceGroupName": {
+                        "value": "[parameters('sharedManagementResourceGroup')]"
                     }
                 }
             }
