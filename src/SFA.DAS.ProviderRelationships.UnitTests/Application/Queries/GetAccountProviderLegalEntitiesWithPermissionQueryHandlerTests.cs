@@ -34,6 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     new AccountProviderLegalEntityDto
                     {
                         AccountId = f.Account.Id,
+                        AccountHashedId = f.Account.HashedId,
                         AccountPublicHashedId = f.Account.PublicHashedId,
                         AccountName = f.Account.Name,
                         AccountProviderId = f.AccountProvider.Id,
@@ -78,7 +79,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture()
         {
-            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.CreateCohort});
+            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.Recruitment, Operation.RecruitmentRequiresReview});
 
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>());

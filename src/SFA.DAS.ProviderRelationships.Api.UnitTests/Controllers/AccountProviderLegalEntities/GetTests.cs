@@ -134,7 +134,8 @@ namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Controllers.AccountProvide
 
             Result = new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new[] {
                 new AccountProviderLegalEntityDto {
-                    AccountId = 41L, 
+                    AccountId = 41L,
+                    AccountHashedId = "TRE567",
                     AccountLegalEntityId = 4131L, 
                     AccountLegalEntityName = "AccountLegalEntityName",
                     AccountLegalEntityPublicHashedId = "ALEPHI", 
