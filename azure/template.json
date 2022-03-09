@@ -103,7 +103,10 @@
         "sharedManagementResourceGroup": {
             "type": "string"
         },
-        "appServiceAllowedIPs": {
+        "frontEndAccessRestrictions": {
+            "type": "array"
+        },
+        "backEndAccessRestrictions": {
             "type": "array"
         },
         "utcNow": {
@@ -319,7 +322,7 @@
                         "value": "[reference(concat('das-provider-relationships-ui-cert-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('appServiceAllowedIPs')]"
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             }
@@ -408,7 +411,7 @@
                         "value": "[reference(concat('das-provider-relationships-api-cert-', parameters('utcNow'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('appServiceAllowedIPs')]"
+                        "value": "[parameters('backEndAccessRestrictions')]"
                     }
                 }
             }
