@@ -19,8 +19,8 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
         private static async Task Test()
         {
             var configuration = new ProviderRelationshipsApiConfiguration {
-                //ApiBaseUrl = "https://das-at-prelapi-as.azurewebsites.net/",
-                ApiBaseUrl = "https://localhost:44308/",
+                ApiBaseUrl = "https://das-at-prelapi-as.azurewebsites.net/",
+                //ApiBaseUrl = "https://localhost:44308/",
                 IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/das-at-prelapi-as-ar"
             };
 

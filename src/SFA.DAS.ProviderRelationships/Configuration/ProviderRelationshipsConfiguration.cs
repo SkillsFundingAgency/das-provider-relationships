@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Extensions;
+﻿using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
+using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
@@ -6,6 +7,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
     {
         public AzureActiveDirectoryConfiguration AzureActiveDirectory { get; set; }
         public OidcConfiguration Oidc { get; set; }
+        public ProviderRelationshipsApiConfiguration ProviderRelationshipsApi { get; set; }
         public ReadStoreConfiguration ReadStore { get; set; }
         public EmployerUrlsConfiguration EmployerUrls { get; set; }
         public PasAccountApiConfiguration PasAccountApi { get; set; }
