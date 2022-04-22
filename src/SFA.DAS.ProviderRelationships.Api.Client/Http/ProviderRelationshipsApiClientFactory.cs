@@ -24,11 +24,15 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
 
         private IHttpClientFactory GetHttpClientFactory()
         {
-            IHttpClientFactory httpClientFactory = IsClientCredentialConfiguration(_configuration.ClientId, _configuration.ClientSecret, _configuration.Tenant)
-                ? new AzureActiveDirectoryHttpClientFactory(_configuration)
-                : new ManagedIdentityHttpClientFactory(_configuration);
-
-            return httpClientFactory;
+            // cannot use a ternary conditional operator here as it causes a build failure in the azure pipeline
+            if (IsClientCredentialConfiguration(_configuration.ClientId, _configuration.ClientSecret, _configuration.Tenant))
+            {
+                return new AzureActiveDirectoryHttpClientFactory(_configuration);
+            }
+            else
+            {
+                return new ManagedIdentityHttpClientFactory(_configuration);
+            }
         }
 
         private bool IsClientCredentialConfiguration(string clientId, string clientSecret, string tenant)
