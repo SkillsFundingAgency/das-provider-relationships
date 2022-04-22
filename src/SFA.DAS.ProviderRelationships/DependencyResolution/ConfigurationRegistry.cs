@@ -2,7 +2,6 @@
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.Encoding;
-using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using StructureMap;
 using ConfigurationKeys = SFA.DAS.ProviderRelationships.Configuration.ConfigurationKeys;

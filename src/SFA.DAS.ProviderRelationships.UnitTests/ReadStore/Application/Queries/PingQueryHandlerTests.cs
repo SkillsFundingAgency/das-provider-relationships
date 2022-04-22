@@ -8,11 +8,11 @@ using MediatR;
 using Microsoft.Azure.Documents;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
+using SFA.DAS.ProviderRelationships.Application.Queries.Ping;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Application.Queries
+namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Queries
 {
     [TestFixture]
     [Parallelizable]

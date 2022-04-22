@@ -7,13 +7,13 @@ using MediatR;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.CosmosDb.Testing;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Models;
+using SFA.DAS.ProviderRelationships.Application.Queries.HasRelationshipWithPermission;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
+using SFA.DAS.ProviderRelationships.ReadStore.Models;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Application.Queries
+namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Queries
 {
     [TestFixture]
     [Parallelizable]
@@ -37,17 +37,17 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
         internal HasRelationshipWithPermissionQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         internal IRequestHandler<HasRelationshipWithPermissionQuery, bool> Handler { get; set; }
-        internal Mock<IAccountProviderLegalEntitiesReadOnlyRepository> PermissionsRepository { get; set; }
-        internal IOrderedQueryable<AccountProviderLegalEntityDto> DocumentQuery { get; set; }
-        internal List<AccountProviderLegalEntityDto> Permissions { get; set; }
+        internal Mock<IAccountProviderLegalEntitiesRepository> PermissionsRepository { get; set; }
+        internal IOrderedQueryable<AccountProviderLegalEntity> DocumentQuery { get; set; }
+        internal List<AccountProviderLegalEntity> Permissions { get; set; }
 
         public HasRelationshipWithPermissionQueryHandlerTestsFixture()
         {
             Query = new HasRelationshipWithPermissionQuery(11111111, Operation.CreateCohort);
             CancellationToken = CancellationToken.None;
-            PermissionsRepository = new Mock<IAccountProviderLegalEntitiesReadOnlyRepository>();
-            Permissions = new List<AccountProviderLegalEntityDto>();
-            DocumentQuery = new FakeDocumentQuery<AccountProviderLegalEntityDto>(Permissions);
+            PermissionsRepository = new Mock<IAccountProviderLegalEntitiesRepository>();
+            Permissions = new List<AccountProviderLegalEntity>();
+            DocumentQuery = new FakeDocumentQuery<AccountProviderLegalEntity>(Permissions);
 
             PermissionsRepository.Setup(r => r.CreateQuery(null)).Returns(DocumentQuery);
 
@@ -61,14 +61,14 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests.ReadStore.Applicati
         
         public HasRelationshipWithPermissionQueryHandlerTestsFixture AddAccountProviderLegalEntities()
         {
-            var accountProviderLegalEntityDto1 = new Mock<AccountProviderLegalEntityDto>();
-            accountProviderLegalEntityDto1.SetupGet(aple => aple.AccountLegalEntityId).Returns(1);
-            accountProviderLegalEntityDto1.SetupGet(aple => aple.Ukprn).Returns(11111111);
-            accountProviderLegalEntityDto1.SetupGet(aple => aple.Operations).Returns(new[] {Operation.CreateCohort});
+            var accountProviderLegalEntity = new Mock<AccountProviderLegalEntity>();
+            accountProviderLegalEntity.SetupGet(aple => aple.AccountLegalEntityId).Returns(1);
+            accountProviderLegalEntity.SetupGet(aple => aple.Ukprn).Returns(11111111);
+            accountProviderLegalEntity.SetupGet(aple => aple.Operations).Returns(new[] {Operation.CreateCohort});
 
             Permissions.AddRange(new []
             {
-                accountProviderLegalEntityDto1.Object
+                accountProviderLegalEntity.Object
             });
             
             return this;
