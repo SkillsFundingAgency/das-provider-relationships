@@ -1,6 +1,6 @@
 using SFA.DAS.CosmosDb;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.Configuration
+namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class ReadStoreConfiguration : ICosmosDbConfiguration
     {

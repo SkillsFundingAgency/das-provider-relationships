@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
                 c.AddRegistry<AzureActiveDirectoryAuthenticationRegistry>();
                 c.AddRegistry<ConfigurationRegistry>();
                 c.AddRegistry<DataRegistry>();
+                c.AddRegistry<ReadStoreDataRegistry>();
                 c.AddRegistry<EntityFrameworkCoreUnitOfWorkRegistry<ProviderRelationshipsDbContext>>();
                 c.AddRegistry<HashingRegistry>();
                 c.AddRegistry<LoggerRegistry>();

@@ -27,6 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck
             var user = await _db.Value.Users.SingleAsync(u => u.Ref == request.UserRef, cancellationToken);
             var healthCheck = user.CreateHealthCheck();
             
+            // NOTE: the health check is started from the web application not from the api so the api is being verified
             await healthCheck.Run(() => _roatpService.Ping(), () => _providerRelationshipsApiClient.Ping(cancellationToken));
 
             _db.Value.HealthChecks.Add(healthCheck);

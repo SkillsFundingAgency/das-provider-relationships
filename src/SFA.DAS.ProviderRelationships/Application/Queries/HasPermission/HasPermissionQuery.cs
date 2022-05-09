@@ -1,9 +1,9 @@
-using MediatR;
+﻿using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission
+namespace SFA.DAS.ProviderRelationships.Application.Queries.HasPermission
 {
-    internal class HasPermissionQuery : IRequest<bool>
+    public class HasPermissionQuery : IRequest<bool>
     {
         public long Ukprn { get; }
         public long EmployerAccountLegalEntityId { get; }

@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using MediatR;
 using Microsoft.Azure.Documents;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
+using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping
+namespace SFA.DAS.ProviderRelationships.Application.Queries.Ping
 {
-    internal class PingQueryHandler : RequestHandler<PingQuery>
+    public class PingQueryHandler : RequestHandler<PingQuery>
     {
         private readonly IDocumentClient _documentClient;
 

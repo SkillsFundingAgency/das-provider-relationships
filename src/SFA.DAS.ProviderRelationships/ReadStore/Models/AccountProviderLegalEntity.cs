@@ -10,37 +10,42 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
     public class AccountProviderLegalEntity : Document, IAccountProviderLegalEntityDto
     {
         [JsonProperty("accountId")]
-        public long AccountId { get; private set; }
+        public virtual long AccountId { get; private set; }
 
         [JsonProperty("accountLegalEntityId")]
-        public long AccountLegalEntityId { get; private set; }
+        public virtual long AccountLegalEntityId { get; private set; }
 
         [JsonProperty("accountProviderId")]
-        public long AccountProviderId { get; private set; }
+        public virtual long AccountProviderId { get; private set; }
 
         [JsonProperty("accountProviderLegalEntityId")]
-        public long AccountProviderLegalEntityId { get; private set; }
+        public virtual long AccountProviderLegalEntityId { get; private set; }
 
         [JsonProperty("ukprn")]
-        public long Ukprn { get; private set; }
+        public virtual long Ukprn { get; private set; }
 
         [JsonProperty("operations")]
-        public IEnumerable<Operation> Operations { get; private set; } = new HashSet<Operation>();
+        public virtual IEnumerable<Operation> Operations { get; private set; } = new HashSet<Operation>();
 
         [JsonProperty("outboxData")]
-        public IEnumerable<OutboxMessage> OutboxData => _outboxData;
+        public virtual IEnumerable<OutboxMessage> OutboxData => _outboxData;
 
         [JsonProperty("created")]
-        public DateTime Created { get; private set; }
+        public virtual DateTime Created { get; private set; }
 
         [JsonProperty("updated")]
-        public DateTime? Updated { get; private set; }
+        public virtual DateTime? Updated { get; private set; }
 
         [JsonProperty("deleted")]
-        public DateTime? Deleted { get; private set; }
+        public virtual DateTime? Deleted { get; private set; }
 
         [JsonIgnore]
         private readonly List<OutboxMessage> _outboxData = new List<OutboxMessage>();
+
+        [JsonConstructor]
+        public AccountProviderLegalEntity()
+        {
+        }
 
         public AccountProviderLegalEntity(long accountId, long accountLegalEntityId, long accountProviderId, long accountProviderLegalEntityId, long ukprn, HashSet<Operation> grantedOperations, DateTime created, string messageId)
             : base(1, "relationship")
@@ -55,11 +60,6 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Models
             Created = created;
 
             AddOutboxMessage(messageId, created);
-        }
-
-        [JsonConstructor]
-        private AccountProviderLegalEntity()
-        {
         }
 
         public void Delete(DateTime deleted, string messageId)

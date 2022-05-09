@@ -1,4 +1,4 @@
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data
+namespace SFA.DAS.ProviderRelationships.ReadStore.Data
 {
     public static class DocumentSettings
     {
