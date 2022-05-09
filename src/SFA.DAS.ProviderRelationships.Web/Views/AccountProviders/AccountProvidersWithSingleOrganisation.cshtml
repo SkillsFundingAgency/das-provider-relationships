@@ -1,53 +1,56 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 
-<div class="govuk-grid-column-full">
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
+
+<table class="govuk-table">
+    <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-            <th class="govuk-table__header">Training provider name</th>
-            <th class="govuk-table__header">Permissions</th>
+            <th class="govuk-table__header" scope="col">Training provider name</th>
+            <th class="govuk-table__header" scope="col">Permissions</th>
             @if (Model.IsUpdatePermissionsOperationAuthorized)
             {
-                <th class="govuk-table__header"></th>
+                <th class="govuk-table__header" scope="col">
+                    <span class="govuk-visually-hidden">Action</span>
+                </th>
             }
         </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-        @foreach (var accountProvider in Model.AccountProviders)
-        {
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
-                <td class="govuk-table__cell das-table-cell-width-50">
-                    @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
-                    {
-                        @:No permissions set
-                    }
-                    else
-                    {
-                        foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions())
-                        {
-                            <span>@permission.ToString()</span><br />
-                        }
-                    }
-                </td>
-                @if (Model.IsUpdatePermissionsOperationAuthorized)
+    </thead>
+    <tbody class="govuk-table__body">
+    @foreach (var accountProvider in Model.AccountProviders)
+    {
+        <tr class="govuk-table__row">
+            <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
+            <td class="govuk-table__cell das-table-cell-width-50">
+                @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
                 {
-                    <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
-                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
-                            @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
-                            {
-                                @:Set permissions
-                            }
-                            else
-                            {
-                                @:Change permissions
-                            }
-                        </a>
-                    </td>
+                    @:No permissions set
                 }
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+                else
+                {
+                    <ul class="govuk-list govuk-!-margin-bottom-0">
+                    foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions())
+                    {
+                        <li>@permission.ToString()</li>
+                    }
+                    </ul>
+                }
+            </td>
+            @if (Model.IsUpdatePermissionsOperationAuthorized)
+            {
+                <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
+                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
+                        @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
+                        {
+                            @:Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span>
+                        }
+                        else
+                        {
+                            @:Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span>
+                        }
+                    </a>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
