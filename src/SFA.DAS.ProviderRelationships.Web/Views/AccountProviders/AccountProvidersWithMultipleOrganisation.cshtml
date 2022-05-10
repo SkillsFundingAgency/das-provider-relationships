@@ -43,11 +43,11 @@
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
                             @if (!accountProviderLegalEntity.HadPermissions)
                             {
-                                @:Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span>
+                                <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span></span>
                             }
                             else
                             {
-                                @:Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span>
+                                <span>Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span></span>
                             }
                         </a>
                     </td>
