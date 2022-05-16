@@ -115,6 +115,8 @@
     </Compile>
     <Compile Include="Logging\LoggingContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteValues\Permissions\HasRelationshipWithPermissionRouteValues.cs" />
+    <Compile Include="RouteValues\Permissions\HasPermissionRouteValues.cs" />
     <Compile Include="RouteValues\Permissions\RevokePermissionsRouteValues.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -1,10 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using SFA.DAS.Http;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasPermission;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.Ping;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client
@@ -12,12 +8,10 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
     public class ProviderRelationshipsApiClient : IProviderRelationshipsApiClient
     {
         private readonly IRestHttpClient _restHttpClient;
-        private readonly IMediator _mediator;
 
-        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient, IMediator mediator)
+        public ProviderRelationshipsApiClient(IRestHttpClient restHttpClient)
         {
             _restHttpClient = restHttpClient;
-            _mediator = mediator;
         }
 
         public async Task<GetAccountProviderLegalEntitiesWithPermissionResponse> GetAccountProviderLegalEntitiesWithPermission(GetAccountProviderLegalEntitiesWithPermissionRequest withPermissionRequest, CancellationToken cancellationToken = default)
@@ -27,17 +21,17 @@ namespace SFA.DAS.ProviderRelationships.Api.Client
 
         public Task<bool> HasPermission(HasPermissionRequest request, CancellationToken cancellationToken = default)
         {
-            return _mediator.Send(new HasPermissionQuery(request.Ukprn, request.AccountLegalEntityId, request.Operation), cancellationToken);
+            return _restHttpClient.Get<bool>("permissions/has", request, cancellationToken);
         }
 
         public Task<bool> HasRelationshipWithPermission(HasRelationshipWithPermissionRequest request, CancellationToken cancellationToken = default)
         {
-            return _mediator.Send(new HasRelationshipWithPermissionQuery(request.Ukprn, request.Operation), cancellationToken);
+            return _restHttpClient.Get<bool>("permissions/has-relationship-with", request, cancellationToken);
         }
 
         public Task Ping(CancellationToken cancellationToken = default)
         {
-            return Task.WhenAll(_restHttpClient.Get("ping", null, cancellationToken), _mediator.Send(new PingQuery(), cancellationToken));
+            return Task.WhenAll(_restHttpClient.Get("ping", null, cancellationToken), _restHttpClient.Get("permissions/ping", null, cancellationToken));
         }
 
         public Task RevokePermissions(RevokePermissionsRequest request, CancellationToken cancellationToken = default)

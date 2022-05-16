@@ -1,6 +1,5 @@
 using Microsoft.Azure.Documents;
 using StructureMap;
-using SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using DocumentClientFactory = SFA.DAS.ProviderRelationships.ReadStore.Data.DocumentClientFactory;
 

@@ -1,9 +1,9 @@
 using MediatR;
 using SFA.DAS.ProviderRelationships.Types.Models;
 
-namespace SFA.DAS.ProviderRelationships.Api.Client.ReadStore.Application.Queries.HasRelationshipWithPermission
+namespace SFA.DAS.ProviderRelationships.Application.Queries.HasRelationshipWithPermission
 {
-    internal class HasRelationshipWithPermissionQuery : IRequest<bool>
+    public class HasRelationshipWithPermissionQuery : IRequest<bool>
     {
         public long Ukprn { get; }
         public Operation Operation { get; }
