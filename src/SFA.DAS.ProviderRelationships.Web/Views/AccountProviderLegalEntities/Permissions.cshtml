@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
 
-        @using (Html.BeginForm(new {action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}", controller = "accounts"}))
+        @using (Html.BeginForm(new { action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}", controller = "accounts" }))
         {
             @Html.AntiForgeryToken()
 
@@ -52,13 +52,13 @@
                     }
                     <div class="govuk-radios" data-module="radios">
                         <div class="govuk-radios__item" id="Permissions_0__State">
-                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.Yes, new {id = "operation-0-yes", @class = "govuk-radios__input"})
+                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.Yes, new { id = "operation-0-yes", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="operation-0-yes">
                                 Allow
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.No, new {id = "operation-0-no", @class = "govuk-radios__input"})
+                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.No, new { id = "operation-0-no", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="operation-0-no">
                                 Do not allow
                             </label>
@@ -85,22 +85,19 @@
                     }
                     <div class="govuk-radios" data-module="radios">
                         <div class="govuk-radios__item" id="Permissions_1__State">
-                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Yes, new {id = "operation-1-yes", @class = "govuk-radios__input"})
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Yes, new { id = "operation-1-yes", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="operation-1-yes">
                                 Allow
                             </label>
                         </div>
-                        @if (ViewBag.AllowCollaborationPermission)
-                        {
-                            <div class="govuk-radios__item">
-                                @Html.RadioButtonFor(m => m.Permissions[1].State, State.Conditional, new {id = "operation-1-conditional", @class = "govuk-radios__input"})
-                                <label class="govuk-label govuk-radios__label" for="operation-1-conditional">
-                                    Allow, but I want to review job adverts before they’re advertised
-                                </label>
-                            </div>
-                        }
                         <div class="govuk-radios__item">
-                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.No, new {id = "operation-1-no", @class = "govuk-radios__input"})
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Conditional, new { id = "operation-1-conditional", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-conditional">
+                                Allow, but I want to review job adverts before they're advertised
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.No, new { id = "operation-1-no", @class = "govuk-radios__input" })
                             <label class="govuk-label govuk-radios__label" for="operation-1-no">
                                 Do not allow
                             </label>

@@ -1,7 +1,7 @@
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AlreadyAddedAccountProviderViewModel
 
 @{
-    ViewBag.Title = "You’ve already added this training provider";
+    ViewBag.Title = "You've already added this training provider";
     ViewBag.GaData.Vpv = "/permissions/accountproviders/alreadyadded";
     ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
 }
@@ -12,8 +12,8 @@
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-l">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
             You've already added this training provider
         </h1>
         <p class="govuk-body">

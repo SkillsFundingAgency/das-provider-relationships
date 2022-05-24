@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
@@ -17,7 +16,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             filters.AddUnitOfWorkFilter();
             filters.AddValidationFilter();
             filters.Add(new UrlsViewBagFilter(() => DependencyResolver.Current.GetService<IEmployerUrls>()));
-            filters.Add(new ConfigurationViewBagFilter(() => DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>()));
             filters.Add(new GoogleAnalyticsFilter());
         }
     }    

@@ -14,25 +14,30 @@
     <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
 }
 
+
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+    @Model.AccountProvider.ProviderName
+    <span class="govuk-caption-m">UKPRN @Model.AccountProvider.ProviderUkprn</span>
+</h1>
+
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
-            @Model.AccountProvider.ProviderName
-            <span class="govuk-caption-m">UKPRN @Model.AccountProvider.ProviderUkprn</span>
-        </h1>
-    </div>
     <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body">Set permissions for a single organisation, or set the same permissions for all your organisations at the same time.</p>
     </div>
+</div>
+
+<div class="govuk-grid-row">
     <div class="@(Model.IsUpdatePermissionsOperationAuthorized ? "govuk-grid-column-two-thirds" : "govuk-grid-column-one-half")">
         <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <th class="govuk-table__header">Your organisations</th>
-                    <th class="govuk-table__header">Permissions</th>
+                    <th class="govuk-table__header" scope="col">Your organisations</th>
+                    <th class="govuk-table__header" scope="col">Permissions</th>
                     @if (Model.IsUpdatePermissionsOperationAuthorized)
                     {
-                        <th class="govuk-table__header"></th>
+                         <th class="govuk-table__header" scope="col">
+                            <span class="govuk-visually-hidden">Action</span>
+                        </th>
                     }
                 </tr>
             </thead>
