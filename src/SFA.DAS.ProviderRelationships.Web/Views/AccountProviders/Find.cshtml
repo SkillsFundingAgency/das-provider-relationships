@@ -17,29 +17,28 @@
     <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
     </div>
+</div>
 
-    <div class="govuk-grid-column-full">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <h1 class="das-js-hide govuk-heading-xl govuk-!-margin-bottom-6">@pageTitleNonJs</h1>
+    <h1 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--xl" for="Ukprn">
+            <span class="das-js-hide">@pageTitleNonJs</span>
+            <span id="jsChgTitle" class="das-js-show">@pageTitleJs</span>
+        </label>
+    </h1>
 
-        <h1 id="jsChgTitle" class="das-js-show govuk-heading-xl govuk-!-margin-bottom-6">@pageTitleJs</h1>
-    </div>
-
-    <div class="govuk-grid-column-two-thirds">
-        <p class="das-js-show govuk-body">
-            A UKPRN is the unique, 8-digit number we use to identify a training provider. Ask your training provider if you do not know it.
-        </p>
-
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <p class="das-js-show govuk-body">
+                A UKPRN is the unique, 8-digit number we use to identify a training provider. Ask your training provider if you do not know it.
+            </p>
             <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
-
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
-
                 <select id="Ukprn" name="Ukprn" class="govuk-select">
                     <option class="das-js-hide" value="">Select training provider</option>
                     @foreach (var provider in Model.Providers)
@@ -47,14 +46,12 @@
                         <option value="@provider.Ukprn">@provider.FormattedProviderSuggestion</option>
                     }
                 </select>
-
             </div>
-
             <button class="govuk-button" id="Ukprn-button" type="submit">Continue</button>
-        }
+        </div>
     </div>
 
-</div>
+}
 
 <script>
     document.title = document.getElementById('jsChgTitle').textContent;
