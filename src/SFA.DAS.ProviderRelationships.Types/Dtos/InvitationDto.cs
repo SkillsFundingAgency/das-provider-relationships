@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ProviderRelationships.Types.Dtos
+﻿using System;
+
+namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class InvitationDto
     {
@@ -13,5 +15,11 @@
         public int Status { get; set; }
 
         public long Ukprn { get; set; }
+
+        public DateTime SentDate { get; set; }
+
+        public string ProviderOrganisationName { get; set; }
+
+        public string ProviderUserFullName { get; set; }
     }
 }

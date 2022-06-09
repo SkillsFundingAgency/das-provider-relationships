@@ -2,12 +2,9 @@
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class RegistrationApiConfiguration : IAzureActiveDirectoryClientConfiguration
+    public class RegistrationApiConfiguration : IRegistrationApiConfiguration
     {
-        public string ApiBaseUrl { get; set; }
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
+        public string BaseUrl { get; set; }
         public string IdentifierUri { get; set; }
-        public string Tenant { get; set; }
     }
 }

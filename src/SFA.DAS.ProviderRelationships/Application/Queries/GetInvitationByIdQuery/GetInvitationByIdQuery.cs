@@ -5,11 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQue
 {
     public class GetInvitationByIdQuery : IRequest<GetInvitationByIdQueryResult>
     {
-        public GetInvitationByIdQuery(Guid correlationId)
-        {
-            CorrelationId = correlationId;
-        }
-
-        public Guid CorrelationId { get; }
+        public Guid CorrelationId { get; set; }
     }
 }

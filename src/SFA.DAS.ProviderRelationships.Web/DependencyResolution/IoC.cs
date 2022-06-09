@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.Web.DependencyResolution
                 c.AddRegistry<StartupRegistry>();
                 c.AddRegistry<PasAccountApiRegistry>();
                 c.AddRegistry<RecruitApiRegistry>();
-                c.AddRegistry<RegistrationApiRegistry>();
+                c.AddRegistry<RegistrationApiClientRegistry>();
                 c.AddRegistry<DefaultRegistry>();
                 c.AddRegistry<RoatpApiRegistry>();
             });
