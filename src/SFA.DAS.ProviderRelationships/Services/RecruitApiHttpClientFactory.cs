@@ -13,8 +13,8 @@ namespace SFA.DAS.ProviderRelationships.Services
         }
 
         public IRestHttpClient CreateRestHttpClient()
-        {
-            return new RestHttpClient(new AzureActiveDirectoryHttpClientFactory(_recruitApiClientConfig).CreateHttpClient());
+        {   
+            return new RestHttpClient(new ManagedIdentityHttpClientFactory(_recruitApiClientConfig).CreateHttpClient());
         }
     }
 }
