@@ -1,13 +1,11 @@
 ﻿using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Services.AppAuthentication;
-using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Authentication.Extensions.Legacy;
-using System.Threading;
-using SFA.DAS.ProviderRelationships.Types.Dtos;
-using Newtonsoft.Json;
+using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Services
 {
@@ -16,9 +14,8 @@ namespace SFA.DAS.ProviderRelationships.Services
         private readonly string _apiBaseUrl;
         private readonly string _identifierUri;
         private readonly HttpClient _client;
-        private readonly HttpRequestMessage _httpRequestMessage;
 
-        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration, HttpRequestMessage httpRequestMessage) : base(client)
+        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration) : base(client)
         {
             _apiBaseUrl = configuration.BaseUrl.EndsWith("/")
                 ? configuration.BaseUrl
@@ -26,27 +23,25 @@ namespace SFA.DAS.ProviderRelationships.Services
 
             _identifierUri = configuration.IdentifierUri;
             _client = client;
-            _httpRequestMessage = httpRequestMessage;
         }
 
         public async Task Unsubscribe(string CorrelationId)
         {
-            await AddAuthenticationHeader(_httpRequestMessage);
-
             var url = $"{_apiBaseUrl}api/unsubscribe/{CorrelationId}";
-            await _client.GetAsync(url);
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            await AddAuthenticationHeader(httpRequestMessage);
+            await _client.SendAsync(httpRequestMessage).ConfigureAwait(false);
         }
 
-        public async Task<InvitationDto> GetInvitations(string CorrelationId, CancellationToken cancellationToken = default)
+        public async Task<string> GetInvitations(string CorrelationId, CancellationToken cancellationToken = default)
         {
-            await AddAuthenticationHeader(_httpRequestMessage);
-
             var url = $"{_apiBaseUrl}api/invitations/{CorrelationId}";
-            var response = await _client.GetAsync(url, cancellationToken);
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            await AddAuthenticationHeader(httpRequestMessage);
+            var response = await _client.SendAsync(httpRequestMessage).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<InvitationDto>(message);
         }
 
         protected async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)

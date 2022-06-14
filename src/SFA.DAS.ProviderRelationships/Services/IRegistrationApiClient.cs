@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Services
 {
@@ -8,6 +7,6 @@ namespace SFA.DAS.ProviderRelationships.Services
     {
         Task Unsubscribe(string CorrelationId);
 
-        Task<InvitationDto> GetInvitations(string CorrelationId, CancellationToken cancellationToken);
+        Task<string> GetInvitations(string CorrelationId, CancellationToken cancellationToken);
     }
 }

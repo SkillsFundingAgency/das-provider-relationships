@@ -22,8 +22,9 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQue
         public async Task<GetInvitationByIdQueryResult> Handle(GetInvitationByIdQuery message, CancellationToken cancellationToken)
         {
             _logger.Info($"Get Invitations for {message.CorrelationId}");
-            var invitationDto = await _registrationService.GetInvitations(message.CorrelationId.ToString(), cancellationToken);
-            return new GetInvitationByIdQueryResult(invitationDto) {};
+            var json = await _registrationService.GetInvitations(message.CorrelationId.ToString(), cancellationToken);
+            _logger.Info($"Request sent Get Invitations for {message.CorrelationId} {json}");
+            return new GetInvitationByIdQueryResult(json == null ? null : JsonConvert.DeserializeObject<InvitationDto>(json)) { };
         }
     }
 }

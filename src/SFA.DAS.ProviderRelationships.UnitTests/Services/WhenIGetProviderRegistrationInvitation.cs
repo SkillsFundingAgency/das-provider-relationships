@@ -55,9 +55,8 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
                   ).Verifiable("");
 
             var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            var httpRequestMessage = new HttpRequestMessage();
 
-            _sut = new RegistrationApiClient(httpClient, _configuration, httpRequestMessage);
+            _sut = new RegistrationApiClient(httpClient, _configuration);
         }
 
         [Test]
