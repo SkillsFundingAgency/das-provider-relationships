@@ -35,7 +35,8 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
 
             _logger = new Mock<ILogger<RegistrationApiClient>>();
 
-            _configuration = new RegistrationApiConfiguration {
+            _configuration = new RegistrationApiConfiguration 
+            {
                 BaseUrl = _apiBaseUrl,
                 IdentifierUri = _identifierUri
             };
@@ -54,8 +55,9 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
                   ).Verifiable("");
 
             var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            var httpRequestMessage = new HttpRequestMessage();
 
-            _sut = new RegistrationApiClient(httpClient, _configuration);
+            _sut = new RegistrationApiClient(httpClient, _configuration, httpRequestMessage);
         }
 
         [Test]

@@ -489,16 +489,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 UserRef =userRef
             };
 
-            GetInvitationByIdQueryResult = new GetInvitationByIdQueryResult {
-                Invitation = new InvitationDto() {
-                    EmployerEmail = "foo@foo.com",
-                    EmployerFirstName = "John",
-                    EmployerLastName = "Smtih",
-                    EmployerOrganisation = "ESFA",
-                    Ukprn = ukprn,
-                    Status = 0
-                }
-            };
+            GetInvitationByIdQueryResult = new GetInvitationByIdQueryResult(new InvitationDto() {
+                EmployerEmail = "foo@foo.com",
+                EmployerFirstName = "John",
+                EmployerLastName = "Smtih",
+                EmployerOrganisation = "ESFA",
+                Ukprn = ukprn,
+                Status = 0
+            }) {};
 
             AddAccountProviderViewModel = new AddAccountProviderViewModel {
                 AccountId = accountId,

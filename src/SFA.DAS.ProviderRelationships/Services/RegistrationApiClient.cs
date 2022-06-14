@@ -6,6 +6,8 @@ using Microsoft.Azure.Services.AppAuthentication;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.Authentication.Extensions.Legacy;
 using System.Threading;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
+using Newtonsoft.Json;
 
 namespace SFA.DAS.ProviderRelationships.Services
 {
@@ -14,8 +16,9 @@ namespace SFA.DAS.ProviderRelationships.Services
         private readonly string _apiBaseUrl;
         private readonly string _identifierUri;
         private readonly HttpClient _client;
+        private readonly HttpRequestMessage _httpRequestMessage;
 
-        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration) : base(client)
+        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration, HttpRequestMessage httpRequestMessage) : base(client)
         {
             _apiBaseUrl = configuration.BaseUrl.EndsWith("/")
                 ? configuration.BaseUrl
@@ -23,35 +26,36 @@ namespace SFA.DAS.ProviderRelationships.Services
 
             _identifierUri = configuration.IdentifierUri;
             _client = client;
+            _httpRequestMessage = httpRequestMessage;
         }
 
         public async Task Unsubscribe(string CorrelationId)
         {
-            await AddAuthenticationHeader();
+            await AddAuthenticationHeader(_httpRequestMessage);
 
             var url = $"{_apiBaseUrl}api/unsubscribe/{CorrelationId}";
             await _client.GetAsync(url);
         }
 
-        public async Task<string> GetInvitations(string CorrelationId, CancellationToken cancellationToken = default)
+        public async Task<InvitationDto> GetInvitations(string CorrelationId, CancellationToken cancellationToken = default)
         {
-            await AddAuthenticationHeader();
+            await AddAuthenticationHeader(_httpRequestMessage);
 
             var url = $"{_apiBaseUrl}api/invitations/{CorrelationId}";
             var response = await _client.GetAsync(url, cancellationToken);
             response.EnsureSuccessStatusCode();
+            var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<InvitationDto>(message);
         }
 
-        private async Task AddAuthenticationHeader()
+        protected async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
         {
             if (ConfigurationManager.AppSettings["EnvironmentName"].ToUpper() != "LOCAL")
             {
                 var azureServiceTokenProvider = new AzureServiceTokenProvider();
                 var accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(_identifierUri);
-
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }
         }
     }

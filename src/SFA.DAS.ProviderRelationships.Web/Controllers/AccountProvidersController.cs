@@ -211,9 +211,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         {
             Session["Invitation"] = true;
 
-            var invitation = await _mediator.Send(new GetInvitationByIdQuery() {
-                CorrelationId = routeValues.CorrelationId.Value
-            });
+            var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
 
             var verify = await _mediator.Send(new FindProviderToAddQuery(routeValues.AccountId.Value, invitation.Invitation.Ukprn));
 

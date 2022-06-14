@@ -4,6 +4,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQue
 {
     public class GetInvitationByIdQueryResult
     {
-        public InvitationDto Invitation { get; set; }
+        public GetInvitationByIdQueryResult(InvitationDto invitation)
+        {
+            Invitation = invitation;
+        }
+
+        public InvitationDto Invitation { get; }
     }
 }
