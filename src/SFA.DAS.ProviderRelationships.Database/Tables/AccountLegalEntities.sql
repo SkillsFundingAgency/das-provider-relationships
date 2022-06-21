@@ -19,3 +19,8 @@ ON [dbo].[AccountLegalEntities] ([Deleted])
 INCLUDE ([Name], [PublicHashedId]) WITH (ONLINE = ON)
 
 GO
+
+CREATE NONCLUSTERED INDEX [Idx_AccountLegalEntities_Hashedid]
+ON [dbo].[Accounts] ([HashedId])
+
+GO
