@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
 
 
             var relationships = await relationshipsQuery
-                .Where(aple => aple.AccountLegalEntity.Deleted != null)
+                .Where(aple => aple.AccountLegalEntity.Deleted == null)
                 .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
