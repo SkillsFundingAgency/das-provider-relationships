@@ -1,11 +1,25 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
     public class ProviderRelationshipsDbContext : DbContext
     {
+        private ILoggerFactory GetLoggerFactory()
+        {
+            IServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(builder =>
+                   builder
+                   .AddDebug()
+                          .AddFilter(DbLoggerCategory.Database.Command.Name,
+                                     LogLevel.Information));
+            return serviceCollection.BuildServiceProvider()
+                    .GetService<ILoggerFactory>();
+        }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
         public DbSet<AccountProvider> AccountProviders { get; set; }
@@ -24,6 +38,15 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         protected ProviderRelationshipsDbContext()
         {
+        }
+
+        protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
+        {
+#if DEBUG
+            optionsBuilder
+                .UseLoggerFactory(GetLoggerFactory())
+                .EnableSensitiveDataLogging();
+#endif
         }
 
         public virtual Task ExecuteSqlCommandAsync(string sql, params object[] parameters)
