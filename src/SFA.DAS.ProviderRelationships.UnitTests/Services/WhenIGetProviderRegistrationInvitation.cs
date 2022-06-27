@@ -37,7 +37,7 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
 
             _configuration = new RegistrationApiConfiguration 
             {
-                BaseUrl = _apiBaseUrl,
+                ApiBaseUrl = _apiBaseUrl,
                 IdentifierUri = _identifierUri
             };
 
@@ -73,7 +73,7 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
                 .Protected()
                 .Verify("SendAsync", Times.Once(),
                     ItExpr.Is<HttpRequestMessage>(r => r.Method == HttpMethod.Get
-                                                       && r.RequestUri.AbsoluteUri == $"{_configuration.BaseUrl}api/invitations/{_correlationId}"),
+                                                       && r.RequestUri.AbsoluteUri == $"{_configuration.ApiBaseUrl}api/invitations/{_correlationId}"),
                 ItExpr.IsAny<CancellationToken>());
         }
 
@@ -88,7 +88,7 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
                 .Protected()
                 .Verify("SendAsync", Times.Once(),
                     ItExpr.Is<HttpRequestMessage>(r => r.Method == HttpMethod.Get
-                                                       && r.RequestUri.AbsoluteUri == $"{_configuration.BaseUrl}api/unsubscribe/{_correlationId}"),
+                                                       && r.RequestUri.AbsoluteUri == $"{_configuration.ApiBaseUrl}api/unsubscribe/{_correlationId}"),
                 ItExpr.IsAny<CancellationToken>());
         }
 

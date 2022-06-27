@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Newtonsoft.Json;
-using NServiceBus.Logging;
+using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
