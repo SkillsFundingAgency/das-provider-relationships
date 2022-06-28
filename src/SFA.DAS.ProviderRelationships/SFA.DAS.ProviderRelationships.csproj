@@ -13,6 +13,8 @@
         <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
         <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
         <PackageReference Include="SFA.DAS.Authentication.Extensions.Legacy" Version="1.0.29" />
