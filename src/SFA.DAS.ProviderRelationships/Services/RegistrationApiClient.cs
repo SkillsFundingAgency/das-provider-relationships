@@ -17,9 +17,9 @@ namespace SFA.DAS.ProviderRelationships.Services
 
         public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration) : base(client)
         {
-            _apiBaseUrl = configuration.BaseUrl.EndsWith("/")
-                ? configuration.BaseUrl
-                : configuration.BaseUrl + "/";
+            _apiBaseUrl = configuration.ApiBaseUrl.EndsWith("/")
+                ? configuration.ApiBaseUrl
+                : configuration.ApiBaseUrl + "/";
 
             _identifierUri = configuration.IdentifierUri;
             _client = client;

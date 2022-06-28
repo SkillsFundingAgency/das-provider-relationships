@@ -2,7 +2,7 @@
 {
     public interface IRegistrationApiConfiguration
     {
-        string BaseUrl { get; set; }
+        string ApiBaseUrl { get; set; }
         string IdentifierUri { get; set; }
     }
 }
