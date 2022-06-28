@@ -24,12 +24,32 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         
         public async Task<GetAccountProviderLegalEntitiesWithPermissionQueryResult> Handle(GetAccountProviderLegalEntitiesWithPermissionQuery request, CancellationToken cancellationToken)
         {
-            var relationships = await _db.Value.AccountProviderLegalEntities
-                .Where(aple => 
-                    aple.AccountProvider.ProviderUkprn == (request.Ukprn ?? aple.AccountProvider.ProviderUkprn) && 
-                    aple.AccountProvider.Account.HashedId == (request.AccountHashedId ?? aple.AccountProvider.Account.HashedId) &&
-                    aple.AccountLegalEntity.PublicHashedId == (request.AccountLegalEntityPublicHashedId ?? aple.AccountLegalEntity.PublicHashedId) &&
-                    aple.Permissions.Any(p => request.Operations.Contains(p.Operation)))
+            var relationshipsQuery = _db.Value.AccountProviderLegalEntities
+                .IgnoreQueryFilters() //removing the queryfilter on AccountLegalEntity here prevents the query being generated with inneficient subqueries
+                .Where(aple =>
+                    aple.Permissions.Any(p => request.Operations.Contains(p.Operation)));
+
+            if (request.Ukprn.HasValue)
+            {
+                relationshipsQuery = relationshipsQuery.Where(aple =>
+                    aple.AccountProvider.ProviderUkprn == request.Ukprn);
+            }
+
+            if (!string.IsNullOrEmpty(request.AccountHashedId))
+            {
+                relationshipsQuery = relationshipsQuery.Where(aple =>
+                   aple.AccountProvider.Account.HashedId == request.AccountHashedId);
+            }
+
+            if(!string.IsNullOrEmpty(request.AccountLegalEntityPublicHashedId))
+            {
+                relationshipsQuery = relationshipsQuery.Where(aple =>
+                   aple.AccountLegalEntity.PublicHashedId == request.AccountLegalEntityPublicHashedId);
+            }
+
+
+            var relationships = await relationshipsQuery
+                .Where(aple => aple.AccountLegalEntity.Deleted == null)
                 .ProjectTo<AccountProviderLegalEntityDto>(_configurationProvider)
                 .ToListAsync(cancellationToken);
 
