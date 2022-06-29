@@ -65,27 +65,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Urls
 
         private static object[] _noAccountHashedIdTestCases =
         {
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.ChangeEmail()), $"account/changeemail?clientId=abc123&returnurl={WebUtility.UrlEncode("http://example.com:12345/service/email/change")}" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.ChangePassword()), $"account/changepassword?clientId=abc123&returnurl={WebUtility.UrlEncode("http://example.com:12345/service/password/change")}" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.Help()), "service/help" },
             new object[] { (Func<EmployerUrls, string>)(eu => eu.Homepage()), "" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.NotificationSettings()), "settings/notifications" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.Privacy()), "service/privacy" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.SignIn()), "service/signin" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.SignOut()), "service/signout" },
-            new object[] { (Func<EmployerUrls, string>)(eu => eu.YourAccounts()), "service/accounts" }
         };
 
         private static object[] _accountHashedIdTestCases =
         {
             new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.Account(ahid)), "teams" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.Apprentices(ahid)), "apprentices/home" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.Finance(ahid)), "finance" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.PayeSchemes(ahid)), "schemes" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.Recruit(ahid)), "" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.RenameAccount(ahid)), "rename" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.YourOrganisationsAndAgreements(ahid)), "agreements" },
-            new object[] { (Func<EmployerUrls, string, string>)((eu, ahid) => eu.YourTeam(ahid)), "teams/view" }
         };
     }
     
@@ -93,16 +78,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Urls
     {
         public EmployerUrls EmployerUrls { get; set; }
         public Mock<IEmployerUrlsConfiguration> EmployerUrlsConfiguration { get; set; }
-        public Mock<IOidcConfiguration> IdentityServerConfiguration { get; set; }
         
         public EmployerUrlsTestsFixture()
         {
             EmployerUrlsConfiguration = new Mock<IEmployerUrlsConfiguration>();
-            IdentityServerConfiguration = new Mock<IOidcConfiguration>();
-
-            IdentityServerConfiguration.Setup(c => c.ClientId).Returns("abc123");
             
-            EmployerUrls = new EmployerUrls(EmployerUrlsConfiguration.Object, IdentityServerConfiguration.Object);
+            EmployerUrls = new EmployerUrls(EmployerUrlsConfiguration.Object);
         }
 
         public void SetBaseUrlsWithTrailingSlash()
