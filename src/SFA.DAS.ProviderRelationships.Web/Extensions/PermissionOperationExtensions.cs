@@ -89,7 +89,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 {
                     switch (permissionViewModel.Value)
                     {
-                        case Permission.Recruitment: return "Allow, but I want to review job adverts before they’re advertised";
+                        case Permission.Recruitment: return "Allow, but I want to review adverts before they’re advertised";
                         default: return string.Empty;
                     }
                 }
