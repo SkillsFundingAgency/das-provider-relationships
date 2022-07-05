@@ -27,6 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Services
             try
             {
                 var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken);
+                _log.Info($"After getting organisation status for provider {providerUkprn}  and status is {blockedOrgStatus} ");
                 return blockedOrgStatus;
             }
             catch (Exception ex)
