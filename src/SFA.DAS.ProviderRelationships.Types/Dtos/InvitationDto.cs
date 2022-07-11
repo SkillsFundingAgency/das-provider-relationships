@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ProviderRelationships.Types.Dtos
+﻿using System;
+
+namespace SFA.DAS.ProviderRelationships.Types.Dtos
 {
     public class InvitationDto
     {

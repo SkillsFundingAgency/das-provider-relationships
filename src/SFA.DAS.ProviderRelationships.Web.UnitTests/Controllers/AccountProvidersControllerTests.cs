@@ -483,13 +483,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             var ukprn = 12345678;
             var accountId = 1;
 
-            InvitationAccountProviderRouteValues = new InvitationAccountProviderRouteValues {
+            InvitationAccountProviderRouteValues = new InvitationAccountProviderRouteValues 
+            {
                 AccountId = accountId,
                 CorrelationId =correlationId,
                 UserRef =userRef
             };
 
-            GetInvitationByIdQueryResult = new GetInvitationByIdQueryResult(new InvitationDto {
+            GetInvitationByIdQueryResult = new GetInvitationByIdQueryResult(new InvitationDto() 
+            {
                 EmployerEmail = "foo@foo.com",
                 EmployerFirstName = "John",
                 EmployerLastName = "Smtih",
@@ -498,14 +500,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 Status = 0
             });
 
-            AddAccountProviderViewModel = new AddAccountProviderViewModel {
+            AddAccountProviderViewModel = new AddAccountProviderViewModel 
+            {
                 AccountId = accountId,
                 UserRef = userRef,
                 Ukprn = ukprn
             };
 
-            FindProviderViewModel = new FindProviderViewModel {
-                //AccountId = accountId,
+            FindProviderViewModel = new FindProviderViewModel 
+            {
                 Ukprn = ukprn.ToString()
             };
 
