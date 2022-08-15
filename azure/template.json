@@ -115,6 +115,9 @@
             "metadata": {
                 "description": "Used to datestamp resource names to ensure that a unique record is added to deployment history"
             }
+        },
+        "workerAccessRestrictions": {
+            "type": "array"
         }
     },
     "variables": {
@@ -442,6 +445,9 @@
                     },
                     "deployStagingSlot": {
                         "value": false
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('workerAccessRestrictions')]"
                     },
                     "appServiceAppSettings": {
                         "value": {
