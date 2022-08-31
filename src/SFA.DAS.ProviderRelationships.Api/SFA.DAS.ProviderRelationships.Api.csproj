@@ -67,7 +67,7 @@
     <PackageReference Include="Microsoft.Owin.Security" Version="4.1.1" />
     <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory" Version="4.1.1" />
     <PackageReference Include="Microsoft.Owin.Security.Cookies">
-      <Version>4.1.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="NLog.Schema" Version="4.5.10" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.0.57835" />
