@@ -120,7 +120,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             MockRecruitService = new Mock<IDasRecruitService>();
             MockHashingService = new Mock<IHashingService>();
             SetDasRecruitBlockedProvider();
-            SetDasRecruitProviderVacancies();
             Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider, MockHashingService.Object);
         }
 
@@ -190,10 +189,5 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return this;
         }
 
-        public GetAccountProviderLegalEntityQueryHandlerFixture SetDasRecruitProviderVacancies()
-        {
-            MockRecruitService.Setup(x => x.GetVacanciesAsync(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>(), It.IsAny<int>(), default)).ReturnsAsync(new VacanciesSummary(new List<VacancySummary>(), 0, 0, 0, 0));
-            return this;
-        }
     }
 }
