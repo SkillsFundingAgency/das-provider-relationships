@@ -68,7 +68,7 @@
     <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory">
       <Version>4.1.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.2.2" />
     <PackageReference Include="Microsoft.Web.Infrastructure">
       <Version>1.0.0</Version>
     </PackageReference>
