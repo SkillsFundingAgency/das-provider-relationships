@@ -62,7 +62,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsFederation" Version="6.10.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.10.1" />
-    <PackageReference Include="Microsoft.Owin" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Owin" Version="4.2.2" />
     <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.1.1" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.1.1" />
     <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory" Version="4.1.1" />
