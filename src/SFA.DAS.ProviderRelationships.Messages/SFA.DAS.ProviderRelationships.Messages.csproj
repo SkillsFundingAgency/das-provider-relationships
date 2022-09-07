@@ -17,10 +17,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SFA.DAS.NServiceBus" Version="15.0.25" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj" />
     </ItemGroup>
 
