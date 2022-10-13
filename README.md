@@ -44,7 +44,7 @@
 
 ##### Add Certificates
 
-Execute DevInstall.ps1 as an admin to import required certificates into their appropriate store locations.
+Execute DevInstall.ps1 as an admin to import required certificates into their appropriate store locations. - get latest idp cert and password from azure storage.
 
 ##### Create Azure Service Bus dead letter queue (optional)
 
