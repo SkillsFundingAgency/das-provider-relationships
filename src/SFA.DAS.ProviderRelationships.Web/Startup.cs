@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.SystemWeb;
@@ -9,6 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using NLog;
 using Owin;
+using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.OidcMiddleware;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -27,9 +29,10 @@ namespace SFA.DAS.ProviderRelationships.Web
         public void Configuration(IAppBuilder app)
         {
             var container = StructuremapMvc.StructureMapDependencyScope.Container;
-            var config = container.GetInstance<IOidcConfiguration>();
+            var oidcConfiguration = container.GetInstance<IOidcConfiguration>();
             var authenticationUrls = container.GetInstance<IAuthenticationUrls>();
             var postAuthenticationHandler = container.GetInstance<IPostAuthenticationHandler>();
+            var providerRelationshipsConfiguration = container.GetInstance<ProviderRelationshipsConfiguration>();
             
             Logger.Info("Starting Provider Relationships web application");
             Logger.Info("Initializing Authentication");
@@ -54,25 +57,34 @@ namespace SFA.DAS.ProviderRelationships.Web
                 CookieManager = new SystemWebCookieManager()
             });
 
+            if (providerRelationshipsConfiguration is { UseGovUKSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
+            {
+                // gov.uk stuff here., (and will require redirect to https port 44363)                
+            }
+            else
+            {
+                
+            }
+
             app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
                 AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
-                BaseUrl = config.BaseAddress,
-                ClientId = config.ClientId,
-                ClientSecret = config.ClientSecret,
-                Scopes = config.Scopes,
+                BaseUrl = oidcConfiguration.BaseAddress,
+                ClientId = oidcConfiguration.ClientId,
+                ClientSecret = oidcConfiguration.ClientSecret,
+                Scopes = oidcConfiguration.Scopes,
                 AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
                 TokenEndpoint = authenticationUrls.TokenEndpoint,
                 UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
-                TokenSigningCertificateLoader = GetSigningCertificate(config.UseCertificate, false, config.TokenCertificateThumbprint),
-                TokenValidationMethod = config.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
+                TokenSigningCertificateLoader = GetSigningCertificate(oidcConfiguration.UseCertificate, false, oidcConfiguration.TokenCertificateThumbprint),
+                TokenValidationMethod = oidcConfiguration.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
                 AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
             });
 
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(config);
+            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(oidcConfiguration);
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
         }
 
-        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironement, string certThumbprint)
+        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironment, string certThumbprint)
         {
             if (!useCertificate)
             {
@@ -81,7 +93,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             return () =>
             {
-                var storeLocation = isDevEnvironement ? StoreLocation.LocalMachine : StoreLocation.CurrentUser;
+                var storeLocation = isDevEnvironment ? StoreLocation.LocalMachine : StoreLocation.CurrentUser;
                 var store = new X509Store(StoreName.My, storeLocation);
                 store.Open(OpenFlags.ReadOnly);
                 try
