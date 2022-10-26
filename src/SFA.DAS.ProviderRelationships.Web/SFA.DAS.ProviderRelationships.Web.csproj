@@ -132,6 +132,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Authentication\AuthenticationUrls.cs" />
+    <Compile Include="Authentication\GovUk\Configuration\GovUkOidcConfiguration.cs" />
+    <Compile Include="Authentication\GovUk\Models\GovUkUser.cs" />
+    <Compile Include="Authentication\GovUk\Models\Token.cs" />
+    <Compile Include="Authentication\GovUk\Services\AzureIdentityService.cs" />
+    <Compile Include="Authentication\GovUk\Services\IAzureIdentityService.cs" />
+    <Compile Include="Authentication\GovUk\Services\IJwtSecurityTokenService.cs" />
+    <Compile Include="Authentication\GovUk\Services\IOidcService.cs" />
+    <Compile Include="Authentication\GovUk\Services\JwtSecurityTokenService.cs" />
+    <Compile Include="Authentication\GovUk\Services\OidcService.cs" />
     <Compile Include="Authentication\IAuthenticationService.cs" />
     <Compile Include="Authentication\IAuthenticationUrls.cs" />
     <Compile Include="Authentication\IdentityServerConfigurationFactory.cs" />
@@ -191,6 +200,7 @@
     <Compile Include="ViewModels\Permissions\PermissionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Authentication\GovUk\README.md" />
     <Content Include="Content\lib\esfa-stacker\stacker.js" />
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.css" />
     <Content Include="Content\lib\govuk-frontend\dist\govuk-frontend-2.0.0.min.js" />
