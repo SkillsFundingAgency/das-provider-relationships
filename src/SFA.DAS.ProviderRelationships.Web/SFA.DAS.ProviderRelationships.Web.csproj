@@ -110,6 +110,8 @@
     <PackageReference Include="Microsoft.IdentityModel.KeyVaultExtensions" Version="6.20.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.20.0" />
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.20.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

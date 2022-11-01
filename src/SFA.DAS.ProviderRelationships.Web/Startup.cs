@@ -57,9 +57,11 @@ namespace SFA.DAS.ProviderRelationships.Web
                 CookieManager = new SystemWebCookieManager()
             });
 
-            if (providerRelationshipsConfiguration is { UseGovUKSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
+            if (providerRelationshipsConfiguration is { UseGovUkSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
             {
-                // gov.uk stuff here., (and will require redirect to https port 44363)                
+                // gov.uk stuff here., (and will require redirect to https port 44363)
+                //var x = new OpenIdConnectAuthenticationOptions();
+                //app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions());
             }
             else
             {

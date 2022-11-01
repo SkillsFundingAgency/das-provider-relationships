@@ -32,6 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ZenDeskSectionId { get; set; }
         public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
         public string ProviderPortalBaseUrl { get; set; }
-        public bool UseGovUKSignIn { get; set; } = false; // this is a crazy hack until feature toggle service nuget can be safely upgraded and can handle new feature types. much sadness
+        public bool? UseGovUkSignIn { get; set; } // this is a crazy hack until feature toggle service nuget can be safely upgraded and can handle new feature types. much sadness
     }
 }   
