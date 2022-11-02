@@ -8,6 +8,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Host.SystemWeb;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
 using NLog;
 using Owin;
 using SFA.DAS.Authorization.EmployerFeatures;
@@ -60,8 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             if (providerRelationshipsConfiguration is { UseGovUkSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
             {
                 // gov.uk stuff here., (and will require redirect to https port 44363)
-                //var x = new OpenIdConnectAuthenticationOptions();
-                //app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions());
+                app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions());
             }
             else
             {
