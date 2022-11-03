@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.SystemWeb;
@@ -64,10 +68,9 @@ namespace SFA.DAS.ProviderRelationships.Web
                 CookieManager = new SystemWebCookieManager()
             });
 
-            if (providerRelationshipsConfiguration is { UseGovUkSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
+            if (providerRelationshipsConfiguration is { UseGovUkSignIn: true })//todo: use SFA.DAS.FeatureToggle once upgraded to .net6
             {
                 var handler = new JwtSecurityTokenService(govUkOidcConfiguration);
-                //var keyVaultIdentifier = "https://[KEY_VAULT_ID].azure.net/keys/[KEY_VAULT_IDENTIFIER]";
                 
                 app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions("code") {
                     ClientId = govUkOidcConfiguration.ClientId,
@@ -79,12 +82,54 @@ namespace SFA.DAS.ProviderRelationships.Web
                     SaveTokens = true,
                     RedeemCode = true,
                     RedirectUri = "https://localhost:44363/sign-in",//todo _config.ApplicationBaseUrl + "/sign-in"
-                    //UsePkce = false,
+                    UsePkce = false,
                     CookieManager = new ChunkingCookieManager(),
                     SignInAsAuthenticationType = "Cookies",
-                    SecurityTokenValidator = new JwtSecurityTokenHandler(),
+                    SecurityTokenValidator = handler,
                     Notifications = new OpenIdConnectAuthenticationNotifications {
-                        
+                        AuthorizationCodeReceived = notification =>
+                        {
+                            var code = notification.Code;
+                            var redirectUri = notification.RedirectUri;
+                            var oidcService = new OidcService(
+                                new HttpClient(), 
+                                new AzureIdentityService(), 
+                                handler,
+                                new GovUkOidcConfiguration {
+                                    BaseUrl = notification.Options.Authority,
+                                    ClientId = notification.Options.ClientId,
+                                    KeyVaultIdentifier = govUkOidcConfiguration.KeyVaultIdentifier
+                                });
+
+                            var result = oidcService.GetToken(code, redirectUri);
+                            var claims = new List<Claim> {
+                                new("id_token", result.IdToken),
+                                new("access_token", result.AccessToken),
+                                new("expires_at", DateTime.UtcNow.AddMinutes(10).ToString(CultureInfo.InvariantCulture))
+                            };
+                            var claimsIdentity = new ClaimsIdentity(claims, notification.Options.SignInAsAuthenticationType);
+                            notification.HandleCodeRedemption(result.AccessToken, result.IdToken);
+                            var properties =
+                                notification.Options.StateDataFormat.Unprotect(notification.ProtocolMessage.State.Split('=')[1]);
+                            notification.AuthenticationTicket = new AuthenticationTicket(claimsIdentity, properties);
+                            
+                            return Task.CompletedTask;
+                        },
+                        SecurityTokenValidated = notification =>
+                        {
+                            var oidcService = new OidcService(
+                                new HttpClient(), 
+                                new AzureIdentityService(), 
+                                handler,
+                                new GovUkOidcConfiguration {
+                                    BaseUrl = notification.Options.Authority,
+                                    ClientId = notification.Options.ClientId,
+                                    KeyVaultIdentifier = govUkOidcConfiguration.KeyVaultIdentifier
+                                });
+                            oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
+                            
+                            return Task.CompletedTask;
+                        }
                     }
                 });
             }
@@ -105,9 +150,8 @@ namespace SFA.DAS.ProviderRelationships.Web
                 });
                 
                 ConfigurationFactory.Current = new IdentityServerConfigurationFactory(oidcConfiguration);
+                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
             }
-            
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
         }
 
         private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironment, string certThumbprint)
@@ -124,12 +168,11 @@ namespace SFA.DAS.ProviderRelationships.Web
                 store.Open(OpenFlags.ReadOnly);
                 try
                 {
-                    var thumbprint = certThumbprint;
-                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, certThumbprint, false);
 
                     if (certificates.Count < 1)
                     {
-                        throw new Exception($"Could not find certificate with thumbprint {thumbprint} in CurrentUser store");
+                        throw new Exception($"Could not find certificate with thumbprint {certThumbprint} in CurrentUser store");
                     }
 
                     return certificates[0];

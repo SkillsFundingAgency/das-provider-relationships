@@ -6,7 +6,7 @@ using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
 
-public class JwtSecurityTokenService : IJwtSecurityTokenService
+public class JwtSecurityTokenService : IJwtSecurityTokenService, ISecurityTokenValidator
 {
     private readonly string _clientId;
     private readonly string _audience;
