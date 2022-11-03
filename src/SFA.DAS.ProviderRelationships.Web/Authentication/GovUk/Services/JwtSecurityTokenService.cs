@@ -16,6 +16,7 @@ public class JwtSecurityTokenService : IJwtSecurityTokenService
         _clientId = configuration.ClientId;
         _audience = $"{configuration.BaseUrl}token";
     }
+    
     public string CreateToken(ClaimsIdentity claimsIdentity,
         SigningCredentials signingCredentials)
     {
@@ -25,7 +26,6 @@ public class JwtSecurityTokenService : IJwtSecurityTokenService
 
         return value.RawData;
     }
-
        
     public bool CanReadToken(string securityToken)
     {

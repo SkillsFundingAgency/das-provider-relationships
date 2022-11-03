@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -17,6 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web
     {
         protected void Application_Start()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             AntiForgeryConfig.UniqueClaimTypeIdentifier = DasClaimTypes.Id;
             AreaRegistration.RegisterAllAreas();
             BinderConfig.RegisterBinders(ModelBinders.Binders);

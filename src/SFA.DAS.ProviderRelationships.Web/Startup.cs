@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.SystemWeb;
+using Microsoft.Owin.Infrastructure;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
@@ -18,6 +21,8 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
+using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -31,6 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web
         {
             var container = StructuremapMvc.StructureMapDependencyScope.Container;
             var oidcConfiguration = container.GetInstance<IOidcConfiguration>();
+            var govUkOidcConfiguration = container.GetInstance<GovUkOidcConfiguration>();
             var authenticationUrls = container.GetInstance<IAuthenticationUrls>();
             var postAuthenticationHandler = container.GetInstance<IPostAuthenticationHandler>();
             var providerRelationshipsConfiguration = container.GetInstance<ProviderRelationshipsConfiguration>();
@@ -60,29 +66,47 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             if (providerRelationshipsConfiguration is { UseGovUkSignIn: true })//this is a nasty hack due to use of old ver of shared feature toggle lib
             {
-                // gov.uk stuff here., (and will require redirect to https port 44363)
-                app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions());
+                var handler = new JwtSecurityTokenService(govUkOidcConfiguration);
+                //var keyVaultIdentifier = "https://[KEY_VAULT_ID].azure.net/keys/[KEY_VAULT_IDENTIFIER]";
+                
+                app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions("code") {
+                    ClientId = govUkOidcConfiguration.ClientId,
+                    Scope = "openid email phone",
+                    Authority = govUkOidcConfiguration.BaseUrl,
+                    MetadataAddress = $"{govUkOidcConfiguration.BaseUrl}.well-known/openid-configuration",
+                    ResponseType = OpenIdConnectResponseType.Code,
+                    ResponseMode = "",
+                    SaveTokens = true,
+                    RedeemCode = true,
+                    RedirectUri = "https://localhost:44363/sign-in",//todo _config.ApplicationBaseUrl + "/sign-in"
+                    //UsePkce = false,
+                    CookieManager = new ChunkingCookieManager(),
+                    SignInAsAuthenticationType = "Cookies",
+                    SecurityTokenValidator = new JwtSecurityTokenHandler(),
+                    Notifications = new OpenIdConnectAuthenticationNotifications {
+                        
+                    }
+                });
             }
             else
             {
+                app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
+                    AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
+                    BaseUrl = oidcConfiguration.BaseAddress,
+                    ClientId = oidcConfiguration.ClientId,
+                    ClientSecret = oidcConfiguration.ClientSecret,
+                    Scopes = oidcConfiguration.Scopes,
+                    AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
+                    TokenEndpoint = authenticationUrls.TokenEndpoint,
+                    UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
+                    TokenSigningCertificateLoader = GetSigningCertificate(oidcConfiguration.UseCertificate, false, oidcConfiguration.TokenCertificateThumbprint),
+                    TokenValidationMethod = oidcConfiguration.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
+                    AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
+                });
                 
+                ConfigurationFactory.Current = new IdentityServerConfigurationFactory(oidcConfiguration);
             }
-
-            app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
-                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
-                BaseUrl = oidcConfiguration.BaseAddress,
-                ClientId = oidcConfiguration.ClientId,
-                ClientSecret = oidcConfiguration.ClientSecret,
-                Scopes = oidcConfiguration.Scopes,
-                AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
-                TokenEndpoint = authenticationUrls.TokenEndpoint,
-                UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
-                TokenSigningCertificateLoader = GetSigningCertificate(oidcConfiguration.UseCertificate, false, oidcConfiguration.TokenCertificateThumbprint),
-                TokenValidationMethod = oidcConfiguration.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
-                AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
-            });
-
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(oidcConfiguration);
+            
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
         }
 
