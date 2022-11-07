@@ -131,7 +131,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Authentication\AuthenticationUrls.cs" />
-    <Compile Include="Authentication\GovUk\Configuration\GovUkOidcConfiguration.cs" />
     <Compile Include="Authentication\GovUk\Models\GovUkUser.cs" />
     <Compile Include="Authentication\GovUk\Models\Token.cs" />
     <Compile Include="Authentication\GovUk\Services\AzureIdentityService.cs" />

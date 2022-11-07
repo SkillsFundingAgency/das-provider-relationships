@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -18,14 +15,12 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using NLog;
 using Owin;
-using SFA.DAS.Authorization.EmployerFeatures;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.OidcMiddleware;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web;
 using SFA.DAS.ProviderRelationships.Web.App_Start;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -105,7 +100,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                             var claims = new List<Claim> {
                                 new("id_token", result.IdToken),
                                 new("access_token", result.AccessToken),
-                                new("expires_at", DateTime.UtcNow.AddMinutes(10).ToString(CultureInfo.InvariantCulture))
+                                new("expires_at", DateTime.UtcNow.AddMinutes(10).ToString(CultureInfo.CurrentCulture))
                             };
                             var claimsIdentity = new ClaimsIdentity(claims, notification.Options.SignInAsAuthenticationType);
                             notification.HandleCodeRedemption(result.AccessToken, result.IdToken);
@@ -127,6 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                                     KeyVaultIdentifier = govUkOidcConfiguration.KeyVaultIdentifier
                                 });
                             oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
+                            postAuthenticationHandler.Handle(notification.AuthenticationTicket.Identity);
                             
                             return Task.CompletedTask;
                         }

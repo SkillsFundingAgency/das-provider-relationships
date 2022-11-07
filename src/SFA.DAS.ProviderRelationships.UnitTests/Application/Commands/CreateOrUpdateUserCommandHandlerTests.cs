@@ -6,10 +6,13 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
 using SFA.DAS.Testing;
 
@@ -22,7 +25,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesNotExist_ThenShouldCreateUser()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return RunAsync(
+                f => f.Handle(), 
+                f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -35,7 +40,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveChanged_ThenShouldUpdateUser()
         {
-            return RunAsync(f => f.SetUser().SetCommandWithChangedProperties(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return RunAsync(
+                f => f.SetUser().SetCommandWithChangedProperties(), 
+                f => f.Handle(), 
+                f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -48,7 +56,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveNotChanged_ThenShouldNotUpdateUser()
         {
-            return RunAsync(f => f.SetUser(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return RunAsync(
+                f => f.SetUser(), 
+                f => f.Handle(), 
+                f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -56,6 +67,23 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     u.LastName == f.CreateOrUpdateUserCommand.LastName &&
                     u.Created == f.Now &&
                     u.Updated == null));
+        }
+        
+        // use govuk signin
+        
+        [Test]
+        public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUseGovUkSignInTrue_ThenShouldCallOuterApi()
+        {
+            return RunAsync(
+                f => f.SetUseGovUkSignIn(true),
+                f => f.Handle(),
+                f =>
+                {
+                    var expectedUrl = new GetEmployerAccountRequest(f.CreateOrUpdateUserCommand.Ref.ToString(), f.CreateOrUpdateUserCommand.Email);
+                    f.MockOuterApiClient.Verify(client => 
+                        client.Get<GetUserAccountsResponse>(It.Is<IGetApiRequest>(request => 
+                            request.GetUrl.Contains(expectedUrl.GetUrl))));
+                });
         }
     }
 
@@ -66,12 +94,17 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public IRequestHandler<CreateOrUpdateUserCommand, Unit> Handler { get; set; }
         public DateTime Now { get; set; }
         public User User { get; set; }
+        public ProviderRelationshipsConfiguration Configuration { get; set; }
+        public Mock<IOuterApiClient> MockOuterApiClient { get; set; }
 
         public CreateOrUpdateUserCommandHandlerTestsFixture()
         {
+            Configuration = new ProviderRelationshipsConfiguration();
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
             CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
-            Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            MockOuterApiClient = new Mock<IOuterApiClient>();
+            Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockOuterApiClient.Object,
+                Configuration);
             Now = DateTime.UtcNow;
         }
 
@@ -93,6 +126,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Db.Users.Add(User);
             Db.SaveChanges();
             
+            return this;
+        }
+
+        public CreateOrUpdateUserCommandHandlerTestsFixture SetUseGovUkSignIn(bool useGovUkSignIn)
+        {
+            Configuration.UseGovUkSignIn = useGovUkSignIn;
             return this;
         }
 

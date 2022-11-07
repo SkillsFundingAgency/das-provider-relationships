@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.IdentityModel.KeyVaultExtensions;
 using Microsoft.IdentityModel.Tokens;
-using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Models;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;

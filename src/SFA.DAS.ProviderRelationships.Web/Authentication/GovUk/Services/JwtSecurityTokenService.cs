@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
 

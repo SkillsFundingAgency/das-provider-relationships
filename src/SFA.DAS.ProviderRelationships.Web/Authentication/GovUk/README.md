@@ -1,1 +1,3 @@
 This folder should not be here. It's another nasty hack (like the 'feature toggle' UseGovUkSignIn). Once this codebase has been upgraded to .net6+ then this folder and all contents can be deleted and equivalent functionality (at time of writing) gained by use of the SFA.DAS.OidcMiddleware.GovUk nuget package instead.
+
+Also, when the time comes to remove this folder please also remove the config `SFA.DAS.ProviderRelationships.Configuration.GovUkOidcConfiguration` which is in a different project to avoid a circular reference.

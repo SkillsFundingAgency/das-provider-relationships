@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Configuration;
+namespace SFA.DAS.ProviderRelationships.Configuration;
 
 public class GovUkOidcConfiguration
 {

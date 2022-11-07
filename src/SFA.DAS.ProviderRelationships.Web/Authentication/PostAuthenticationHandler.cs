@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
         public void Handle(ClaimsIdentity claimsIdentity)
         {
-            var @ref = Guid.Parse(claimsIdentity.FindFirst(DasClaimTypes.Id).Value);
+            var @ref = Guid.Parse(claimsIdentity.FindFirst(DasClaimTypes.Id).Value);//todo: change to pass as string
             var email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value;
             var firstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value;
             var lastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value;
