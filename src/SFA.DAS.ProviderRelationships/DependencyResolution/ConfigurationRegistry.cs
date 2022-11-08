@@ -23,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ReadStore).Singleton();
             For<ProviderRelationshipsApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ProviderRelationshipsApi);
             For<EncodingConfig>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<EncodingConfig>(ConfigurationKeys.EncodingConfig)).Singleton();
+            For<OuterApiConfiguration>().Use(c => c.GetInstance<OuterApiConfiguration>()).Singleton();
         }
     }
 }

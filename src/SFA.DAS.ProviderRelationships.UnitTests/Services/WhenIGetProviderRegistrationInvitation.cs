@@ -11,7 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services;
 
-namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
+namespace SFA.DAS.ProviderRelationships.UnitTests.Services
 {
     class WhenIGetInvitation
     {

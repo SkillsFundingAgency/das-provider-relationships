@@ -17,6 +17,7 @@
         <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
         <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.47" />
         <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
+        <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
         <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
     </ItemGroup>
 
@@ -26,6 +27,7 @@
 
     <ItemGroup>
         <Reference Include="System" />
+        <Reference Include="System.Web" />
     </ItemGroup>
 
 </Project>

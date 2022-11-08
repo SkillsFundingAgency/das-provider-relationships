@@ -5,6 +5,7 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
+using SFA.DAS.ProviderRelationships.Services.OuterApi;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser
 {
