@@ -76,7 +76,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     ResponseMode = "",
                     SaveTokens = true,
                     RedeemCode = true,
-                    RedirectUri = "https://localhost:44363/sign-in",//todo _config.ApplicationBaseUrl + "/sign-in"
+                    RedirectUri =  providerRelationshipsConfiguration.ApplicationBaseUrl + "/sign-in",
                     UsePkce = false,
                     CookieManager = new ChunkingCookieManager(),
                     SignInAsAuthenticationType = "Cookies",
