@@ -5,5 +5,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public const string ProviderRelationships = "SFA.DAS.ProviderRelationshipsV2";
         public const string EmployerFeatures = "SFA.DAS.ProviderRelationships.EmployerFeatures";
         public const string EncodingConfig = "SFA.DAS.Encoding";
+        public const string GovUkSignin = "SFA.DAS.Employer.GovSignIn";
     }
 }

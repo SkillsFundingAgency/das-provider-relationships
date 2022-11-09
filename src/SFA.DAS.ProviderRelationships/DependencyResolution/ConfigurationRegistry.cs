@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
             For<IAzureActiveDirectoryConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().AzureActiveDirectory).Singleton();
             For<IEmployerUrlsConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().EmployerUrls).Singleton();
             For<IOidcConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Oidc).Singleton();
-            For<GovUkOidcConfiguration>().Use(c => c.GetInstance<GovUkOidcConfiguration>()).Singleton();
+            For<GovUkOidcConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<GovUkOidcConfiguration>(ConfigurationKeys.GovUkSignin)).Singleton();
             For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsConfiguration>(ConfigurationKeys.ProviderRelationships)).Singleton();
             For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ReadStore).Singleton();
             For<ProviderRelationshipsApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ProviderRelationshipsApi);
