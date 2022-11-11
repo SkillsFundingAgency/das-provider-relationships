@@ -4,19 +4,20 @@ using System.Threading.Tasks;
 using Azure.Core;
 using Azure.Identity;
 
-namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
-
-public class AzureIdentityService : IAzureIdentityService
+namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
 {
-    public async Task<string> AuthenticationCallback(string authority, string resource, string scope)
+    public class AzureIdentityService : IAzureIdentityService
     {
-        var chainedTokenCredential = new ChainedTokenCredential(
-            new ManagedIdentityCredential(),
-            new AzureCliCredential());
+        public async Task<string> AuthenticationCallback(string authority, string resource, string scope)
+        {
+            var chainedTokenCredential = new ChainedTokenCredential(
+                new ManagedIdentityCredential(),
+                new AzureCliCredential());
 
-        var token = await chainedTokenCredential.GetTokenAsync(
-            new TokenRequestContext(scopes: new[] {"https://vault.azure.net/.default"}));
+            var token = await chainedTokenCredential.GetTokenAsync(
+                new TokenRequestContext(scopes: new[] {"https://vault.azure.net/.default"}));
 
-        return token.Token;
+            return token.Token;
+        }
     }
 }

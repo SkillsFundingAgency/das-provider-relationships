@@ -1,17 +1,18 @@
 ﻿using System.Web;
 
-namespace SFA.DAS.ProviderRelationships.Services.OuterApi;
-
-public class GetEmployerAccountRequest : IGetApiRequest
+namespace SFA.DAS.ProviderRelationships.Services.OuterApi
 {
-    private readonly string _userId;
-    private readonly string _email;
-
-    public GetEmployerAccountRequest(string userId, string email)
+    public class GetEmployerAccountRequest : IGetApiRequest
     {
-        _userId = userId;
-        _email = HttpUtility.UrlEncode(email);
-    }
+        private readonly string _userId;
+        private readonly string _email;
 
-    public string GetUrl => $"accountusers/{_userId}/accounts?email={_email}";
+        public GetEmployerAccountRequest(string userId, string email)
+        {
+            _userId = userId;
+            _email = HttpUtility.UrlEncode(email);
+        }
+
+        public string GetUrl => $"accountusers/{_userId}/accounts?email={_email}";
+    }
 }

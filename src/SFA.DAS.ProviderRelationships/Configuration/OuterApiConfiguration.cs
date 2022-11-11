@@ -1,7 +1,8 @@
-﻿namespace SFA.DAS.ProviderRelationships.Configuration;
-
-public class OuterApiConfiguration
+﻿namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public string BaseUrl { get ; set ; }
-    public string Key { get ; set ; }
+    public class OuterApiConfiguration
+    {
+        public string BaseUrl { get; set; }
+        public string Key { get; set; }
+    }
 }

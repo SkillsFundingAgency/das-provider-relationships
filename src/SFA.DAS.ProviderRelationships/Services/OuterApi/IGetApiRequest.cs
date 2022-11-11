@@ -1,6 +1,7 @@
-﻿namespace SFA.DAS.ProviderRelationships.Services.OuterApi;
-
-public interface IGetApiRequest
+﻿namespace SFA.DAS.ProviderRelationships.Services.OuterApi
 {
-    string GetUrl { get; }
+    public interface IGetApiRequest
+    {
+        string GetUrl { get; }
+    }
 }

@@ -13,109 +13,111 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Services.OuterApi;
-
-public class WhenCallingGet
+namespace SFA.DAS.ProviderRelationships.UnitTests.Services.OuterApi
 {
-    [Test]
-    [MoqAutoData]
-    public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
-        string key,
-        string baseUrl,
-        GetTestRequest request,
-        List<string> responseContent)
+    public class WhenCallingGet
     {
-        //Arrange
-        var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-        var response = new HttpResponseMessage
+        [Test]
+        [MoqAutoData]
+        public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
+            string key,
+            string baseUrl,
+            GetTestRequest request,
+            List<string> responseContent)
         {
-            Content = new StringContent(JsonConvert.SerializeObject(responseContent)),
-            StatusCode = HttpStatusCode.Accepted
-        };
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
-        var client = new HttpClient(httpMessageHandler.Object);
-        var apiClient = new OuterApiClient(client, config);
+            //Arrange
+            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
+            var response = new HttpResponseMessage {
+                Content = new StringContent(JsonConvert.SerializeObject(responseContent)),
+                StatusCode = HttpStatusCode.Accepted
+            };
+            var httpMessageHandler =
+                MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new OuterApiClient(client, config);
 
-        //Act
-        var actual = await apiClient.Get<List<string>>(request);
-            
-        //Assert
-        actual.Should().BeEquivalentTo(responseContent);
-    }
-    
-    [Test]
-    [MoqAutoData]
-    public void And_Not_Successful_Then_An_Exception_Is_Thrown(
-        string key,
-        string baseUrl,
-        GetTestRequest request)
-    {
-        //Arrange
-        var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-        var response = new HttpResponseMessage
+            //Act
+            var actual = await apiClient.Get<List<string>>(request);
+
+            //Assert
+            actual.Should().BeEquivalentTo(responseContent);
+        }
+
+        [Test]
+        [MoqAutoData]
+        public void And_Not_Successful_Then_An_Exception_Is_Thrown(
+            string key,
+            string baseUrl,
+            GetTestRequest request)
         {
-            Content = new StringContent(""),
-            StatusCode = HttpStatusCode.BadRequest
-        };
-            
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
-        var client = new HttpClient(httpMessageHandler.Object);
-        var apiClient = new OuterApiClient(client, config);
-            
-        //Act Assert
-        Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(request));
-    }
-    
-    [Test]
-    [MoqAutoData]
-    public async Task And_Not_Found_Then_Default_Object_Is_Returned(
-        string key,
-        string baseUrl,
-        GetTestRequest request)
-    {
-        //Arrange
-        var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-        var response = new HttpResponseMessage
+            //Arrange
+            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
+            var response = new HttpResponseMessage {
+                Content = new StringContent(""),
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+            var httpMessageHandler =
+                MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new OuterApiClient(client, config);
+
+            //Act Assert
+            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(request));
+        }
+
+        [Test]
+        [MoqAutoData]
+        public async Task And_Not_Found_Then_Default_Object_Is_Returned(
+            string key,
+            string baseUrl,
+            GetTestRequest request)
         {
-            Content = new StringContent(""),
-            StatusCode = HttpStatusCode.NotFound
-        };
+            //Arrange
+            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
+            var response = new HttpResponseMessage {
+                Content = new StringContent(""),
+                StatusCode = HttpStatusCode.NotFound
+            };
 
-        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
-        var client = new HttpClient(httpMessageHandler.Object);
-        var apiClient = new OuterApiClient(client, config);
+            var httpMessageHandler =
+                MessageHandler.SetupMessageHandlerMock(response, $"{config.BaseUrl}{request.GetUrl}", config.Key);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new OuterApiClient(client, config);
 
-        //Act
-        var result = await apiClient.Get<List<string>>(request);
+            //Act
+            var result = await apiClient.Get<List<string>>(request);
 
-        // Assert
-        result.Should().BeNull();
+            // Assert
+            result.Should().BeNull();
+        }
     }
-}
 
-public class GetTestRequest : IGetApiRequest
-{
-    public string GetUrl => "test-url/get";
-}
-
-public static class MessageHandler
-{
-    public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url, string key)
+    public class GetTestRequest : IGetApiRequest
     {
-        var httpMessageHandler = new Mock<HttpMessageHandler>();
-        httpMessageHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.Is<HttpRequestMessage>(c =>
-                    c.Method.Equals(HttpMethod.Get)
-                    && c.Headers.Contains("Ocp-Apim-Subscription-Key")
-                    && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
-                    && c.Headers.Contains("X-Version")
-                    && c.Headers.GetValues("X-Version").First().Equals("1")
-                    && c.RequestUri.AbsoluteUri.Equals(url)),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(response);
-        return httpMessageHandler;
+        public string GetUrl => "test-url/get";
+    }
+
+    public static class MessageHandler
+    {
+        public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url,
+            string key)
+        {
+            var httpMessageHandler = new Mock<HttpMessageHandler>();
+            httpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(c =>
+                        c.Method.Equals(HttpMethod.Get)
+                        && c.Headers.Contains("Ocp-Apim-Subscription-Key")
+                        && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
+                        && c.Headers.Contains("X-Version")
+                        && c.Headers.GetValues("X-Version").First().Equals("1")
+                        && c.RequestUri.AbsoluteUri.Equals(url)),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(response);
+            return httpMessageHandler;
+        }
     }
 }

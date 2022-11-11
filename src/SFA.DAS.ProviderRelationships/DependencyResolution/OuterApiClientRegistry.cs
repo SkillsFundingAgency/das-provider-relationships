@@ -1,12 +1,13 @@
 ﻿using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using StructureMap;
 
-namespace SFA.DAS.ProviderRelationships.DependencyResolution;
-
-public class OuterApiClientRegistry : Registry
+namespace SFA.DAS.ProviderRelationships.DependencyResolution
 {
-    public OuterApiClientRegistry()
+    public class OuterApiClientRegistry : Registry
     {
-        For<IOuterApiClient>().Use<OuterApiClient>();
+        public OuterApiClientRegistry()
+        {
+            For<IOuterApiClient>().Use<OuterApiClient>();
+        }
     }
 }

@@ -9,11 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Models;
 
-namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services;
-
-public class OidcService : IOidcService
+namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
 {
-    private readonly HttpClient _httpClient;
+    public class OidcService : IOidcService
+    {
+        private readonly HttpClient _httpClient;
         private readonly IAzureIdentityService _azureIdentityService;
         private readonly IJwtSecurityTokenService _jwtSecurityTokenService;
         private readonly GovUkOidcConfiguration _configuration;
@@ -33,12 +33,9 @@ public class OidcService : IOidcService
 
         public Token GetToken(string code, string redirectUri)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "/token")
-            {
-                Headers =
-                {
-                    Accept =
-                    {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "token") {
+                Headers = {
+                    Accept = {
                         new MediaTypeWithQualityHeaderValue("*/*"),
                         new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded")
                     },
@@ -46,8 +43,7 @@ public class OidcService : IOidcService
                 }
             };
 
-            httpRequestMessage.Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
-            {
+            httpRequestMessage.Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>> {
                 new KeyValuePair<string, string> ("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>("code", code ?? ""),
                 new KeyValuePair<string, string>("redirect_uri", redirectUri ?? ""),
@@ -73,11 +69,9 @@ public class OidcService : IOidcService
                 return;
             }
 
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "/userinfo")
-            {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "/userinfo") {
 
-                Headers =
-                {
+                Headers = {
                     UserAgent = {new ProductInfoHeaderValue("DfEApprenticeships", "1")},
                     Authorization = new AuthenticationHeaderValue("Bearer", accessToken)
                 }
@@ -96,18 +90,15 @@ public class OidcService : IOidcService
         {
             var jti = Guid.NewGuid().ToString();
             var claimsIdentity = new ClaimsIdentity(
-                new List<Claim>
-                {
-                    new Claim ("sub", _configuration.ClientId),
-                    new Claim ("jti", jti)
+                new List<Claim> {
+                    new Claim("sub", _configuration.ClientId),
+                    new Claim("jti", jti)
 
                 });
             var signingCredentials = new SigningCredentials(
                 new KeyVaultSecurityKey(_configuration.KeyVaultIdentifier,
-                    _azureIdentityService.AuthenticationCallback), "RS512")
-            {
-                CryptoProviderFactory = new CryptoProviderFactory
-                {
+                    _azureIdentityService.AuthenticationCallback), "RS512") {
+                CryptoProviderFactory = new CryptoProviderFactory {
                     CustomCryptoProvider = new KeyVaultCryptoProvider()
                 }
             };
@@ -115,4 +106,5 @@ public class OidcService : IOidcService
 
             return value;
         }
+    }
 }
