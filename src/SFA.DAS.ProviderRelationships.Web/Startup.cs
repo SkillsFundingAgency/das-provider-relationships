@@ -98,9 +98,9 @@ namespace SFA.DAS.ProviderRelationships.Web
 
                             var result = oidcService.GetToken(code, redirectUri);
                             var claims = new List<Claim> {
-                                new("id_token", result.IdToken),
-                                new("access_token", result.AccessToken),
-                                new("expires_at", DateTime.UtcNow.AddMinutes(10).ToString(CultureInfo.CurrentCulture))
+                                new Claim("id_token", result.IdToken),
+                                new Claim("access_token", result.AccessToken),
+                                new Claim("expires_at", DateTime.UtcNow.AddMinutes(10).ToString(CultureInfo.CurrentCulture))
                             };
                             var claimsIdentity = new ClaimsIdentity(claims, notification.Options.SignInAsAuthenticationType);
                             notification.HandleCodeRedemption(result.AccessToken, result.IdToken);
@@ -144,7 +144,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     TokenValidationMethod = oidcConfiguration.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
                     AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
                 });
-                
+
                 ConfigurationFactory.Current = new IdentityServerConfigurationFactory(oidcConfiguration);
                 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
             }
