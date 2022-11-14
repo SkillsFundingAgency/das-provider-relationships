@@ -90,11 +90,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                                 new HttpClient(), 
                                 new AzureIdentityService(), 
                                 handler,
-                                new GovUkOidcConfiguration {
-                                    BaseUrl = notification.Options.Authority,
-                                    ClientId = notification.Options.ClientId,
-                                    KeyVaultIdentifier = govUkOidcConfiguration.KeyVaultIdentifier
-                                });
+                                govUkOidcConfiguration);
 
                             var result = oidcService.GetToken(code, redirectUri);
                             var claims = new List<Claim> {
@@ -116,11 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                                 new HttpClient(), 
                                 new AzureIdentityService(), 
                                 handler,
-                                new GovUkOidcConfiguration {
-                                    BaseUrl = notification.Options.Authority,
-                                    ClientId = notification.Options.ClientId,
-                                    KeyVaultIdentifier = govUkOidcConfiguration.KeyVaultIdentifier
-                                });
+                                govUkOidcConfiguration);
                             oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
                             postAuthenticationHandler.Handle(notification.AuthenticationTicket.Identity);
                             

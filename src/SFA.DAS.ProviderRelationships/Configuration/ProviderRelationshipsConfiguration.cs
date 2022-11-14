@@ -14,6 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
         public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
         public RoatpApiConfiguration RoatpApiClientSettings { get; set; }
+        public OuterApiConfiguration OuterApiConfiguration { get; set; }
         public string CdnBaseUrl { get; set; }
 
         public string AllowedHashstringCharacters { get; set; }

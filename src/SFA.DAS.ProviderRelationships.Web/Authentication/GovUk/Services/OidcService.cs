@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
 
         public Token GetToken(string code, string redirectUri)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "token") {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "/token") {
                 Headers = {
                     Accept = {
                         new MediaTypeWithQualityHeaderValue("*/*"),
