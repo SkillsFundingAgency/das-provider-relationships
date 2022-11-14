@@ -1,12 +1,15 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
+using Newtonsoft.Json;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
+using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk;
 using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
@@ -32,10 +35,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
             {
                 var userId = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 var email = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.Email).Value;
-                
                 var request = new GetEmployerAccountRequest(userId, email);
-                await _outerApiClient.Get<GetUserAccountsResponse>(request);
-                //todo: claimsIdentity.AddClaim("");
+                
+                var apiResponse = await _outerApiClient.Get<GetUserAccountsResponse>(request);
+                
+                var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
+                claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.Accounts, accountsAsJson, JsonClaimValueTypes.Json));
             }
             else
             {

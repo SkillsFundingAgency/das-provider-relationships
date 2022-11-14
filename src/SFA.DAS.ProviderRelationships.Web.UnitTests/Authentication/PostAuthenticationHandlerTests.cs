@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using MediatR;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authentication.GovUk;
 using SFA.DAS.Testing;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
@@ -58,6 +62,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             });
             config.UseGovUkSignIn = true;
             var expectedRequest = new GetEmployerAccountRequest(userId, email);
+            var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
             
             //act
             await handler.Handle(identity);
@@ -68,6 +73,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             mockOuterApiClient.Verify(m => m.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
                     request.GetUrl == expectedRequest.GetUrl)),
                 Times.Once);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == DasClaimsTypesExtended.Accounts &&
+                claim.ValueType == JsonClaimValueTypes.Json &&
+                claim.Value == accountsAsJson);
         }
         
         [Test]
