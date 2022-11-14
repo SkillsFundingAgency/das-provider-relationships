@@ -63,6 +63,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             config.UseGovUkSignIn = true;
             var expectedRequest = new GetEmployerAccountRequest(userId, email);
             var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
+            mockOuterApiClient
+                .Setup(client => client.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
+                    request.GetUrl == expectedRequest.GetUrl)))
+                .ReturnsAsync(apiResponse);
             
             //act
             await handler.Handle(identity);
@@ -78,15 +82,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 claim.ValueType == JsonClaimValueTypes.Json &&
                 claim.Value == accountsAsJson);
         }
-        
-        [Test]
-        public async Task Handle_WhenHandlingPostAuthenticationIdentity_AndIsUsingGovUkSignIn_ThenShouldNotSendCreateOrUpdateUserCommand()
-        {
-            await RunAsync(f => f.Config.UseGovUkSignIn = true,
-                f => f.HandleGovUk(), 
-                f => f.Mediator.Verify(m => m.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None), 
-                    Times.Never));
-        }
     }
 
     public class PostAuthenticationHandlerTestsFixture
@@ -97,7 +92,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public string LastName { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public ClaimsIdentity ClaimsIdentity { get; set; }
-        public ClaimsIdentity GovUkClaimsIdentity { get; set; }
         public IPostAuthenticationHandler Handler { get; set; }
         public Mock<IUnitOfWorkScope> UnitOfWorkScope { get; set; }
         public Mock<IContainer> Container { get; set; }
@@ -119,11 +113,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 new Claim(DasClaimTypes.GivenName, FirstName),
                 new Claim(DasClaimTypes.FamilyName, LastName),
             });
-            
-            GovUkClaimsIdentity = new ClaimsIdentity(new List<Claim> {
-                new Claim(ClaimTypes.NameIdentifier, Ref.ToString()),
-                new Claim(ClaimTypes.Email, Email),
-            });
 
             UnitOfWorkScope = new Mock<IUnitOfWorkScope>();
             Container = new Mock<IContainer>();
@@ -139,11 +128,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public async Task Handle()
         {
             await Handler.Handle(ClaimsIdentity);
-        }
-        
-        public async Task HandleGovUk()
-        {
-            await Handler.Handle(GovUkClaimsIdentity);
         }
     }
 }
