@@ -47,33 +47,42 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         
         [Test, MoqAutoData]
         public async Task Handle_WhenHandlingPostAuthenticationIdentity_AndIsUsingGovUkSignIn_ThenShouldCallOuterApi(
-            string userId,
+            string govUkUserId,
             string email,
+            Guid userId,
             GetUserAccountsResponse apiResponse,
-            [Frozen] Mock<IMediator> mockMediator,
             [Frozen] ProviderRelationshipsConfiguration config, 
             [Frozen] Mock<IOuterApiClient> mockOuterApiClient,
+            [Frozen] Mock<IContainer> mockContainer,
+            [Frozen] Mock<IUnitOfWorkScope> mockUnitOfWork,
+            [Frozen] Mock<IMediator> mockMediator,
             PostAuthenticationHandler handler)
         {
             //arrange
             var identity = new ClaimsIdentity(new List<Claim> {
-                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.NameIdentifier, govUkUserId),
                 new Claim(ClaimTypes.Email, email)
             });
             config.UseGovUkSignIn = true;
-            var expectedRequest = new GetEmployerAccountRequest(userId, email);
+            var expectedRequest = new GetEmployerAccountRequest(govUkUserId, email);
+            apiResponse.EmployerUserId = userId.ToString();
             var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
             mockOuterApiClient
                 .Setup(client => client.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
                     request.GetUrl == expectedRequest.GetUrl)))
                 .ReturnsAsync(apiResponse);
+            mockUnitOfWork
+                .Setup(scope => scope.RunAsync(It.IsAny<Func<IContainer, Task>>()))
+                .Returns(Task.CompletedTask)
+                .Callback<Func<IContainer, Task>>(o => o(mockContainer.Object));
+            mockContainer
+                .Setup(c => c.GetInstance<IMediator>())
+                .Returns(mockMediator.Object);
             
             //act
             await handler.Handle(identity);
             
             //assert
-            mockMediator.Verify(m => m.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None),
-                Times.Never);
             mockOuterApiClient.Verify(m => m.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
                     request.GetUrl == expectedRequest.GetUrl)),
                 Times.Once);
@@ -81,6 +90,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 claim.Type == DasClaimsTypesExtended.Accounts &&
                 claim.ValueType == JsonClaimValueTypes.Json &&
                 claim.Value == accountsAsJson);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == DasClaimsTypesExtended.UserId &&
+                claim.Value == apiResponse.EmployerUserId);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == DasClaimsTypesExtended.FirstName &&
+                claim.Value == apiResponse.FirstName);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == DasClaimsTypesExtended.LastName &&
+                claim.Value == apiResponse.LastName);
+            mockMediator.Verify(m => m.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None),
+                Times.Once);
         }
     }
 

@@ -41,6 +41,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 
                 var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
                 claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.Accounts, accountsAsJson, JsonClaimValueTypes.Json));
+                claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.UserId, apiResponse.EmployerUserId));
+                claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.FirstName, apiResponse.FirstName));
+                claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.LastName, apiResponse.LastName));
+
+                var upsertUserCommand = new CreateOrUpdateUserCommand(
+                    Guid.Parse(apiResponse.EmployerUserId), 
+                    email, 
+                    apiResponse.FirstName, 
+                    apiResponse.LastName);
+                await _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(upsertUserCommand));
             }
             else
             {
@@ -48,9 +58,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 var email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value;
                 var firstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value;
                 var lastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value;
-                var command = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
+                var upsertUserCommand = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
             
-                _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(command)).GetAwaiter().GetResult();
+                await _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(upsertUserCommand));
             }
         }
     }
