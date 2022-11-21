@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.IdentityModel.KeyVaultExtensions;
 using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -62,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
             return content;
         }
 
-        public void PopulateAccountClaims(ClaimsIdentity claimsIdentity, string accessToken)
+        public async Task PopulateAccountClaims(ClaimsIdentity claimsIdentity, string accessToken)
         {
             if (string.IsNullOrEmpty(accessToken) || claimsIdentity == null)
             {
@@ -76,8 +77,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
                     Authorization = new AuthenticationHeaderValue("Bearer", accessToken)
                 }
             };
-            var response = _httpClient.SendAsync(httpRequestMessage).Result;
-            var valueString = response.Content.ReadAsStringAsync().Result;
+            var response = await _httpClient.SendAsync(httpRequestMessage);
+            var valueString = await response.Content.ReadAsStringAsync();
             var content = JsonSerializer.Deserialize<GovUkUser>(valueString);
             if (content?.Email != null)
             {

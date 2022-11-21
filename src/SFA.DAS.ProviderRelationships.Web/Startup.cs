@@ -106,17 +106,15 @@ namespace SFA.DAS.ProviderRelationships.Web
                             
                             return Task.CompletedTask;
                         },
-                        SecurityTokenValidated = notification =>
+                        SecurityTokenValidated = async notification =>
                         {
                             var oidcService = new OidcService(
                                 new HttpClient(), 
                                 new AzureIdentityService(), 
                                 handler,
                                 govUkOidcConfiguration);
-                            oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
-                            postAuthenticationHandler.Handle(notification.AuthenticationTicket.Identity);
-                            
-                            return Task.CompletedTask;
+                            await oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
+                            await postAuthenticationHandler.Handle(notification.AuthenticationTicket.Identity);
                         }
                     }
                 });

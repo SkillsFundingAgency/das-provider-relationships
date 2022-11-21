@@ -41,7 +41,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 
                 var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
                 claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.Accounts, accountsAsJson, JsonClaimValueTypes.Json));
-                claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.UserId, apiResponse.EmployerUserId));
+                claimsIdentity.AddClaim(new Claim(DasClaimTypes.Id, apiResponse.EmployerUserId));
+                claimsIdentity.AddClaim(new Claim(DasClaimTypes.Email, email));
                 claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.FirstName, apiResponse.FirstName));
                 claimsIdentity.AddClaim(new Claim(DasClaimsTypesExtended.LastName, apiResponse.LastName));
 

@@ -91,8 +91,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 claim.ValueType == JsonClaimValueTypes.Json &&
                 claim.Value == accountsAsJson);
             identity.Claims.Should().Contain(claim =>
-                claim.Type == DasClaimsTypesExtended.UserId &&
+                claim.Type == DasClaimTypes.Id &&
                 claim.Value == apiResponse.EmployerUserId);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == DasClaimTypes.Email &&
+                claim.Value == email);
             identity.Claims.Should().Contain(claim =>
                 claim.Type == DasClaimsTypesExtended.FirstName &&
                 claim.Value == apiResponse.FirstName);
