@@ -82,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     SignInAsAuthenticationType = "Cookies",
                     SecurityTokenValidator = handler,
                     Notifications = new OpenIdConnectAuthenticationNotifications {
-                        AuthorizationCodeReceived = notification =>
+                        AuthorizationCodeReceived = async notification =>
                         {
                             var code = notification.Code;
                             var redirectUri = notification.RedirectUri;
@@ -92,7 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                                 handler,
                                 govUkOidcConfiguration);
 
-                            var result = oidcService.GetToken(code, redirectUri);
+                            var result = await oidcService.GetToken(code, redirectUri);
                             var claims = new List<Claim> {
                                 new Claim("id_token", result.IdToken),
                                 new Claim("access_token", result.AccessToken),
@@ -103,8 +103,6 @@ namespace SFA.DAS.ProviderRelationships.Web
                             var properties =
                                 notification.Options.StateDataFormat.Unprotect(notification.ProtocolMessage.State.Split('=')[1]);
                             notification.AuthenticationTicket = new AuthenticationTicket(claimsIdentity, properties);
-                            
-                            return Task.CompletedTask;
                         },
                         SecurityTokenValidated = async notification =>
                         {
@@ -114,6 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                                 handler,
                                 govUkOidcConfiguration);
                             await oidcService.PopulateAccountClaims(notification.AuthenticationTicket.Identity, notification.ProtocolMessage.AccessToken);
+                            notification.AuthenticationTicket.Identity.AddClaim(new Claim("id_token", notification.ProtocolMessage.IdToken));
                             await postAuthenticationHandler.Handle(notification.AuthenticationTicket.Identity);
                         }
                     }

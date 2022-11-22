@@ -6,7 +6,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
 {
     public interface IOidcService
     {
-        Token GetToken(string code, string redirectUri);
+        Task<Token> GetToken(string code, string redirectUri);
         Task PopulateAccountClaims(ClaimsIdentity claimsIdentity, string accessToken);
     }
 }

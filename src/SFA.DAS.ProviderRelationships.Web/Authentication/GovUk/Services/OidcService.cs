@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
             _httpClient.BaseAddress = new Uri(configuration.BaseUrl);
         }
 
-        public Token GetToken(string code, string redirectUri)
+        public async Task<Token> GetToken(string code, string redirectUri)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "/token") {
                 Headers = {
@@ -56,8 +56,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication.GovUk.Services
             httpRequestMessage.Content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
 
-            var response = _httpClient.SendAsync(httpRequestMessage).Result;
-            var valueString = response.Content.ReadAsStringAsync().Result;
+            var response = await _httpClient.SendAsync(httpRequestMessage);
+            var valueString = await response.Content.ReadAsStringAsync();
             var content = JsonSerializer.Deserialize<Token>(valueString);
 
             return content;

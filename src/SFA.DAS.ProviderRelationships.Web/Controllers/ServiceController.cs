@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Security.Claims;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -24,22 +25,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         public ActionResult SignOut()
         {
             _authenticationService.SignOutUser();
-            
-            _authenticationService.TryGetCurrentUserClaimValue("id_token", out var idToken);
-
-            var authenticationProperties = new AuthenticationProperties
-            {
-                RedirectUri = "signoutcleanup",
-                AllowRefresh = true
-            };
-            authenticationProperties.Dictionary.Clear();
-            authenticationProperties.Dictionary.Add("id_token",idToken);
-            HttpContext.GetOwinContext().Authentication.SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationType, OpenIdConnectAuthenticationDefaults.AuthenticationType);
-
             return new RedirectResult(_authenticationUrls.LogoutEndpoint);
         }
 
         [Route("signoutcleanup")]
+        [AllowAnonymous]
         public void SignOutCleanup()
         {
             _authenticationService.SignOutUser();

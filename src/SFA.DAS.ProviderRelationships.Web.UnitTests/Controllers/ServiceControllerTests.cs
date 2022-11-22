@@ -39,9 +39,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
     public class ServiceControllerTestsFixture
     {
-        private const string OwinEnvironmentKey = "owin.Environment";
-        const string RequestHeaders = "owin.RequestHeaders";
-        const string ResponseHeaders = "owin.ResponseHeaders";
         public Mock<IAuthenticationService> AuthenticationService { get; set; }
         public ServiceController ServiceController { get; set; }
         public string LogoutEndpoint { get; set; }
@@ -56,16 +53,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             AuthenticationUrls.Setup(u => u.LogoutEndpoint).Returns(LogoutEndpoint);
             
             ServiceController = new ServiceController(AuthenticationService.Object, AuthenticationUrls.Object);
-            ServiceController.ControllerContext = new ControllerContext();
-            ServiceController.ControllerContext.HttpContext = new HttpContextWrapper( 
-                new HttpContext(
-                    new HttpRequest(string.Empty, "https://localhost:123", string.Empty),
-                    new HttpResponse(new StringWriter())));
-            var owinEnvironment = new Dictionary<string, object> {
-                {RequestHeaders, new Dictionary<string, string[]>()},
-                {ResponseHeaders, new Dictionary<string, string[]>()}
-            };
-            ServiceController.ControllerContext.HttpContext.Items.Add(OwinEnvironmentKey, owinEnvironment);
         }
 
         public ActionResult SignOut()
