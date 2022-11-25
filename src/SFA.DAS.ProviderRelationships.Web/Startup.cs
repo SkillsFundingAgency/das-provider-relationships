@@ -53,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 AuthenticationType = "Cookies",
                 ExpireTimeSpan = new TimeSpan(0, 10, 0),
                 SlidingExpiration = true,
-                CookieManager = new SystemWebCookieManager()
+                CookieManager = new ChunkingCookieManager()
             });
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
@@ -73,6 +73,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     Authority = govUkOidcConfiguration.BaseUrl,
                     MetadataAddress = $"{govUkOidcConfiguration.BaseUrl}/.well-known/openid-configuration",
                     ResponseType = OpenIdConnectResponseType.Code,
+                    AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
                     ResponseMode = "",
                     SaveTokens = true,
                     RedeemCode = true,
