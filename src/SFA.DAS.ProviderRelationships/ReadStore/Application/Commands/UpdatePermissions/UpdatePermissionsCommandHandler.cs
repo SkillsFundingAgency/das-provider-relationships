@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.CosmosDb;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
@@ -12,9 +12,9 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePer
     public class UpdatePermissionsCommandHandler : AsyncRequestHandler<UpdatePermissionsCommand>
     {
         private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
-        private readonly ILog _log;
+        private readonly ILogger<UpdatePermissionsCommandHandler> _log;
 
-        public UpdatePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository, ILog log)
+        public UpdatePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository, ILogger<UpdatePermissionsCommandHandler> log)
         {
             _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
             _log = log;
@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePer
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(ex, $"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}");
+                    _log.LogError(ex, $"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}");
                     throw;
                 }
             }

@@ -14,8 +14,9 @@ namespace SFA.DAS.ProviderRelationships.Services
         private readonly string _apiBaseUrl;
         private readonly string _identifierUri;
         private readonly HttpClient _client;
+        private readonly ProviderRelationshipsConfiguration _prConfig;
 
-        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration) : base(client)
+        public RegistrationApiClient(HttpClient client, IRegistrationApiConfiguration configuration, ProviderRelationshipsConfiguration prConfig) : base(client)
         {
             _apiBaseUrl = configuration.ApiBaseUrl.EndsWith("/")
                 ? configuration.ApiBaseUrl
@@ -23,6 +24,7 @@ namespace SFA.DAS.ProviderRelationships.Services
 
             _identifierUri = configuration.IdentifierUri;
             _client = client;
+            _prConfig = prConfig;
         }
 
         public async Task Unsubscribe(string CorrelationId)
@@ -46,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Services
 
         protected async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
         {
-            if (ConfigurationManager.AppSettings["EnvironmentName"].ToUpper() != "LOCAL")
+            if (_prConfig.EnvironmentName.ToUpper() != "LOCAL")
             {
                 var azureServiceTokenProvider = new AzureServiceTokenProvider();
                 var accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(_identifierUri);

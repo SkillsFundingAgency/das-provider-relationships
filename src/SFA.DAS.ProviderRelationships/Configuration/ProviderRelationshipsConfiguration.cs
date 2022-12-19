@@ -32,5 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ZenDeskSectionId { get; set; }
         public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
         public string ProviderPortalBaseUrl { get; set; }
+        public string EnvironmentName { get; set; }
     }
 }   

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -14,10 +13,10 @@ namespace SFA.DAS.ProviderRelationships.DependencyResolution
         private const string AzureResource = "https://database.windows.net/";
         public DataRegistry()
         {
-            var environmentName = ConfigurationManager.AppSettings["EnvironmentName"];
             For<DbConnection>().Use($"Build DbConnection", c => {
+                var config = c.GetInstance<ProviderRelationshipsConfiguration>();
                 var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                return environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
+                return config.EnvironmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
                     ? new SqlConnection(GetConnectionString(c))
                     : new SqlConnection {
                         ConnectionString = GetConnectionString(c),

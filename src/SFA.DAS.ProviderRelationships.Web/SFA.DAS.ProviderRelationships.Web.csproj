@@ -88,9 +88,6 @@
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NServiceBus" Version="15.0.25" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="15.0.25" />
-    <PackageReference Include="SFA.DAS.PAS.Account.Api.Types">
-      <Version>17267.0.532</Version>
-    </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.OidcMiddleware" Version="2.1.11" />
