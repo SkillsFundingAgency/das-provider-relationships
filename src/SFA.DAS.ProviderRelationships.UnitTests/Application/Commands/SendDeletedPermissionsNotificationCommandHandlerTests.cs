@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.PAS.Account.Api.Client;
+using SFA.DAS.PAS.Account.Api.ClientV2;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Data;
@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     It.Is<ProviderEmailRequest>(r =>
                         r.TemplateId == "DeletedPermissionsEventNotification" &&
                         r.Tokens["organisation_name"] == f.OrganisationName
-                    ))));
+                    ), It.IsAny<CancellationToken>())));
         }
     }
 
@@ -61,7 +61,5 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             await Handler.Handle(Command, CancellationToken.None);
         }
-
-
     }
 }

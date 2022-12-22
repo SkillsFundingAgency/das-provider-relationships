@@ -9,7 +9,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
@@ -110,7 +109,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
         public Mock<IDasRecruitService> MockRecruitService { get; set; }
-        public Mock<IHashingService> MockHashingService { get; set; }
 
         public GetAccountProviderLegalEntityQueryHandlerFixture()
         {
@@ -118,9 +116,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
             MockRecruitService = new Mock<IDasRecruitService>();
-            MockHashingService = new Mock<IHashingService>();
             SetDasRecruitBlockedProvider();
-            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider, MockHashingService.Object);
+            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);
         }
 
         public Task<GetAccountProviderLegalEntityQueryResult> Handle()

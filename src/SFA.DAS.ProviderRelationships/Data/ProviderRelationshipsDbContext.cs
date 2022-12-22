@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data

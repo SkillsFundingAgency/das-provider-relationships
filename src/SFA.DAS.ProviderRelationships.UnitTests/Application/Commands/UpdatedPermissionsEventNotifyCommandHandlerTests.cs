@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -10,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.PAS.Account.Api.Client;
+using SFA.DAS.PAS.Account.Api.ClientV2;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Data;
@@ -41,7 +38,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 },
                 assert: f =>
                 {
-                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedProviderPermissionsNotification")));
+                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(
+                        f.Provider.Ukprn, 
+                        It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedProviderPermissionsNotification"), 
+                        It.IsAny<CancellationToken>()));
                 });
 
         [Test]
@@ -62,7 +62,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
                     r.Tokens["training_provider_name"] == f.Provider.Name &&
                     r.Tokens["manage_recruitment_emails_url"] == f.ManageNotificationsUrl
-                    )));
+                    ), It.IsAny<CancellationToken>()));
                 });
 
         [Test]
@@ -131,7 +131,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 new HashSet<Operation>());
 
             Client
-                .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>()))
+                .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>(), It.IsAny<CancellationToken>()))
                 .Callback((long ukprn, ProviderEmailRequest provEmail) =>
                 {
                     ResultEmailRequest = provEmail;

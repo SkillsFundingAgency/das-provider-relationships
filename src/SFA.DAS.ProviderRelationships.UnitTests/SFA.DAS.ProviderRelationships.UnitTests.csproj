@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <TargetFramework>net462</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
@@ -21,13 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Web\SFA.DAS.ProviderRelationships.Web.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="System" />
-    </ItemGroup>
+
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -14,7 +15,6 @@ using SFA.DAS.Testing;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 {
     [TestFixture]
-    [Parallelizable]
     public class FindProviderToAddQueryHandlerTests : FluentTest<FindProviderToAddQueryHandlerTestsFixture>
     {
         [Test]
@@ -82,7 +82,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public FindProviderToAddQueryHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                    .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
+                    .Options);
             Handler = new FindProviderToAddQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
             Query = new FindProviderToAddQuery(1, 12345678);
         }
@@ -94,8 +98,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public FindProviderToAddQueryHandlerTestsFixture SetProvider()
         {
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, Query.Ukprn);
-            
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, Query.Ukprn);
+
             Db.Providers.Add(Provider);
             Db.SaveChanges();
 
@@ -104,8 +109,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public FindProviderToAddQueryHandlerTestsFixture SetAccountProvider()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 1).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId);
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, 1)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
             
             Db.AccountProviders.Add(AccountProvider);
             Db.SaveChanges();

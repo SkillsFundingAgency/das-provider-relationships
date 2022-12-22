@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -11,7 +10,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services;
 
-namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
+namespace SFA.DAS.ProviderRelationships.UnitTests.Services
 {
     class WhenIGetInvitation
     {
@@ -27,8 +26,7 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
         [SetUp]
         public void Arrange()
         {
-            ConfigurationManager.AppSettings["EnvironmentName"] = "LOCAL";
-            _apiBaseUrl = $"http://{Guid.NewGuid().ToString()}/";
+            _apiBaseUrl = $"http://{Guid.NewGuid()}/";
             _identifierUri = Guid.NewGuid().ToString();
             _correlationId = Guid.NewGuid().ToString();
             _testData = "Employer details";
@@ -56,7 +54,7 @@ namespace SFA.DAS.EmployerAccounts.UnitTests.Services.ProviderRegistration
 
             var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
 
-            _sut = new RegistrationApiClient(httpClient, _configuration);
+            _sut = new RegistrationApiClient(httpClient, _configuration, new ProviderRelationshipsConfiguration{EnvironmentName = "LOCAL"});
         }
 
         [Test]
