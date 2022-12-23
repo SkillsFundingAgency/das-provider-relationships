@@ -27,8 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Data
             var sqlStorageSession = synchronizedStorageSession.GetSqlStorageSession();
             
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
-                .UseSqlServer(sqlStorageSession.Connection)
-                .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
+                .UseSqlServer(sqlStorageSession.Connection);
 
             if (_environmentService.IsCurrent(DasEnv.LOCAL))
             {

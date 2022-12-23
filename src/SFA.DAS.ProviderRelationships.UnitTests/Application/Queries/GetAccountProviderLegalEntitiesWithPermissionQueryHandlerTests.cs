@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenUkprnIsFoundAndAccountProviderLegalEntityHasPermissionForSuppliedOperation_ThenShouldReturnCorrectGetAccountProviderLegalEntitiesWithPermissionQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Should().BeEquivalentTo(new GetAccountProviderLegalEntitiesWithPermissionQueryResult(new[] {
@@ -49,19 +49,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+            return TestAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
         [Test]
         public Task Handle_WhenUkprnIsFoundAndAccountProviderLegalEntityHasNotGotPermissionForSuppliedOperation_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+            return TestAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
 
         [Test]
         public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
         {
-            return RunAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+            return TestAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
         }
     }
 
@@ -81,7 +81,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.Recruitment, Operation.RecruitmentRequiresReview});
 
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>());
             Handler = new GetAccountProviderLegalEntitiesWithPermissionQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }

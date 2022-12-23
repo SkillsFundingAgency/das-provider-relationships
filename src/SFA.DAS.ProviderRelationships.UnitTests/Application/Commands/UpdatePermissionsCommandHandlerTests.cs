@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityDoesNotExist_ThenShouldCreatePermissions()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.AccountProviderLegalEntities
+            return TestAsync(f => f.Handle(), f => f.Db.AccountProviderLegalEntities
                 .SingleOrDefault(aple =>
                     aple.AccountProviderId == f.AccountProvider.Id &&
                     aple.AccountLegalEntityId == f.AccountLegalEntity.Id &&
@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityDoesNotExist_ThenShouldPublishUpdatedPermissionsEvent()
         {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
                 .And.Match<UpdatedPermissionsEvent>(e =>
                     e.AccountId == f.Account.Id &&
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
@@ -54,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityExists_ThenShouldUpdatePermissions()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.Db.AccountProviderLegalEntities
+            return TestAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.Db.AccountProviderLegalEntities
                 .SingleOrDefault(aple =>
                     aple.Id == f.AccountProviderLegalEntity.Id &&
                     aple.Permissions.All(p => f.Command.GrantedOperations.Contains(p.Operation)) &&
@@ -66,7 +66,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityExists_ThenShouldPublishUpdatedPermissionsEvent()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+            return TestAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
                 .And.Match<UpdatedPermissionsEvent>(e =>
                     e.AccountId == f.Account.Id &&
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&

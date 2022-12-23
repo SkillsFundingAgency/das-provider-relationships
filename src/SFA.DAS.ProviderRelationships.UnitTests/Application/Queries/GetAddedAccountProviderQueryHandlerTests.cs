@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAddedProviderQuery_ThenShouldReturnGetAddedProviderQueryResult()
         {
-            return RunAsync(f => f.SetAccountProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
+            return TestAsync(f => f.SetAccountProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetAddedAccountProviderQueryResult>(r2 =>
                     r2.AccountProvider.Id == f.AccountProvider.Id &&
                     r2.AccountProvider.ProviderUkprn == f.Provider.Ukprn &&
@@ -33,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAddedProviderQueryAndProviderIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 
@@ -50,9 +51,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetAddedAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAddedAccountProviderQuery(1, 2);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{new AccountProviderMappings()}));
             
             Handler = new GetAddedAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }

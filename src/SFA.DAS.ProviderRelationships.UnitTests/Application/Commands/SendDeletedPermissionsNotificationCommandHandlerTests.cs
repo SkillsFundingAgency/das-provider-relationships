@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotify()
         {
-            return RunAsync(f => f.Handle(),
+            return TestAsync(f => f.Handle(),
                 f => f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Ukprn,
                     It.Is<ProviderEmailRequest>(r =>
                         r.TemplateId == "DeletedPermissionsEventNotification" &&

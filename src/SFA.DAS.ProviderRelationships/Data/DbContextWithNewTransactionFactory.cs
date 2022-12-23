@@ -22,8 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Data
         public ProviderRelationshipsDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
-                .UseSqlServer(_dbConnection)
-                .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning));
+                .UseSqlServer(_dbConnection);
 
             if (_environmentService.IsCurrent(DasEnv.LOCAL))
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Data.SqlClient;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using StructureMap;

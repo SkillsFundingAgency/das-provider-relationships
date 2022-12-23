@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenCommandIsHandledChronologically_ThenShouldUpdateAccountName()
         {
-            return RunAsync(f => f.Handle(), f =>
+            return TestAsync(f => f.Handle(), f =>
             {
                 f.Account.Name.Should().Be(f.Command.Name);
                 f.Account.Updated.Should().Be(f.Command.Created);
@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenCommandIsHandledNonChronologically_ThenShouldNotUpdateAccountName()
         {
-            return RunAsync(f => f.SetAccountUpdatedAfterCommand(), f => f.Handle(), f =>
+            return TestAsync(f => f.SetAccountUpdatedAfterCommand(), f => f.Handle(), f =>
             {
                 f.Account.Name.Should().Be(f.OriginalAccountName);
                 f.Account.Updated.Should().Be(f.Now);
@@ -56,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Now = DateTime.UtcNow;
             Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1).Set(a => a.Name, OriginalAccountName);
             Command = new UpdateAccountNameCommand(Account.Id, "Bar", Now.AddHours(-1));
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();

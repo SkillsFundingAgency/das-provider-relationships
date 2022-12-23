@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
@@ -21,7 +20,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
         private string _apiBaseUrl;
         private string _identifierUri;
         Mock<HttpMessageHandler> _mockHttpMessageHandler;
-        Mock<ILogger<RegistrationApiClient>> _logger;
 
         [SetUp]
         public void Arrange()
@@ -30,9 +28,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services
             _identifierUri = Guid.NewGuid().ToString();
             _correlationId = Guid.NewGuid().ToString();
             _testData = "Employer details";
-
-            _logger = new Mock<ILogger<RegistrationApiClient>>();
-
+            
             _configuration = new RegistrationApiConfiguration 
             {
                 ApiBaseUrl = _apiBaseUrl,

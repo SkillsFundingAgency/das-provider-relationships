@@ -13,13 +13,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Extensions
         [Test]
         public void GetAggregateMessage_WhenExceptionHasNoInnerExceptions_ThenShouldReturnExceptionMessage()
         {
-            Run(f => new Exception($"One").GetAggregateMessage(), (f, r) => r.Should().Be($"One"));
+            Test(f => new Exception($"One").GetAggregateMessage(), (f, r) => r.Should().Be($"One"));
         }
         
         [Test]
         public void GetAggregateMessage_WhenExceptionHasInnerExceptions_ThenShouldReturnExceptionAndInnerExceptionMessages()
         {
-            Run(f => new Exception($"One", new Exception("Two", new Exception("Three"))).GetAggregateMessage(), (f, r) => r.Should().Be($"One{Environment.NewLine}Two{Environment.NewLine}Three"));
+            Test(f => new Exception($"One", new Exception("Two", new Exception("Three"))).GetAggregateMessage(), (f, r) => r.Should().Be($"One{Environment.NewLine}Two{Environment.NewLine}Three"));
         }
     }
 }

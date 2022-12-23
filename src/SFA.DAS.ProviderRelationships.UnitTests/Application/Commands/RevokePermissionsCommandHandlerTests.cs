@@ -43,7 +43,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         [Test]
         public Task WhenUkPrnIsInvalid_ThenShouldDoNothing() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.RevokePermissionsCommand = new RevokePermissionsCommand(
@@ -64,7 +64,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         [Parallelizable]
         public Task WhenExecuted_ThenShouldRemoveMatchingOperationsOnly() =>
-            RunAsync(
+            TestAsync(
                 act: async f =>
                 {
                     await f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None);
@@ -82,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         [Parallelizable]
         public Task WhenExecuted_ThenShouldPublishEvents() =>
-            RunAsync(
+            TestAsync(
                 act: async f =>
                 {
                     await f.Handler.Handle(f.RevokePermissionsCommand, CancellationToken.None);
@@ -107,7 +107,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         [Parallelizable]
         public Task WhenRevokedPermissionDidNotExist_ThenShouldNotPublishAnyEvents() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.RevokePermissionsCommand = new RevokePermissionsCommand(
@@ -171,10 +171,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             var optionsBuilder =
                 new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
-                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                    .ConfigureWarnings(warnings =>
-                        warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)
-                    );
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString());
             Db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
 
@@ -198,7 +195,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
             Provider = EntityActivator
                 .CreateInstance<Provider>()
-                .Set(x => x.Ukprn, 299792458);
+                .Set(x => x.Ukprn, 299792458)
+                .Set(x => x.Name, Guid.NewGuid().ToString());
             Db.Add(Provider);
 
             User = new User(Guid.NewGuid(), "me@home.com", "Bill", "Gates");

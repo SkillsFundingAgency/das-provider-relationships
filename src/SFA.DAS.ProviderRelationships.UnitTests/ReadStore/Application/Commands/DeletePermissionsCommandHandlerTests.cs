@@ -21,17 +21,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
-            return RunAsync(f => f.Handle(), f =>
-            {
-                f.AccountProviderLegalEntity.Operations.Should().BeEmpty();
-                f.AccountProviderLegalEntity.Deleted.Should().Be(f.Command.Deleted);
-            });
+            return TestAsync(
+                f => f.Handle(),
+                f =>
+                {
+                    f.AccountProviderLegalEntity.Operations.Should().BeEmpty();
+                    f.AccountProviderLegalEntity.Deleted.Should().Be(f.Command.Deleted);
+                });
         }
         
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntityDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            return TestExceptionAsync(
+                f => f.SetAccountProviderLegalEntityDeletedBeforeCommand(), 
+                f => f.Handle(), 
+                (f, r) => r.Should().ThrowAsync<InvalidOperationException>());
         }
     }
 

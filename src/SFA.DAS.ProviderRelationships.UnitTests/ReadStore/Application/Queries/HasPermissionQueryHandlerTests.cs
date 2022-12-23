@@ -22,13 +22,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Queries
         [Test]
         public Task Handle_WhenPermissionIsNotGranted_ThenShouldReturnFalse()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeFalse());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().BeFalse());
         }
         
         [Test]
         public Task Handle_WhenPermissionIsGranted_ThenShouldReturnTrue()
         {
-            return RunAsync(f => f.AddAccountProviderLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeTrue());
+            return TestAsync(f => f.AddAccountProviderLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeTrue());
         }
     }
 

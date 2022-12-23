@@ -1,12 +1,12 @@
-using System.Data.SqlClient;
+using EfSchemaCompare;
 using FluentAssertions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.DependencyResolution;
 using StructureMap;
-using TestSupport.EfSchemeCompare;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Models
 {

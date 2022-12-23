@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingReceiveProviderRelationshipsHealthCheckEventCommand_ThenShouldUpdateHealthCheck()
         {
-            return RunAsync(f => f.Handle(), f => f.HealthChecks[1].ReceivedProviderRelationshipsEvent.Should().NotBeNull());
+            return TestAsync(f => f.Handle(), f => f.HealthChecks[1].ReceivedProviderRelationshipsEvent.Should().NotBeNull());
         }
     }
 
@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             };
             
             Command = new ReceiveProviderRelationshipsHealthCheckEventCommand(HealthChecks[1].Id);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             Db.HealthChecks.AddRange(HealthChecks);
             Db.SaveChanges();

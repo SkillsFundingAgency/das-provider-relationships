@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -22,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetProviderToAddQueryAndProviderIsFound_ThenShouldReturnGetProviderToAddQueryResult()
         {
-            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
+            return TestAsync(f => f.SetProvider(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetProviderToAddQueryResult>(r2 =>
                     r2.Provider.Ukprn == f.Provider.Ukprn &&
                     r2.Provider.Name == f.Provider.Name));
@@ -31,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetProviderToAddQueryAndProviderIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 
@@ -46,8 +47,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetProviderToAddQueryHandlerTestsFixture()
         {
             Query = new GetProviderToAddQuery(12345678);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(ProviderMappings)));
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>(){new ProviderMappings()}));
             Handler = new GetProviderToAddQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
 

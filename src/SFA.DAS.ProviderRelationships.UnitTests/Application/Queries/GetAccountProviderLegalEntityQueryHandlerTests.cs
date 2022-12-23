@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAccountProviderLegalEntityQuery_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
 
@@ -62,7 +62,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAccountProviderLegalEntityQueryForNotBlockedProvider_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
 
@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAccountProviderLegalEntityQueryForBlockedProvider_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(GetAccountProviderLegalEntityQueryHandlerFixture.BlockedRecruitProviderUkrpn), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviderLegalEntities(GetAccountProviderLegalEntityQueryHandlerFixture.BlockedRecruitProviderUkrpn), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
 
@@ -84,13 +84,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenAccountProviderIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.SetAccountLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.SetAccountLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeNull());
         }
 
         [Test]
         public Task Handle_WhenAccountLegalEntityIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 
@@ -114,7 +114,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{ new AccountProviderLegalEntityMappings() }));
             MockRecruitService = new Mock<IDasRecruitService>();
             SetDasRecruitBlockedProvider();
             Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);

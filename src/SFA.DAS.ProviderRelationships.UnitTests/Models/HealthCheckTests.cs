@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Test]
         public void New_WhenCreatingAHealthCheck_ThenShouldCreateAHealthCheck()
         {
-            Run(f => f.New(), (f, r) =>
+            Test(f => f.New(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.User.Should().Be(f.User);
@@ -27,31 +27,31 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldSetSentApprenticeshipInfoServiceApiRequestProperty()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.SentApprenticeshipInfoServiceApiRequest >= f.PreRun && h.SentApprenticeshipInfoServiceApiRequest <= f.PostRun));
+            return TestAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.SentApprenticeshipInfoServiceApiRequest >= f.PreRun && h.SentApprenticeshipInfoServiceApiRequest <= f.PostRun));
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldSetReceivedApprenticeshipInfoServiceApiResponseProperty()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse >= f.PreRun && h.ReceivedApprenticeshipInfoServiceApiResponse <= f.PostRun));
+            return TestAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse >= f.PreRun && h.ReceivedApprenticeshipInfoServiceApiResponse <= f.PostRun));
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheckAndAApprenticeshipInfoServiceApiExceptionIsThrown_ThenShouldNotSetReceivedApprenticeshipInfoServiceApiResponseProperty()
         {
-            return RunAsync(f => f.SetHealthCheck().SetApprenticeshipInfoServiceApiRequestException(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse == null));
+            return TestAsync(f => f.SetHealthCheck().SetApprenticeshipInfoServiceApiRequestException(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedApprenticeshipInfoServiceApiResponse == null));
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldSetPublishedProviderRelationshipsEventProperty()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.PublishedProviderRelationshipsEvent >= f.PreRun && h.PublishedProviderRelationshipsEvent <= f.PostRun));
+            return TestAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.PublishedProviderRelationshipsEvent >= f.PreRun && h.PublishedProviderRelationshipsEvent <= f.PostRun));
         }
 
         [Test]
         public Task Run_WhenRunningAHealthCheck_ThenShouldPublishAHealthCheckEvent()
         {
-            return RunAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.UnitOfWorkContext.GetEvents().Should().HaveCount(1)
+            return TestAsync(f => f.SetHealthCheck(), f => f.Run(), f => f.UnitOfWorkContext.GetEvents().Should().HaveCount(1)
                 .And.AllBeOfType<HealthCheckEvent>()
                 .And.AllBeEquivalentTo(new HealthCheckEvent(f.HealthCheck.Id, f.HealthCheck.PublishedProviderRelationshipsEvent)));
         }
@@ -59,7 +59,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Test]
         public void ReceiveEvent_WhenReceivingAHealthCheckEvent_ThenShouldSetReceivedProviderRelationshipsEventProperty()
         {
-            Run(f => f.SetHealthCheck(), f => f.ReceiveEvent(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedProviderRelationshipsEvent >= f.PreRun && h.ReceivedProviderRelationshipsEvent <= f.PostRun));
+            Test(f => f.SetHealthCheck(), f => f.ReceiveEvent(), f => f.HealthCheck.Should().Match<HealthCheck>(h => h.ReceivedProviderRelationshipsEvent >= f.PreRun && h.ReceivedProviderRelationshipsEvent <= f.PostRun));
         }
     }
 

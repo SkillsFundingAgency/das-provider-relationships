@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotify() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
@@ -46,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithOrganisationAndProviderName() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
@@ -74,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithPermissions(
             Operation[] operations,
             string expectedSetPermissionPart2) =>
-           RunAsync(
+           TestAsync(
                arrange: f =>
                {
                    f.Command.PreviousOperations = new HashSet<Operation> { };
@@ -182,10 +182,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             var optionsBuilder =
               new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
-                  .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                  .ConfigureWarnings(warnings =>
-                      warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)
-                  );
+                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
             Db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
 

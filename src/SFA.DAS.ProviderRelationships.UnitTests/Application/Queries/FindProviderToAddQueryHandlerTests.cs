@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Data;
@@ -20,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingFindProviderToAddQueryAndProviderExists_ThenShouldReturnUkprnInFindProviderToAddQueryResult()
         {
-            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
+            return  TestAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().Be(f.Provider.Ukprn);
@@ -30,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingFindProviderToAddQueryAndProviderDoesNotExist_ThenShouldReturnNullUkprnInFindProviderToAddQueryResult()
         {
-            return RunAsync(f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().BeNull();
@@ -40,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingFindProviderToAddQueryAndProvidersExistsAndProviderAlreadyAdded_ThenShouldReturnUkprnAndAccountProviderIdInFindProviderToAddQueryResult()
         {
-            return RunAsync(f => f.SetProvider().SetAccountProvider(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetProvider().SetAccountProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().Be(f.Provider.Ukprn);
@@ -51,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingFindProviderToAddQueryAndProviderExistsAndProviderNotAlreadyAdded_ThenShouldReturnUkprnAndNullAccountProviderIdInFindProviderToAddQueryResult()
         {
-            return RunAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetProvider(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().Be(f.Provider.Ukprn);
@@ -62,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingFindProviderToAddQueryAndProviderDoesNotExistAndProviderNotAlreadyAdded_ThenShouldReturnNullUkprnAndNullAccountProviderIdInFindProviderToAddQueryResult()
         {
-            return RunAsync(f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Ukprn.Should().BeNull();
@@ -85,7 +83,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db = new ProviderRelationshipsDbContext(
                 new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                    .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options);
             Handler = new FindProviderToAddQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
             Query = new FindProviderToAddQuery(1, 12345678);

@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingARunHealthCheckCommand_ThenShouldAddAHealthCheck()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.HealthChecks.SingleOrDefault().Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.HealthChecks.SingleOrDefault().Should().NotBeNull()
                 .And.Match<HealthCheck>(h => h.User == f.User));
         }
     }
@@ -44,8 +44,14 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public RunHealthCheckCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            User = EntityActivator.CreateInstance<User>()
+                .Set(u => u.Ref, Guid.NewGuid())
+                .Set(u => u.Email, Guid.NewGuid().ToString())
+                .Set(u => u.FirstName, Guid.NewGuid().ToString())
+                .Set(u => u.LastName, Guid.NewGuid().ToString());
             RunHealthCheckCommand = new RunHealthCheckCommand(User.Ref);
             UnitOfWorkContext = new UnitOfWorkContext();
             ProviderApiClient = new Mock<IRoatpService>();

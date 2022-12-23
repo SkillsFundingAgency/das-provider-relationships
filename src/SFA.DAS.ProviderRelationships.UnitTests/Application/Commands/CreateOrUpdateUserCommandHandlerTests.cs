@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesNotExist_ThenShouldCreateUser()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveChanged_ThenShouldUpdateUser()
         {
-            return RunAsync(f => f.SetUser().SetCommandWithChangedProperties(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return TestAsync(f => f.SetUser().SetCommandWithChangedProperties(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveNotChanged_ThenShouldNotUpdateUser()
         {
-            return RunAsync(f => f.SetUser(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
+            return TestAsync(f => f.SetUser(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
                 .And.Match<User>(u => 
                     u.Ref == f.CreateOrUpdateUserCommand.Ref &&
                     u.Email == f.CreateOrUpdateUserCommand.Email &&
@@ -69,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public CreateOrUpdateUserCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
             Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
             Now = DateTime.UtcNow;

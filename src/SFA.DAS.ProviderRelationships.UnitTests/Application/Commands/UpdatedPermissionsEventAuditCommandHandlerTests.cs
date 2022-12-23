@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingUpdatedPermissionsEventAuditCommand_ThenShouldCreateAuditRecord()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.UpdatedPermissionsEventAudits.SingleOrDefault(a => a.UserRef == f.Command.UserRef).Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.UpdatedPermissionsEventAudits.SingleOrDefault(a => a.UserRef == f.Command.UserRef).Should().NotBeNull()
                 .And.Match<UpdatedPermissionsEventAudit>(a =>
                     a.AccountId == f.Command.AccountId &&
                     a.AccountLegalEntityId == f.Command.AccountLegalEntityId &&
@@ -45,7 +45,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public UpdatedPermissionsEventAuditCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new UpdatedPermissionsEventAuditCommand(112, 114, 116, 118, 256894321, Guid.NewGuid(),
                 new HashSet<Operation> {
                     Operation.CreateCohort

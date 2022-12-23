@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAccountProviderQuery_ThenShouldReturnGetAccountProviderQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 
@@ -59,13 +59,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenAccountProviderIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
 
         [Test]
         public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationUnauthorized()
         {
-            return RunAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.IsUpdatePermissionsOperationAuthorized.Should().BeFalse();
@@ -75,7 +75,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationAuthorized()
         {
-            return RunAsync(f => f.SetAccountProviders().SetOwner(), f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.SetAccountProviders().SetOwner(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.IsUpdatePermissionsOperationAuthorized.Should().BeTrue();
@@ -100,8 +100,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderMappings)));
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{ new AccountProviderMappings()}));
             AuthorizationService = new Mock<IAuthorizationService>();
             Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider, AuthorizationService.Object);
         }

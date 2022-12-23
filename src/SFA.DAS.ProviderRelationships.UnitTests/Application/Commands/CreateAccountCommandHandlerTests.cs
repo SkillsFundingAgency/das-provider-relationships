@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingCreateAccountCommand_ThenShouldCreateAccount()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault(a => a.Id == f.Command.AccountId).Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.Accounts.SingleOrDefault(a => a.Id == f.Command.AccountId).Should().NotBeNull()
                 .And.Match<Account>(a => 
                     a.Id == f.Command.AccountId &&
                     a.HashedId == f.Command.HashedId &&
@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         
         public CreateAccountCommandHandlerTestFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new CreateAccountCommand(1, "AAA111", "AAA222", "Foo", DateTime.UtcNow);
             Handler = new CreateAccountCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }

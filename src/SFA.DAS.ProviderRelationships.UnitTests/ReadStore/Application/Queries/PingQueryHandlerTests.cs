@@ -21,10 +21,10 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Queries
         [Test]
         public Task Handle_WhenDatabasePingFails_ThenShouldThrowException()
         {
-            return RunAsync(
+            return TestExceptionAsync(
                 f => f.SetPingFailure(),
                 f => f.Handle(),
-                (f, r) => r.Should().Throw<Exception>().WithMessage("Read store database ping failed"));
+                (f, r) => r.Should().ThrowAsync<Exception>().WithMessage("Read store database ping failed"));
         }
     }
 

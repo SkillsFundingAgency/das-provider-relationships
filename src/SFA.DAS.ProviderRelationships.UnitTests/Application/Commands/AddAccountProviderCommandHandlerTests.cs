@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Data;
@@ -24,27 +23,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingAddAccountProviderCommand_ThenShouldAddAccountProvider()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.AccountProviders.SingleOrDefault().Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.AccountProviders.SingleOrDefault().Should().NotBeNull()
                 .And.Match<AccountProvider>(ap => ap.Account == f.Account && ap.Provider == f.Provider && ap.Created >= f.Now));
         }
         
         [Test]
         public Task Handle_WhenHandlingAddAccountProviderCommand_ThenShouldPublishAddedAccountProviderEvent()
         {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
                 .And.Match<AddedAccountProviderEvent>(e => e.AccountId == f.Account.Id && e.ProviderUkprn == f.Provider.Ukprn && e.UserRef == f.User.Ref && e.Added >= f.Now));
         }
         
         [Test]
         public Task Handle_WhenHandlingAddAccountProviderCommand_ThenShouldReturnAccountProviderId()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().Be(f.Db.AccountProviders.Select(ap => ap.Id).Single()));
-        }
-        
-        [Test]
-        public Task Handle_WhenHandlingAddAccountProviderCommandAndProviderHasBeenAddedAlready_ThenShouldThrowException()
-        {
-            return RunAsync(f => f.SetAccountProvider(), f => f.Handle(), (f, r) => r.Should().Throw<Exception>());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().Be(f.Db.AccountProviders.Select(ap => ap.Id).Single()));
         }
     }
 
@@ -61,10 +54,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public AddAccountProviderCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
-            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Guid.NewGuid());
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, 1)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            User = EntityActivator.CreateInstance<User>()
+                .Set(u => u.Ref, Guid.NewGuid())
+                .Set(u => u.Email, Guid.NewGuid().ToString())
+                .Set(u => u.FirstName, Guid.NewGuid().ToString())
+                .Set(u => u.LastName, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, 12345678)
+                .Set(p => p.Name, Guid.NewGuid().ToString());
 
             Db.Accounts.Add(Account);
             Db.Users.Add(User);

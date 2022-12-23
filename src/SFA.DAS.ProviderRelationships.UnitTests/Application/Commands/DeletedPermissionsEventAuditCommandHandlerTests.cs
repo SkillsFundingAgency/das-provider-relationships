@@ -21,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingDeletedPermissionsEventAuditCommand_ThenShouldCreateAuditRecord()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.DeletedPermissionsEventAudits.SingleOrDefault(a => a.AccountProviderLegalEntityId == f.Command.AccountProviderLegalEntityId).Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.DeletedPermissionsEventAudits.SingleOrDefault(a => a.AccountProviderLegalEntityId == f.Command.AccountProviderLegalEntityId).Should().NotBeNull()
                 .And.Match<DeletedPermissionsEventAudit>(a =>
                     a.AccountProviderLegalEntityId == f.Command.AccountProviderLegalEntityId &&
                     a.Ukprn == f.Command.Ukprn &&
@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
         public DeletedPermissionsEventAuditCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new DeletedPermissionsEventAuditCommand(118, 256894321, DateTime.Parse("2018-11-11"));
             Handler = new DeletedPermissionsEventAuditCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }
