@@ -132,7 +132,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
 
             Client
                 .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>(), It.IsAny<CancellationToken>()))
-                .Callback((long ukprn, ProviderEmailRequest provEmail) =>
+                .Callback((long ukprn, ProviderEmailRequest provEmail, CancellationToken token) =>
                 {
                     ResultEmailRequest = provEmail;
                 })

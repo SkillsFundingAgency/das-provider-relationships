@@ -47,11 +47,20 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             AccountLegalEntityId = 116;
             OrganisationName = "TestOrg";
 
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+
             Command = new SendDeletedPermissionsNotificationCommand(Ukprn, AccountLegalEntityId);
             Client = new Mock<IPasAccountApiClient>();
 
-            Db.AccountLegalEntities.Add(EntityActivator.CreateInstance<AccountLegalEntity>().Set(a => a.Id, AccountLegalEntityId).Set(a => a.Name, OrganisationName));
+            Db.AccountLegalEntities.Add(
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale =>ale.Id, AccountLegalEntityId)
+                    .Set(ale => ale.Name, OrganisationName)
+                    .Set(ale => ale.PublicHashedId, "Not_Important_For_This_Handler")
+                    .Set(ale => ale.AccountId, 24L));
+
             Db.SaveChanges();
 
             Handler = new SendDeletedPermissionsNotificationCommandHandler(Client.Object, new Lazy<ProviderRelationshipsDbContext>(() => Db));

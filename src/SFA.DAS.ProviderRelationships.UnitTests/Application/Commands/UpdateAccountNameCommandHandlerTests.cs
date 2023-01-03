@@ -54,9 +54,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             OriginalAccountName = "Foo";
             Now = DateTime.UtcNow;
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1).Set(a => a.Name, OriginalAccountName);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, 1)
+                .Set(a => a.Name, OriginalAccountName)
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
             Command = new UpdateAccountNameCommand(Account.Id, "Bar", Now.AddHours(-1));
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.Accounts.Add(Account);
             Db.SaveChanges();

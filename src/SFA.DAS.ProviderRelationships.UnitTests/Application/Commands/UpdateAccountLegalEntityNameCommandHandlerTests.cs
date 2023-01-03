@@ -54,9 +54,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             OriginalAccountLegalEntityName = "Foo";
             Now = DateTime.UtcNow;
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 1).Set(ale => ale.Name, OriginalAccountLegalEntityName);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, 1)
+                .Set(ale => ale.Name, OriginalAccountLegalEntityName)
+                .Set(ale => ale.PublicHashedId, "something")
+                .Set(ale => ale.AccountId, 3L);
             Command = new UpdateAccountLegalEntityNameCommand(AccountLegalEntity.Id, "Bar", Now.AddHours(-1));
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.AccountLegalEntities.Add(AccountLegalEntity);
             Db.SaveChanges();
