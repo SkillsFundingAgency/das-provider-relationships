@@ -79,7 +79,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture()
         {
-            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.Recruitment, Operation.RecruitmentRequiresReview});
+            Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(
+                88888888, 
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(), 
+                new List<Operation>{Operation.Recruitment, Operation.RecruitmentRequiresReview});
 
             Db = new ProviderRelationshipsDbContext(
                 new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
@@ -100,7 +104,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
             Account = EntityActivator.CreateInstance<Account>()
                 .Set(a => a.Id, 4660117L)
-                .Set(a => a.HashedId, Query.AccountHashedId);
+                .Set(a => a.HashedId, Query.AccountHashedId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
             
             AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
                 .Set(ap => ap.Id, 49L)

@@ -28,35 +28,38 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetAccountProviderLegalEntityQuery_ThenShouldReturnGetAccountProviderLegalEntityQueryResult()
         {
-            return TestAsync(f => f.SetAccountProviderLegalEntities(12345678), f => f.Handle(), (f, r) =>
-            {
-                r.Should().NotBeNull();
+            return TestAsync(
+                f => f.SetAccountProviderLegalEntities(12345678), 
+                f => f.Handle(), 
+                (f, r) =>
+                {
+                    r.Should().NotBeNull();
 
-                r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderDto>()
-                    .And.BeEquivalentTo(new AccountProviderDto {
-                        Id = f.AccountProvider.Id,
-                        ProviderUkprn = f.Provider.Ukprn,
-                        ProviderName = f.Provider.Name
-                    });
+                    r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderDto>()
+                        .And.BeEquivalentTo(new AccountProviderDto {
+                            Id = f.AccountProvider.Id,
+                            ProviderUkprn = f.Provider.Ukprn,
+                            ProviderName = f.Provider.Name
+                        });
 
-                r.AccountLegalEntity.Should().NotBeNull().And.BeOfType<AccountLegalEntityDto>()
-                    .And.BeEquivalentTo(new AccountLegalEntityDto {
-                        Id = f.AccountLegalEntity.Id,
-                        Name = f.AccountLegalEntity.Name
-                    });
+                    r.AccountLegalEntity.Should().NotBeNull().And.BeOfType<AccountLegalEntityDto>()
+                        .And.BeEquivalentTo(new AccountLegalEntityDto {
+                            Id = f.AccountLegalEntity.Id,
+                            Name = f.AccountLegalEntity.Name
+                        });
 
-                r.AccountProviderLegalEntity.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntityDto>()
-                    .And.BeEquivalentTo(new AccountProviderLegalEntityDto {
-                        Id = f.AccountProviderLegalEntity.Id,
-                        AccountLegalEntityId = f.AccountLegalEntity.Id,
-                        Operations = new List<Operation>
-                        {
-                            f.Permission.Operation
-                        }
-                    });
+                    r.AccountProviderLegalEntity.Should().NotBeNull().And.BeOfType<AccountProviderLegalEntityDto>()
+                        .And.BeEquivalentTo(new AccountProviderLegalEntityDto {
+                            Id = f.AccountProviderLegalEntity.Id,
+                            AccountLegalEntityId = f.AccountLegalEntity.Id,
+                            Operations = new List<Operation>
+                            {
+                                f.Permission.Operation
+                            }
+                        });
 
-                r.AccountLegalEntitiesCount.Should().Be(f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId));
-            });
+                    r.AccountLegalEntitiesCount.Should().Be(f.AccountLegalEntities.Count(ale => ale.AccountId == f.Query.AccountId));
+                });
         }
 
         [Test]
@@ -84,13 +87,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenAccountProviderIsNotFound_ThenShouldReturnNull()
         {
-            return TestAsync(f => f.SetAccountLegalEntities(), f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(
+                f => f.SetAccountLegalEntities(), 
+                f => f.Handle(), 
+                (f, r) => r.Should().BeNull());
         }
 
         [Test]
         public Task Handle_WhenAccountLegalEntityIsNotFound_ThenShouldReturnNull()
         {
-            return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(
+                f => f.SetAccountProviders(), 
+                f => f.Handle(), 
+                (f, r) => r.Should().BeNull());
         }
     }
 
@@ -113,11 +122,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetAccountProviderLegalEntityQueryHandlerFixture()
         {
             Query = new GetAccountProviderLegalEntityQuery(1, 2, 3);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{ new AccountProviderLegalEntityMappings() }));
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(
+                c => c.AddProfiles(new List<Profile> {
+                    new AccountProviderLegalEntityMappings(), 
+                    new AccountProviderMappings(), 
+                    new AccountLegalEntityMappings()
+                }));
             MockRecruitService = new Mock<IDasRecruitService>();
             SetDasRecruitBlockedProvider();
-            Handler = new GetAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), MockRecruitService.Object, ConfigurationProvider);
+            Handler = new GetAccountProviderLegalEntityQueryHandler(
+                new Lazy<ProviderRelationshipsDbContext>(() => Db), 
+                MockRecruitService.Object, 
+                ConfigurationProvider);
         }
 
         public Task<GetAccountProviderLegalEntityQueryResult> Handle()
@@ -127,20 +146,47 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntityQueryHandlerFixture SetAccountProviderLegalEntities(long ukprn)
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, ukprn).Set(p => p.Name, "Foo");
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, Query.AccountLegalEntityId).Set(ale => ale.Name, "Bar").Set(ale => ale.AccountId, Account.Id);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, ukprn)
+                .Set(p => p.Name, "Foo");
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, Query.AccountProviderId)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, Query.AccountLegalEntityId)
+                .Set(ale => ale.Name, "Bar")
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
 
             AccountLegalEntities = new List<AccountLegalEntity>
             {
                 AccountLegalEntity,
-                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 4).Set(ale => ale.AccountId, Account.Id),
-                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 5).Set(ale => ale.AccountId, 6)
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale => ale.Id, 4)
+                    .Set(ale => ale.AccountId, Account.Id)
+                    .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString()),
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale => ale.Id, 5)
+                    .Set(ale => ale.AccountId, 6)
+                    .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString())
             };
 
-            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 7).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
-            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>().Set(p => p.Id, 8).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                .Set(aple => aple.Id, 7)
+                .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>()
+                .Set(p => p.Id, 8)
+                .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
+                .Set(p => p.Operation, Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
@@ -155,8 +201,16 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntityQueryHandlerFixture SetAccountLegalEntities()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, Query.AccountLegalEntityId).Set(ale => ale.Name, "Bar").Set(ale => ale.AccountId, Account.Id);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, Query.AccountLegalEntityId)
+                .Set(ale => ale.Name, "Bar")
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
             
             Db.Accounts.Add(Account);
             Db.AccountLegalEntities.Add(AccountLegalEntity);
@@ -167,9 +221,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntityQueryHandlerFixture SetAccountProviders()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, 12345678)
+                .Set(p => p.Name, "Foo");
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, Query.AccountProviderId)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
@@ -181,8 +244,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntityQueryHandlerFixture SetDasRecruitBlockedProvider()
         {
-            MockRecruitService.Setup(x => x.GetProviderBlockedStatusAsync(BlockedRecruitProviderUkrpn, default)).ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.Blocked });
-            MockRecruitService.Setup(x => x.GetProviderBlockedStatusAsync(It.IsNotIn(new[] { BlockedRecruitProviderUkrpn }), default)).ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.NotBlocked });
+            MockRecruitService
+                .Setup(x => x.GetProviderBlockedStatusAsync(BlockedRecruitProviderUkrpn, default))
+                .ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.Blocked });
+            MockRecruitService
+                .Setup(x => x.GetProviderBlockedStatusAsync(It.IsNotIn(new[] { BlockedRecruitProviderUkrpn }), default))
+                .ReturnsAsync(new BlockedOrganisationStatus { Status = BlockedOrganisationStatusConstants.NotBlocked });
             return this;
         }
 
