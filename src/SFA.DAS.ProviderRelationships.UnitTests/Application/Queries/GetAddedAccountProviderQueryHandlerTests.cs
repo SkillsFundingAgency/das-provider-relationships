@@ -65,9 +65,18 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAddedAccountProviderQueryHandlerTestsFixture SetAccountProvider()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, 12345678)
+                .Set(p => p.Name, Guid.NewGuid().ToString());
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, Query.AccountProviderId)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
 
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

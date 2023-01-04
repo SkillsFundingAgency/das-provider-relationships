@@ -100,10 +100,19 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{ new AccountProviderMappings()}));
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(
+                c => c.AddProfiles(new List<Profile> {
+                    new AccountProviderMappings(), 
+                    new AccountLegalEntityMappings()
+                }));
             AuthorizationService = new Mock<IAuthorizationService>();
-            Handler = new GetAccountProviderQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider, AuthorizationService.Object);
+            Handler = new GetAccountProviderQueryHandler(
+                new Lazy<ProviderRelationshipsDbContext>(() => Db), 
+                ConfigurationProvider, 
+                AuthorizationService.Object);
         }
 
         public Task<GetAccountProviderQueryResult> Handle()
@@ -113,12 +122,31 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderQueryHandlerTestsFixture SetAccountProviders()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Query.AccountProviderId).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 3).Set(ale => ale.Name, "Bar").Set(ale => ale.AccountId, Account.Id);
-            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 4).Set(aple => aple.AccountProviderId, AccountProvider.Id).Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
-            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>().Set(p => p.Id, 5).Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id).Set(p => p.Operation, Operation.CreateCohort);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, 12345678)
+                .Set(p => p.Name, "Foo");
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, Query.AccountProviderId)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, 3)
+                .Set(ale => ale.Name, "Bar")
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
+            AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                .Set(aple => aple.Id, 4)
+                .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>()
+                .Set(p => p.Id, 5)
+                .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
+                .Set(p => p.Operation, Operation.CreateCohort);
             
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
@@ -133,7 +161,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderQueryHandlerTestsFixture SetOwner()
         {
-            AuthorizationService.Setup(a => a.IsAuthorizedAsync(EmployerUserRole.Owner)).ReturnsAsync(true);
+            AuthorizationService
+                .Setup(a => a.IsAuthorizedAsync(EmployerUserRole.Owner))
+                .ReturnsAsync(true);
             
             return this;
         }

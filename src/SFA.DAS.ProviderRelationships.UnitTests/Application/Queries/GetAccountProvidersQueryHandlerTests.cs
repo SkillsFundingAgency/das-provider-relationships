@@ -44,11 +44,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                             new AccountLegalEntityDto {
                                 Id = 3,
                                 HadPermissions = true,
+                                Name = f.AccountLegalEntities.Single(entity => entity.Id == 3).Name,
                                 Operations = new List<Operation> {Operation.CreateCohort}
                             },
                             new AccountLegalEntityDto {
                                 Id = 4,
                                 HadPermissions = false,
+                                Name = f.AccountLegalEntities.Single(entity => entity.Id == 4).Name,
                                 Operations = new List<Operation>()
                             }
                         }
@@ -109,7 +111,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetAccountProvidersQuery(1);
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{new AccountProviderMappings()}));
+            ConfigurationProvider = new MapperConfiguration(
+                c => c.AddProfiles(new List<Profile> {
+                    new AccountProviderMappings(),
+                    new AccountLegalEntityMappings()
+                }));
             AuthorizationService = new Mock<IAuthorizationService>();
             Handler = new GetAccountProvidersQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider, AuthorizationService.Object);
         }
@@ -121,23 +127,47 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProvidersQueryHandlerTestsFixture SetAccountProviders()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
-            Provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 2).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, Provider.Ukprn);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            Provider = EntityActivator.CreateInstance<Provider>()
+                .Set(p => p.Ukprn, 12345678)
+                .Set(p => p.Name, "Foo");
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, 2)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, Provider.Ukprn);
           
             AccountLegalEntities = new List<AccountLegalEntity>
             {
-                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 3).Set(ale => ale.AccountId, Account.Id),
-                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 4).Set(ale => ale.AccountId, Account.Id),
-                EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 5).Set(ale => ale.AccountId, 2)
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale => ale.Id, 3)
+                    .Set(ale => ale.AccountId, Account.Id)
+                    .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString()),
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale => ale.Id, 4)
+                    .Set(ale => ale.AccountId, Account.Id)
+                    .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString()),
+                EntityActivator.CreateInstance<AccountLegalEntity>()
+                    .Set(ale => ale.Id, 5)
+                    .Set(ale => ale.AccountId, Account.Id+1)
+                    .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString())
             };
 
             AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
-                .Set(aple => aple.Id, 8).Set(aple => aple.AccountLegalEntityId, 3)
+                .Set(aple => aple.Id, 8)
+                .Set(aple => aple.AccountLegalEntityId, 3)
                 .Set(aple => aple.AccountProviderId, 2);
 
-            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>().Set(p => p.Id, 4)
-                .Set(p => p.Operation, Operation.CreateCohort).Set(p => p.AccountProviderLegalEntityId, 8);
+            Permission = EntityActivator.CreateInstance<ProviderRelationships.Models.Permission>()
+                .Set(p => p.Id, 4)
+                .Set(p => p.Operation, Operation.CreateCohort)
+                .Set(p => p.AccountProviderLegalEntityId, 8);
 
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);

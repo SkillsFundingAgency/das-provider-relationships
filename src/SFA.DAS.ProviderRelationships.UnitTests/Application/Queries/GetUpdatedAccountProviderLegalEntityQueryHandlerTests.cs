@@ -67,7 +67,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetUpdatedAccountProviderLegalEntityQueryHandlerTestsFixture SetAccountProviderLegalEntity()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId);
             
             Provider = EntityActivator.CreateInstance<Provider>()
                 .Set(p => p.Ukprn, 12345678)
@@ -81,7 +82,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
                 .Set(ale => ale.Id, Query.AccountLegalEntityId)
                 .Set(ale => ale.Name, "Account legal entity A")
-                .Set(ale => ale.AccountId, Account.Id);
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
             
             AccountLegalEntities = new List<AccountLegalEntity>
             {
@@ -89,11 +91,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 EntityActivator.CreateInstance<AccountLegalEntity>()
                     .Set(ale => ale.Id, 5)
                     .Set(ale => ale.Name, "Account legal entity B")
-                    .Set(ale => ale.AccountId, Account.Id),
+                    .Set(ale => ale.AccountId, Account.Id)
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString()),
                 EntityActivator.CreateInstance<AccountLegalEntity>()
                     .Set(ale => ale.Id, 6)
                     .Set(ale => ale.Name, "Account legal entity C")
                     .Set(ale => ale.AccountId, 2)
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString())
             };
             
             AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()
