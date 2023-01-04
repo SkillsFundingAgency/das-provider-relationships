@@ -81,7 +81,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             Query = new GetAccountProviderLegalEntitiesWithPermissionQuery(88888888, null, null, new List<Operation>{Operation.Recruitment, Operation.RecruitmentRequiresReview});
 
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(c => c.AddProfile<AccountProviderLegalEntityMappings>());
             Handler = new GetAccountProviderLegalEntitiesWithPermissionQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
@@ -93,6 +95,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
         {
+            // need to new up one of these, so it's static Events is there.. so lame
+            new UnitOfWorkContext();
+
             Account = EntityActivator.CreateInstance<Account>()
                 .Set(a => a.Id, 4660117L)
                 .Set(a => a.HashedId, Query.AccountHashedId);
@@ -131,8 +136,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountLegalEntityDeleted()
         {
-            // need to new up one of these, so it's static Events is there
-            new UnitOfWorkContext();
             Db.Accounts.First().RemoveAccountLegalEntity(Db.AccountLegalEntities.First(), new DateTime(2018, 11, 26));
             Db.SaveChanges();
             return this;
