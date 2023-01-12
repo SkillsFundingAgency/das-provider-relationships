@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.Authorization.Mvc.Attributes;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
@@ -18,11 +19,11 @@ using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
-using SFA.DAS.Validation.Mvc;
+using SFA.DAS.Validation.Mvc.Attributes;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [RoutePrefix("accounts/{accountHashedId}/providers")]
+    [Route("accounts/{accountHashedId}/providers")]
     public class AccountProvidersController : Controller
     {
         private readonly IMediator _mediator;
@@ -37,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [DasAuthorize(EmployerUserRole.Any)]
-        [Route]
+        [Route("")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
@@ -47,13 +48,11 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [ChildActionOnly]
         public ActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
         }
 
-        [ChildActionOnly]
         public ActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
@@ -209,7 +208,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("invitation/{correlationId}")]
         public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
         {
-            Session["Invitation"] = true;
+            HttpContext.Session.SetString("Invitation", "true");
 
             var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
 

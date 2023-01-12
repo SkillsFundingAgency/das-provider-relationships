@@ -1,0 +1,59 @@
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
+@using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
+
+@foreach (var accountProvider in Model.AccountProviders)
+{
+    <h2 class="govuk-heading-l govuk-!-margin-top-7">@accountProvider.ProviderName</h2>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Organisation</th>
+                <th class="govuk-table__header" scope="col">Permissions</th>
+                @if (Model.IsUpdatePermissionsOperationAuthorized)
+                {
+                    <th class="govuk-table__header" scope="col">
+                        <span class="govuk-visually-hidden">Action</span>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        @foreach (var accountProviderLegalEntity in accountProvider.AccountLegalEntities)
+        {
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell das-table-cell-width-30">@accountProviderLegalEntity.Name</td>
+                <td class="govuk-table__cell das-table-cell-width-50">
+                    @if (!accountProviderLegalEntity.HadPermissions)
+                    {
+                        @:No permissions set
+                    }
+                    else
+                    {
+                        <ul class="govuk-list govuk-!-margin-bottom-0">
+                        @foreach (var permission in accountProviderLegalEntity.Operations.ToPermissions())
+                        {
+                            <li>@permission.ToString()</li>
+                        }
+                        </ul>
+                    }
+                </td>
+                @if (Model.IsUpdatePermissionsOperationAuthorized)
+                {
+                    <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
+                        <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">
+                            @if (!accountProviderLegalEntity.HadPermissions)
+                            {
+                                <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span></span>
+                            }
+                            else
+                            {
+                                <span>Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span></span>
+                            }
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+}

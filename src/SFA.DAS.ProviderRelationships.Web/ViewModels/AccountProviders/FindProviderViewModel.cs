@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.ModelBinding;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Validation;
 

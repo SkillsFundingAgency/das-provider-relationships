@@ -1,0 +1,120 @@
+﻿@using SFA.DAS.ProviderRelationships.Types.Models
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
+
+@{
+    ViewBag.Title = "Set permissions for your training provider";
+    ViewBag.ZenDeskLabel = "permissions-set-permissions";
+    ViewBag.GaData.Vpv = "/permissions/accountproviderlegalentities/permissions";
+    ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
+    ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
+}
+
+@section breadcrumb
+{
+    <a class="das-js-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+        @using (Html.BeginForm(new { action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}", controller = "accounts" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-heading-l">
+                        Set permissions for @Model.AccountProvider.ProviderName
+                    </h1>
+                </legend>
+
+                <p class="govuk-!-margin-bottom-6">
+                    These permissions are on behalf of @Model.AccountLegalEntity.Name
+                </p>
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        Add apprentice records
+                    </h2>
+                </legend>
+
+                <div class="govuk-hint govuk-!-margin-bottom-3">
+                    This allows your training provider to add apprentice records. If you do not pay the levy, this permission also allows your training provider to reserve funding.
+                </div>
+
+                <div class="govuk-form-group @(Html.IsValid(m => m.Permissions[0].State) ? "" : "govuk-form-group--error")">
+                    @if (!Html.IsValid(m => m.Permissions[0].State))
+                    {
+                        <span id="confirmation-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Permissions[0].State)
+                        </span>
+                    }
+                    <div class="govuk-radios" data-module="radios">
+                        <div class="govuk-radios__item" id="Permissions_0__State">
+                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.Yes, new { id = "operation-0-yes", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-0-yes">
+                                Allow
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Permissions[0].State, State.No, new { id = "operation-0-no", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-0-no">
+                                Do not allow
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        Recruit apprentices and trainees
+                    </h2>
+                </legend>
+
+                <div class="govuk-hint govuk-!-margin-bottom-3">
+                    This allows your training provider to create and manage adverts. It also allows them to receive and manage applications.
+                </div>
+
+                <div class="govuk-form-group @(Html.IsValid(m => m.Permissions[1].State) ? "" : "govuk-form-group--error")">
+                    @if (!Html.IsValid(m => m.Permissions[1].State))
+                    {
+                        <span id="confirmation-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Permissions[1].State)
+                        </span>
+                    }
+                    <div class="govuk-radios" data-module="radios">
+                        <div class="govuk-radios__item" id="Permissions_1__State">
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Yes, new { id = "operation-1-yes", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-yes">
+                                Allow
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.Conditional, new { id = "operation-1-conditional", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-conditional">
+                                Allow, but I want to review adverts before they're advertised
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Permissions[1].State, State.No, new { id = "operation-1-no", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="operation-1-no">
+                                Do not allow
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            @Html.HiddenFor(m => m.AccountLegalEntityId)
+            @Html.HiddenFor(m => m.AccountProviderId)
+            @Html.HiddenFor(m => m.AccountLegalEntity.Name)
+            @Html.HiddenFor(m => m.AccountProvider.ProviderName)
+            @Html.HiddenFor(m => m.Permissions[0].Value)
+            @Html.HiddenFor(m => m.Permissions[1].Value)
+            @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
+
+            <button class="govuk-button" type="submit">Continue</button>
+        }
+    </div>
+</div>

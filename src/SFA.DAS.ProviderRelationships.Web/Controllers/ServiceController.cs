@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers

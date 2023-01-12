@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.Context;
+using SFA.DAS.Authorization.Handlers;
+using SFA.DAS.Authorization.Results;
 using SFA.DAS.AutoConfiguration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization
 {
     public class LocalAuthorizationHandler : IAuthorizationHandler
     {
-        public string Namespace => _authorizationHandler.Namespace;
-        
         private readonly IAuthorizationHandler _authorizationHandler;
         private readonly IEnvironmentService _environmentService;
+        
+        public string Prefix => _authorizationHandler.Prefix;
 
         public LocalAuthorizationHandler(IAuthorizationHandler authorizationHandler, IEnvironmentService environmentService)
         {

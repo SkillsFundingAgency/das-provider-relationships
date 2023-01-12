@@ -1,24 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.Authorization.Mvc.Attributes;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
-using SFA.DAS.Validation.Mvc;
+using SFA.DAS.Validation.Mvc.Attributes;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [DasAuthorize(EmployerUserRole.Owner)]
-    [RoutePrefix("accounts/{accountHashedId}/providers/{accountProviderId}/legalentities/{accountLegalEntityId}")]
+    [Route("accounts/{accountHashedId}/providers/{accountProviderId}/legalentities/{accountLegalEntityId}")]
     public class AccountProviderLegalEntitiesController : Controller
     {
         private readonly IMediator _mediator;
@@ -34,7 +37,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
        
         [HttpGet]
         [HttpNotFoundForNullModel]
-        [Route]
+        [Route("")]
         public async Task<ActionResult> Permissions(AccountProviderLegalEntityRouteValues routeValues)
         {
             var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
@@ -46,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route]
+        [Route("")]
         public ViewResult Permissions(AccountProviderLegalEntityViewModel model)
         {
             for (var index = 0; index < model.Permissions.Count; index++)
@@ -88,7 +91,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
                 
                 await _mediator.Send(update);
 
-                if (Session["Invitation"] as bool? == true)
+                if (HttpContext.Session.GetString("Invitation").ToNullable<bool>() == true)
                 {
                     var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
                     return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");

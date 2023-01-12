@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Web;
+using SFA.DAS.ProviderRelationships.Web;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
 {
@@ -7,7 +8,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
     {
         public string GetCurrentUserClaimValue(string key)
         {
-            var claimsIdentity = (ClaimsIdentity)HttpContext.Current.User.Identity;
+            var claimsIdentity = (ClaimsIdentity)HttpContextHelper.Current.User.Identity;
             var claim = claimsIdentity.FindFirst(key);
             
             return claim.Value;
@@ -16,13 +17,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
         public bool IsUserAuthenticated()
         {
             //todo: is using HttpContext going to kill self-hosting?
-            return HttpContext.Current.GetOwinContext().Authentication.User.Identity.IsAuthenticated;
+            return HttpContextHelper.Current.GetOwinContext().Authentication.User.Identity.IsAuthenticated;
             // in .net core: HttpContext.Authentication
         }
 
         public void SignOutUser()
         {
-            var owinContext = HttpContext.Current.GetOwinContext();
+            var owinContext = HttpContextHelper.Current.GetOwinContext();
             var authenticationManager = owinContext.Authentication;
             
             authenticationManager.SignOut(/* Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie */"Cookies");
@@ -30,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
         
         public bool TryGetCurrentUserClaimValue(string key, out string value)
         {
-            var claimsIdentity = (ClaimsIdentity)HttpContext.Current.User.Identity;
+            var claimsIdentity = (ClaimsIdentity)HttpContextHelper.Current.User.Identity;
             var claim = claimsIdentity.FindFirst(key);
             
             value = claim?.Value;

@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 
@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _employerUrls = employerUrls;
         }
 
-        [Route]
+        [Route("")]
         public ActionResult Index(string accountHashedId = null)
         {
             if (_environmentService.IsCurrent(DasEnv.LOCAL))

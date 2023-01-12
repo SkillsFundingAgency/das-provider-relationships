@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.ModelBinding;
 using SFA.DAS.ProviderRelationships.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders

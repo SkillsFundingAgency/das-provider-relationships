@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.ModelBinding;
 
 namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
 {

@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using System.Web.Mvc;
-using SFA.DAS.MA.Shared.UI.Configuration;
-using SFA.DAS.MA.Shared.UI.Models;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web.App_Start;
 using SFA.DAS.ProviderRelationships.Web.Urls;
-using System.Web;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Extensions
@@ -18,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return (IEmployerUrls)htmlHelper.ViewBag.EmployerUrls;
         }
 
-        public static MvcHtmlString SetZenDeskLabels(this HtmlHelper html, params string[] labels)
+        public static Microsoft.AspNetCore.Html.HtmlString SetZenDeskLabels(this HtmlHelper html, params string[] labels)
         {
             var keywords = string.Join(",", labels
                 .Where(label => !string.IsNullOrEmpty(label))
@@ -29,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 + (!string.IsNullOrEmpty(keywords) ? keywords : "''")
                 + "] });</script>";
 
-            return MvcHtmlString.Create(apiCallString);
+            return new HtmlString(apiCallString);
         }
 
         private static string EscapeApostrophes(string input)
@@ -115,12 +113,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return $"{requestUrl.Scheme}://{requestUrl.Authority}";
         }
 
-        public static MvcHtmlString CdnLink(this HtmlHelper html, string folderName, string fileName)
+        public static HtmlString CdnLink(this HtmlHelper html, string folderName, string fileName)
         {
             var cdnLocation = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
 
             var trimCharacters = new char[] { '/' };
-            return new MvcHtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
+            return new HtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
         }
     }
 }

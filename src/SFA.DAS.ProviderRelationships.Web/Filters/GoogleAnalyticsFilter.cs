@@ -4,9 +4,9 @@ using SFA.DAS.EmployerUsers.WebClientComponents;
 
 namespace SFA.DAS.ProviderRelationships.Web.Filters
 {
-    public class GoogleAnalyticsFilter : ActionFilterAttribute
+    public class GoogleAnalyticsFilter : Microsoft.AspNetCore.Mvc.Filters.ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext filterContext)
         {
             if (!(filterContext.Controller is Controller controller))
             {
@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Filters
             base.OnActionExecuting(filterContext);
         }
 
-        private GaData PopulateGaData(ActionExecutingContext context)
+        private GaData PopulateGaData(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {
             var userId = (context.HttpContext.User.Identity as ClaimsIdentity).FindFirst(c => c.Type == DasClaimTypes.Id);
             context.RouteData.Values.TryGetValue("AccountHashedId", out var accountHashedId);

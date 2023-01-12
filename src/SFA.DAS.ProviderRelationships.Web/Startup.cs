@@ -1,106 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Owin;
-using Microsoft.Owin.Host.SystemWeb;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using NLog;
-using Owin;
-using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.OidcMiddleware;
-using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web;
-using SFA.DAS.ProviderRelationships.Web.App_Start;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
+﻿// This Startup file is based on ASP.NET Core new project templates and is included
+// as a starting point for DI registration and HTTP request processing pipeline configuration.
+// This file will need updated according to the specific scenario of the application being upgraded.
+// For more information on ASP.NET Core startup files, see https://docs.microsoft.com/aspnet/core/fundamentals/startup
 
-[assembly: OwinStartup(typeof(Startup))]
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
     public class Startup
     {
-        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
-
-        public void Configuration(IAppBuilder app)
+        public Startup(IConfiguration configuration)
         {
-            var container = StructuremapMvc.StructureMapDependencyScope.Container;
-            var config = container.GetInstance<IOidcConfiguration>();
-            var authenticationUrls = container.GetInstance<IAuthenticationUrls>();
-            var postAuthenticationHandler = container.GetInstance<IPostAuthenticationHandler>();
-            
-            Logger.Info("Starting Provider Relationships web application");
-            Logger.Info("Initializing Authentication");
-
-            // Use SystemWebCookieManager to prevent conflict between
-            // Owin Cookies modifying collection via Set-Cookie
-            // And System.Web modifying Response.Cookies Collection
-            // https://web.archive.org/web/20170912171644/https:/katanaproject.codeplex.com/workitem/197
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions {
-                CookieName = "provider-relationships",
-                AuthenticationType = "Cookies",
-                ExpireTimeSpan = new TimeSpan(0, 10, 0),
-                SlidingExpiration = true,
-                CookieManager = new SystemWebCookieManager()
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions {
-                CookieName = "provider-relationships-temp",
-                AuthenticationType = "TempState",
-                AuthenticationMode = AuthenticationMode.Passive,
-                CookieManager = new SystemWebCookieManager()
-            });
-
-            app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
-                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
-                BaseUrl = config.BaseAddress,
-                ClientId = config.ClientId,
-                ClientSecret = config.ClientSecret,
-                Scopes = config.Scopes,
-                AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
-                TokenEndpoint = authenticationUrls.TokenEndpoint,
-                UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
-                TokenSigningCertificateLoader = GetSigningCertificate(config.UseCertificate, false, config.TokenCertificateThumbprint),
-                TokenValidationMethod = config.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
-                AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
-            });
-
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(config);
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
+            Configuration = configuration;
         }
 
-        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironement, string certThumbprint)
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
         {
-            if (!useCertificate)
+            services.AddControllersWithViews(ConfigureMvcOptions)
+                // Newtonsoft.Json is added for compatibility reasons
+                // The recommended approach is to use System.Text.Json for serialization
+                // Visit the following link for more guidance about moving away from Newtonsoft.Json to System.Text.Json
+                // https://docs.microsoft.com/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to
+                .AddNewtonsoftJson(options =>
+                {
+                    options.UseMemberCasing();
+                });
+
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
             {
-                return null;
+                app.UseDeveloperExceptionPage();
             }
 
-            return () =>
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
             {
-                var storeLocation = isDevEnvironement ? StoreLocation.LocalMachine : StoreLocation.CurrentUser;
-                var store = new X509Store(StoreName.My, storeLocation);
-                store.Open(OpenFlags.ReadOnly);
-                try
-                {
-                    var thumbprint = certThumbprint;
-                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
 
-                    if (certificates.Count < 1)
-                    {
-                        throw new Exception($"Could not find certificate with thumbprint {thumbprint} in CurrentUser store");
-                    }
-
-                    return certificates[0];
-                }
-                finally
-                {
-                    store.Close();
-                }
-            };
+        private void ConfigureMvcOptions(MvcOptions mvcOptions)
+        { 
         }
     }
 }

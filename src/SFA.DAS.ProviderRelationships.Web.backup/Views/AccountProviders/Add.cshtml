@@ -1,0 +1,56 @@
+﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AddAccountProviderViewModel
+
+@{
+    ViewBag.Title = "Confirm training provider";
+    ViewBag.ZenDeskLabel = "permissions-confirm-training-provider";
+    ViewBag.GaData.Vpv = "/permissions/accountproviders/add";
+    ViewBag.GaData.Ukprn = Model.Provider.Ukprn.ToString();
+}
+
+@section breadcrumb
+{
+    <a class="govuk-back-link" href="@Url.Action("Find")">Back</a>
+}
+
+<div class="govuk-grid-row">    
+    
+    <div class="govuk-grid-column-two-thirds">
+        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+
+        <h1 class="govuk-panel__title">Confirm training provider</h1>
+        <p class="govuk-body">The details you entered are for @Model.Provider.Name, (@Model.Provider.Ukprn).</p>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 class="govuk-fieldset__heading">
+                            Do you want to add this training provider?
+                        </h2>
+                    </legend>
+                    <span class="govuk-error-message">
+                        @Html.ValidationMessageFor(m => m.Choice)
+                    </span>
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Choice, "Confirm", new { @id = "choice-1", automation_id = "choice-1",  @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="choice-1">
+                                Yes, add @Model.Provider.Name
+                            </label>
+                            @Html.HiddenFor(m => m.Provider.Name)
+                        </div>
+                        <div class="govuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Choice, "ReEnterUkprn", new { @id = "choice-2", automation_id = "choice-2", @class = "govuk-radios__input" })
+                            <label class="govuk-label govuk-radios__label" for="choice-2">
+                                No, change training provider
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button class="govuk-button" type="submit">Continue</button>
+        }
+    </div>
+</div>
