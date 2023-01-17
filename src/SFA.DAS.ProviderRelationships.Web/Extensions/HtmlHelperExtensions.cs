@@ -2,54 +2,25 @@ using System;
 using System.Linq;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Urls;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SFA.DAS.MA.Shared.UI.Configuration;
+using SFA.DAS.MA.Shared.UI.Models;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        public static IEmployerUrls EmployerUrls(this HtmlHelper htmlHelper)
+        public static IEmployerUrls EmployerUrls(this IHtmlHelper htmlHelper)
         {
             return (IEmployerUrls)htmlHelper.ViewBag.EmployerUrls;
         }
 
-        public static Microsoft.AspNetCore.Html.HtmlString SetZenDeskLabels(this HtmlHelper html, params string[] labels)
+        public static ICookieBannerViewModel GetCookieBannerViewModel(this IHtmlHelper html)
         {
-            var keywords = string.Join(",", labels
-                .Where(label => !string.IsNullOrEmpty(label))
-                .Select(label => $"'{EscapeApostrophes(label)}'"));
-
-            // when there are no keywords default to empty string to prevent zen desk matching articles from the url
-            var apiCallString = "<script type=\"text/javascript\">zE('webWidget', 'helpCenter:setSuggestions', { labels: ["
-                + (!string.IsNullOrEmpty(keywords) ? keywords : "''")
-                + "] });</script>";
-
-            return new HtmlString(apiCallString);
-        }
-
-        private static string EscapeApostrophes(string input)
-        {
-            return input.Replace("'", @"\'");
-        }
-
-        public static string GetZenDeskSnippetKey(this HtmlHelper html)
-        {
-            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();
-            return configuration.ZenDeskSnippetKey;
-        }
-
-        public static string GetZenDeskSnippetSectionId(this HtmlHelper html)
-        {
-            var configuration = DependencyResolver.Current.GetService<ProviderRelationshipsConfiguration>();            
-            return configuration.ZenDeskSectionId;
-        }
-
-        public static ICookieBannerViewModel GetCookieBannerViewModel(this HtmlHelper html)
-        {
-            var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
+            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
 
             return new CookieBannerViewModel(new CookieBannerConfiguration
             {
@@ -63,10 +34,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             );
         }
 
-        public static IHeaderViewModel GetHeaderViewModel(this HtmlHelper html)
+        public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html)
         {   
-            var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
-            var oidcConfiguration = DependencyResolver.Current.GetService<IOidcConfiguration>();
+            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
+            var oidcConfiguration = new OidcConfiguration();//todo DependencyResolver.Current.GetService<IOidcConfiguration>();
             var requestRoot = GetRootUrl(html.ViewContext.HttpContext.Request);
 
             var headerModel = new HeaderViewModel(new HeaderConfiguration {
@@ -91,9 +62,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return headerModel;
         }
 
-        public static IFooterViewModel GetFooterViewModel(this HtmlHelper html)
+        public static IFooterViewModel GetFooterViewModel(this IHtmlHelper html)
         {
-            var configuration = DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
+            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
 
             return new FooterViewModel(new FooterConfiguration {
                 ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl,
@@ -106,16 +77,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             );
         }
 
-        private static string GetRootUrl(HttpRequestBase request)
+        private static string GetRootUrl(HttpRequest request)
         {
-            var requestUrl = new Uri(request.Url.AbsoluteUri);
+            var requestUrl = new Uri(request.Host.ToUriComponent());
 
             return $"{requestUrl.Scheme}://{requestUrl.Authority}";
         }
 
-        public static HtmlString CdnLink(this HtmlHelper html, string folderName, string fileName)
+        public static HtmlString CdnLink(this IHtmlHelper html, string folderName, string fileName)
         {
-            var cdnLocation = StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
+            var cdnLocation = "config.CdnBaseUrl"; //StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
 
             var trimCharacters = new char[] { '/' };
             return new HtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");

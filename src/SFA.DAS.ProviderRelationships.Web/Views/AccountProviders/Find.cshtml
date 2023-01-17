@@ -35,7 +35,7 @@
             <p class="das-js-show govuk-body">
                 A UKPRN is the unique, 8-digit number we use to identify a training provider. Ask your training provider if you do not know it.
             </p>
-            <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+            <div class="govuk-form-group@(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>

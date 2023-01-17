@@ -1,9 +1,8 @@
-﻿using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.ProviderRelationships.Configuration;
+﻿using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
 {
-    public class IdentityServerConfigurationFactory : ConfigurationFactory
+    /*public class IdentityServerConfigurationFactory : ConfigurationFactory
     {
         private readonly IOidcConfiguration _configuration;
 
@@ -18,5 +17,5 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 AccountActivationUrl = _configuration.BaseAddress.Replace("/identity", "") + _configuration.AccountActivationUrl
             };
         }
-    }
+    }*/
 }

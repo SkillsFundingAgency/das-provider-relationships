@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using MoreLinq;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
@@ -89,7 +88,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 {
                     switch (permissionViewModel.Value)
                     {
-                        case Permission.Recruitment: return "Allow, but I want to review adverts before they’re advertised";
+                        case Permission.Recruitment: return "Allow, but I want to review adverts before theyï¿½re advertised";
                         default: return string.Empty;
                     }
                 }

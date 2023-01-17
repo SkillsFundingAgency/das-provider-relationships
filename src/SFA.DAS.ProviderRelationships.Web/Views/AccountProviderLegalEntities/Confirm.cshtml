@@ -78,13 +78,13 @@
 
                 @if (Model.Permissions[1].State == State.No)
                 {
-                    <div class="govuk-form-group @(Html.IsValid(m => m.Confirmation) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                         <div class="govuk-radios" data-module="radios">
                             <h2 class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Are you sure you want to change the permissions for @Model.AccountProvider.ProviderName?
                             </h2>
 
-                            @if (!Html.IsValid(m => m.Confirmation))
+                            @if (!ViewData.ModelState.IsValid)
                             {
                                 <span id="confirmation-error" class="govuk-error-message">
                                     <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Confirmation)

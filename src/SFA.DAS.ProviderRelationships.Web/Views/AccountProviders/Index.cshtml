@@ -42,7 +42,8 @@
 
 @if (Model.AccountProviders.Count > 0)
 {
-    @Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
+    //todo: remove this call to child action :sadness:
+    //@Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
 }
 
 <div class="govuk-grid-row">

@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿/*using System.Security.Claims;
 using System.Web;
 using SFA.DAS.ProviderRelationships.Web;
 
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
             var owinContext = HttpContextHelper.Current.GetOwinContext();
             var authenticationManager = owinContext.Authentication;
             
-            authenticationManager.SignOut(/* Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie */"Cookies");
+            authenticationManager.SignOut(/* Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie #1#"Cookies");
         }
         
         public bool TryGetCurrentUserClaimValue(string key, out string value)
@@ -39,4 +39,4 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
             return claim != null;
         }
     }
-}
+}*/

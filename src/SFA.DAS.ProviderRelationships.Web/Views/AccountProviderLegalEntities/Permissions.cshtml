@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.ProviderRelationships.Types.Models
+@using System.Web.Http.ModelBinding
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
 
 @{
@@ -18,7 +19,7 @@
     <div class="govuk-grid-column-two-thirds">
         @Html.Partial("_ValidationSummary", ViewData.ModelState)
 
-        @using (Html.BeginForm(new { action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}", controller = "accounts" }))
+        @using (Html.BeginForm(new { action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}", controller = "AccountProviderLegalEntities" }))
         {
             @Html.AntiForgeryToken()
 
@@ -43,8 +44,8 @@
                     This allows your training provider to add apprentice records. If you do not pay the levy, this permission also allows your training provider to reserve funding.
                 </div>
 
-                <div class="govuk-form-group @(Html.IsValid(m => m.Permissions[0].State) ? "" : "govuk-form-group--error")">
-                    @if (!Html.IsValid(m => m.Permissions[0].State))
+                <div class="govuk-form-group @(!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("Permissions[0].State") ? "govuk-form-group--error" : "")">
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("Permissions[0].State"))
                     {
                         <span id="confirmation-error" class="govuk-error-message">
                             <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Permissions[0].State)
@@ -76,8 +77,8 @@
                     This allows your training provider to create and manage adverts. It also allows them to receive and manage applications.
                 </div>
 
-                <div class="govuk-form-group @(Html.IsValid(m => m.Permissions[1].State) ? "" : "govuk-form-group--error")">
-                    @if (!Html.IsValid(m => m.Permissions[1].State))
+                <div class="govuk-form-group @(!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("Permissions[1].State") ? "govuk-form-group--error" : "")">
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("Permissions[1].State"))
                     {
                         <span id="confirmation-error" class="govuk-error-message">
                             <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Permissions[1].State)

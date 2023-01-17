@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using System.Web.Mvc;
-using SFA.DAS.EmployerUsers.WebClientComponents;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Filters
 {
@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Filters
 
         private GaData PopulateGaData(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {
-            var userId = (context.HttpContext.User.Identity as ClaimsIdentity).FindFirst(c => c.Type == DasClaimTypes.Id);
+            var userId = (context.HttpContext.User.Identity as ClaimsIdentity).FindFirst(c => c.Type == EmployerClaimTypes.UserId);
             context.RouteData.Values.TryGetValue("AccountHashedId", out var accountHashedId);
 
             return new GaData {

@@ -1,7 +1,6 @@
 using System;
 using System.Security.Claims;
 using MediatR;
-using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 
@@ -18,10 +17,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
         public void Handle(ClaimsIdentity claimsIdentity)
         {
-            var @ref = Guid.Parse(claimsIdentity.FindFirst(DasClaimTypes.Id).Value);
-            var email = claimsIdentity.FindFirst(DasClaimTypes.Email).Value;
-            var firstName = claimsIdentity.FindFirst(DasClaimTypes.GivenName).Value;
-            var lastName = claimsIdentity.FindFirst(DasClaimTypes.FamilyName).Value;
+            var @ref = Guid.Parse(claimsIdentity.FindFirst(EmployerClaimTypes.UserId).Value);
+            var email = claimsIdentity.FindFirst(EmployerClaimTypes.EmailAddress).Value;
+            var firstName = claimsIdentity.FindFirst(EmployerClaimTypes.GivenName).Value;
+            var lastName = claimsIdentity.FindFirst(EmployerClaimTypes.FamilyName).Value;
             var command = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
             
             _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(command)).GetAwaiter().GetResult();

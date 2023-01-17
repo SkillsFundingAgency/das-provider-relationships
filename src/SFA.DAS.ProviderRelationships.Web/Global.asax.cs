@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Configuration;
 using System.Web;
 using System.Web.Helpers;
@@ -50,4 +50,4 @@ namespace SFA.DAS.ProviderRelationships.Web
             HttpContextHelper.Current.Session["RunSession"] = "1";
         }
     }
-}
+}*/
