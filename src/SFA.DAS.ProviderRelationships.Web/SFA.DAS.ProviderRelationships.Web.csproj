@@ -3,13 +3,15 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+      <LangVersion>latest</LangVersion>
+      <TargetFramework>net6.0</TargetFramework>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="MediatR" Version="11.0.1" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="mediatr.extensions.microsoft.dependencyinjection" Version="11.0.0" />
 
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
@@ -33,7 +35,6 @@
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="2.0.30-prerelease-11" />
     <PackageReference Include="SFA.DAS.MA.Shared.UI" Version="1.2.7" />
-    <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.183" />
     <PackageReference Include="SFA.DAS.GovUK.Auth" Version="0.2.203" />

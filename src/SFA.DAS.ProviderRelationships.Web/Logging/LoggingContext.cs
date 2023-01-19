@@ -1,11 +1,10 @@
-﻿using System.Web;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
-using SFA.DAS.NLog.Logger;
+
 
 namespace SFA.DAS.ProviderRelationships.Web.Logging
 {
-    public sealed class LoggingContext : ILoggingContext
+    /*public sealed class LoggingContext : ILoggingContext
     {
         public string HttpMethod { get; }
         public bool? IsAuthenticated { get; }
@@ -20,5 +19,5 @@ namespace SFA.DAS.ProviderRelationships.Web.Logging
             Url = context?.Request.GetDisplayUrl();
             ServerMachineName = context?.Connection.LocalIpAddress.ToString();
         }
-    }
+    }*/
 }
