@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
@@ -37,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Index_WhenGettingIndexAction_ThenShouldReturnIndexView()
         {
-            return RunAsync(f => f.Index(), (f, r) =>
+            return TestAsync(f => f.Index(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
 
@@ -53,7 +52,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Find_WhenGettingFindAction_ThenShouldReturnFindView()
         {
-            RunAsync(f => f.Find(), (f, r) =>
+            TestAsync(f => f.Find(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<FindProviderViewModel>();
@@ -63,7 +62,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Find_WhenPostingFindActionAndProviderExists_ThenShouldRedirectToAddAction()
         {
-            return RunAsync(f => f.PostFind(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.PostFind(true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Add") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["Ukprn"].Equals(f.FindProvidersQueryResult.Ukprn)));
@@ -72,13 +71,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldAddModelError()
         {
-            return RunAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.Ukprn)).Should().BeTrue());
+            return TestAsync(f => f.PostFind(), f => f.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.Ukprn)).Should().BeTrue());
         }
 
         [Test]
         public Task Find_WhenPostingFindActionAndProviderDoesNotExist_ThenShouldRedirectToFindAction()
         {
-            return RunAsync(f => f.PostFind(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.PostFind(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Find") &&
                 a.RouteValues["Controller"] == null));
         }
@@ -86,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Find_WhenPostingFindActionAndProviderAlreadyAdded_ThenShouldRedirectToAlreadyAddedAction()
         {
-            return RunAsync(f => f.PostFind(true, true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.PostFind(true, true), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("AlreadyAdded") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.FindProvidersQueryResult.AccountProviderId)));
@@ -95,7 +94,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenGettingAddAction_ThenShouldReturnAddView()
         {
-            return RunAsync(f => f.Add(), (f, r) =>
+            return TestAsync(f => f.Add(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddAccountProviderViewModel>(m => m.Provider == f.GetProviderToAddQueryResult.Provider);
@@ -105,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldSendAddAccountProviderCommand()
         {
-            return RunAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(
+            return TestAsync(f => f.PostAdd("Confirm"), f => f.Mediator.Verify(m => m.Send(
                 It.Is<AddAccountProviderCommand>(c => 
                     c.AccountId == f.AddAccountProviderViewModel.AccountId &&
                     c.UserRef == f.AddAccountProviderViewModel.UserRef &&
@@ -116,7 +115,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndConfirmOptionIsSelected_ThenShouldRedirectToAddedAction()
         {
-            return RunAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.PostAdd("Confirm"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Added") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId)));
@@ -125,13 +124,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
         {
-            return RunAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None), Times.Never));
+            return TestAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None), Times.Never));
         }
 
         [Test]
         public Task Add_WhenPostingAddActionAndReEnterUkprnOptionIsSelected_ThenShouldRedirectToFindAction()
         {
-            return RunAsync(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.PostAdd("ReEnterUkprn"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Find") &&
                 a.RouteValues["Controller"] == null));
         }
@@ -139,13 +138,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            return RunAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ValidationException>());
+            return TestAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ValidationException>());
         }
 
         [Test]
         public Task Add_WhenInvitationIsValid_ThenShouldSendAddAccountProviderCommand()
         {
-            return RunAsync(f => f.CreateSession(), f => f.Invitation(), f => f.Mediator.Verify(m => m.Send(
+            return TestAsync(f => f.CreateSession(), f => f.Invitation(), f => f.Mediator.Verify(m => m.Send(
                 It.Is<AddAccountProviderCommand>(c =>
                     c.AccountId == f.AddAccountProviderViewModel.AccountId &&
                     c.UserRef == f.AddAccountProviderViewModel.UserRef &&
@@ -156,7 +155,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenInvitationIsValid_ThenShouldRedirectToAddedAction()
         {
-            return RunAsync(f => f.CreateSession(),f => f.Invitation(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.CreateSession(),f => f.Invitation(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Get") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId)));
@@ -165,7 +164,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Added_WhenGettingAddedAction_ThenShouldReturnAddedView()
         {
-            return RunAsync(f => f.Added(), (f, r) =>
+            return TestAsync(f => f.Added(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedAccountProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
@@ -175,7 +174,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Added_WhenPostingAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
         {
-            Run(f => f.PostAdded("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            Test(f => f.PostAdded("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Get") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.AddedAccountProviderViewModel.AccountProviderId)));
@@ -184,7 +183,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Added_WhenPostingAddedActionAndAddTrainingProviderOptionIsSelected_ThenShouldRedirectToFindAction()
         {
-            Run(f => f.PostAdded("AddTrainingProvider"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            Test(f => f.PostAdded("AddTrainingProvider"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Find") &&
                 a.RouteValues["Controller"] == null));
         }
@@ -192,20 +191,20 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Added_WhenPostingAddedActionAndGoToHomepageOptionIsSelected_ThenShouldRedirectToHomeUrl()
         {
-            Run(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+            Test(f => f.PostAdded("GoToHomepage"), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url == $"https://localhost/accounts/ABC123/teams"));
         }
 
         [Test]
         public void Added_WhenPostingAddedActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            Run(f => f.PostAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            Test(f => f.PostAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
 
         [Test]
         public Task AlreadyAdded_WhenGettingAlreadyAddedAction_ThenShouldReturnAlreadyAddedView()
         {
-            return RunAsync(f => f.AlreadyAdded(), (f, r) =>
+            return TestAsync(f => f.AlreadyAdded(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedAccountProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
@@ -238,7 +237,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Get_WhenAccountHasMultipleAccountLegalEntities_ThenShouldReturnGetView()
         {
-            return RunAsync(f => f.Get(), (f, r) =>
+            return TestAsync(f => f.Get(), (f, r) =>
             {
                 r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
 
@@ -252,7 +251,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
         {
-            return RunAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            return TestAsync(f => f.Get(1), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Permissions") &&
                 a.RouteValues["Controller"].Equals("AccountProviderLegalEntities") &&
                 a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&

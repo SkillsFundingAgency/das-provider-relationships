@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Authorization;
+using SFA.DAS.Authorization.Context;
+using SFA.DAS.Authorization.Handlers;
+using SFA.DAS.Authorization.Results;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
 using SFA.DAS.Testing;
@@ -17,13 +19,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         [Test]
         public Task GetAuthorizationResult_WhenEnvironmentIsLocal_ThenShouldReturnAuthorizedAuthorizationResult()
         {
-            return RunAsync(f => f.SetEnvironment(DasEnv.LOCAL), f => f.GetAuthorizationResult(), (f, r) => r.Should().NotBeNull().And.BeOfType<AuthorizationResult>().Which.IsAuthorized.Should().BeTrue());
+            return TestAsync(f => f.SetEnvironment(DasEnv.LOCAL), f => f.GetAuthorizationResult(), (f, r) => r.Should().NotBeNull().And.BeOfType<AuthorizationResult>().Which.IsAuthorized.Should().BeTrue());
         }
         
         [Test]
         public Task GetAuthorizationResult_WhenEnvironmentIsNotLocal_ThenShouldReturnAuthorizationResult()
         {
-            return RunAsync(f => f.SetEnvironment(DasEnv.PROD).SetAuthorizationResult(), f => f.GetAuthorizationResult(), (f, r) => r.Should().NotBeNull().And.BeSameAs(f.AuthorizationResult));
+            return TestAsync(f => f.SetEnvironment(DasEnv.PROD).SetAuthorizationResult(), f => f.GetAuthorizationResult(), (f, r) => r.Should().NotBeNull().And.BeSameAs(f.AuthorizationResult));
         }
     }
 

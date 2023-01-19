@@ -14,14 +14,17 @@
         <PackageReference Include="Moq" Version="4.18.2" />
         <PackageReference Include="nunit" Version="3.13.3" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-        <PackageReference Include="SFA.DAS.GovUK.Auth" Version="0.2.203" />
         <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
-        <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
+        <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- hopefully this itemgroup can be deleted  -->
+        <!--PackageReference Include="IdentityModel" Version="6.0.0" /-->
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Web\SFA.DAS.ProviderRelationships.Web.csproj" />
-        <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 
 </Project>

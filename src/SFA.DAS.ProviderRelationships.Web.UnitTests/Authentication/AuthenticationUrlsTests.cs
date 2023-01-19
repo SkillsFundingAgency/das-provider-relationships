@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             "/connect/authorize", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
         public void WhenGettingAuthorizeEndpoint_ThenShouldReturnCorrectAuthorizeEndpoint(string expectedEndpoint, string authorizeEndpoint, string baseAddress)
         {
-            Run(f =>
+            Test(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f.IdentityServerConfiguration.Setup(c => c.AuthorizeEndpoint).Returns(authorizeEndpoint);
@@ -28,7 +28,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             "/connect/token", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
         public void WhenGettingTokenEndpoint_ThenShouldReturnCorrectTokenEndpoint(string expectedEndpoint, string tokenEndpoint, string baseAddress)
         {
-            Run(f =>
+            Test(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f.IdentityServerConfiguration.Setup(c => c.TokenEndpoint).Returns(tokenEndpoint);
@@ -41,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             "/connect/userinfo", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
         public void WhenGettingUserInfoEndpoint_ThenShouldReturnCorrectUserInfoEndpoint(string expectedEndpoint, string userInfoEndpoint, string baseAddress)
         {
-            Run(f =>
+            Test(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f.IdentityServerConfiguration.Setup(c => c.UserInfoEndpoint).Returns(userInfoEndpoint);
@@ -54,7 +54,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             "/connect/endsession?id_token_hint={0}", "https://test2-login.apprenticeships.sfa.bis.gov.uk/identity")]
         public void WhenGettingLogoutEndpoint_ThenShouldReturnCorrectLogoutEndpoint(string expectedEndpoint, string logoutEndpoint, string baseAddress)
         {
-            Run(f =>
+            Test(f =>
                 {
                     f.SetBaseAddress(baseAddress);
                     f.SetCurrentUserClaim("id_token", "abc123");

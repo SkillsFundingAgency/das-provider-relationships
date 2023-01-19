@@ -1,11 +1,8 @@
 using System;
-using System.Web;
-using System.Web.Routing;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.Authorization;
-using SFA.DAS.EmployerUsers.WebClientComponents;
+using SFA.DAS.Authorization.Context;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorization;
@@ -21,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         [Test]
         public void GetAuthorizationContext_WhenAccountIdExistsAndIsValidAndUserIsAuthenticatedAndUserRefIsValidAndUserEmailIsValid_ThenShouldReturnAuthroizationContextWithAccountIdAndUserRefValues()
         {
-            Run(f => f.SetValidAccountId().SetValidUserRef().SetValidUserEmail(), f => f.GetAuthorizationContext(), (f, r) =>
+            Test(f => f.SetValidAccountId().SetValidUserRef().SetValidUserEmail(), f => f.GetAuthorizationContext(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Get<long?>("AccountId").Should().Be(f.AccountId);
@@ -32,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         [Test]
         public void GetAuthorizationContext_WhenAccountIdDoesNotExistAndUserIsNotAuthenticated_ThenShouldReturnAuthroizationContextWithoutAccountIdAndUserRefValues()
         {
-            Run(f => f.SetUnauthenticatedUser(), f => f.GetAuthorizationContext(), (f, r) =>
+            Test(f => f.SetUnauthenticatedUser(), f => f.GetAuthorizationContext(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Get<long?>("AccountId").Should().BeNull();
@@ -43,19 +40,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
         [Test]
         public void GetAuthorizationContext_WhenAccountIdExistsAndIsInvalid_ThenShouldThrowUnauthorizedAccessException()
         {
-            Run(f => f.SetInvalidAccountId(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
+            Test(f => f.SetInvalidAccountId(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
         }
         
         [Test]
         public void GetAuthorizationContext_WhenUserIsAuthenticatedAndUserRefIsInvalid_ThenShouldThrowUnauthorizedAccessException()
         {
-            Run(f => f.SetValidAccountId().SetInvalidUserRef(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
+            Test(f => f.SetValidAccountId().SetInvalidUserRef(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
         }
         
         [Test]
         public void GetAuthorizationContext_WhenUserIsAuthenticatedAndUserEmailIsInvalid_ThenShouldThrowUnauthorizedAccessException()
         {
-            Run(f => f.SetValidAccountId().SetValidUserRef().SetInvalidUserEmail(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
+            Test(f => f.SetValidAccountId().SetValidUserRef().SetInvalidUserEmail(), f => f.GetAuthorizationContext(), (f, r) => r.Should().Throw<UnauthorizedAccessException>());
         }
     }
 
@@ -124,7 +121,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             var userRefClaimValue = UserRefClaimValue;
             
             AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
-            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out userRefClaimValue)).Returns(true);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(EmployerClaimTypes.UserId, out userRefClaimValue)).Returns(true);
             
             return this;
         }
@@ -136,7 +133,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             var userRefClaimValue = UserRefClaimValue;
             
             AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
-            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Id, out userRefClaimValue)).Returns(true);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(EmployerClaimTypes.UserId, out userRefClaimValue)).Returns(true);
             
             return this;
         }
@@ -148,7 +145,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             var userEmailClaimValue = UserEmail;
             
             AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
-            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out userEmailClaimValue)).Returns(true);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(EmployerClaimTypes.EmailAddress, out userEmailClaimValue)).Returns(true);
             
             return this;
         }
@@ -160,7 +157,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authorization
             var userEmailClaimValue = UserEmail;
             
             AuthenticationService.Setup(a => a.IsUserAuthenticated()).Returns(true);
-            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(DasClaimTypes.Email, out userEmailClaimValue)).Returns(false);
+            AuthenticationService.Setup(a => a.TryGetCurrentUserClaimValue(EmployerClaimTypes.EmailAddress, out userEmailClaimValue)).Returns(false);
             
             return this;
         }
