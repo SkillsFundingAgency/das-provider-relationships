@@ -1,22 +1,53 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
-using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.Api.Client.TestHarness.Scenarios;
 
 namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
 {
     public static class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("Provider Relationships Api Client Test Harness");
+            
+            var configuration = new ProviderRelationshipsApiConfiguration {
+                ApiBaseUrl = "https://das-at-prelapi-as.azurewebsites.net/",
+                //ApiBaseUrl = "https://localhost:44308/",
+                IdentifierUri = "https://citizenazuresfabisgov.onmicrosoft.com/das-at-prelapi-as-ar"
+            };
+            
+            using IHost host = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
+            {
+                // todo .AddProviderRelationshipsApiClient()
+                services.AddTransient<GetAccountProviderLegalEntitiesWithPermissionScenario>();
+                services.AddTransient<HasPermissionScenario>();
+                services.AddTransient<HasRelationshipWithPermissionScenario>();
+                services.AddTransient<PingScenario>();
+                
+                services.AddSingleton(configuration);
+            })
+            .Build();
 
-            Task.Run(Test).Wait();
+            try
+            {
+                await host.Services.GetService<PingScenario>().Run();
+                await host.Services.GetService<GetAccountProviderLegalEntitiesWithPermissionScenario>().Run();
+                await host.Services.GetService<HasPermissionScenario>().Run();
+                await host.Services.GetService<HasRelationshipWithPermissionScenario>().Run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            await host.RunAsync();
         }
 
-        private static async Task Test()
+        /*private static async Task Test()
         {
             var configuration = new ProviderRelationshipsApiConfiguration {
                 ApiBaseUrl = "https://das-at-prelapi-as.azurewebsites.net/",
@@ -56,6 +87,6 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.TestHarness
                     throw;
                 }
             }
-        }
+        }*/
     }
 }
