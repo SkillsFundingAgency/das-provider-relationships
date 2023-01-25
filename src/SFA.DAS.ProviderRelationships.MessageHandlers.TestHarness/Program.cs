@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
-using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.DependencyResolution;
 using SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness.Scenarios;
-using SFA.DAS.ProviderRelationships.Startup;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 {
@@ -9,7 +7,8 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
     {
         public static async Task Main()
         {
-            using (var container = IoC.Initialize())
+            await Task.CompletedTask;
+            /*using (var container = IoC.Initialize())
             {
                 var startup = container.GetInstance<IStartup>();
 
@@ -27,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
                 {
                     await startup.StopAsync();
                 }
-            }
+            }*/
         }
     }
 }

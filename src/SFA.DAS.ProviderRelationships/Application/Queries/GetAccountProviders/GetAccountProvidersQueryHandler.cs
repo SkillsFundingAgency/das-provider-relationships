@@ -7,8 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SFA.DAS.Authorization;
-using SFA.DAS.Authorization.EmployerUserRoles;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 

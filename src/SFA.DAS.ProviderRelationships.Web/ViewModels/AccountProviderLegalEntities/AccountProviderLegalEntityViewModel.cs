@@ -2,15 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using SFA.DAS.Authorization;
-using SFA.DAS.Authorization.ModelBinding;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
-    public class AccountProviderLegalEntityViewModel : IAuthorizationContextModel
+    public class AccountProviderLegalEntityViewModel// : IAuthorizationContextModel
     {
         public AccountProviderLegalEntityViewModel()
         {

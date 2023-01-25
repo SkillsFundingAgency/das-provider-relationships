@@ -7,12 +7,11 @@ using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Configuration.StructureMap;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.ProviderRelationships.Startup;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 {
-    public class NServiceBusStartup : IStartup
+    public class NServiceBusStartup
     {
         private readonly IContainer _container;
         private readonly IEnvironmentService _environmentService;

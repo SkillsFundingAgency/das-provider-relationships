@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
-using SFA.DAS.ProviderRelationships.DependencyResolution;
 using StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.UnitTests.Models
@@ -22,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         {
             using (var container = new Container(c =>
             {
-                c.AddRegistry<ConfigurationRegistry>();
+                //todo c.AddRegistry<ConfigurationRegistry>();
             }))
             {
                 var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
