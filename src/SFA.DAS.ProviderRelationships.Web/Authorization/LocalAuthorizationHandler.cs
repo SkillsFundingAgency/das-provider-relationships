@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SFA.DAS.Authorization.Context;
-using SFA.DAS.Authorization.Handlers;
-using SFA.DAS.Authorization.Results;
+using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.AutoConfiguration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorization

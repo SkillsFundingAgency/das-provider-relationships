@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Http;
-using SFA.DAS.Authorization.Context;
 using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;

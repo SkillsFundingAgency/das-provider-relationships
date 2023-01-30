@@ -3,8 +3,6 @@ using NServiceBus;
 using SFA.DAS.AutoConfiguration;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
-using SFA.DAS.NServiceBus.Configuration.NLog;
-using SFA.DAS.NServiceBus.Configuration.StructureMap;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
 using StructureMap;
@@ -13,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
 {
     public class NServiceBusStartup
     {
-        private readonly IContainer _container;
+        /*private readonly IContainer _container;
         private readonly IEnvironmentService _environmentService;
         private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
         private IEndpointInstance _endpoint;
@@ -47,6 +45,6 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.TestHarness
         public Task StopAsync()
         {
             return _endpoint.Stop();
-        }
+        }*/
     }
 }

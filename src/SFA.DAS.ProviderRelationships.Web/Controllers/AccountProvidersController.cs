@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Authorization.EmployerUserRoles;
@@ -14,6 +15,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
@@ -37,7 +39,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _employerUrls = employerUrls;
         }
 
-        [DasAuthorize(EmployerUserRole.Any)]
+        //[DasAuthorize(EmployerUserRole.Any)]
+        [Authorize(Policy = EmployerUserRole.Any)]
         [Route("")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
         {
@@ -140,6 +143,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasProviderEmployerAdminOrExternalAccount))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/added")]
