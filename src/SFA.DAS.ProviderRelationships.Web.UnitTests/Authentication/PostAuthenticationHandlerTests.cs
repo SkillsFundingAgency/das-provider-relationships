@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerUsers.WebClientComponents;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing;
@@ -49,10 +48,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             
             ClaimsIdentity = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(DasClaimTypes.Id, Ref.ToString()),
-                new Claim(DasClaimTypes.Email, Email),
-                new Claim(DasClaimTypes.GivenName, FirstName),
-                new Claim(DasClaimTypes.FamilyName, LastName),
+                new Claim(EmployerClaimTypes.UserId, Ref.ToString()),
+                new Claim(EmployerClaimTypes.EmailAddress, Email),
+                new Claim(EmployerClaimTypes.GivenName, FirstName),
+                new Claim(EmployerClaimTypes.FamilyName, LastName),
             });
 
             UnitOfWorkScope = new Mock<IUnitOfWorkScope>();

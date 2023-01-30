@@ -8,7 +8,7 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
-    public class AccountProviderLegalEntityViewModel// : IAuthorizationContextModel
+    public class AccountProviderLegalEntityViewModel
     {
         public AccountProviderLegalEntityViewModel()
         {

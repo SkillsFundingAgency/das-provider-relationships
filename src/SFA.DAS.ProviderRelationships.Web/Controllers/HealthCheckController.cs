@@ -2,7 +2,6 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Authorization.Mvc.Attributes;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
@@ -10,7 +9,6 @@ using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize]
     [Route("healthcheck")]
     public class HealthCheckController : Controller
     {

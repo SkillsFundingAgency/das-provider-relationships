@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
-using MoreLinq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -16,8 +16,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
         [Test]
         public void GetDescription_WhenGettingDescription_ThenShouldReturnDescription()
         {
-            Run(f => Permission.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Add apprentice records"));
-            Run(f => Permission.Recruitment.GetDescription(), (f, r) => r.Should().Be("Recruit apprentices"));
+            Test(f => Permission.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Add apprentice records"));
+            Test(f => Permission.Recruitment.GetDescription(), (f, r) => r.Should().Be("Recruit apprentices"));
         }
 
         [TestCase(Permission.CreateCohort, State.No, "Do not allow")]
@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
         [TestCase(Permission.CreateCohort, State.Conditional, "")]
         [TestCase(Permission.Recruitment, State.No, "Do not allow")]
         [TestCase(Permission.Recruitment, State.Yes, "Allow")]
-        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before they’re advertised")]
+        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before theyï¿½re advertised")]
 
         public void GetStateDescription_WhenGettingStateDescription_ThenShouldReturnDescription(Permission permission, State state, string expected)
         {

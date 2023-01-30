@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SFA.DAS.ProviderRelationships.Types.Models;
+﻿using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions
 {

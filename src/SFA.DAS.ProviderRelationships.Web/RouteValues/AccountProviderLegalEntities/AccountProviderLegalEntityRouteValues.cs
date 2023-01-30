@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
-using SFA.DAS.Authorization.ModelBinding;
 
 namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 {
-    public class AccountProviderLegalEntityRouteValues : IAuthorizationContextModel
+    public class AccountProviderLegalEntityRouteValues
     {
         [Required]
         public long? AccountId { get; set; }

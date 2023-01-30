@@ -1,15 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.Authorization.Mvc.Attributes;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -20,7 +19,7 @@ using SFA.DAS.Validation.Mvc.Attributes;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize(EmployerUserRole.Owner)]
+    [Authorize(Policy = EmployerUserRole.Owner)]
     [Route("accounts/{accountHashedId}/providers/{accountProviderId}/legalentities/{accountLegalEntityId}")]
     public class AccountProviderLegalEntitiesController : Controller
     {

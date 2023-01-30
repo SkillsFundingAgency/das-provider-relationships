@@ -16,18 +16,18 @@
     <link href="/Content/css/application.css" rel="stylesheet" />
     <link href="@Html.CdnLink("css", "main.css")" rel="stylesheet" />
     <!--<![endif]-->
-    @Html.Partial("_ZenDeskWidget")
-    @Html.Partial("_GoogleAnalyticsHead")
+    <partial name="_ZenDeskWidget"/>
+    <partial name="_GoogleAnalyticsHead"/>
 </head>
 <body class="govuk-template__body">
-    @Html.Partial("_GoogleAnalyticsBody")
+    <partial name="_GoogleAnalyticsBody"/>
     <script>
         document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
     <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
 
-    @Html.Partial("_CookieBanner", Html.GetCookieBannerViewModel())
-    @Html.Partial("_Header", Html.GetHeaderViewModel())
+    <partial name="_CookieBanner" model="@Html.GetCookieBannerViewModel()"/>
+    <partial name="_Header" model="@Html.GetHeaderViewModel()"/>
 
     <div class="govuk-width-container">
         @RenderSection("breadcrumb", false)
@@ -35,10 +35,10 @@
             @RenderBody()
         </main>
     </div>
-
-    @Html.Partial("_Footer", Html.GetFooterViewModel())
-    @Html.Partial("_GoogleAnalyticsInfo")
-
+    
+    <partial name="_Footer" model="@Html.GetFooterViewModel()"/>
+    <partial name="_GoogleAnalyticsInfo"/>
+    
     <script src="@Html.CdnLink("libs/accessible-autocomplete","accessible-autocomplete.min.js")"></script>
 
     <script src="@Html.CdnLink("libs/jquery","jquery.min.js")"></script>

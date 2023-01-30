@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization.ModelBinding;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
-    public class AddAccountProviderViewModel : IAuthorizationContextModel, IValidatableObject
+    public class AddAccountProviderViewModel : IValidatableObject
     {
         public ProviderDto Provider { get; set; }
 

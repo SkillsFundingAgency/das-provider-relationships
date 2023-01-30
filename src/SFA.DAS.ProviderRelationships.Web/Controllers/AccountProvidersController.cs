@@ -5,8 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.Authorization.Mvc.Attributes;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
@@ -38,8 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-
-        //[DasAuthorize(EmployerUserRole.Any)]
+        
         [Authorize(Policy = EmployerUserRole.Any)]
         [Route("")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
@@ -61,7 +58,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return PartialView(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("find")]
         public async Task<ActionResult> Find()
         {
@@ -71,7 +68,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
@@ -98,7 +95,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("add")]
         public async Task<ActionResult> Add(AddAccountProviderRouteValues routeValues)
@@ -110,7 +107,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("add")]
@@ -130,7 +127,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
         public async Task<ActionResult> Added(AddedAccountProviderRouteValues routeValues)
@@ -142,8 +139,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [Authorize(Policy = nameof(PolicyNames.HasProviderEmployerAdminOrExternalAccount))]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/added")]
@@ -162,7 +158,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/alreadyadded")]
         public async Task<ActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
@@ -174,7 +170,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/alreadyadded")]
@@ -191,7 +187,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        [DasAuthorize(EmployerUserRole.Any)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
         public async Task<ActionResult> Get(GetAccountProviderRouteValues routeValues)
@@ -208,7 +204,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("invitation/{correlationId}")]
         public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
         {

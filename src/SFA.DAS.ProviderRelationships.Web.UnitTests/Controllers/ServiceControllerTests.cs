@@ -1,5 +1,5 @@
-using System.Web.Mvc;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
@@ -15,19 +15,19 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void SignOut_WhenGettingSignOutAction_ThenShouldSignOutUser()
         {
-            Run(f => f.SignOut(), (f, r) => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
+            Test(f => f.SignOut(), (f, r) => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
         }
         
         [Test]
         public void SignOut_WhenGettingSignOutAction_ThenShouldReturnRedirectActionResult()
         {
-            Run(f => f.SignOut(), (f, r) => r.Should().NotBeNull().And.BeOfType<RedirectResult>().Which.Url.Should().Be(f.LogoutEndpoint));
+            Test(f => f.SignOut(), (f, r) => r.Should().NotBeNull().And.BeOfType<RedirectResult>().Which.Url.Should().Be(f.LogoutEndpoint));
         }
         
         [Test]
         public void SignOutCleanup_WhenGettingSignOutCleanupAction_ThenShouldSignOutUser()
         {
-            Run(f => f.SignOutCleanup(), f => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
+            Test(f => f.SignOutCleanup(), f => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
         }
     }
 
@@ -46,7 +46,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
             AuthenticationUrls.Setup(u => u.LogoutEndpoint).Returns(LogoutEndpoint);
             
-            ServiceController = new ServiceController(AuthenticationService.Object, AuthenticationUrls.Object);
+            ServiceController = new ServiceController();
         }
 
         public ActionResult SignOut()

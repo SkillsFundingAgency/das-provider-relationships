@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization.ModelBinding;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 using SFA.DAS.ProviderRelationships.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.Providers
 {
     //todo: delete
-    public class FindProvidersViewModel : IAuthorizationContextModel
+    public class FindProvidersViewModel
     {
         [Required]
         public long? AccountId { get; set; }

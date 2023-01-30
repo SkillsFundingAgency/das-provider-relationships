@@ -15,7 +15,7 @@
 <div class="govuk-grid-row">    
     
     <div class="govuk-grid-column-two-thirds">
-        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+        <partial name="_ValidationSummary" model="ViewData.ModelState"/>
 
         <h1 class="govuk-panel__title">Confirm training provider</h1>
         <p class="govuk-body">The details you entered are for @Model.Provider.Name, (@Model.Provider.Ukprn).</p>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Moq;
@@ -138,7 +139,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenPostingAddActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            return TestAsync(f => f.PostAdd(), (f, r) => r.Should().Throw<ValidationException>());
+            return TestExceptionAsync(
+                f => f.PostAdd(), 
+                (f, r) => r.Should().ThrowAsync<ValidationException>());
         }
 
         [Test]
@@ -198,7 +201,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void Added_WhenPostingAddedActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            Test(f => f.PostAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            TestException(f => f.PostAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -214,7 +217,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void AlreadyAdded_WhenPostingAlreadyAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
         {
-            Run(f => f.PostAlreadyAdded("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            Test(f => f.PostAlreadyAdded("SetPermissions"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Get") &&
                 a.RouteValues["Controller"] == null &&
                 a.RouteValues["AccountProviderId"] == null));
@@ -223,7 +226,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void AlreadyAdded_WhenPostingAlreadyAddedActionAndAddTrainingProviderOptionIsSelected_ThenShouldRedirectToFindAction()
         {
-            Run(f => f.PostAlreadyAdded("AddTrainingProvider"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
+            Test(f => f.PostAlreadyAdded("AddTrainingProvider"), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
                 a.RouteValues["Action"].Equals("Find") &&
                 a.RouteValues["Controller"] == null));
         }
@@ -231,7 +234,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public void AlreadyAdded_WhenPostingAlreadyAddedActionAndNoOptionIsSelected_ThenShouldThrowException()
         {
-            Run(f => f.PostAlreadyAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
+            TestException(f => f.PostAlreadyAdded(), (f, r) => r.Should().Throw<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -524,10 +527,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProvidersControllerTestsFixture CreateSession()
         {
-            var context = new Mock<HttpContextBase>();
-            var session = new Mock<HttpSessionStateBase>();
-            context.Setup(x => x.Session).Returns(session.Object);
-            AccountProvidersController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProvidersController);
+            AccountProvidersController.ControllerContext = new ControllerContext(){HttpContext = new DefaultHttpContext(){Session = Mock.Of<ISession>()}};
 
             return this;
         }

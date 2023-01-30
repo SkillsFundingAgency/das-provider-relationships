@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -117,7 +118,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProviderLegalEntitiesControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings))).CreateMapper();
+            Mapper = new MapperConfiguration(c => c.AddProfiles(new []{new AccountProviderLegalEntityMappings()} )).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
 
             AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object, Mapper, EmployerUrls.Object);
@@ -229,23 +230,18 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSession()
         {
-            var context = new Mock<HttpContextBase>();
-            var session = new Mock<HttpSessionStateBase>();
-            context.Setup(x => x.Session).Returns(session.Object);
-            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {HttpContext = new DefaultHttpContext() { Session =  Mock.Of<ISession>()}};
+            //.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
             return this;
         }
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSessionFromInvitation()
         {
-            var context = new Mock<HttpContextBase>();
-            var session = new Mock<HttpSessionStateBase>();
-
-            session.Setup(s => s["Invitation"]).Returns(true);
-            context.Setup(x => x.Session).Returns(session.Object);
+            var session = new Mock<ISession>();
+            session.Setup(s => s.GetString("Invitation")).Returns("true");
             EmployerUrls.Setup(e => e.Account(It.IsAny<string>())).Returns("https://localhost/accounts/ABC123/teams");
-
-            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {HttpContext = new DefaultHttpContext() { Session =  session.Object}};
+            //AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
             return this;
         }
     }
