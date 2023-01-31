@@ -1,12 +1,9 @@
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
 
@@ -32,16 +29,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class ServiceControllerTestsFixture
     {
         public ServiceController ServiceController { get; set; }
-        public string LogoutEndpoint { get; set; }
-        public Mock<IAuthenticationUrls> AuthenticationUrls { get; set; }
 
         public ServiceControllerTestsFixture()
         {
-            LogoutEndpoint = "/logout";
-            AuthenticationUrls = new Mock<IAuthenticationUrls>();
-
-            AuthenticationUrls.Setup(u => u.LogoutEndpoint).Returns(LogoutEndpoint);
-            
             ServiceController = new ServiceController();
         }
 
