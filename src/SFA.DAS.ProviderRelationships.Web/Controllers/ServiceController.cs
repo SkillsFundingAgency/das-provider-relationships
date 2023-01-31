@@ -8,14 +8,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     public class ServiceController : Controller
     {
-        /*[Route("signout")]
-        public ActionResult SignOut()
-        {
-            _authenticationService.SignOutUser();
-
-            return new RedirectResult(_authenticationUrls.LogoutEndpoint);
-        }*/
-        
         [Route("sign-out")]
         public async Task<IActionResult> SignOutEmployer()
         {
