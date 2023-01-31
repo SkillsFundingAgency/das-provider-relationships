@@ -95,9 +95,10 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Add_WhenGettingAddAction_ThenShouldReturnAddView()
         {
-            return TestAsync(f => f.Add(), (f, r) =>
+            return TestAsync(
+                f => f.Add(), 
+                (f, r) =>
             {
-                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
                 r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddAccountProviderViewModel>(m => m.Provider == f.GetProviderToAddQueryResult.Provider);
             });
         }

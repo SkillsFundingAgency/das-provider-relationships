@@ -7,6 +7,7 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
@@ -83,21 +84,27 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Update_WhenPostingPermissionsActionWithConfirmation_ThenShouldRedirectToAccountProvidersIndexActionWithTempDataSetCorrectly()
         {
-            return TestAsync(f => f.CreateSession(), f => f.PostUpdate(true, null, State.No), (f , r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Index") &&
-                a.RouteValues["Controller"].Equals("AccountProviders") && 
-                f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
-                f.AccountProviderLegalEntitiesController.TempData.ContainsKey("ProviderName") &&
-                f.AccountProviderLegalEntitiesController.TempData.ContainsKey("LegalEntityName") &&
-                f.AccountProviderLegalEntitiesController.TempData["PermissionsChanged"].Equals(true) &&
-                f.AccountProviderLegalEntitiesController.TempData["ProviderName"].Equals("PROVIDER COLLEGE") &&
-                f.AccountProviderLegalEntitiesController.TempData["LegalEntityName"].Equals("ALE LTD")));
+            return TestAsync(
+                f => f.CreateSession(), 
+                f => f.PostUpdate(true, null, State.No), 
+                (f , r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
+                    a.ActionName.Equals("Index") &&
+                    a.ControllerName.Equals("AccountProviders") && 
+                    f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
+                    f.AccountProviderLegalEntitiesController.TempData.ContainsKey("ProviderName") &&
+                    f.AccountProviderLegalEntitiesController.TempData.ContainsKey("LegalEntityName") &&
+                    f.AccountProviderLegalEntitiesController.TempData["PermissionsChanged"].Equals(true) &&
+                    f.AccountProviderLegalEntitiesController.TempData["ProviderName"].Equals("PROVIDER COLLEGE") &&
+                    f.AccountProviderLegalEntitiesController.TempData["LegalEntityName"].Equals("ALE LTD")));
         }
 
         [Test]
         public Task Update_WhenPostingPermissionsActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
         {
-            return TestAsync(f => f.CreateSessionFromInvitation(), f => f.PostUpdate(true, null, State.No), (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+            return TestAsync(
+                f => f.CreateSessionFromInvitation(), 
+                f => f.PostUpdate(true, null, State.No), 
+                (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
                 a.Url.Equals("https://localhost/accounts/ABC123/teams/addedprovider/Foo+Bar")));
         }
     }
@@ -230,18 +237,27 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSession()
         {
-            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {HttpContext = new DefaultHttpContext() { Session =  Mock.Of<ISession>()}};
-            //.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+            var context = new DefaultHttpContext() { Session = Mock.Of<ISession>() };
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
+                HttpContext = context
+            };
+            AccountProviderLegalEntitiesController.TempData = new TempDataDictionary(context, Mock.Of<ITempDataProvider>());
             return this;
         }
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSessionFromInvitation()
         {
             var session = new Mock<ISession>();
-            session.Setup(s => s.GetString("Invitation")).Returns("true");
-            EmployerUrls.Setup(e => e.Account(It.IsAny<string>())).Returns("https://localhost/accounts/ABC123/teams");
-            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {HttpContext = new DefaultHttpContext() { Session =  session.Object}};
-            //AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext(context.Object, new RouteData(), AccountProviderLegalEntitiesController);
+            var expectedValue = System.Text.Encoding.UTF8.GetBytes("true");
+            session
+                .Setup(s => s.TryGetValue("Invitation", out expectedValue))
+                .Returns(true);
+            EmployerUrls
+                .Setup(e => e.Account(It.IsAny<string>()))
+                .Returns("https://localhost/accounts/ABC123/teams");
+            AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
+                HttpContext = new DefaultHttpContext() { Session =  session.Object}
+            };
             return this;
         }
     }
