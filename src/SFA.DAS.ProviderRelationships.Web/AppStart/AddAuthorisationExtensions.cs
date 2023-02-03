@@ -1,15 +1,37 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
 
 namespace SFA.DAS.ProviderRelationships.Web.AppStart;
 
 public static class AddAuthorisationExtensions
 {
-    public static void AddEmployerAuthenticationServices(
+    public static void AddEmployerAuthorisationServices(
         this IServiceCollection services)
     {
+        services.AddSingleton<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
-        services.AddSingleton<IAuthorizationHandler, EmployerTransactorAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(
+                PolicyNames
+                    .HasEmployerOwnerAccount
+                , policy =>
+                {
+                    policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                    policy.Requirements.Add(new EmployerOwnerRoleRequirement());
+                    policy.RequireAuthenticatedUser();
+                });
+            options.AddPolicy(
+                PolicyNames.HasEmployerViewAccount, policy =>
+                {
+                    policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                    policy.Requirements.Add(new EmployerViewerRoleRequirement());
+                    policy.RequireAuthenticatedUser();
+                });
+        });
     }
 }

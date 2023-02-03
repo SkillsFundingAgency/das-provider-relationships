@@ -10,12 +10,12 @@ using Microsoft.Extensions.Hosting;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
-    
-    
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
@@ -49,7 +49,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
             _configuration = config.Build();
         }
-        
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -62,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddOptions();
             
             var clientId = "no-auth-id";
-            services.AddEmployerAuthenticationServices();
+            services.AddEmployerAuthorisationServices();
             if (_configuration["ApimDeveloperWeb:UseGovSignIn"] != null && _configuration["ApimDeveloperWeb:UseGovSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {

@@ -15,6 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
         public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
         public RoatpApiConfiguration RoatpApiClientSettings { get; set; }
+        public OuterApiConfiguration OuterApiConfiguration { get; set; }
         public string CdnBaseUrl { get; set; }
 
         public string AllowedHashstringCharacters { get; set; }
@@ -34,6 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
         public string ProviderPortalBaseUrl { get; set; }
         public string EnvironmentName { get; set; }
+        public string ApplicationBaseUrl { get; set; }
         public bool UseGovSignIn { get; set; }
     }
 }   
