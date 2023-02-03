@@ -34,5 +34,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
         public string ProviderPortalBaseUrl { get; set; }
         public string EnvironmentName { get; set; }
+        public bool UseGovSignIn { get; set; }
     }
 }   

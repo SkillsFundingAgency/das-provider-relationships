@@ -187,7 +187,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = EmployerUserRole.Any)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
         public async Task<ActionResult> Get(GetAccountProviderRouteValues routeValues)

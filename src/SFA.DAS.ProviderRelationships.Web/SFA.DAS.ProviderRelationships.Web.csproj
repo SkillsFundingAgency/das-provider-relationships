@@ -69,8 +69,4 @@
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="App_Start" />
-  </ItemGroup>
-
 </Project>

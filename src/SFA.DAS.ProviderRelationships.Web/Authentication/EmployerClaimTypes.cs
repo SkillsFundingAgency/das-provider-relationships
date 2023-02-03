@@ -8,5 +8,6 @@
         public static string FamilyName => "http://das/employer/identity/claims/family_name";
         public static string DisplayName => "http://das/employer/identity/claims/display_name";
         public static string Account => "http://das/employer/identity/claims/account";
+        public static string AssociatedAccounts => "http://das/employer/identity/claims/associatedAccounts";
     }
 }
