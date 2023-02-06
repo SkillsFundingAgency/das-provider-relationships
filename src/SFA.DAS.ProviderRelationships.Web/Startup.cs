@@ -12,7 +12,9 @@ using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.AppStart;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -65,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             if (_configuration["ApimDeveloperWeb:UseGovSignIn"] != null && _configuration["ApimDeveloperWeb:UseGovSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
-                services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationExtension).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationsExtensions).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
             }
             else
             {
@@ -82,11 +84,11 @@ namespace SFA.DAS.ProviderRelationships.Web
                     services.AddAndConfigureEmployerAuthentication(config);
                     clientId = config.ClientId;
                 }
-                services.AddAuthenticationCookie(serviceParameters.AuthenticationType);
+                services.AddAuthenticationCookie();
             }
 
             services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
-            services.Configure<ExternalLinksConfiguration>(_configuration.GetSection(ExternalLinksConfiguration.ProviderRelationshipsExternalLinksConfiguration));
+            services.Configure<EmployerUrlsConfiguration>(_configuration.GetSection(nameof(EmployerUrlsConfiguration)));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
