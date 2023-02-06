@@ -1,15 +1,18 @@
 ﻿using System;
 using System.IO;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
@@ -64,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             
             var clientId = "no-auth-id";
             services.AddEmployerAuthorisationServices();
-            if (_configuration["ApimDeveloperWeb:UseGovSignIn"] != null && _configuration["ApimDeveloperWeb:UseGovSignIn"]
+            if (_configuration["UseGovSignIn"] != null && _configuration["UseGovSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationsExtensions).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
@@ -89,6 +92,31 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
             services.Configure<EmployerUrlsConfiguration>(_configuration.GetSection(nameof(EmployerUrlsConfiguration)));
+            
+            services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
+            //todo add validation DI
+            services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
+
+            services.Configure<RouteOptions>(options => { })
+                .AddMvc(options =>
+                {
+                    if (!_configuration.IsDev())
+                    {
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    }
+
+                })
+                ;//todo .EnableGoogleAnalytics(); - this is provider ui code
+
+            services.AddApplicationInsightsTelemetry();
+
+            if (!_environment.IsDevelopment())
+            {
+                services.AddHealthChecks();
+            }
+#if DEBUG
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#endif
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -97,20 +125,46 @@ namespace SFA.DAS.ProviderRelationships.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseHealthChecks();
+                app.UseExceptionHandler("/Error/500");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Response.Headers.ContainsKey("X-Frame-Options"))
+                {
+                    context.Response.Headers.Remove("X-Frame-Options");
+                }
+
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+
+                await next();
+
+                if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    var originalPath = context.Request.Path.Value;
+                    context.Items["originalPath"] = originalPath;
+                    context.Request.Path = "/error/404";
+                    await next();
+                }
+            });
+            
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
-        }
-
-        private void ConfigureMvcOptions(MvcOptions mvcOptions)
-        { 
         }
     }
 }
