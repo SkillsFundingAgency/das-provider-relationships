@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture.NUnit3;
+using FluentAssertions;
 using MediatR;
+using Microsoft.Extensions.Options;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing;
+using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 using StructureMap;
 
@@ -19,10 +28,79 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
     public class PostAuthenticationHandlerTests : FluentTest<PostAuthenticationHandlerTestsFixture>
     {
         [Test]
-        public void Handle_WhenHandlingPostAuthenticationIdentity_ThenShouldSendCreateOrUpdateUserCommand()
+        public async Task Handle_WhenHandlingPostAuthenticationIdentity_ThenShouldSendCreateOrUpdateUserCommand()
         {
-            Test(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateOrUpdateUserCommand>(c => 
+            await TestAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateOrUpdateUserCommand>(c => 
                 c.Ref == f.Ref && c.Email == f.Email && c.FirstName == f.FirstName && c.LastName == f.LastName), CancellationToken.None), Times.Once));
+        }
+        
+        [Test]
+        public async Task Handle_WhenHandlingPostAuthenticationIdentity_AndNotUsingGovUkSignIn_ThenShouldNotCallOuterApi()
+        {
+            await TestAsync(f => f.Handle(), 
+                f => f.MockOuterApiClient.Verify(m => m.Get<GetUserAccountsResponse>(It.IsAny<GetEmployerAccountRequest>()), 
+                    Times.Never));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Handle_WhenHandlingPostAuthenticationIdentity_AndIsUsingGovUkSignIn_ThenShouldCallOuterApi(
+            string govUkUserId,
+            string email,
+            Guid userId,
+            GetUserAccountsResponse apiResponse,
+            [Frozen] ProviderRelationshipsConfiguration config, 
+            [Frozen] Mock<IOuterApiClient> mockOuterApiClient,
+            [Frozen] Mock<IContainer> mockContainer,
+            [Frozen] Mock<IUnitOfWorkScope> mockUnitOfWork,
+            [Frozen] Mock<IMediator> mockMediator,
+            PostAuthenticationHandler handler)
+        {
+            //arrange
+            var identity = new ClaimsIdentity(new List<Claim> {
+                new Claim(ClaimTypes.NameIdentifier, govUkUserId),
+                new Claim(ClaimTypes.Email, email)
+            });
+            config.UseGovSignIn = true;
+            var expectedRequest = new GetEmployerAccountRequest(govUkUserId, email);
+            apiResponse.EmployerUserId = userId.ToString();
+            var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
+            mockOuterApiClient
+                .Setup(client => client.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
+                    request.GetUrl == expectedRequest.GetUrl)))
+                .ReturnsAsync(apiResponse);
+            mockUnitOfWork
+                .Setup(scope => scope.RunAsync(It.IsAny<Func<IContainer, Task>>()))
+                .Returns(Task.CompletedTask)
+                .Callback<Func<IContainer, Task>>(o => o(mockContainer.Object));
+            mockContainer
+                .Setup(c => c.GetInstance<IMediator>())
+                .Returns(mockMediator.Object);
+
+            //act
+            await handler.Handle(identity);
+
+            //assert
+            mockOuterApiClient.Verify(m => m.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
+                    request.GetUrl == expectedRequest.GetUrl)),
+                Times.Once);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == EmployerClaimTypes.AssociatedAccounts &&
+                claim.ValueType == JsonClaimValueTypes.Json &&
+                claim.Value == accountsAsJson);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == EmployerClaimTypes.UserId &&
+                claim.Value == apiResponse.EmployerUserId);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == EmployerClaimTypes.EmailAddress &&
+                claim.Value == email);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == EmployerClaimTypes.GivenName &&
+                claim.Value == apiResponse.FirstName);
+            identity.Claims.Should().Contain(claim =>
+                claim.Type == EmployerClaimTypes.FamilyName &&
+                claim.Value == apiResponse.LastName);
+            mockMediator.Verify(m => m.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None),
+                Times.Once);
         }
     }
 
@@ -37,6 +115,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public IPostAuthenticationHandler Handler { get; set; }
         public Mock<IUnitOfWorkScope> UnitOfWorkScope { get; set; }
         public Mock<IContainer> Container { get; set; }
+        public Mock<IOuterApiClient> MockOuterApiClient { get; set; }
+        public Mock<IOptions<ProviderRelationshipsConfiguration>> MockConfigOptions { get; set; }
         
         public PostAuthenticationHandlerTestsFixture()
         {
@@ -56,16 +136,18 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
 
             UnitOfWorkScope = new Mock<IUnitOfWorkScope>();
             Container = new Mock<IContainer>();
+            MockOuterApiClient = new Mock<IOuterApiClient>();
+            MockConfigOptions = new Mock<IOptions<ProviderRelationshipsConfiguration>>();
             
             UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IContainer, Task>>())).Returns(Task.CompletedTask).Callback<Func<IContainer, Task>>(o => o(Container.Object));
             Container.Setup(c => c.GetInstance<IMediator>()).Returns(Mediator.Object);
             
-            Handler = new PostAuthenticationHandler(UnitOfWorkScope.Object);
+            Handler = new PostAuthenticationHandler(UnitOfWorkScope.Object, MockOuterApiClient.Object, MockConfigOptions.Object);
         }
 
-        public void Handle()
+        public async Task Handle()
         {
-            Handler.Handle(ClaimsIdentity);
+            await Handler.Handle(ClaimsIdentity);
         }
     }
 }
