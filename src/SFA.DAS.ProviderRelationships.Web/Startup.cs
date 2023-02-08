@@ -9,10 +9,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
-using SFA.DAS.Encoding;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -71,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             
             var clientId = "no-auth-id";
             services.AddEmployerAuthorisationServices();
-            if (_configuration["ProviderRelationshipsConfiguration:UseGovSignIn"] != null && _configuration["ProviderRelationshipsConfiguration:UseGovSignIn"]
+            if (_configuration["ProviderRelationshipsWebConfiguration:UseGovSignIn"] != null && _configuration["ProviderRelationshipsWebConfiguration:UseGovSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationsExtensions).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
@@ -95,7 +93,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
 
             services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
-            services.Configure<EmployerUrlsConfiguration>(_configuration.GetSection(nameof(EmployerUrlsConfiguration)));
             
             services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
             //todo add validation DI
@@ -125,8 +122,6 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var conf = app.ApplicationServices.GetService<IOptions<EncodingConfig>>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

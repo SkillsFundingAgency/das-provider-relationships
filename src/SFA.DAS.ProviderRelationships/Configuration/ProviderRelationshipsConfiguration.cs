@@ -1,21 +1,9 @@
-﻿using SFA.DAS.PAS.Account.Api.ClientV2.Configuration;
-using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
-using SFA.DAS.ProviderRelationships.Extensions;
+﻿using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
     public class ProviderRelationshipsConfiguration
     {
-        public AzureActiveDirectoryConfiguration AzureActiveDirectory { get; set; }
-        public OidcConfiguration Oidc { get; set; }
-        public ProviderRelationshipsApiConfiguration ProviderRelationshipsApi { get; set; }
-        public ReadStoreConfiguration ReadStore { get; set; }
-        public EmployerUrlsConfiguration EmployerUrls { get; set; }
-        //public PasAccountApiConfiguration PasAccountApi { get; set; }
-        public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
-        public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
-        public RoatpApiConfiguration RoatpApiClientSettings { get; set; }
-        public OuterApiConfiguration OuterApiConfiguration { get; set; }
         public string CdnBaseUrl { get; set; }
 
         public string AllowedHashstringCharacters { get; set; }
