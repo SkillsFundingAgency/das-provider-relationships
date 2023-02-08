@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
+using SFA.DAS.Encoding;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -18,6 +20,7 @@ using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
+using SFA.DAS.UnitOfWork.Mvc.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -57,6 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddConfigurationOptions(_configuration);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -67,7 +71,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             
             var clientId = "no-auth-id";
             services.AddEmployerAuthorisationServices();
-            if (_configuration["UseGovSignIn"] != null && _configuration["UseGovSignIn"]
+            if (_configuration["ProviderRelationshipsConfiguration:UseGovSignIn"] != null && _configuration["ProviderRelationshipsConfiguration:UseGovSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationsExtensions).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
@@ -82,7 +86,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 else
                 {
                     var config = _configuration
-                        .GetSection("Identity")
+                        .GetSection("Oidc")
                         .Get<IdentityServerConfiguration>();
                     services.AddAndConfigureEmployerAuthentication(config);
                     clientId = config.ClientId;
@@ -121,6 +125,8 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var conf = app.ApplicationServices.GetService<IOptions<EncodingConfig>>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -139,6 +145,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseUnitOfWork();
 
             app.Use(async (context, next) =>
             {

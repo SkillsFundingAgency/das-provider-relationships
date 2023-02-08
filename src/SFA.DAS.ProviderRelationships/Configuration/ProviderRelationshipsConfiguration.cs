@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public ProviderRelationshipsApiConfiguration ProviderRelationshipsApi { get; set; }
         public ReadStoreConfiguration ReadStore { get; set; }
         public EmployerUrlsConfiguration EmployerUrls { get; set; }
-        public PasAccountApiConfiguration PasAccountApi { get; set; }
+        //public PasAccountApiConfiguration PasAccountApi { get; set; }
         public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
         public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
         public RoatpApiConfiguration RoatpApiClientSettings { get; set; }
