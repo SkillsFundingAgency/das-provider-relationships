@@ -14,6 +14,7 @@ using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -69,10 +70,12 @@ namespace SFA.DAS.ProviderRelationships.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            // todo add db reg
+            // todo add db reg ProviderRelationshipsDbContext, no interface
             //todo add validation DI??
             services.AddServiceRegistration(_configuration);
             services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
+            services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings), typeof(AccountLegalEntityMappings));
+            
             
             services.AddEmployerAuthorisationServices();
             
