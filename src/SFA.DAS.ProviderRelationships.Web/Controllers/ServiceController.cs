@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
@@ -9,6 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
     public class ServiceController : Controller
     {
         [Route("sign-out")]
+        [AllowAnonymous]
         public async Task<IActionResult> SignOutEmployer()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");
@@ -21,6 +23,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [Route("signoutcleanup")]
+        [AllowAnonymous]
         public void SignOutCleanup()
         {
             Response.Cookies.Delete("SFA.DAS.TODO_CookieName.Web.EmployerAuth");//todo

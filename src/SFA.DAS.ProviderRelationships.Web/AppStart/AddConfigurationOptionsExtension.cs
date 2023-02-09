@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using SFA.DAS.Encoding;
 using SFA.DAS.PAS.Account.Api.ClientV2.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
@@ -16,13 +15,16 @@ public static class AddConfigurationOptionsExtension
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddOptions();
         services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection("ProviderRelationshipsWebConfiguration"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
         services.Configure<OuterApiConfiguration>(configuration.GetSection(nameof(OuterApiConfiguration)));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OuterApiConfiguration>>().Value);
         services.Configure<IdentityServerConfiguration>(configuration.GetSection("Oidc"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<IdentityServerConfiguration>>().Value);
-        //--- delving into the unknown:
+        //--- delving into the unknown: :scream:
+        //notable ommissions: featuretoggle,
+        // these were prev part of ProviderRelationshipsConfiguration: roatpapi, pasaccountapi, recruitapi, registrationapi 
         services.Configure<OidcConfiguration>(configuration.GetSection("Oidc"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OidcConfiguration>>().Value);
         services.Configure<AzureActiveDirectoryConfiguration>(configuration.GetSection("AzureActiveDirectory"));
@@ -42,19 +44,6 @@ public static class AddConfigurationOptionsExtension
         services.Configure<RegistrationApiConfiguration>(configuration.GetSection("RegistrationApiClientConfiguration"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<RegistrationApiConfiguration>>().Value);
         
-        //notable ommissions: featuretoggle,
-        // these were prev part of ProviderRelationshipsConfiguration: roatpapi, pasaccountapi, recruitapi, registrationapi 
-        
-        /*IncludeRegistry<AutoConfigurationRegistry>();
-         *  For<EmployerFeaturesConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<EmployerFeaturesConfiguration>(ConfigurationKeys.EmployerFeatures)).Singleton();
-            For<IAzureActiveDirectoryConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().AzureActiveDirectory).Singleton();
-            For<IEmployerUrlsConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().EmployerUrls).Singleton();
-            For<IOidcConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().Oidc).Singleton();
-            For<ProviderRelationshipsConfiguration>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<ProviderRelationshipsConfiguration>(ConfigurationKeys.ProviderRelationships)).Singleton();
-            For<ReadStoreConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ReadStore).Singleton();
-            For<ProviderRelationshipsApiConfiguration>().Use(c => c.GetInstance<ProviderRelationshipsConfiguration>().ProviderRelationshipsApi);
-            For<EncodingConfig>().Use(c => c.GetInstance<IAutoConfigurationService>().Get<EncodingConfig>(ConfigurationKeys.EncodingConfig)).Singleton();
-         */
         services.Configure<EncodingConfig>(config =>
         {
             var encodings = configuration.GetSection("Encodings").Get<List<Encoding.Encoding>>();

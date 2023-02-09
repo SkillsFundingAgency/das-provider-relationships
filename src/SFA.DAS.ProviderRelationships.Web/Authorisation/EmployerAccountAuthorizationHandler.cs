@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
 
             if (employerAccounts == null || !employerAccounts.ContainsKey(accountIdFromUrl))
             {
-                var requiredIdClaim =_config.UseGovSignIn 
+                var requiredIdClaim =_config.UseGovUkSignIn 
                     ? ClaimTypes.NameIdentifier : EmployerClaimTypes.UserId;
                 
                 if (!context.User.HasClaim(c => c.Type.Equals(requiredIdClaim)))

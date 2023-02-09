@@ -60,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 new Claim(ClaimTypes.NameIdentifier, govUkUserId),
                 new Claim(ClaimTypes.Email, email)
             });
-            config.UseGovSignIn = true;
+            config.UseGovUkSignIn = true;
             var expectedRequest = new GetEmployerAccountRequest(govUkUserId, email);
             apiResponse.EmployerUserId = userId.ToString();
             var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));

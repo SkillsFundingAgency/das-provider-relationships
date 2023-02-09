@@ -24,6 +24,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ProviderPortalBaseUrl { get; set; }
         public string EnvironmentName { get; set; }
         public string ApplicationBaseUrl { get; set; }
-        public bool UseGovSignIn { get; set; }
+        public bool UseGovUkSignIn { get; set; }
     }
 }   

@@ -38,7 +38,7 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
         
         string userId;
         var email = string.Empty;
-        if (_webConfig.UseGovSignIn)
+        if (_webConfig.UseGovUkSignIn)
         {
             userId = ctx.Principal.Claims
                 .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))

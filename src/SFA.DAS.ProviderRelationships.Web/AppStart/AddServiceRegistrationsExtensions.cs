@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
 
 namespace SFA.DAS.ProviderRelationships.Web.AppStart;
 

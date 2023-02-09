@@ -17,6 +17,7 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 
@@ -58,23 +59,35 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var identityServerConfiguration = _configuration
+                .GetSection("Oidc")
+                .Get<IdentityServerConfiguration>();
+            
             services.AddConfigurationOptions(_configuration);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            // todo add db reg
+            //todo add validation DI??
+            services.AddServiceRegistration(_configuration);
+            services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
             
-            services.AddOptions();
+            services.AddEmployerAuthorisationServices();
             
             var clientId = "no-auth-id";
-            services.AddEmployerAuthorisationServices();
-            if (_configuration["ProviderRelationshipsWebConfiguration:UseGovSignIn"] != null && _configuration["ProviderRelationshipsWebConfiguration:UseGovSignIn"]
+            if (_configuration["ProviderRelationshipsWebConfiguration:UseGovUkSignIn"] != null && 
+                _configuration["ProviderRelationshipsWebConfiguration:UseGovUkSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
-                services.AddAndConfigureGovUkAuthentication(_configuration, $"{typeof(AddServiceRegistrationsExtensions).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                services.AddAndConfigureGovUkAuthentication(
+                    _configuration, 
+                    $"{typeof(Startup).Assembly.GetName().Name}.Auth",
+                    typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                clientId = identityServerConfiguration.ClientId;
             }
-            else
+            else //legacy auth
             {
                 if (_configuration["StubAuth"] != null && _configuration["StubAuth"]
                         .Equals("true", StringComparison.CurrentCultureIgnoreCase))
@@ -83,31 +96,26 @@ namespace SFA.DAS.ProviderRelationships.Web
                 }
                 else
                 {
-                    var config = _configuration
-                        .GetSection("Oidc")
-                        .Get<IdentityServerConfiguration>();
-                    services.AddAndConfigureEmployerAuthentication(config);
-                    clientId = config.ClientId;
+                    services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
+                    clientId = identityServerConfiguration.ClientId;
                 }
                 services.AddAuthenticationCookie();
             }
-
-            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
             
-            services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
-            //todo add validation DI
+            services.AddLogging();
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
+            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
 
             services.Configure<RouteOptions>(options => { })
                 .AddMvc(options =>
                 {
+                    options.Filters.Add(new GoogleAnalyticsFilter());
                     if (!_configuration.IsDev())
                     {
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
 
-                })
-                ;//todo .EnableGoogleAnalytics(); - this is provider ui code
+                });
 
             services.AddApplicationInsightsTelemetry();
 

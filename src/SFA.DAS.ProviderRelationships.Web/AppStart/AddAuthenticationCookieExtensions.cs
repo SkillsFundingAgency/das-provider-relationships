@@ -13,7 +13,7 @@ public static class AddAuthenticationCookieExtensions
         {
             options.AccessDeniedPath = new PathString("/error/403");
             options.ExpireTimeSpan = TimeSpan.FromHours(1);
-            options.Cookie.Name = $"SFA.DAS.ProviderRelationships.Web.Auth";//todo verify name from old code
+            options.Cookie.Name = $"provider-relationships";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.SlidingExpiration = true;
             options.Cookie.SameSite = SameSiteMode.None;

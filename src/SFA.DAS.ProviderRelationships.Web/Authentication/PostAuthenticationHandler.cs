@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
         public async Task Handle(ClaimsIdentity claimsIdentity)
         {
-            if (_webConfig.UseGovSignIn)
+            if (_webConfig.UseGovUkSignIn)
             {
                 var userId = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 var email = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.Email).Value;
