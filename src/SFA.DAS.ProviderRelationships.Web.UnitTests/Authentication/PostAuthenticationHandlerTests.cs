@@ -48,7 +48,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             string email,
             Guid userId,
             GetUserAccountsResponse apiResponse,
-            [Frozen] ProviderRelationshipsConfiguration config, 
+            [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> mockConfigOptions, 
             [Frozen] Mock<IOuterApiClient> mockOuterApiClient,
             [Frozen] Mock<IContainer> mockContainer,
             [Frozen] Mock<IUnitOfWorkScope> mockUnitOfWork,
@@ -60,7 +60,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 new Claim(ClaimTypes.NameIdentifier, govUkUserId),
                 new Claim(ClaimTypes.Email, email)
             });
-            config.UseGovUkSignIn = true;
             var expectedRequest = new GetEmployerAccountRequest(govUkUserId, email);
             apiResponse.EmployerUserId = userId.ToString();
             var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
@@ -75,6 +74,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             mockContainer
                 .Setup(c => c.GetInstance<IMediator>())
                 .Returns(mockMediator.Object);
+            mockConfigOptions
+                .Setup(options => options.Value)
+                .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = true });
 
             //act
             await handler.Handle(identity);
@@ -138,6 +140,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             Container = new Mock<IContainer>();
             MockOuterApiClient = new Mock<IOuterApiClient>();
             MockConfigOptions = new Mock<IOptions<ProviderRelationshipsConfiguration>>();
+            MockConfigOptions
+                .Setup(options => options.Value)
+                .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = false });
             
             UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IContainer, Task>>())).Returns(Task.CompletedTask).Callback<Func<IContainer, Task>>(o => o(Container.Object));
             Container.Setup(c => c.GetInstance<IMediator>()).Returns(Mediator.Object);
