@@ -9,7 +9,6 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
@@ -43,8 +42,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
                 model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
                 model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
-                model.IsAddProviderOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsAddProviderOperationAuthorized);
-                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProvidersQueryResult.IsUpdatePermissionsOperationAuthorized);
             });
         }
 
@@ -326,8 +323,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         ProviderName = "Foo"
                     }
                 },
-                2,
-                true);
+                2);
 
             Mediator.Setup(m =>
                     m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == AccountProvidersRouteValues.AccountId),

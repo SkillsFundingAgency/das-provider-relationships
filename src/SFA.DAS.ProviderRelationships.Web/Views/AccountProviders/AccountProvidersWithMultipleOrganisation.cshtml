@@ -9,7 +9,7 @@
             <tr class="govuk-table__row">
                 <th class="govuk-table__header" scope="col">Organisation</th>
                 <th class="govuk-table__header" scope="col">Permissions</th>
-                @if (Model.IsUpdatePermissionsOperationAuthorized)
+                @if ((await AuthorizationService.AuthorizeAsync(User, PolicyNames.HasEmployerOwnerAccount)).Succeeded)
                 {
                     <th class="govuk-table__header" scope="col">
                         <span class="govuk-visually-hidden">Action</span>
@@ -37,7 +37,7 @@
                         </ul>
                     }
                 </td>
-                @if (Model.IsUpdatePermissionsOperationAuthorized)
+                @if ((await AuthorizationService.AuthorizeAsync(User, PolicyNames.HasEmployerOwnerAccount)).Succeeded)
                 {
                     <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
                         <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProviderLegalEntity.Id })">

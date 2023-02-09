@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" model="ViewData.ModelState"/>
 
-        @using (Html.BeginForm(new {action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}/confirm", controller = "accounts"}))
+        @using (Html.BeginForm(new {action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}/confirm", controller = "AccountProviderLegalEntities"}))
         {
             @Html.AntiForgeryToken()
 

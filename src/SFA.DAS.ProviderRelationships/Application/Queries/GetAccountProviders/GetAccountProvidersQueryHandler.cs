@@ -7,7 +7,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 
@@ -17,13 +16,11 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
     {
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
-        private readonly IAuthorizationService _authorizationService;
 
-        public GetAccountProvidersQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider, IAuthorizationService authorizationService)
+        public GetAccountProvidersQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
         {
             _db = db;
             _configurationProvider = configurationProvider;
-            _authorizationService = authorizationService;
         }
 
         public async Task<GetAccountProvidersQueryResult> Handle(GetAccountProvidersQuery request, CancellationToken cancellationToken)
@@ -35,16 +32,16 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
                 .ToListAsync(cancellationToken);
 
             var accountLegalEntitiesCountTask =  _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
-            var isOwnerTask = _authorizationService.IsAuthorizedAsync(EmployerUserRole.Owner);
 
-            await Task.WhenAll(accountProviderIdsTask, accountLegalEntitiesCountTask, isOwnerTask).ConfigureAwait(false);
+
+            await Task.WhenAll(accountProviderIdsTask, accountLegalEntitiesCountTask).ConfigureAwait(false);
 
             foreach (var accountProvider in accountProviderIdsTask.Result)
             {
                 accountProviders.Add(await GetAccountProvider(request.AccountId, accountProvider.Id, cancellationToken));
             }
 
-            return new GetAccountProvidersQueryResult(accountProviders, accountLegalEntitiesCountTask.Result, isOwnerTask.Result);
+            return new GetAccountProvidersQueryResult(accountProviders, accountLegalEntitiesCountTask.Result);
         }
 
         private async Task<AccountProviderDto> GetAccountProvider(long accountId, long accountProviderId, CancellationToken cancellationToken)

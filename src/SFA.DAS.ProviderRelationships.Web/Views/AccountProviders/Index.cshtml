@@ -1,4 +1,6 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ProviderRelationships.Web.Authorisation
 
 @{
     ViewBag.Title = "Your training providers";
@@ -33,7 +35,7 @@
             <p class="govuk-body">You have not added any training providers yet.</p>
         }
 
-        @if (Model.IsAddProviderOperationAuthorized)
+        @if ((await AuthorizationService.AuthorizeAsync(User, PolicyNames.HasEmployerOwnerAccount)).Succeeded)
         {
             <a class="govuk-button" href="@Url.Action("Find")" role="button">Add a training provider</a>
         }

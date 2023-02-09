@@ -3,5 +3,9 @@
 @using SFA.DAS.ProviderRelationships.Web.Extensions
 @using SFA.DAS.ProviderRelationships.Web.RouteValues
 @using SFA.DAS.Validation.Mvc
+@using Microsoft.AspNetCore.Authorization
+@using SFA.DAS.ProviderRelationships.Web.Authorisation
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IAuthorizationService AuthorizationService
