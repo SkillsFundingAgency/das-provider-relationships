@@ -60,7 +60,7 @@ namespace SFA.DAS.ProviderRelationships.Web.AppStart
                 });
             services
                 .AddOptions<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme)
-                .Configure<IEmployerAccountService, ICustomClaims>((options, accountsService, customClaims) =>
+                .Configure<ICustomClaims>((options, customClaims) =>
                 {
                     options.Events.OnTokenValidated = async (ctx) =>
                     {

@@ -70,11 +70,11 @@ namespace SFA.DAS.ProviderRelationships.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            // todo add db reg ProviderRelationshipsDbContext, no interface
-            //todo add validation DI??
+            
             services.AddServiceRegistration(_configuration);
             services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
             services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings), typeof(AccountLegalEntityMappings));
+            services.AddDatabaseRegistration(_configuration, _configuration["Environment"]);
             
             
             services.AddEmployerAuthorisationServices();
@@ -87,7 +87,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration, 
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
-                    typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                    typeof(PostAuthenticationHandler));
                 clientId = identityServerConfiguration.ClientId;
             }
             else //legacy auth

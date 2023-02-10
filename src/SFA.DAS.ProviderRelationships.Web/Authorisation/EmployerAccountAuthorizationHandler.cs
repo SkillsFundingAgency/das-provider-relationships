@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
@@ -19,18 +20,18 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
     public class EmployerAccountAuthorizationHandler : IEmployerAccountAuthorisationHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IEmployerAccountService _accountsService;
+        private readonly IOuterApiClient _outerApiClient;
         private readonly ILogger<EmployerAccountAuthorizationHandler> _logger;
         private readonly ProviderRelationshipsConfiguration _config;
 
         public EmployerAccountAuthorizationHandler(
             IHttpContextAccessor httpContextAccessor, 
-            IEmployerAccountService accountsService, 
+            IOuterApiClient outerApiClient, 
             ILogger<EmployerAccountAuthorizationHandler> logger, 
             IOptions<ProviderRelationshipsConfiguration> configOptions)
         {
             _httpContextAccessor = httpContextAccessor;
-            _accountsService = accountsService;
+            _outerApiClient = outerApiClient;
             _logger = logger;
             _config = configOptions.Value;
         }
@@ -80,12 +81,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
                     .First(c => c.Type.Equals(requiredIdClaim));
 
                 var email = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
-
                 var userId = userClaim.Value;
-
-                var result = _accountsService.GetUserAccounts(userId, email).Result;
                 
-                var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
+                var request = new GetEmployerAccountRequest(userId, email);
+                var result = _outerApiClient.Get<GetUserAccountsResponse>(request).Result;
+
+                var accountsAsJson = JsonConvert.SerializeObject(result.UserAccounts.ToDictionary(k => k.AccountId));
                 var associatedAccountsClaim = new Claim(EmployerClaimTypes.AssociatedAccounts, accountsAsJson, JsonClaimValueTypes.Json);
                 
                 var updatedEmployerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(associatedAccountsClaim.Value);
@@ -124,12 +125,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
         }
     }
 
-    public interface IEmployerAccountService
-    {
-        Task<EmployerUserAccounts> GetUserAccounts(string userId, string email);
-    }
-
-    public class EmployerUserAccounts
+    /*public class EmployerUserAccounts
     {
         public IEnumerable<EmployerUserAccountItem> EmployerAccounts { get ; set ; }
 
@@ -148,7 +144,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
                 EmployerAccounts = source.UserAccounts.Select(c=>(EmployerUserAccountItem)c).ToList()
             };
         }
-    }
+    }*/
     
     public class EmployerUserAccountItem
     {

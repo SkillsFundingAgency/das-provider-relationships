@@ -18,8 +18,7 @@ using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing;
 using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
-using StructureMap;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
 {
@@ -50,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             GetUserAccountsResponse apiResponse,
             [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> mockConfigOptions, 
             [Frozen] Mock<IOuterApiClient> mockOuterApiClient,
-            [Frozen] Mock<IContainer> mockContainer,
+            [Frozen] Mock<IServiceProvider> mockContainer,
             [Frozen] Mock<IUnitOfWorkScope> mockUnitOfWork,
             [Frozen] Mock<IMediator> mockMediator,
             PostAuthenticationHandler handler)
@@ -68,12 +67,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                     request.GetUrl == expectedRequest.GetUrl)))
                 .ReturnsAsync(apiResponse);
             mockUnitOfWork
-                .Setup(scope => scope.RunAsync(It.IsAny<Func<IContainer, Task>>()))
+                .Setup(scope => scope.RunAsync(It.IsAny<Func<IServiceProvider, Task>>()))
                 .Returns(Task.CompletedTask)
-                .Callback<Func<IContainer, Task>>(o => o(mockContainer.Object));
-            mockContainer
-                .Setup(c => c.GetInstance<IMediator>())
-                .Returns(mockMediator.Object);
+                .Callback<Func<IServiceProvider, Task>>(o => o(mockContainer.Object));
             mockConfigOptions
                 .Setup(options => options.Value)
                 .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = true });
@@ -116,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public ClaimsIdentity ClaimsIdentity { get; set; }
         public IPostAuthenticationHandler Handler { get; set; }
         public Mock<IUnitOfWorkScope> UnitOfWorkScope { get; set; }
-        public Mock<IContainer> Container { get; set; }
+        public Mock<IServiceProvider> Container { get; set; }
         public Mock<IOuterApiClient> MockOuterApiClient { get; set; }
         public Mock<IOptions<ProviderRelationshipsConfiguration>> MockConfigOptions { get; set; }
         
@@ -137,17 +133,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             });
 
             UnitOfWorkScope = new Mock<IUnitOfWorkScope>();
-            Container = new Mock<IContainer>();
+            Container = new Mock<IServiceProvider>();
             MockOuterApiClient = new Mock<IOuterApiClient>();
             MockConfigOptions = new Mock<IOptions<ProviderRelationshipsConfiguration>>();
             MockConfigOptions
                 .Setup(options => options.Value)
                 .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = false });
             
-            UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IContainer, Task>>())).Returns(Task.CompletedTask).Callback<Func<IContainer, Task>>(o => o(Container.Object));
-            Container.Setup(c => c.GetInstance<IMediator>()).Returns(Mediator.Object);
-            
-            Handler = new PostAuthenticationHandler(UnitOfWorkScope.Object, MockOuterApiClient.Object, MockConfigOptions.Object);
+            UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IServiceProvider, Task>>())).Returns(Task.CompletedTask).Callback<Func<IServiceProvider, Task>>(o => o(Container.Object));
+
+            Handler = new PostAuthenticationHandler(MockOuterApiClient.Object, Mediator.Object, MockConfigOptions.Object);
         }
 
         public async Task Handle()

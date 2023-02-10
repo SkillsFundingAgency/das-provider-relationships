@@ -27,9 +27,6 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.9" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.9" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
-
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.0" />
 
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="2.0.30-prerelease-11" />
@@ -40,9 +37,6 @@
       
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
-    <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus">
-      <Version>9.0.13</Version>
-    </PackageReference>
     <PackageReference Include="SFA.DAS.Validation.Mvc" Version="6.0.30" />
       
     <PackageReference Include="StackExchange.Redis" Version="2.6.66" />

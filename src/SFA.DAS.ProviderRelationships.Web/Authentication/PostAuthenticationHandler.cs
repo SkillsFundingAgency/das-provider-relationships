@@ -1,31 +1,33 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
-using SFA.DAS.UnitOfWork.DependencyResolution.StructureMap;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
 {
-    public class PostAuthenticationHandler : IPostAuthenticationHandler
+    public class PostAuthenticationHandler : IPostAuthenticationHandler, ICustomClaims
     {
-        private readonly IUnitOfWorkScope _unitOfWorkScope;
         private readonly IOuterApiClient _outerApiClient;
+        private readonly IMediator _mediator;
         private readonly ProviderRelationshipsConfiguration _webConfig;
 
         public PostAuthenticationHandler(
-            IUnitOfWorkScope unitOfWorkScope,
             IOuterApiClient outerApiClient,
+            IMediator mediator,
             IOptions<ProviderRelationshipsConfiguration> options)
         {
-            _unitOfWorkScope = unitOfWorkScope;
             _outerApiClient = outerApiClient;
+            _mediator = mediator;
             _webConfig = options.Value;
         }
 
@@ -51,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                     email, 
                     apiResponse.FirstName, 
                     apiResponse.LastName);
-                await _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(upsertUserCommand));
+                await _mediator.Send(upsertUserCommand);
             }
             else
             {
@@ -61,8 +63,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 var lastName = claimsIdentity.FindFirst(EmployerClaimTypes.FamilyName).Value;
                 var command = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
             
-                await _unitOfWorkScope.RunAsync(c => c.GetInstance<IMediator>().Send(command));   
-            }
+                await _mediator.Send(command);
+            }   
+        }
+
+        public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
+        {
+            await Handle(tokenValidatedContext.Principal.Identities.First());
+            return new List<Claim>();
         }
     }
 }
