@@ -1,0 +1,14 @@
+﻿global using System;
+global using System.Collections.ObjectModel;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using Microsoft.Azure.Documents;
+global using Microsoft.Azure.Documents.Client;
+global using Microsoft.Azure.WebJobs;
+global using Microsoft.Azure.WebJobs.Host;
+global using Microsoft.Azure.WebJobs.Host.Config;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using NServiceBus;
