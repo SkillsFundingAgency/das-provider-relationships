@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="NLog.Schema" Version="5.1.2" />
         <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />

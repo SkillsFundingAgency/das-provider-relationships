@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountLegalEntity;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
@@ -52,8 +53,9 @@ public static class HostExtensions
             services.AddConfigurationSections(context.Configuration);
             services.AddClientRegistrations();
             services.AddNServiceBus();
+            services.AddMediatR(typeof(AddAccountLegalEntityCommand));
             services.AddApplicationServices();
-            services.AddDatabaseRegistration(context.Configuration.GetConnectionString("DatabaseConnectionString"));
+            services.AddDatabaseRegistration(context.Configuration[$"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString"]);
             services.AddMediatR(typeof(Program));
             services.AddUnitOfWork();
             services.AddTransient<IRetryStrategy>(_ => new ExponentialBackoffRetryAttribute(5, "00:00:10", "00:00:20"));
