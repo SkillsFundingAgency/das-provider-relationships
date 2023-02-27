@@ -33,7 +33,7 @@
     <PackageReference Include="SFA.DAS.UnitOfWork.WebApi">
       <Version>9.0.13</Version>
     </PackageReference>
-    <PackageReference Include="SFA.DAS.Validation" Version="5.1.3" />
+    <PackageReference Include="SFA.DAS.Validation" Version="6.0.30" />
     <PackageReference Include="StructureMap" Version="4.7.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />

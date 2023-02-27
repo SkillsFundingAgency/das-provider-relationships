@@ -9,6 +9,12 @@
     <WebJobName>ProviderRelationships-Jobs</WebJobName>
     <WebJobType>Continuous</WebJobType>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.0.0" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />

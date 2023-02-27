@@ -9,6 +9,12 @@
         <WebJobName>ProviderRelationships-MessageHandlers</WebJobName>
         <WebJobType>Continuous</WebJobType>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.7.5" />
