@@ -19,6 +19,10 @@ public static class ConfigurationServiceRegistrations
         services.Configure<ReadStoreConfiguration>(configuration.GetSection(readStoreKey));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ReadStoreConfiguration>>().Value);
 
+        var readStoreKey = $"{ConfigurationKeys.ProviderRelationships}:ReadStore";
+        services.Configure<ReadStoreConfiguration>(configuration.GetSection(readStoreKey));
+        services.AddSingleton(cfg => cfg.GetService<IOptions<ReadStoreConfiguration>>().Value);
+
         return services;
     }
 }

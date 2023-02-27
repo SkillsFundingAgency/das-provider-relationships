@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NServiceBus.ObjectBuilder.MSDependencyInjection;
+﻿using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.MicrosoftDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;

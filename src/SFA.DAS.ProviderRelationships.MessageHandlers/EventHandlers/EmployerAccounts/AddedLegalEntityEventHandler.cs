@@ -1,23 +1,19 @@
-﻿using System.Threading.Tasks;
-using MediatR;
-using NServiceBus;
-using SFA.DAS.EmployerAccounts.Messages.Events;
+﻿using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountLegalEntity;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+
+public class AddedLegalEntityEventHandler : IHandleMessages<AddedLegalEntityEvent>
 {
-    public class AddedLegalEntityEventHandler : IHandleMessages<AddedLegalEntityEvent>
+    private readonly IMediator _mediator;
+
+    public AddedLegalEntityEventHandler(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public AddedLegalEntityEventHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
-        {
-            return _mediator.Send(new AddAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created));
-        }
+    public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
+    {
+        return _mediator.Send(new AddAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created));
     }
 }

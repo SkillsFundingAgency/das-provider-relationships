@@ -7,11 +7,21 @@ using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Application.Commands;
+using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
+using SFA.DAS.ProviderRelationships.Application.Commands.ReceiveProviderRelationshipsHealthCheckEvent;
+using SFA.DAS.ProviderRelationships.Application.Commands.RemoveAccountLegalEntity;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification;
+using SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountLegalEntityName;
+using SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountName;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
 using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
 using SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.DeletePermissions;
+using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 
@@ -39,6 +49,28 @@ public class WhenAddingServicesToTheContainer
         Assert.IsNotNull(type);
     }
 
+    [TestCase(typeof(IRequestHandler<AddAccountLegalEntityCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<UpdateAccountNameCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<CreateAccountCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<RemoveAccountLegalEntityCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<UpdateAccountLegalEntityNameCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<AddedAccountProviderEventAuditCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<DeletedPermissionsEventAuditCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<DeletePermissionsCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<SendDeletedPermissionsNotificationCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<UpdatedPermissionsEventAuditCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand, Unit>))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_CommandHandlers(Type toResolve)
+    {
+        var services = new ServiceCollection();
+        SetupServiceCollection(services);
+        var provider = services.BuildServiceProvider();
+
+        var type = provider.GetService(toResolve);
+        Assert.IsNotNull(type);
+    }
+
     private static void SetupServiceCollection(IServiceCollection services)
     {
         var configuration = GenerateConfiguration();
@@ -51,7 +83,7 @@ public class WhenAddingServicesToTheContainer
         services.AddNServiceBus();
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddUnitOfWork();
-        services.AddMediatR(typeof(Program));
+        services.AddMediatR(typeof(UpdatePermissionsCommand));
         services.AddLogging(_ => { });
         services.AddApplicationServices();
 
@@ -85,6 +117,8 @@ public class WhenAddingServicesToTheContainer
                 new("SFA.DAS.ProviderRelationshipsV2:RoatpApiClientSettings:IdentifierUri", "http://test/"),
                 new("SFA.DAS.ProviderRelationshipsV2:ReadStore:AuthKey", "test"),
                 new("SFA.DAS.ProviderRelationshipsV2:ReadStore:Uri", "http://test/"),
+                new("SFA.DAS.ProviderRelationshipsV2:PasAccountApi:ApiBaseUrl", "http://test/"),
+                new("SFA.DAS.ProviderRelationshipsV2:PasAccountApi:IdentifierUri", "http://test/"),
                 new("EnvironmentName", "LOCAL"),
             }
         };
