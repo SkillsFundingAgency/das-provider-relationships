@@ -5,25 +5,24 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelati
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
-{
-    [TestFixture]
-    [Parallelizable]
-    public class AddedAccountProviderEventHandlerTests : FluentTest<AddedAccountProviderEventHandlerTestsFixture>
-    {
-        [Test]
-        public Task Handle_WhenHandlingAddedAccountProviderEvent_ThenShouldSendAuditCommand()
-        {
-            return RunAsync(f => f.Handle(), f => f.VerifySend<AddedAccountProviderEventAuditCommand>((c, m) =>
-                c.AccountProviderId == m.AccountProviderId &&
-                c.AccountId == m.AccountId &&
-                c.ProviderUkprn == m.ProviderUkprn &&
-                c.UserRef == m.UserRef &&
-                c.Added == m.Added));
-        }
-    }
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships;
 
-    public class AddedAccountProviderEventHandlerTestsFixture : EventHandlerTestsFixture<AddedAccountProviderEvent, AddedAccountProviderEventHandler>
+[TestFixture]
+[Parallelizable]
+public class AddedAccountProviderEventHandlerTests : FluentTest<AddedAccountProviderEventHandlerTestsFixture>
+{
+    [Test]
+    public Task Handle_WhenHandlingAddedAccountProviderEvent_ThenShouldSendAuditCommand()
     {
+        return TestAsync(f => f.Handle(), f => f.VerifySend<AddedAccountProviderEventAuditCommand>((c, m) =>
+            c.AccountProviderId == m.AccountProviderId &&
+            c.AccountId == m.AccountId &&
+            c.ProviderUkprn == m.ProviderUkprn &&
+            c.UserRef == m.UserRef &&
+            c.Added == m.Added));
     }
+}
+
+public class AddedAccountProviderEventHandlerTestsFixture : EventHandlerTestsFixture<AddedAccountProviderEvent, AddedAccountProviderEventHandler>
+{
 }

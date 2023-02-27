@@ -5,21 +5,20 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelati
 using SFA.DAS.ProviderRelationships.Messages.Events;
 using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships
-{
-    [TestFixture]
-    [Parallelizable]
-    public class DeletedPermissionsEventV2HandlerTests : FluentTest<DeletedPermissionsEventV2HandlerTestsFixture>
-    {
-        [Test]
-        public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendNotifyCommand()
-        {
-            return RunAsync(f => f.Handle(), f => f.VerifySend<SendDeletedPermissionsNotificationCommand>((c, m) =>
-                c.AccountLegalEntityId == m.AccountLegalEntityId && c.Ukprn == m.Ukprn));
-        }
-    }
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests.EventHandlers.ProviderRelationships;
 
-    public class DeletedPermissionsEventV2HandlerTestsFixture : EventHandlerTestsFixture<DeletedPermissionsEventV2, DeletedPermissionsEventV2Handler>
+[TestFixture]
+[Parallelizable]
+public class DeletedPermissionsEventV2HandlerTests : FluentTest<DeletedPermissionsEventV2HandlerTestsFixture>
+{
+    [Test]
+    public Task Handle_WhenHandlingDeletedPermissionsEvent_ThenShouldSendNotifyCommand()
     {
+        return TestAsync(f => f.Handle(), f => f.VerifySend<SendDeletedPermissionsNotificationCommand>((c, m) =>
+            c.AccountLegalEntityId == m.AccountLegalEntityId && c.Ukprn == m.Ukprn));
     }
+}
+
+public class DeletedPermissionsEventV2HandlerTestsFixture : EventHandlerTestsFixture<DeletedPermissionsEventV2, DeletedPermissionsEventV2Handler>
+{
 }

@@ -1,25 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using NServiceBus;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Jobs.Extensions;
-using SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs;
-using SFA.DAS.ProviderRelationships.Jobs.ServiceRegistrations;
-using SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
+using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+using SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRelationships;
+using SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
+using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 
-namespace SFA.DAS.ProviderRelationships.Jobs.UnitTests;
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.UnitTests;
 
 public class WhenAddingServicesToTheContainer
 {
-    [TestCase(typeof(ImportProvidersJob))]
-    [TestCase(typeof(CreateReadStoreDatabaseJob))]
-    public void Then_The_Dependencies_Are_Correctly_Resolved_For_Jobs(Type toResolve)
+    [TestCase(typeof(AddedLegalEntityEventHandler))]
+    [TestCase(typeof(ChangedAccountNameEventHandler))]
+    [TestCase(typeof(CreatedAccountEventHandler))]
+    [TestCase(typeof(RemovedLegalEntityEventHandler))]
+    [TestCase(typeof(UpdatedLegalEntityEventHandler))]
+    [TestCase(typeof(AddedAccountProviderEventHandler))]
+    [TestCase(typeof(DeletedPermissionsEventHandler))]
+    [TestCase(typeof(DeletedPermissionsEventV2Handler))]
+    [TestCase(typeof(HealthCheckEventHandler))]
+    [TestCase(typeof(UpdatedPermissionsEventHandler))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_EventHandlers(Type toResolve)
     {
         var services = new ServiceCollection();
         SetupServiceCollection(services);
@@ -44,15 +54,28 @@ public class WhenAddingServicesToTheContainer
         services.AddMediatR(typeof(Program));
         services.AddLogging(_ => { });
         services.AddApplicationServices();
-        services.AddTransient<ImportProvidersJob>();
-        services.AddTransient<CreateReadStoreDatabaseJob>();
+
+        RegisterEventHandlers(services);
+    }
+
+    private static void RegisterEventHandlers(IServiceCollection services)
+    {
+        var handlersAssembly = typeof(AddedLegalEntityEventHandler).Assembly;
+        var handlerTypes = handlersAssembly
+            .GetTypes()
+            .Where(x => x.GetInterfaces()
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandleMessages<>)));
+
+        foreach (var handlerType in handlerTypes)
+        {
+            services.AddTransient(handlerType);
+        }
     }
 
 
     private static IConfigurationRoot GenerateConfiguration()
     {
-        var configSource = new MemoryConfigurationSource
-        {
+        var configSource = new MemoryConfigurationSource {
             InitialData = new List<KeyValuePair<string, string>>
             {
                 new("SFA.DAS.ProviderRelationshipsV2:DatabaseConnectionString", "Data Source=.;Initial Catalog=Testing;Integrated Security=True;Pooling=False;Connect Timeout=30"),
