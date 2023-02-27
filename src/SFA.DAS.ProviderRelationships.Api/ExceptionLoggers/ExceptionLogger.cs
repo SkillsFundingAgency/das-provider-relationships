@@ -1,4 +1,3 @@
-using System.Web.Http.ExceptionHandling;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Extensions;
 using WebApi.StructureMap;

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
@@ -12,7 +12,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.Ping;
 namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
     [RoutePrefix("permissions")]
-    public class PermissionsController : ApiController
+    public class PermissionsController : ControllerBase
     {
         private readonly IMediator _mediator;
 

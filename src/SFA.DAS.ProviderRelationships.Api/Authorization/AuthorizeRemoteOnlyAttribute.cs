@@ -1,6 +1,5 @@
 using System;
-using System.Web.Http;
-using System.Web.Http.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Api.Authorization
 {

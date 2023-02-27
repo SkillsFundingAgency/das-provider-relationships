@@ -1,6 +1,4 @@
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Owin.Security.ActiveDirectory;
-using Owin;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Configuration;
 

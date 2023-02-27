@@ -1,6 +1,4 @@
-﻿using System.Web.Http;
-using System.Web.Http.ExceptionHandling;
-using SFA.DAS.UnitOfWork.WebApi.Extensions;
+﻿using SFA.DAS.UnitOfWork.WebApi.Extensions;
 using ExceptionLogger = SFA.DAS.ProviderRelationships.Api.ExceptionLoggers.ExceptionLogger;
 
 namespace SFA.DAS.ProviderRelationships.Api

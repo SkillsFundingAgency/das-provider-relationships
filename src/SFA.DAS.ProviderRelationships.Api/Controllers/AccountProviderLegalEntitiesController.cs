@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;
@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers
 {
     [AuthorizeRemoteOnly(Roles = "Read")]
     [RoutePrefix("accountproviderlegalentities")]
-    public class AccountProviderLegalEntitiesController : ApiController
+    public class AccountProviderLegalEntitiesController : ControllerBase
     {
         private readonly IMediator _mediator;
 

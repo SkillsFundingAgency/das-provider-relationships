@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Web.Http;
 using Microsoft.ApplicationInsights.Extensibility;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api.DependencyResolution;

@@ -1,5 +1,4 @@
-﻿using System.Web;
-using SFA.DAS.NLog.Logger;
+﻿using SFA.DAS.NLog.Logger;
 
 namespace SFA.DAS.ProviderRelationships.Api.Logging
 {

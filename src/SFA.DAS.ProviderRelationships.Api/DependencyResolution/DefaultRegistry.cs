@@ -1,8 +1,8 @@
-using System.Web;
 using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.Api.Logging;
 using SFA.DAS.ProviderRelationships.Data;
 using StructureMap;
+using SFA.DAS.ProviderRelationships.Api;
 
 namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
 {
@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
     {
         public DefaultRegistry()
         {
-            For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContext.Current));
+            For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContextHelper.Current));
             For<ILoggingContext>().Use(c => GetLoggingContext(c));
             For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
         }
