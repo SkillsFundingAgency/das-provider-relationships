@@ -13,6 +13,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
 using SFA.DAS.ProviderRelationships.Application.Commands.ReceiveProviderRelationshipsHealthCheckEvent;
 using SFA.DAS.ProviderRelationships.Application.Commands.RemoveAccountLegalEntity;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification;
+using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountLegalEntityName;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountName;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -61,6 +62,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand, Unit>))]
     [TestCase(typeof(IRequestHandler<UpdatedPermissionsEventAuditCommand, Unit>))]
     [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_CommandHandlers(Type toResolve)
     {
         var services = new ServiceCollection();

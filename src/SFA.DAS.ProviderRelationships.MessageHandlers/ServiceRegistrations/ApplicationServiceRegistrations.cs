@@ -2,6 +2,7 @@
 using SFA.DAS.Http;
 using SFA.DAS.PAS.Account.Api.ClientV2;
 using SFA.DAS.PAS.Account.Api.ClientV2.Configuration;
+using SFA.DAS.ProviderRelationships.Helpers;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
@@ -10,16 +11,18 @@ public static class ApplicationServiceRegistrations
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddTransient<IProviderUrls, ProviderUrls>();
         services.AddTransient<IPasAccountApiClient>(CreateClient);
         services.AddTransient<IDocumentClientFactory, DocumentClientFactory>();
+       
         services.AddSingleton<IDocumentClient>(provider =>
         {
             var factory = provider.GetService<IDocumentClientFactory>();
             return factory.CreateDocumentClient();
         });
+
         services.AddTransient<IAccountProviderLegalEntitiesRepository, AccountProviderLegalEntitiesRepository>();
-
-
+        
         return services;
     }
 
