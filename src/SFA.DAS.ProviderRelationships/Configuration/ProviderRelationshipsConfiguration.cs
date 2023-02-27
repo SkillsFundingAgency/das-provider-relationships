@@ -12,10 +12,10 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ServiceBusConnectionString { get; set; }
 
         public string NServiceBusLicense {
-            get => _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
+            get => _decodedNServiceBusLicense ??= _nServiceBusLicense.HtmlDecode();
             set => _nServiceBusLicense = value;
         }
-        
+
         private string _nServiceBusLicense;
         private string _decodedNServiceBusLicense;
         public string ZenDeskSnippetKey { get; set; }
@@ -26,4 +26,4 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ApplicationBaseUrl { get; set; }
         public bool UseGovUkSignIn { get; set; }
     }
-}   
+}

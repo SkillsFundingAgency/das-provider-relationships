@@ -2,7 +2,6 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <TargetFramework>net6.0</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsGenerateRunCommandFileDisabled>true</IsGenerateRunCommandFileDisabled>
         <IsWebJobProject>true</IsWebJobProject>
         <OutputType>Exe</OutputType>
@@ -16,22 +15,22 @@
       <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.7.5" />
-        <PackageReference Include="NLog.Schema" Version="4.5.10" />
+        <PackageReference Include="NLog.Schema" Version="5.1.2" />
         <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.47" />
-        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />
+        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.2.1" />
+        <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.13" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="StructureMap" Version="4.7.1" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.6" />
+        <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="4.0.1" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.34" />
         <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />

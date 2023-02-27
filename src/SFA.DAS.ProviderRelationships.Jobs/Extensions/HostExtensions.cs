@@ -14,7 +14,7 @@ public static class HostExtensions
         return hostBuilder.ConfigureAppConfiguration((context, builder) =>
         {
             builder.AddAzureTableStorage(ConfigurationKeys.ProviderRelationships)
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
         });

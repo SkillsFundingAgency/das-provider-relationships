@@ -1,32 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>net6.0</TargetFramework>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.10.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
-    <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Moq" Version="4.18.4" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.4.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net6.0</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="FluentAssertions" Version="6.10.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
+        <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+        <PackageReference Include="Moq" Version="4.18.4" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.4.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+    </ItemGroup>
 </Project>

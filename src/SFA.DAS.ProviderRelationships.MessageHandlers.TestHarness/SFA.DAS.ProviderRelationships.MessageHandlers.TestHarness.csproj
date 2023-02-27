@@ -7,13 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NLog.Schema" Version="4.5.10" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="NLog.Schema" Version="5.1.2" />
         <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="StructureMap" Version="4.7.1" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
     </ItemGroup>
 
     <ItemGroup>
