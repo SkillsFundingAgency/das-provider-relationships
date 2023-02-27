@@ -24,6 +24,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.5" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.20" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />

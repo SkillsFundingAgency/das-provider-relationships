@@ -4,6 +4,14 @@ namespace SFA.DAS.ProviderRelationships.Jobs;
 
 public static class Program
 {
+    public static async Task Main()
+    {
+        using (var host = CreateHost())
+        {
+            await host.RunAsync();
+        }
+    }
+
 
     private static IHost CreateHost()
     {
@@ -14,35 +22,4 @@ public static class Program
             .ConfigureDasServices()
             .Build();
     }
-
-    //public static async Task Main()
-    //{
-    //    using (var container = IoC.Initialize())
-    //    {
-    //        ServicePointManager.DefaultConnectionLimit = 50;
-
-    //        var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-    //        var environmentService = container.GetInstance<IEnvironmentService>();
-    //        var loggerFactory = container.GetInstance<ILoggerFactory>();
-    //        var startup = container.GetInstance<IStartup>();
-
-    //        if (environmentService.IsCurrent(DasEnv.LOCAL))
-    //        {
-    //            config.UseDevelopmentSettings();
-    //        }
-
-    //        config.LoggerFactory = loggerFactory;
-
-    //        config.UseTimers();
-
-    //        var jobHost = new JobHost(config);
-
-    //        await startup.StartAsync();
-    //        await jobHost.CallAsync(typeof(CreateReadStoreDatabaseJob).GetMethod(nameof(CreateReadStoreDatabaseJob.Run)));
-
-    //        jobHost.RunAndBlock();
-
-    //        await startup.StopAsync();
-    //    }
-    //}
 }

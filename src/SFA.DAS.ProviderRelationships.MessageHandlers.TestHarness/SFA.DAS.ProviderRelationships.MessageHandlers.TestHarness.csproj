@@ -4,7 +4,6 @@
         <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +13,7 @@
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="StructureMap" Version="4.7.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
     </ItemGroup>
 
     <ItemGroup>

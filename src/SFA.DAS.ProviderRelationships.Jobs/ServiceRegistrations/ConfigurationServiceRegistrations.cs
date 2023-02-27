@@ -11,6 +11,14 @@ public static class ConfigurationServiceRegistrations
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
         services.AddSingleton(configuration.GetSection(ConfigurationKeys.ProviderRelationships).Get<ProviderRelationshipsConfiguration>());
 
+        var roatpApiClientKey = $"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings";
+        services.Configure<RoatpApiConfiguration>(configuration.GetSection(roatpApiClientKey));
+        services.AddSingleton(configuration.GetSection(roatpApiClientKey).Get<RoatpApiConfiguration>());
+
+        var readStoreKey = $"{ConfigurationKeys.ProviderRelationships}:ReadStore";
+        services.Configure<ReadStoreConfiguration>(configuration.GetSection(readStoreKey));
+        services.AddSingleton(cfg => cfg.GetService<IOptions<ReadStoreConfiguration>>().Value);
+
         return services;
     }
 }

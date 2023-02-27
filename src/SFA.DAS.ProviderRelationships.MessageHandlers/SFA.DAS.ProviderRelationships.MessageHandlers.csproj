@@ -31,6 +31,7 @@
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.6" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.34" />
         <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />

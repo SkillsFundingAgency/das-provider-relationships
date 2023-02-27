@@ -18,7 +18,9 @@ public class ImportProvidersJob
     public async Task Run([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo timer, ILogger logger)
     {
         var providers = await _providerApiClient.GetProviders();
-        var batches = providers.Batch(1000).Select(b => b.ToDataTable(p => p.Ukprn, p => p.ProviderName));
+        var batches = providers
+            .Batch(1000)
+            .Select(registrations => registrations.ToDataTable(registration => registration.Ukprn, registration => registration.ProviderName));
 
         foreach (var batch in batches)
         {

@@ -5,8 +5,7 @@
   <PropertyGroup>
       <LangVersion>latest</LangVersion>
       <TargetFramework>net6.0</TargetFramework>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+      <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>

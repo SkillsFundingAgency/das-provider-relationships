@@ -3,15 +3,14 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <TargetFramework>net6.0</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="FAKEBuildScript" Version="1.2.8" />
         <PackageReference Include="MediatR" Version="11.1.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.7.5" />
@@ -30,6 +29,7 @@
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.1" />
     </ItemGroup>
 
     <ItemGroup>
