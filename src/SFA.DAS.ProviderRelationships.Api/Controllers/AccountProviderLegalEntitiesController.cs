@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Threading;
-using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntitiesWithPermission;

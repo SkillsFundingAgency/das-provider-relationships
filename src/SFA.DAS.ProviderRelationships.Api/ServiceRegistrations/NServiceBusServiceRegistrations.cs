@@ -3,13 +3,11 @@ using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.AzureServiceBus;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
-using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Hosting;
 using SFA.DAS.NServiceBus.SqlServer.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Configuration;
-using Endpoint = NServiceBus.Endpoint;
 
 namespace SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
 
@@ -35,7 +33,6 @@ public static class NServiceBusServiceRegistrations
             .UseMessageConventions()
             .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
             .UseNewtonsoftJsonSerializer()
-            .UseNLogFactory()
             .UseOutbox()
             .UseUnitOfWork();
 

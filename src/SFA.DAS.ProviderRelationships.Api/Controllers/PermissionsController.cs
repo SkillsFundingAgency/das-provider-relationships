@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using Microsoft.AspNetCore.Authorization;
-using SFA.DAS.ProviderRelationships.Api.Authorization;
+﻿using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.RouteValues.Permissions;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.HasPermission;

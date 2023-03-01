@@ -37,7 +37,7 @@
         <PackageReference Include="SFA.DAS.GovUK.Auth" Version="0.2.203" />
         <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.Validation.Mvc" Version="6.0.30" />
 
