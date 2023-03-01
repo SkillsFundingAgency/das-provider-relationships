@@ -7,11 +7,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Api.Authentication;
 
-public class RoleNames
-{
-    public static string Default => "Default";
-}
-
 public static class AuthenticationExtensions
 {
     public static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration config, bool isDevelopment = false)
