@@ -1,67 +1,136 @@
-﻿// This Startup file is based on ASP.NET Core new project templates and is included
-// as a starting point for DI registration and HTTP request processing pipeline configuration.
-// This file will need updated according to the specific scenario of the application being upgraded.
-// For more information on ASP.NET Core startup files, see https://docs.microsoft.com/aspnet/core/fundamentals/startup
+﻿using Microsoft.OpenApi.Models;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
+using SFA.DAS.Api.Common.Infrastructure;
+using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.ProviderRelationships.Api.Authentication;
+using SFA.DAS.ProviderRelationships.Api.Authorization;
+using SFA.DAS.ProviderRelationships.Api.Filters;
+using SFA.DAS.ProviderRelationships.Api.Handlers;
+using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
+using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
+using SFA.DAS.ProviderRelationships.Authorization;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.ServiceRegistrations;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.Mvc.Extensions;
+using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+namespace SFA.DAS.ProviderRelationships.Api;
 
-namespace SFA.DAS.ProviderRelationships.Api
+public class Startup
 {
-    public class Startup
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        var config = new ConfigurationBuilder()
+            .AddConfiguration(configuration)
+            .SetBasePath(Directory.GetCurrentDirectory());
+
+#if DEBUG
+        if (!configuration.IsDev())
         {
-            Configuration = configuration;
+            config.AddJsonFile("appsettings.json", false)
+                .AddJsonFile("appsettings.Development.json", true);
         }
+#endif
 
-        public IConfiguration Configuration { get; }
+        config.AddEnvironmentVariables();
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        if (!configuration.IsTest())
         {
-            services.AddControllersWithViews(ConfigureMvcOptions)
-                // Newtonsoft.Json is added for compatibility reasons
-                // The recommended approach is to use System.Text.Json for serialization
-                // Visit the following link for more guidance about moving away from Newtonsoft.Json to System.Text.Json
-                // https://docs.microsoft.com/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to
-                .AddNewtonsoftJson(options =>
+            config.AddAzureTableStorage(options =>
                 {
-                    options.UseMemberCasing();
-                });
+                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                    options.EnvironmentName = configuration["EnvironmentName"];
+                    options.PreFixConfigurationKeys = false;
+                    options.ConfigurationKeysRawJsonResult = new[] { "SFA.DAS.Encoding" };
+                }
+            );
+        }
+        _configuration = config.Build();
+    }
 
+    public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
+    {
+        serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal() || _configuration.IsTest());
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
+        var isDevelopment = _configuration.IsDevOrLocal();
+
+        services.AddMediatR(typeof(RevokePermissionsCommand));
+        services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
+        services.AddApplicationServices();
+        services.AddReadStoreServices();
+        services.AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>();
+        services.AddNServiceBusClientUnitOfWork();
+
+        services.AddApiAuthentication(_configuration, isDevelopment);
+        services.AddApiAuthorization(isDevelopment);
+
+        services.AddSwaggerGen(c =>
+        {
+            c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            c.SwaggerDoc("v1", new OpenApiInfo {
+                Version = "v1",
+                Title = "Provider Relationships API"
+            });
+        });
+
+
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        services.AddSingleton<IAuthenticationServiceWrapper, AuthenticationServiceWrapper>();
+
+        services.AddConfigurationSections(_configuration)
+            .Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
+            .AddMvc(opt =>
+            {
+                if (!_configuration.IsDevOrLocal() && !_configuration.IsTest())
+                {
+                    opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                }
+
+                // opt.AddValidation();
+            });
+
+        services.AddLogging();
+        services.AddApplicationInsightsTelemetry();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseStaticFiles();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
+        app.UseHttpsRedirection()
+            .UseApiGlobalExceptionHandler(loggerFactory.CreateLogger("Startup"))
+            .UseStaticFiles()
+            .UseUnitOfWork()
+            .UseRouting()
+            .UseAuthorization()
+            .UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            })
+            .UseSwagger()
+            .UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Employer Accounts API");
+                opt.RoutePrefix = string.Empty;
             });
-        }
+    }
 
-        private void ConfigureMvcOptions(MvcOptions mvcOptions)
-        { 
-        }
+    private void ConfigureMvcOptions(MvcOptions mvcOptions)
+    {
     }
 }

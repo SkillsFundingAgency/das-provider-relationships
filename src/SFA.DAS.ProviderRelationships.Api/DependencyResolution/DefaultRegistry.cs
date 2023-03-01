@@ -6,28 +6,28 @@ using SFA.DAS.ProviderRelationships.Api;
 
 namespace SFA.DAS.ProviderRelationships.Api.DependencyResolution
 {
-    public class DefaultRegistry : Registry
-    {
-        public DefaultRegistry()
-        {
-            For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContextHelper.Current));
-            For<ILoggingContext>().Use(c => GetLoggingContext(c));
-            For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
-        }
+    //public class DefaultRegistry : Registry
+    //{
+    //    public DefaultRegistry()
+    //    {
+    //        For<HttpContextBase>().Use(() => new HttpContextWrapper(HttpContextHelper.Current));
+    //        For<ILoggingContext>().Use(c => GetLoggingContext(c));
+    //        For<IProviderRelationshipsDbContextFactory>().Use<DbContextWithNServiceBusTransactionFactory>();
+    //    }
 
-        private ILoggingContext GetLoggingContext(IContext context)
-        {
-            LoggingContext loggingContext = null;
+    //    private ILoggingContext GetLoggingContext(IContext context)
+    //    {
+    //        LoggingContext loggingContext = null;
 
-            try
-            {
-                loggingContext = new LoggingContext(context.GetInstance<HttpContextBase>());
-            }
-            catch (HttpException)
-            {
-            }
+    //        try
+    //        {
+    //            loggingContext = new LoggingContext(context.GetInstance<HttpContextBase>());
+    //        }
+    //        catch (HttpException)
+    //        {
+    //        }
 
-            return loggingContext;
-        }
-    }
+    //        return loggingContext;
+    //    }
+    //}
 }

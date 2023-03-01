@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Encoding;
 using SFA.DAS.PAS.Account.Api.ClientV2.Configuration;
 using SFA.DAS.ProviderRelationships.Api.Client.Configuration;

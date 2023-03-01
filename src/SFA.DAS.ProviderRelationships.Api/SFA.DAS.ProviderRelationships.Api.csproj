@@ -9,6 +9,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.7.2" />
@@ -21,21 +23,27 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsFederation" Version="6.10.1" />
     <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory" Version="4.1.1" />
+    <PackageReference Include="NLog" Version="5.1.2" />
     <PackageReference Include="NLog.Schema" Version="5.1.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
+    <PackageReference Include="SFA.DAS.Api.Common" Version="1.0.28" />
     <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.2.1" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
+    <PackageReference Include="SFA.DAS.NServiceBus" Version="16.0.21" />
     <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
+    <PackageReference Include="SFA.DAS.UnitOfWork" Version="9.0.28" />
     <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore">
-      <Version>9.0.13</Version>
+      <Version>9.0.28</Version>
     </PackageReference>
+    <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.13" />
     <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus">
       <Version>9.0.28</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.UnitOfWork.WebApi">
-      <Version>9.0.13</Version>
+      <Version>9.0.28</Version>
     </PackageReference>
     <PackageReference Include="SFA.DAS.Validation" Version="6.0.30" />
-    <PackageReference Include="StructureMap" Version="4.7.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="SFA.DAS.HashingService" Version="1.0.183" />

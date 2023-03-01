@@ -22,7 +22,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [Test]
         public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesDoNotExist_ThenShouldReturnNoAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
+            return TestAsync(f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.AccountProviderLegalEntities.Should().BeEmpty();
@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [Test]
         public Task GetAccountProviderLegalEntitiesWithPermission_WhenAccountProviderLegalEntitiesExist_ThenShouldReturnAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
+            return TestAsync(f => f.AddAccountProviderLegalEntitiesToAccountProviderLegalEntitiesResponse(), f => f.GetAccountProviderLegalEntitiesWithPermission(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.Should().BeEquivalentTo(f.GetAccountProviderLegalEntitiesWithPermissionResponse);
@@ -42,42 +42,42 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.UnitTests
         [Test]
         public Task HasPermission_WhenPermissionIsNotGranted_ThenShouldReturnFalse()
         {
-            return RunAsync(f => f.AddRelationships(false), f => f.HasPermission(), (f, r) => r.Should().BeFalse());
+            return TestAsync(f => f.AddRelationships(false), f => f.HasPermission(), (f, r) => r.Should().BeFalse());
         }
 
         [Test]
         public Task HasPermission_WhenPermissionIsGranted_ThenShouldReturnTrue()
         {
-            return RunAsync(f => f.AddRelationships(true), f => f.HasPermission(), (f, r) => r.Should().BeTrue());
+            return TestAsync(f => f.AddRelationships(true), f => f.HasPermission(), (f, r) => r.Should().BeTrue());
         }
 
         [Test]
         public Task HasRelationshipWithPermission_WhenRelationshipsDoNotExist_ThenShouldReturnFalse()
         {
-            return RunAsync(f => f.AddRelationships(false), f => f.HasRelationshipWithPermission(), (f, r) => r.Should().BeFalse());
+            return TestAsync(f => f.AddRelationships(false), f => f.HasRelationshipWithPermission(), (f, r) => r.Should().BeFalse());
         }
 
         [Test]
         public Task HasRelationshipWithPermission_WhenRelationshipsExist_ThenShouldReturnTrue()
         {
-            return RunAsync(f => f.AddRelationships(true), f => f.HasRelationshipWithPermission(), (f, r) => r.Should().BeTrue());
+            return TestAsync(f => f.AddRelationships(true), f => f.HasRelationshipWithPermission(), (f, r) => r.Should().BeTrue());
         }
 
         [Test]
         public Task Ping_WhenHttpPingFails_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetHttpPingFailure(), f => f.Ping(), (f, r) => r.Should().Throw<RestHttpClientException>());
+            return TestExceptionAsync(f => f.SetHttpPingFailure(), f => f.Ping(), (f, r) => r.Should().ThrowAsync<RestHttpClientException>());
         }
 
         [Test]
         public Task Ping_WhenReadStorePingFails_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetHttpPermissionPingFailure(), f => f.Ping(), (f, r) => r.Should().Throw<RestHttpClientException>());
+            return TestExceptionAsync(f => f.SetHttpPermissionPingFailure(), f => f.Ping(), (f, r) => r.Should().ThrowAsync<RestHttpClientException>());
         }
 
         [Test]
         public Task RevokePermissions_ShouldExecuteHttpRequest()
-             => RunAsync(
+             => TestAsync(
                  act: async f =>
                  {
                      f.RevokePermissionsRequest = new RevokePermissionsRequest(

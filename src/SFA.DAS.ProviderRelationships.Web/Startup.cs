@@ -17,7 +17,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;

@@ -1,15 +1,10 @@
+namespace SFA.DAS.ProviderRelationships.Api.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
-
-namespace SFA.DAS.ProviderRelationships.Api.Controllers
+[Route("ping")]
+public class PingController : ControllerBase
 {
-    [RoutePrefix("ping")]
-    public class PingController : ControllerBase
+    public IActionResult Get()
     {
-        [Route]
-        public IHttpActionResult Get()
-        {
-            return Ok();
-        }
+        return Ok();
     }
 }
