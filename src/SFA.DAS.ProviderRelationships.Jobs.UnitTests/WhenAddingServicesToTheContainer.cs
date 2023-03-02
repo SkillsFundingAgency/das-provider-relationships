@@ -55,13 +55,13 @@ public class WhenAddingServicesToTheContainer
         {
             InitialData = new List<KeyValuePair<string, string>>
             {
-                new("SFA.DAS.ProviderRelationshipsV2:DatabaseConnectionString", "Data Source=.;Initial Catalog=Testing;Integrated Security=True;Pooling=False;Connect Timeout=30"),
-                new("SFA.DAS.ProviderRelationshipsV2:ServiceBusConnectionString", "test"),
-                new("SFA.DAS.ProviderRelationshipsV2:NServiceBusLicense", "test"),
-                new("SFA.DAS.ProviderRelationshipsV2:RoatpApiClientSettings:ApiBaseUrl", "http://test/"),
-                new("SFA.DAS.ProviderRelationshipsV2:RoatpApiClientSettings:IdentifierUri", "http://test/"),
-                new("SFA.DAS.ProviderRelationshipsV2:ReadStore:AuthKey", "test"),
-                new("SFA.DAS.ProviderRelationshipsV2:ReadStore:Uri", "http://test/"),
+                new($"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString", "Data Source=.;Initial Catalog=Testing;Integrated Security=True;Pooling=False;Connect Timeout=30"),
+                new($"{ConfigurationKeys.ProviderRelationships}:ServiceBusConnectionString", "test"),
+                new($"{ConfigurationKeys.ProviderRelationships}:NServiceBusLicense", "test"),
+                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:ApiBaseUrl", "http://test/"),
+                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:IdentifierUri", "http://test/"),
+                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:AuthKey", "test"),
+                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:Uri", "http://test/"),
                 new("EnvironmentName", "LOCAL"),
             }
         };
