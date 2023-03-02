@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net;
 
 namespace SFA.DAS.ProviderRelationships.Extensions
@@ -11,18 +10,6 @@ namespace SFA.DAS.ProviderRelationships.Extensions
             var output = WebUtility.HtmlDecode(input);
 
             return output;
-        }
-
-        public static string HtmlEncode(this string input)
-        {
-            var output = WebUtility.HtmlEncode(input);
-
-            return output;
-        }
-        
-        public static T ToEnum<T>(this string value) where T : Enum
-        {
-            return (T)Enum.Parse(typeof(T), value);
         }
         
         //https://stackoverflow.com/a/4878276/1123275
