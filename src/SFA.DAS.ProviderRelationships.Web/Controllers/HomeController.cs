@@ -14,6 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _employerUrls = employerUrls;
         }
 
+        [HttpGet]
         [Route("")]
         public ActionResult Index(string accountHashedId = null)
         {

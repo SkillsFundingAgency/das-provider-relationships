@@ -29,7 +29,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-        
+
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Any)]
         [Route("")]
         public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
@@ -41,6 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
+
         public ActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
@@ -51,6 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return PartialView(model);
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("find")]
         public async Task<ActionResult> Find()
@@ -88,6 +91,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("add")]
@@ -120,6 +124,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
@@ -151,6 +156,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/alreadyadded")]
@@ -180,6 +186,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Any)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
@@ -197,6 +204,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("invitation/{correlationId}")]
         public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)

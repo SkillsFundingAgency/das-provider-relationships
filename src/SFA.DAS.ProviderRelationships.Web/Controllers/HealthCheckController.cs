@@ -17,6 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         [Route("")]
         public async Task<ActionResult> Index()
         {
