@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
+﻿using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
+﻿namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
 {
     public class InvitationAccountProviderRouteValues
     {

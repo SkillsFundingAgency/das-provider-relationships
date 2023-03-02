@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
+﻿using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.Filters
 {

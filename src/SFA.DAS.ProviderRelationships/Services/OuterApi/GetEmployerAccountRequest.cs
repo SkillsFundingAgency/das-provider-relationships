@@ -1,4 +1,4 @@
-using System.Web;
+using System.Net;
 
 namespace SFA.DAS.ProviderRelationships.Services.OuterApi
 {
@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Services.OuterApi
         public GetEmployerAccountRequest(string userId, string email)
         {
             _userId = userId;
-            _email = HttpUtility.UrlEncode(email);
+            _email = WebUtility.UrlEncode(email);
         }
 
         public string GetUrl => $"accountusers/{_userId}/accounts?email={_email}";

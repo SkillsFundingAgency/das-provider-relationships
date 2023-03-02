@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.AutoConfiguration;
+﻿using SFA.DAS.AutoConfiguration;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers

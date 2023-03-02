@@ -1,12 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;

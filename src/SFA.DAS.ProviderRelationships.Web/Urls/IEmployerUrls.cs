@@ -4,12 +4,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
     {
         void Initialize(string accountHashedId);
         
-        #region Accounts
         string Account(string hashedAccountId = null);
-        #endregion Accounts
 
-        #region Portal
         string Homepage();
-        #endregion Portal
     }
 }

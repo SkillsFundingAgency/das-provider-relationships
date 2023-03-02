@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SFA.DAS.ProviderRelationships.Validation;
+﻿using SFA.DAS.ProviderRelationships.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {

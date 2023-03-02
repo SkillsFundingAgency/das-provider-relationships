@@ -1,4 +1,3 @@
-using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;

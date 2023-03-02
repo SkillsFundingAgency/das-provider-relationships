@@ -1,11 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Web;
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
+﻿using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Authorization;
@@ -33,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
             _employerUrls = employerUrls;
         }
-       
+
         [HttpGet]
         [HttpNotFoundForNullModel]
         [Route("")]
@@ -85,15 +78,15 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             if (model.Confirmation.GetValueOrDefault() || model.Permissions[1].State != State.No)
             {
-                var operations = model.Permissions.ToOperations(); 
+                var operations = model.Permissions.ToOperations();
                 var update = new UpdatePermissionsCommand(model.AccountId.Value, model.AccountProviderId.Value, model.AccountLegalEntityId.Value, model.UserRef.Value, operations);
-                
+
                 await _mediator.Send(update);
 
                 if (HttpContext.Session.GetString("Invitation").ToNullable<bool>() == true)
                 {
                     var provider = await _mediator.Send(new GetAccountProviderQuery(model.AccountId.Value, model.AccountProviderId.Value));
-                    return Redirect($"{_employerUrls.Account()}/addedprovider/{HttpUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+                    return Redirect($"{_employerUrls.Account()}/addedprovider/{WebUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
                 }
 
                 TempData["PermissionsChanged"] = true;

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders

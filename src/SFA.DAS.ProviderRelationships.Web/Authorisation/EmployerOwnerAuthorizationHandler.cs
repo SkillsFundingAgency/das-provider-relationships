@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-
-namespace SFA.DAS.ProviderRelationships.Web.Authorisation
+﻿namespace SFA.DAS.ProviderRelationships.Web.Authorisation
 {
     public class EmployerOwnerAuthorizationHandler : AuthorizationHandler<EmployerOwnerRoleRequirement>
     {

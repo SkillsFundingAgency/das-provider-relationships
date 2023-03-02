@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
+﻿using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Mappings;

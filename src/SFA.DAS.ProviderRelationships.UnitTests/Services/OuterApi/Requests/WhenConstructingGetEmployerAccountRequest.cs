@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using System.Net;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Services.OuterApi.Requests
             var actual = new GetEmployerAccountRequest(userId, email);
 
             //Assert
-            actual.GetUrl.Should().Be($"accountusers/{userId}/accounts?email={HttpUtility.UrlEncode(email)}");
+            actual.GetUrl.Should().Be($"accountusers/{userId}/accounts?email={WebUtility.UrlEncode(email)}");
         }
     }
 }
