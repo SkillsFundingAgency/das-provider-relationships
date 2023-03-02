@@ -2,23 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.ProviderRelationships.Data.Configuration;
 using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Data
 {
     public class ProviderRelationshipsDbContext : DbContext
     {
-        private ILoggerFactory GetLoggerFactory()
+        private static ILoggerFactory GetLoggerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging(builder =>
                    builder
                    .AddDebug()
-                          .AddFilter(DbLoggerCategory.Database.Command.Name,
-                                     LogLevel.Information));
-            return serviceCollection.BuildServiceProvider()
-                    .GetService<ILoggerFactory>();
+                          .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
+            
+            return serviceCollection
+                .BuildServiceProvider()
+                .GetService<ILoggerFactory>();
         }
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
         public DbSet<AccountProvider> AccountProviders { get; set; }
@@ -39,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
         }
 
-        protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 #if DEBUG
             optionsBuilder
