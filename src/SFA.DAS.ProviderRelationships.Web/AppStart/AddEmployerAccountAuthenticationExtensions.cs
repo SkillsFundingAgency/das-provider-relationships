@@ -1,13 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
 
 namespace SFA.DAS.ProviderRelationships.Web.AppStart
 {

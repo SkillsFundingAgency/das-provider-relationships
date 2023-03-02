@@ -49,7 +49,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     {
                         options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
                         options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                        options.EnvironmentName = configuration["Environment"];
+                        options.EnvironmentName = configuration["EnvironmentName"];
                         options.PreFixConfigurationKeys = false;
                     }
                 );
@@ -150,7 +150,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseUnitOfWork();
+            //app.UseUnitOfWork();
 
             app.Use(async (context, next) =>
             {

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
+using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Handlers;
 
 namespace SFA.DAS.ProviderRelationships.Web.AppStart;
 
@@ -12,9 +13,11 @@ public static class AddAuthorisationExtensions
         this IServiceCollection services)
     {
         services.AddHttpContextAccessor();
+        services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
         services.AddSingleton<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
+        services.AddTransient<IUserAccountService, UserAccountService>();
 
         services.AddAuthorization(options =>
         {
