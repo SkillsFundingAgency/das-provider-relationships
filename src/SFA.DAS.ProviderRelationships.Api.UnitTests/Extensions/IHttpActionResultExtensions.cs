@@ -1,5 +1,4 @@
-﻿using System.Web.Http.ModelBinding;
-using System.Web.Http.Results;
+﻿using System.Linq;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,18 +9,14 @@ public static class HttpActionResultExtensions
     public static void AssertModelError(this IActionResult result, string propertyName, string expectedErrorMessage)
     {
         result.Should().NotBeNull();
-        var modelStateDictionary = result.GetModelStateDictionary();
-        modelStateDictionary.Should().NotBeNull();
-        modelStateDictionary.HasModelError(propertyName, expectedErrorMessage).Should().BeTrue();
-    }
 
-    public static ModelStateDictionary GetModelStateDictionary(this IActionResult result)
-    {
-        InvalidModelStateResult modelStateResult = result as InvalidModelStateResult;
-        if (modelStateResult == null)
-            return null;
+        var objectResult = result as BadRequestObjectResult;
+        objectResult.Value.GetType().Should().Be<SerializableError>();
 
-        ModelStateDictionary modelStateDictionary = modelStateResult.ModelState;
-        return modelStateDictionary;
+        var errors = objectResult.Value as SerializableError;
+        errors.ContainsKey(propertyName).Should().BeTrue();
+
+        var errorItem = errors[propertyName] as string[];
+        errorItem.Single().Should().Be(expectedErrorMessage);
     }
 }
