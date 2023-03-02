@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http.Results;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Api.Controllers;
@@ -22,36 +22,30 @@ public class RevokeTests : FluentTest<RevokeTestsFixture>
     [Test]
     public Task WhenUkprnIsNull_ThenShouldReturnBadRequest() =>
         TestAsync(
-            arrange: f =>
+            arrange: fixture =>
             {
-                f.RevokePermissionsRouteValues.Ukprn = null;
+                fixture.RevokePermissionsRouteValues.Ukprn = null;
             },
-            act: async f =>
+            act: async fixture => await fixture.PermissionsController.Revoke(fixture.RevokePermissionsRouteValues),
+            assert: (_, result) =>
             {
-                return await f.PermissionsController.Revoke(f.RevokePermissionsRouteValues);
-            },
-            assert: (f, r) =>
-            {
-                r.Should().BeAssignableTo<InvalidModelStateResult>();
-                r.AssertModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A Ukprn needs to be supplied");
+                result.Should().BeAssignableTo<BadRequestObjectResult>();
+                result.AssertModelError(nameof(RevokePermissionsRouteValues.Ukprn), "A Ukprn needs to be supplied");
             }
         );
 
     [Test]
     public Task WhenAccountLegalEntityPublicHashedIdIsNull_ThenShouldReturnBadRequest() =>
         TestAsync(
-            arrange: f =>
+            arrange: fixture =>
             {
-                f.RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId = null;
+                fixture.RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId = null;
             },
-            act: async f =>
+            act: async fixture => await fixture.PermissionsController.Revoke(fixture.RevokePermissionsRouteValues),
+            assert: (_, result) =>
             {
-                return await f.PermissionsController.Revoke(f.RevokePermissionsRouteValues);
-            },
-            assert: (f, r) =>
-            {
-                r.Should().BeAssignableTo<InvalidModelStateResult>();
-                r.AssertModelError(nameof(RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
+                result.Should().BeAssignableTo<BadRequestObjectResult>();
+                result.AssertModelError(nameof(RevokePermissionsRouteValues.AccountLegalEntityPublicHashedId), "A Public Hashed Id for an Account Legal Entity needs to be supplied");
             }
         );
 
@@ -59,32 +53,26 @@ public class RevokeTests : FluentTest<RevokeTestsFixture>
     [TestCase(new Operation[0])]
     public Task WhenOperationsToRemoveIdIsNullOrEmpty_ThenShouldReturnBadRequest(Operation[] operations) =>
         TestAsync(
-            arrange: f =>
+            arrange: fixture =>
             {
-                f.RevokePermissionsRouteValues.OperationsToRevoke = operations;
+                fixture.RevokePermissionsRouteValues.OperationsToRevoke = operations;
             },
-            act: async f =>
+            act: async fixture => await fixture.PermissionsController.Revoke(fixture.RevokePermissionsRouteValues),
+            assert: (_, result) =>
             {
-                return await f.PermissionsController.Revoke(f.RevokePermissionsRouteValues);
-            },
-            assert: (f, r) =>
-            {
-                r.Should().BeAssignableTo<InvalidModelStateResult>();
-                r.AssertModelError(nameof(RevokePermissionsRouteValues.OperationsToRevoke), "One or more operations need to be supplied");
+                result.Should().BeAssignableTo<BadRequestObjectResult>();
+                result.AssertModelError(nameof(RevokePermissionsRouteValues.OperationsToRevoke), "One or more operations need to be supplied");
             }
         );
 
     [Test]
     public Task WhenRequestIsValid_ThenShouldExecuteCommand() =>
         TestAsync(
-            act: async f =>
+            act: async fixture => await fixture.PermissionsController.Revoke(fixture.RevokePermissionsRouteValues),
+            assert: (fixture, result) =>
             {
-                return await f.PermissionsController.Revoke(f.RevokePermissionsRouteValues);
-            },
-            assert: (f, r) =>
-            {
-                r.Should().BeAssignableTo<OkResult>();
-                f.Mediator.Verify(x => x.Send(
+                result.Should().BeAssignableTo<OkResult>();
+                fixture.Mediator.Verify(x => x.Send(
                     It.Is<RevokePermissionsCommand>(c =>
                         c.Ukprn == 299792458
                         && c.AccountLegalEntityPublicHashedId == "DEADBEEF"

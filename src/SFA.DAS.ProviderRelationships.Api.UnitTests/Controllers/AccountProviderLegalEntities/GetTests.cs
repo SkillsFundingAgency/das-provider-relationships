@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http.Results;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,98 +23,106 @@ public class GetTests : FluentTest<GetTestsFixture>
     [Test]
     public Task WhenValidUkprnAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetUkprn(12345678);
-                f.SetOperation(Operation.CreateCohort);
+                fixture.SetUkprn(12345678);
+                fixture.SetOperation(Operation.CreateCohort);
             },
-            f => f.CallGet(), 
-            (f, r) =>
+            fixture => fixture.CallGet(), 
+            (fixture, result) =>
             {
-                r.Should().NotBeNull();
-                r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
-                ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                result.Should().NotBeNull();
+                result.Should().BeOfType<OkObjectResult>();
+                var value = ((OkObjectResult)result).Value;
+                value.Should().BeOfType<GetAccountProviderLegalEntitiesWithPermissionResponse>();
+                value.Should().BeEquivalentTo(fixture.Result);
             });
     }
 
     [Test]
     public Task WhenValidAccountHashedIdAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetAccountHashedId("TEST");
-                f.SetOperation(Operation.CreateCohort);
+                fixture.SetAccountHashedId("TEST");
+                fixture.SetOperation(Operation.CreateCohort);
             },
-            f => f.CallGet(),
-            (f, r) =>
+            fixture => fixture.CallGet(),
+            (fixture, result) =>
             {
-                r.Should().NotBeNull();
-                r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
-                ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                result.Should().NotBeNull();
+                result.Should().BeOfType<OkObjectResult>();
+                var value = ((OkObjectResult)result).Value;
+                value.Should().BeOfType<GetAccountProviderLegalEntitiesWithPermissionResponse>();
+                value.Should().BeEquivalentTo(fixture.Result);
             });
     }
 
     [Test]
     public Task WhenValidAccountHashedIdAndAccountLegalIdPublicHashedIdAndOperationIsSupplied_ThenShouldReturnRelationshipsFromQuery()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetAccountHashedId("XYZ123");
-                f.SetAccountLegalEntityPublicHashedId("ABC123");
-                f.SetOperation(Operation.CreateCohort);
+                fixture.SetAccountHashedId("XYZ123");
+                fixture.SetAccountLegalEntityPublicHashedId("ABC123");
+                fixture.SetOperation(Operation.CreateCohort);
             },
-            f => f.CallGet(),
-            (f, r) =>
+            fixture => fixture.CallGet(),
+            (fixture, result) =>
             {
-                r.Should().NotBeNull();
-                r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
-                ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                result.Should().NotBeNull();
+                result.Should().BeOfType<OkObjectResult>();
+                var value = ((OkObjectResult)result).Value;
+                value.Should().BeOfType<GetAccountProviderLegalEntitiesWithPermissionResponse>();
+                value.Should().BeEquivalentTo(fixture.Result);
             });
     }
         
     [Test]
     public Task WhenValidAccountHashedIdAndAccountLegalIdPublicHashedIdAndOperationsAreSupplied_ThenShouldReturnRelationshipsFromQuery()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetAccountHashedId("XYZ123");
-                f.SetAccountLegalEntityPublicHashedId("ABC123");
-                f.SetOperations(new List<Operation>{Operation.CreateCohort});
+                fixture.SetAccountHashedId("XYZ123");
+                fixture.SetAccountLegalEntityPublicHashedId("ABC123");
+                fixture.SetOperations(new List<Operation>{Operation.CreateCohort});
             },
-            f => f.CallGet(),
-            (f, r) =>
+            fixture => fixture.CallGet(),
+            (fixture, result) =>
             {
-                r.Should().NotBeNull();
-                r.Should().BeOfType<OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>>();
-                ((OkNegotiatedContentResult<GetAccountProviderLegalEntitiesWithPermissionResponse>)r).Content.Should().BeEquivalentTo(f.Result);
+                result.Should().NotBeNull();
+                result.Should().BeOfType<OkObjectResult>();
+                var value = ((OkObjectResult)result).Value;
+                value.Should().BeOfType<GetAccountProviderLegalEntitiesWithPermissionResponse>();
+                value.Should().BeEquivalentTo(fixture.Result);
             });
     }
 
     [Test]
     public Task WhenUkprnAndAccountHashedIdIsMissing_ThenShouldReturnBadRequest()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetOperation(Operation.Recruitment);
+                fixture.SetOperation(Operation.Recruitment);
             },
-            f => f.CallGet(),
-            (f, r) =>
+            fixture => fixture.CallGet(),
+            (_, result) =>
             {
-                r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
-                r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.AccountHashedId), "Currently an AccountHashedId filter needs to be supplied");
+                result.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Ukprn), "Currently a Ukprn filter needs to be supplied");
+                result.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.AccountHashedId), "Currently an AccountHashedId filter needs to be supplied");
             });
     }
 
     [Test]
     public Task WhenOperationIsMissing_ThenShouldReturnBadRequest()
     {
-        return TestAsync(f =>
+        return TestAsync(fixture =>
             {
-                f.SetAccountHashedId("ABC123");
-                f.SetUkprn(12345678);
+                fixture.SetAccountHashedId("ABC123");
+                fixture.SetUkprn(12345678);
             },
-            f => f.CallGet(),
-            (f, r) => r.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
+            fixture => fixture.CallGet(),
+            (_, result) => result.AssertModelError(nameof(GetAccountProviderLegalEntitiesRouteValues.Operation), "Currently an Operation filter needs to be supplied"));
     }
 }
 
