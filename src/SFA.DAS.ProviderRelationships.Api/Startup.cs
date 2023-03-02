@@ -2,6 +2,8 @@
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
+using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.Filters;
@@ -70,6 +72,7 @@ public class Startup
         services.AddReadStoreServices();
         services.AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>();
         services.AddNServiceBusClientUnitOfWork();
+        services.AddTransient<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
 
         services.AddApiAuthentication(_configuration, isDevelopment);
         services.AddApiAuthorization(isDevelopment);
@@ -113,7 +116,6 @@ public class Startup
         app.UseHttpsRedirection()
             .UseApiGlobalExceptionHandler(loggerFactory.CreateLogger("Startup"))
             .UseStaticFiles()
-            .UseUnitOfWork()
             .UseRouting()
             .UseAuthorization()
             .UseEndpoints(endpoints =>
