@@ -31,7 +31,7 @@ public static class AddConfigurationOptionsExtension
         services.Configure<AzureActiveDirectoryConfiguration>(configuration.GetSection("AzureActiveDirectory"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<AzureActiveDirectoryConfiguration>>().Value);
         services.Configure<EmployerUrlsConfiguration>(configuration.GetSection("EmployerUrls"));
-        services.AddSingleton(cfg => cfg.GetService<IOptions<EmployerUrlsConfiguration>>().Value);
+        services.AddSingleton<IEmployerUrlsConfiguration>(cfg => cfg.GetService<IOptions<EmployerUrlsConfiguration>>().Value);
         services.Configure<ReadStoreConfiguration>(configuration.GetSection("ReadStore"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ReadStoreConfiguration>>().Value);
         services.Configure<ProviderRelationshipsApiConfiguration>(configuration.GetSection("ProviderRelationshipsApi"));

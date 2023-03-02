@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
@@ -19,6 +20,7 @@ using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
+using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
@@ -69,6 +71,9 @@ namespace SFA.DAS.ProviderRelationships.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddAutoConfiguration();
+            services.AddApplicationServices();
             
             services.AddServiceRegistration(_configuration);
             services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
