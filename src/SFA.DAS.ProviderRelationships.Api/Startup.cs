@@ -88,7 +88,6 @@ public class Startup
 
 
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-        services.AddSingleton<IAuthenticationServiceWrapper, AuthenticationServiceWrapper>();
 
         services.AddConfigurationSections(_configuration)
             .Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
