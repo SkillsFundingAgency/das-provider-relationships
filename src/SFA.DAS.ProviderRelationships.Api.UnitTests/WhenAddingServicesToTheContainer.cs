@@ -26,12 +26,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(PingController))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Controllers(Type toResolve)
     {
-        var serviceCollection = new ServiceCollection();
-        SetupServiceCollection(serviceCollection);
-        var provider = serviceCollection.BuildServiceProvider();
-
-        var type = provider.GetService(toResolve);
-        Assert.IsNotNull(type);
+        RunTestForType(toResolve);
     }
 
     [TestCase(typeof(IRequestHandler<GetAccountProviderLegalEntitiesWithPermissionQuery, GetAccountProviderLegalEntitiesWithPermissionQueryResult>))]
@@ -40,9 +35,14 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IRequestHandler<RevokePermissionsCommand, Unit>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Mediator_Handlers(Type toResolve)
     {
-        var services = new ServiceCollection();
-        SetupServiceCollection(services);
-        var provider = services.BuildServiceProvider();
+       RunTestForType(toResolve);
+    }
+
+    private static void RunTestForType(Type toResolve)
+    {
+        var serviceCollection = new ServiceCollection();
+        SetupServiceCollection(serviceCollection);
+        var provider = serviceCollection.BuildServiceProvider();
 
         var type = provider.GetService(toResolve);
         Assert.IsNotNull(type);

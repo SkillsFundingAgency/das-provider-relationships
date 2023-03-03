@@ -10,20 +10,23 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQue
 {
     public class GetInvitationByIdQueryHandler : IRequestHandler<GetInvitationByIdQuery, GetInvitationByIdQueryResult>
     {
-        private IRegistrationApiClient _registrationService;
+        private readonly IRegistrationApiClient _registrationApiClient;
         private readonly ILogger<GetInvitationByIdQueryHandler> _logger;
 
-        public GetInvitationByIdQueryHandler(IRegistrationApiClient registrationService, ILogger<GetInvitationByIdQueryHandler> logger)
+        public GetInvitationByIdQueryHandler(IRegistrationApiClient registrationApiClient, ILogger<GetInvitationByIdQueryHandler> logger)
         {
-            _registrationService = registrationService;
+            _registrationApiClient = registrationApiClient;
             _logger = logger;
         }
 
         public async Task<GetInvitationByIdQueryResult> Handle(GetInvitationByIdQuery message, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Get Invitations for {message.CorrelationId}");
-            var json = await _registrationService.GetInvitations(message.CorrelationId.ToString(), cancellationToken);
+
+            var json = await _registrationApiClient.GetInvitations(message.CorrelationId.ToString(), cancellationToken);
+
             _logger.LogInformation($"Request sent Get Invitations for {message.CorrelationId} {json}");
+
             return new GetInvitationByIdQueryResult(json == null ? null : JsonConvert.DeserializeObject<InvitationDto>(json)) { };
         }
     }

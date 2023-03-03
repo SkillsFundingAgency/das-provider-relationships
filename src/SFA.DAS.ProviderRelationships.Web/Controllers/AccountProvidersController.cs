@@ -70,7 +70,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Route("find")]
         public async Task<ActionResult> Find(FindProviderEditModel model)
         {
-
             var ukprn = long.Parse(model.Ukprn);
             var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
 

@@ -61,25 +61,29 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(_configuration);
+
             var identityServerConfiguration = _configuration
                 .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
             
+            services.AddLogging();
+
+            services.AddAutoConfiguration();
             services.AddConfigurationOptions(_configuration);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddAutoConfiguration();
+            
             services.AddApplicationServices();
+            services.AddApiClients();
             
             services.AddServiceRegistration(_configuration);
-            services.AddMediatR(typeof(FindProviderToAddQuery).Assembly);
-            services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings), typeof(AccountLegalEntityMappings));
-            services.AddDatabaseRegistration(_configuration, _configuration["Environment"]);
-            
+            services.AddMediatR(typeof(FindProviderToAddQuery));
+            services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
+            services.AddDatabaseRegistration(_configuration, _configuration["EnvironmentName"]);
             
             services.AddEmployerAuthorisationServices();
             

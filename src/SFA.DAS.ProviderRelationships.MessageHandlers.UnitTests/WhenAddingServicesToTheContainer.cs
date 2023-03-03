@@ -42,12 +42,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(UpdatedPermissionsEventHandler))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_EventHandlers(Type toResolve)
     {
-        var services = new ServiceCollection();
-        SetupServiceCollection(services);
-        var provider = services.BuildServiceProvider();
-
-        var type = provider.GetService(toResolve);
-        Assert.IsNotNull(type);
+       RunTestForType(toResolve);
     }
 
     [TestCase(typeof(IRequestHandler<AddAccountLegalEntityCommand, Unit>))]
@@ -65,9 +60,14 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_CommandHandlers(Type toResolve)
     {
-        var services = new ServiceCollection();
-        SetupServiceCollection(services);
-        var provider = services.BuildServiceProvider();
+       RunTestForType(toResolve);
+    }
+
+    private static void RunTestForType(Type toResolve)
+    {
+        var serviceCollection = new ServiceCollection();
+        SetupServiceCollection(serviceCollection);
+        var provider = serviceCollection.BuildServiceProvider();
 
         var type = provider.GetService(toResolve);
         Assert.IsNotNull(type);

@@ -27,9 +27,9 @@ public class RegistrationApiClient : ApiClientBase, IRegistrationApiClient
         _configuration = configuration;
     }
 
-    public async Task Unsubscribe(string CorrelationId)
+    public async Task Unsubscribe(string correlationId)
     {
-        var url = $"{_apiBaseUrl}api/unsubscribe/{CorrelationId}";
+        var url = $"{_apiBaseUrl}api/unsubscribe/{correlationId}";
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
         
         await AddAuthenticationHeader(httpRequestMessage);
@@ -37,9 +37,9 @@ public class RegistrationApiClient : ApiClientBase, IRegistrationApiClient
         await _client.SendAsync(httpRequestMessage).ConfigureAwait(false);
     }
 
-    public async Task<string> GetInvitations(string CorrelationId, CancellationToken cancellationToken = default)
+    public async Task<string> GetInvitations(string correlationId, CancellationToken cancellationToken = default)
     {
-        var url = $"{_apiBaseUrl}api/invitations/{CorrelationId}";
+        var url = $"{_apiBaseUrl}api/invitations/{correlationId}";
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
         
         await AddAuthenticationHeader(httpRequestMessage);
@@ -50,7 +50,7 @@ public class RegistrationApiClient : ApiClientBase, IRegistrationApiClient
         return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    protected async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
+    private async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)
     {
         if (_configuration["EnvironmentName"].ToUpper() != "LOCAL")
         {
