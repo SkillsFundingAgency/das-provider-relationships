@@ -6,10 +6,8 @@ using AutoMapper;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
-using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Models;
@@ -30,10 +28,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                
+
                 r.AccountProvider.Should().NotBeNull().And.BeOfType<AccountProviderDto>()
-                    .And.BeEquivalentTo(new AccountProviderDto
-                    {
+                    .And.BeEquivalentTo(new AccountProviderDto {
                         Id = f.AccountProvider.Id,
                         ProviderUkprn = f.Provider.Ukprn,
                         ProviderName = f.Provider.Name,
@@ -59,24 +56,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         {
             return TestAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
-
-        [Test]
-        public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationUnauthorized()
-        {
-            return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
-            {
-                r.Should().NotBeNull();
-            });
-        }
-
-        [Test]
-        public Task Handle_WhenUserIsNotOwner_ThenShouldReturnGetAccountProviderQueryResultWithUpdatePermissionsOperationAuthorized()
-        {
-            return TestAsync(f => f.SetAccountProviders().SetOwner(), f => f.Handle(), (f, r) =>
-            {
-                r.Should().NotBeNull();
-            });
-        }
     }
 
     public class GetAccountProviderQueryHandlerTestsFixture
@@ -91,8 +70,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public ProviderRelationships.Models.Permission Permission { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IConfigurationProvider ConfigurationProvider { get; set; }
-        public Mock<IAuthorizationService> AuthorizationService { get; set; }
-        
+
         public GetAccountProviderQueryHandlerTestsFixture()
         {
             Query = new GetAccountProviderQuery(1, 2);
@@ -101,12 +79,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                     .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             ConfigurationProvider = new MapperConfiguration(
                 c => c.AddProfiles(new List<Profile> {
-                    new AccountProviderMappings(), 
+                    new AccountProviderMappings(),
                     new AccountLegalEntityMappings()
                 }));
-            AuthorizationService = new Mock<IAuthorizationService>();
             Handler = new GetAccountProviderQueryHandler(
-                new Lazy<ProviderRelationshipsDbContext>(() => Db), 
+                new Lazy<ProviderRelationshipsDbContext>(() => Db),
                 ConfigurationProvider);
         }
 
@@ -142,7 +119,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 .Set(p => p.Id, 5)
                 .Set(p => p.AccountProviderLegalEntityId, AccountProviderLegalEntity.Id)
                 .Set(p => p.Operation, Operation.CreateCohort);
-            
+
             Db.Accounts.Add(Account);
             Db.Providers.Add(Provider);
             Db.AccountProviders.Add(AccountProvider);
@@ -150,16 +127,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
             Db.Permissions.Add(Permission);
             Db.SaveChanges();
-            
-            return this;
-        }
 
-        public GetAccountProviderQueryHandlerTestsFixture SetOwner()
-        {
-            AuthorizationService
-                .Setup(a => a.IsAuthorizedAsync(EmployerUserRole.Owner))
-                .ReturnsAsync(true);
-            
             return this;
         }
     }
