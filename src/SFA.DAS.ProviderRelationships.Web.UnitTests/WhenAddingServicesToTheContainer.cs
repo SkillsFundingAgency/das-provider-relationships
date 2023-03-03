@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
@@ -98,6 +101,17 @@ public class WhenAddingServicesToTheContainer
         services.AddTransient<HealthCheckController>();
         services.AddTransient<HomeController>();
         services.AddTransient<ServiceController>();
+
+        services.AddTransient(_ => CreateAuthorizationContext());
+    }
+
+    private static AuthorizationHandlerContext CreateAuthorizationContext()
+    {
+        var resource = new { Name = "test" };
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new(ClaimTypes.Name, "test.object") }));
+        var requirement = new OperationAuthorizationRequirement { Name = "Read" };
+
+        return new AuthorizationHandlerContext(new List<IAuthorizationRequirement> { requirement }, user, resource);
     }
 
     private static IConfigurationRoot GenerateConfiguration()
@@ -119,6 +133,8 @@ public class WhenAddingServicesToTheContainer
                 new($"{ConfigurationKeys.ProviderRelationships}:RecruitApiClientConfiguration:IdentifierUri", "https://test.com"),
                 new($"{ConfigurationKeys.ProviderRelationships}:RegistrationApiClientConfiguration:ApiBaseUrl", "https://test.com"),
                 new($"{ConfigurationKeys.ProviderRelationships}:RegistrationApiClientConfiguration:IdentifierUri", "https://test.com"),
+                new($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration:BaseUrl", "https://test.com"),
+                new($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration:Key", "test"),
                 new("SFA.DAS.Encoding", "{'Encodings':[{'EncodingType':'AccountId','Salt':'test','MinHashLength':6,'Alphabet':'46789BCDFGHJKLMNPRSTVWXY'}]}"),
                 new("EnvironmentName", "test"),
             }

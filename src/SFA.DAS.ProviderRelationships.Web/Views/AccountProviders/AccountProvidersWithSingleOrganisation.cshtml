@@ -1,13 +1,17 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 
+@{
+    var isOwner = EmployerAccountAuthorizationHandler.IsEmployerAuthorised(AuthorizationContext, EmployerUserAuthorisationRole.Owner);
+}
+
 
 <table class="govuk-table">
     <thead class="govuk-table__head">
         <tr class="govuk-table__row">
             <th class="govuk-table__header" scope="col">Training provider name</th>
             <th class="govuk-table__header" scope="col">Permissions</th>
-            @if ((await AuthorizationService.AuthorizeAsync(User, PolicyNames.HasEmployerOwnerAccount)).Succeeded)
+            @if (isOwner)
             {
                 <th class="govuk-table__header" scope="col">
                     <span class="govuk-visually-hidden">Action</span>
@@ -35,7 +39,7 @@
                     </ul>
                 }
             </td>
-            @if ((await AuthorizationService.AuthorizeAsync(User, PolicyNames.HasEmployerOwnerAccount)).Succeeded)
+            @if (isOwner)
             {
                 <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
                     <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">

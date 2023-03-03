@@ -198,8 +198,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 new SFA.DAS.ProviderRelationships.Types.Dtos.AccountProviderDto {
                     Id = 2,
                     ProviderName = "Foo Bar"
-                },
-                true);
+                });
 
             Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None)).ReturnsAsync(Unit.Value);
             Mediator.Setup(m => m.Send(It.IsAny<GetAccountProviderQuery>(), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);

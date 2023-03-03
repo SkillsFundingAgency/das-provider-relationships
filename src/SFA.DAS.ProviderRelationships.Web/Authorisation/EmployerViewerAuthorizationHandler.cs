@@ -2,16 +2,16 @@
 {
     public class EmployerViewerAuthorizationHandler : AuthorizationHandler<EmployerViewerRoleRequirement>
     {
-        private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
+        private readonly IEmployerAccountAuthorizationHandler _employerAccountAuthorizationHandler;
 
-        public EmployerViewerAuthorizationHandler(IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler)
+        public EmployerViewerAuthorizationHandler(IEmployerAccountAuthorizationHandler employerAccountAuthorizationHandler)
         {
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         }
     
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerViewerRoleRequirement requirement)
         {
-            if (!_employerAccountAuthorizationHandler.IsEmployerAuthorised(context, EmployerUserRole.Viewer))
+            if (!_employerAccountAuthorizationHandler.IsEmployerAuthorised(context, EmployerUserAuthorisationRole.Viewer))
             {
                 return Task.CompletedTask;
             }

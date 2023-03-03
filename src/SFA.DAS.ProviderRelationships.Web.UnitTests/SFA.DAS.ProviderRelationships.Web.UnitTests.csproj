@@ -22,11 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- hopefully this itemgroup can be deleted  -->
-        <!--PackageReference Include="IdentityModel" Version="6.0.0" /-->
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Web\SFA.DAS.ProviderRelationships.Web.csproj" />
     </ItemGroup>
 

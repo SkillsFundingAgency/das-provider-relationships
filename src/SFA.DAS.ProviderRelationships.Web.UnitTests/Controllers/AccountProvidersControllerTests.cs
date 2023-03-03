@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -18,14 +21,17 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Testing;
+using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
@@ -261,7 +267,28 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
 
                 model.AccountProvider.Should().BeSameAs(f.GetAccountProviderQueryResult.AccountProvider);
-                model.IsUpdatePermissionsOperationAuthorized.Should().Be(f.GetAccountProviderQueryResult.IsUpdatePermissionsOperationAuthorized);
+            });
+        }
+
+        [Test]
+        [MoqInlineAutoData( true)]
+        [MoqInlineAutoData( false)]
+        public Task Get_ShouldCheckIfEmployerAuthorisedAndSetModelIsUpdatePermissionsOperationAuthorized(bool expected)
+        {
+            return TestAsync(fixture =>
+            {
+                fixture.EmployerAccountAuthorisationHandler.Setup(x =>
+                    x.IsEmployerAuthorised(It.IsAny<AuthorizationHandlerContext>(),
+                        EmployerUserAuthorisationRole.Owner)).Returns(expected);
+
+                return fixture.Get();
+            }, (fixture, result) =>
+            {
+                var model = result.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
+
+                fixture.EmployerAccountAuthorisationHandler.Verify(x=> x.IsEmployerAuthorised(It.IsAny<AuthorizationHandlerContext>(), EmployerUserAuthorisationRole.Owner));
+                model.AccountProvider.Should().BeSameAs(fixture.GetAccountProviderQueryResult.AccountProvider);
+                model.IsUpdatePermissionsOperationAuthorized.Should().Be(expected);
             });
         }
 
@@ -283,6 +310,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProvidersController AccountProvidersController { get; set; }
         public FindProviderViewModel FindProviderViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
+        public Mock<IEmployerAccountAuthorizationHandler> EmployerAccountAuthorisationHandler { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
@@ -307,7 +335,24 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
-            AccountProvidersController = new AccountProvidersController(Mediator.Object, Mapper, EmployerUrls.Object);
+            EmployerAccountAuthorisationHandler = new Mock<IEmployerAccountAuthorizationHandler>();
+
+            AccountProvidersController = new AccountProvidersController(
+                Mediator.Object,
+                Mapper,
+                EmployerUrls.Object,
+                EmployerAccountAuthorisationHandler.Object,
+                CreateAuthorizationContext()
+                );
+        }
+
+        private static AuthorizationHandlerContext CreateAuthorizationContext()
+        {
+            var resource = new { Name = "test"};
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "homer.simpson") }));
+            var requirement = new OperationAuthorizationRequirement { Name = "Read" };
+
+            return new AuthorizationHandlerContext(new List<IAuthorizationRequirement> { requirement }, user, resource);
         }
 
         public Task<ActionResult> Index()
@@ -485,8 +530,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                             }
                         })
                         .ToList()
-                },
-                true);
+                });
             
             Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == GetAccountProviderRouteValues.AccountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
             

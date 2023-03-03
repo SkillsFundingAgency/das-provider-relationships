@@ -12,7 +12,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         {
             CreateMap<GetAccountProvidersQueryResult, AccountProvidersViewModel>();
 
-            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>();
+            CreateMap<GetAccountProviderQueryResult, GetAccountProviderViewModel>()
+                .ForMember(d=> d.IsUpdatePermissionsOperationAuthorized, o => o.Ignore());
 
             CreateMap<GetAddedAccountProviderQueryResult, AddedAccountProviderViewModel>()
                 .ForMember(d => d.Choice, o => o.Ignore());

@@ -13,10 +13,10 @@ public static class AddAuthorisationExtensions
     {
         services.AddHttpContextAccessor();
         services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
-        services.AddSingleton<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
         services.AddTransient<IUserAccountService, UserAccountService>();
+        services.AddTransient<IEmployerAccountAuthorizationHandler, EmployerAccountAuthorizationHandler>();
 
         services.AddAuthorization(options =>
         {

@@ -2,16 +2,16 @@
 {
     public class EmployerOwnerAuthorizationHandler : AuthorizationHandler<EmployerOwnerRoleRequirement>
     {
-        private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
+        private readonly IEmployerAccountAuthorizationHandler _employerAccountAuthorizationHandler;
 
-        public EmployerOwnerAuthorizationHandler(IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler)
+        public EmployerOwnerAuthorizationHandler(IEmployerAccountAuthorizationHandler employerAccountAuthorizationHandler)
         {
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         }
     
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerOwnerRoleRequirement requirement)
         {
-            if (!_employerAccountAuthorizationHandler.IsEmployerAuthorised(context, EmployerUserRole.Owner))
+            if (!_employerAccountAuthorizationHandler.IsEmployerAuthorised(context, EmployerUserAuthorisationRole.Owner))
             {
                 return Task.CompletedTask;
             }

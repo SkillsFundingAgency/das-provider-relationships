@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
@@ -7,7 +8,7 @@ using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorisation
 {
-    public class EmployerAccountAuthorizationHandler : IEmployerAccountAuthorisationHandler
+    public class EmployerAccountAuthorizationHandler : IEmployerAccountAuthorizationHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOuterApiClient _outerApiClient;
@@ -15,9 +16,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
         private readonly ProviderRelationshipsConfiguration _config;
 
         public EmployerAccountAuthorizationHandler(
-            IHttpContextAccessor httpContextAccessor, 
-            IOuterApiClient outerApiClient, 
-            ILogger<EmployerAccountAuthorizationHandler> logger, 
+            IHttpContextAccessor httpContextAccessor,
+            IOuterApiClient outerApiClient,
+            ILogger<EmployerAccountAuthorizationHandler> logger,
             IOptions<ProviderRelationshipsConfiguration> configOptions)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -25,18 +26,18 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
             _logger = logger;
             _config = configOptions.Value;
         }
-    
-        public bool IsEmployerAuthorised(AuthorizationHandlerContext context, EmployerUserRole allowedRole)
+
+        public bool IsEmployerAuthorised(AuthorizationHandlerContext context, EmployerUserAuthorisationRole allowedRole)
         {
             if (!_httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey(RouteValueKeys.AccountHashedId))
             {
                 return false;
             }
-            
-            var accountIdFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues[RouteValueKeys.AccountHashedId].ToString().ToUpper();
-            var employerAccountClaim = context.User.FindFirst(c=>c.Type.Equals(EmployerClaimTypes.AssociatedAccounts));
 
-            if(employerAccountClaim?.Value == null)
+            var accountIdFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues[RouteValueKeys.AccountHashedId].ToString().ToUpper();
+            var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerClaimTypes.AssociatedAccounts));
+
+            if (employerAccountClaim?.Value == null)
                 return false;
 
             Dictionary<string, EmployerUserAccountItem> employerAccounts;
@@ -55,34 +56,34 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
 
             if (employerAccounts != null)
             {
-                employerIdentifier = employerAccounts.ContainsKey(accountIdFromUrl) 
+                employerIdentifier = employerAccounts.ContainsKey(accountIdFromUrl)
                     ? employerAccounts[accountIdFromUrl] : null;
             }
 
             if (employerAccounts == null || !employerAccounts.ContainsKey(accountIdFromUrl))
             {
-                var requiredIdClaim =_config.UseGovUkSignIn 
+                var requiredIdClaim = _config.UseGovUkSignIn
                     ? ClaimTypes.NameIdentifier : EmployerClaimTypes.UserId;
-                
+
                 if (!context.User.HasClaim(c => c.Type.Equals(requiredIdClaim)))
                     return false;
-                
+
                 var userClaim = context.User.Claims
                     .First(c => c.Type.Equals(requiredIdClaim));
 
                 var email = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
                 var userId = userClaim.Value;
-                
+
                 var request = new GetEmployerAccountRequest(userId, email);
                 var result = _outerApiClient.Get<GetUserAccountsResponse>(request).Result;
 
                 var accountsAsJson = JsonConvert.SerializeObject(result.UserAccounts.ToDictionary(k => k.AccountId));
                 var associatedAccountsClaim = new Claim(EmployerClaimTypes.AssociatedAccounts, accountsAsJson, JsonClaimValueTypes.Json);
-                
+
                 var updatedEmployerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(associatedAccountsClaim.Value);
 
                 userClaim.Subject.AddClaim(associatedAccountsClaim);
-                
+
                 if (!updatedEmployerAccounts.ContainsKey(accountIdFromUrl))
                 {
                     return false;
@@ -96,56 +97,32 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
                 _httpContextAccessor.HttpContext.Items.Add(ContextItemKeys.EmployerIdentifier, employerAccounts.GetValueOrDefault(accountIdFromUrl));
             }
 
-            if (!CheckUserRoleForAccess(employerIdentifier, allowedRole))
-            {
-                return false;
-            }
-            
-            return true;
-        }
-        
-        private static bool CheckUserRoleForAccess(EmployerUserAccountItem employerIdentifier, EmployerUserRole allowedRole)
-        {
-            if (!Enum.TryParse<EmployerUserRole>(employerIdentifier.Role, true, out var userRole))
+            if (!Enum.TryParse<EmployerUserAuthorisationRole>(employerIdentifier.Role, true, out var claimUserRole))
             {
                 return false;
             }
 
-            return userRole == allowedRole;
+            switch (allowedRole)
+            {
+                case EmployerUserAuthorisationRole.Owner when claimUserRole == EmployerUserAuthorisationRole.Owner:
+                case EmployerUserAuthorisationRole.Transactor when claimUserRole is EmployerUserAuthorisationRole.Owner or EmployerUserAuthorisationRole.Transactor:
+                case EmployerUserAuthorisationRole.Viewer when claimUserRole is EmployerUserAuthorisationRole.Owner or EmployerUserAuthorisationRole.Transactor or EmployerUserAuthorisationRole.Viewer:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 
-    /*public class EmployerUserAccounts
-    {
-        public IEnumerable<EmployerUserAccountItem> EmployerAccounts { get ; set ; }
-
-        public static implicit operator EmployerUserAccounts(GetUserAccountsResponse source)
-        {
-            if (source?.UserAccounts == null)
-            {
-                return new EmployerUserAccounts
-                {
-                    EmployerAccounts = new List<EmployerUserAccountItem>()
-                };
-            }
-            
-            return new EmployerUserAccounts
-            {
-                EmployerAccounts = source.UserAccounts.Select(c=>(EmployerUserAccountItem)c).ToList()
-            };
-        }
-    }*/
-    
     public class EmployerUserAccountItem
     {
         public string AccountId { get; set; }
         public string EmployerName { get; set; }
         public string Role { get; set; }
-        
+
         public static implicit operator EmployerUserAccountItem(EmployerIdentifier source)
         {
-            return new EmployerUserAccountItem
-            {
+            return new EmployerUserAccountItem {
                 AccountId = source.AccountId,
                 EmployerName = source.EmployerName,
                 Role = source.Role
@@ -158,7 +135,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
         [JsonProperty("UserAccounts")]
         public List<EmployerIdentifier> UserAccounts { get; set; }
     }
-    
+
     public class EmployerIdentifier
     {
         [JsonProperty("EncodedAccountId")]
@@ -169,7 +146,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
         public string Role { get; set; }
     }
 
-    public enum EmployerUserRole
+    public enum EmployerUserAuthorisationRole
     {
         None = 0,
         Owner = 1,

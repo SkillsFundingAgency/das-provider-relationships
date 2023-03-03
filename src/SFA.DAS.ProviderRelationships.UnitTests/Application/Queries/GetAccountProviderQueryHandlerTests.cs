@@ -66,7 +66,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return TestAsync(f => f.SetAccountProviders(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.IsUpdatePermissionsOperationAuthorized.Should().BeFalse();
             });
         }
 
@@ -76,7 +75,6 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             return TestAsync(f => f.SetAccountProviders().SetOwner(), f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
-                r.IsUpdatePermissionsOperationAuthorized.Should().BeTrue();
             });
         }
     }
@@ -109,8 +107,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             AuthorizationService = new Mock<IAuthorizationService>();
             Handler = new GetAccountProviderQueryHandler(
                 new Lazy<ProviderRelationshipsDbContext>(() => Db), 
-                ConfigurationProvider, 
-                AuthorizationService.Object);
+                ConfigurationProvider);
         }
 
         public Task<GetAccountProviderQueryResult> Handle()

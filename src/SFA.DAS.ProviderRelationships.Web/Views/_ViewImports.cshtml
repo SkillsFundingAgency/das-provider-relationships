@@ -8,4 +8,5 @@
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@inject IAuthorizationService AuthorizationService
+@inject IEmployerAccountAuthorizationHandler EmployerAccountAuthorizationHandler
+@inject AuthorizationHandlerContext AuthorizationContext

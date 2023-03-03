@@ -22,7 +22,7 @@ public static class AddConfigurationOptionsExtension
         services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection("ProviderRelationshipsWebConfiguration"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
         
-        services.Configure<OuterApiConfiguration>(configuration.GetSection(nameof(OuterApiConfiguration)));
+        services.Configure<OuterApiConfiguration>(configuration.GetSection($"{Configuration.ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OuterApiConfiguration>>().Value);
         
         services.Configure<IdentityServerConfiguration>(configuration.GetSection("Oidc"));
