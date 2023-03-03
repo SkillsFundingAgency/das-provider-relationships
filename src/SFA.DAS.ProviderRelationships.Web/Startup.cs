@@ -52,7 +52,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                         options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
                         options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
                         options.EnvironmentName = configuration["EnvironmentName"];
-                        options.PreFixConfigurationKeys = false;
+                        options.PreFixConfigurationKeys = true;
                     }
                 );
             }
@@ -64,7 +64,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddSingleton(_configuration);
 
             var identityServerConfiguration = _configuration
-                .GetSection("Oidc")
+                .GetSection($"{ConfigurationKeys.ProviderRelationships}:Oidc")
                 .Get<IdentityServerConfiguration>();
             
             services.AddLogging();
