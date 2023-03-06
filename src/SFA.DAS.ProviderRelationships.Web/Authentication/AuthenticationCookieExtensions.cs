@@ -1,9 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SFA.DAS.ProviderRelationships.Web.AppStart;
+namespace SFA.DAS.ProviderRelationships.Web.Authentication;
 
 public static class AddAuthenticationCookieExtensions
 {

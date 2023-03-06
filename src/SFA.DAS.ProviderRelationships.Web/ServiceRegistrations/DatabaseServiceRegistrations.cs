@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.Azure.Services.AppAuthentication;
+﻿using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Web.AppStart;
+namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AddDatabaseRegistrationExtensions
 {
@@ -15,7 +14,7 @@ public static class AddDatabaseRegistrationExtensions
             environmentName.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
             services.AddDbContext<ProviderRelationshipsDbContext>(
-                options => options.UseSqlServer(config["ProviderRelationshipsWebConfiguration:DatabaseConnectionString"]), 
+                options => options.UseSqlServer(config["ProviderRelationshipsWebConfiguration:DatabaseConnectionString"]),
                 ServiceLifetime.Transient);
         }
         else

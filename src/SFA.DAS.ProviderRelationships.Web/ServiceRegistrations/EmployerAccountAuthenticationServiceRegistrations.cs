@@ -5,7 +5,7 @@ using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 
-namespace SFA.DAS.ProviderRelationships.Web.AppStart
+namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations
 {
     public static class AddEmployerAccountAuthenticationExtensions
     {
@@ -15,7 +15,7 @@ namespace SFA.DAS.ProviderRelationships.Web.AppStart
                 "Employer-stub",
                 options => { });
         }
-        
+
         public static void AddAndConfigureEmployerAuthentication(
             this IServiceCollection services,
             IdentityServerConfiguration configuration)
@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web.AppStart
                     options.MetadataAddress = $"{configuration.BaseAddress}/.well-known/openid-configuration";
                     options.ResponseType = "code";
                     options.UsePkce = false;
-                    
+
                     var scopes = configuration.Scopes.Split(' ');
                     foreach (var scope in scopes)
                     {
@@ -50,7 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Web.AppStart
                             c.Response.Redirect("/");
                             c.HandleResponse();
                         }
-    
+
                         return Task.CompletedTask;
                     };
                 });

@@ -1,25 +1,21 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
-namespace SFA.DAS.ProviderRelationships.Web.AppStart;
+namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AddHealthCheckExtensions
 {
     public static IApplicationBuilder UseHealthChecks(this IApplicationBuilder app)
     {
-        app.UseHealthChecks("/health", new HealthCheckOptions
-        {
+        app.UseHealthChecks("/health", new HealthCheckOptions {
             ResponseWriter = HealthCheckResponseWriter.WriteJsonResponse
         });
-            
-        app.UseHealthChecks("/ping", new HealthCheckOptions
-        {
+
+        app.UseHealthChecks("/ping", new HealthCheckOptions {
             Predicate = (_) => false,
             ResponseWriter = (context, report) =>
             {
@@ -30,7 +26,7 @@ public static class AddHealthCheckExtensions
 
         return app;
     }
-    
+
     private static class HealthCheckResponseWriter
     {
         public static Task WriteJsonResponse(HttpContext httpContext, HealthReport result)

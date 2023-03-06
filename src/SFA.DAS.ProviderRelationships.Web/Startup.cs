@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using MediatR;
+﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,12 +12,10 @@ using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Mappings;
-using SFA.DAS.ProviderRelationships.Web.AppStart;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
-using SFA.DAS.UnitOfWork.Mvc.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -80,7 +74,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddApplicationServices();
             services.AddApiClients();
             
-            services.AddServiceRegistration(_configuration);
             services.AddMediatR(typeof(FindProviderToAddQuery));
             services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
             services.AddDatabaseRegistration(_configuration, _configuration["EnvironmentName"]);
