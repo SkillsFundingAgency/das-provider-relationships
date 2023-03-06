@@ -172,7 +172,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/alreadyadded")]
         public IActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
         {
