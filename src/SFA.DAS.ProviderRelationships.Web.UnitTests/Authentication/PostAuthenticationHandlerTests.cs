@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;1
+using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
@@ -30,16 +30,21 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         [Test]
         public async Task Handle_WhenHandlingPostAuthenticationIdentity_ThenShouldSendCreateOrUpdateUserCommand()
         {
-            await TestAsync(f => f.Handle(), f => f.Mediator.Verify(m => m.Send(It.Is<CreateOrUpdateUserCommand>(c => 
-                c.Ref == f.Ref && c.Email == f.Email && c.FirstName == f.FirstName && c.LastName == f.LastName), CancellationToken.None), Times.Once));
+            await TestAsync(fixture => fixture.Handle(),
+                fixture => fixture.Mediator.Verify(m =>
+                    m.Send(It.Is<CreateOrUpdateUserCommand>(command => command.Ref == fixture.Ref && command.Email == fixture.Email && command.FirstName == fixture.FirstName && command.LastName == fixture.LastName), CancellationToken.None),
+                    Times.Once)
+                );
         }
-        
+
         [Test]
         public async Task Handle_WhenHandlingPostAuthenticationIdentity_AndNotUsingGovUkSignIn_ThenShouldNotCallOuterApi()
         {
-            await TestAsync(f => f.Handle(), 
-                f => f.MockOuterApiClient.Verify(m => m.Get<GetUserAccountsResponse>(It.IsAny<GetEmployerAccountRequest>()), 
-                    Times.Never));
+            await TestAsync(fixture => fixture.Handle(),
+                fixture => fixture.MockOuterApiClient.Verify(outerApiClient =>
+                        outerApiClient.Get<GetUserAccountsResponse>(It.IsAny<GetEmployerAccountRequest>()),
+                        Times.Never)
+                );
         }
 
         [Test, MoqAutoData]
@@ -48,7 +53,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             string email,
             Guid userId,
             GetUserAccountsResponse apiResponse,
-            [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> mockConfigOptions, 
+            [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> mockConfigOptions,
             [Frozen] Mock<IOuterApiClient> mockOuterApiClient,
             [Frozen] Mock<IServiceProvider> mockContainer,
             [Frozen] Mock<IUnitOfWorkScope> mockUnitOfWork,
@@ -60,17 +65,22 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 new Claim(ClaimTypes.NameIdentifier, govUkUserId),
                 new Claim(ClaimTypes.Email, email)
             });
+
             var expectedRequest = new GetEmployerAccountRequest(govUkUserId, email);
             apiResponse.EmployerUserId = userId.ToString();
+
             var accountsAsJson = JsonConvert.SerializeObject(apiResponse.UserAccounts.ToDictionary(k => k.AccountId));
+
             mockOuterApiClient
                 .Setup(client => client.Get<GetUserAccountsResponse>(It.Is<GetEmployerAccountRequest>(request =>
                     request.GetUrl == expectedRequest.GetUrl)))
                 .ReturnsAsync(apiResponse);
+
             mockUnitOfWork
                 .Setup(scope => scope.RunAsync(It.IsAny<Func<IServiceProvider, Task>>()))
                 .Returns(Task.CompletedTask)
                 .Callback<Func<IServiceProvider, Task>>(o => o(mockContainer.Object));
+
             mockConfigOptions
                 .Setup(options => options.Value)
                 .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = true });
@@ -86,18 +96,23 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
                 claim.Type == EmployerClaimTypes.AssociatedAccounts &&
                 claim.ValueType == JsonClaimValueTypes.Json &&
                 claim.Value == accountsAsJson);
+
             identity.Claims.Should().Contain(claim =>
                 claim.Type == EmployerClaimTypes.UserId &&
                 claim.Value == apiResponse.EmployerUserId);
+
             identity.Claims.Should().Contain(claim =>
                 claim.Type == EmployerClaimTypes.EmailAddress &&
                 claim.Value == email);
+
             identity.Claims.Should().Contain(claim =>
                 claim.Type == EmployerClaimTypes.GivenName &&
                 claim.Value == apiResponse.FirstName);
+
             identity.Claims.Should().Contain(claim =>
                 claim.Type == EmployerClaimTypes.FamilyName &&
                 claim.Value == apiResponse.LastName);
+
             mockMediator.Verify(m => m.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None),
                 Times.Once);
         }
@@ -110,13 +125,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Mock<IMediator> Mediator { get; set; }
-        public ClaimsIdentity ClaimsIdentity { get; set; }
+        public ClaimsIdentity ClaimsIdentity { get; set; } = new();
         public IPostAuthenticationHandler Handler { get; set; }
         public Mock<IUnitOfWorkScope> UnitOfWorkScope { get; set; }
         public Mock<IServiceProvider> Container { get; set; }
         public Mock<IOuterApiClient> MockOuterApiClient { get; set; }
         public Mock<IOptions<ProviderRelationshipsConfiguration>> MockConfigOptions { get; set; }
-        
+        public Mock<IConfiguration> MockConfiguration { get; set; }
+
         public PostAuthenticationHandlerTestsFixture()
         {
             Ref = Guid.NewGuid();
@@ -124,9 +140,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             FirstName = "Foo";
             LastName = "Bar";
             Mediator = new Mock<IMediator>();
-            
-            ClaimsIdentity = new ClaimsIdentity(new List<Claim>
-            {
+            MockConfiguration = new Mock<IConfiguration>();
+
+            ClaimsIdentity = new ClaimsIdentity(new List<Claim> {
                 new Claim(EmployerClaimTypes.UserId, Ref.ToString()),
                 new Claim(EmployerClaimTypes.EmailAddress, Email),
                 new Claim(EmployerClaimTypes.GivenName, FirstName),
@@ -140,15 +156,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             MockConfigOptions
                 .Setup(options => options.Value)
                 .Returns(new ProviderRelationshipsConfiguration() { UseGovUkSignIn = false });
-            
+
             UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IServiceProvider, Task>>())).Returns(Task.CompletedTask).Callback<Func<IServiceProvider, Task>>(o => o(Container.Object));
 
-            Handler = new PostAuthenticationHandler(MockOuterApiClient.Object, Mediator.Object, MockConfigOptions.Object, Mock.Of<IConfiguration>());
+            Handler = new PostAuthenticationHandler(MockOuterApiClient.Object, Mediator.Object, MockConfigOptions.Object, MockConfiguration.Object);
         }
 
-        public async Task Handle()
+        public async Task<IEnumerable<Claim>> Handle()
         {
-            await Handler.Handle(ClaimsIdentity);
+            return await Handler.Handle(ClaimsIdentity);
         }
     }
 }

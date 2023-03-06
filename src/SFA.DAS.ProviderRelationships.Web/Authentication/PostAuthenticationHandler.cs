@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SFA.DAS.GovUK.Auth.Services;
@@ -31,21 +32,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
         public async Task<IEnumerable<Claim>> Handle(ClaimsIdentity claimsIdentity)
         {
-            var useStubAuth = _configuration["StubAuth"] != null && _configuration["StubAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase);
-
-            if (useStubAuth)
-            {
-                claimsIdentity.AddClaims(new[]
-                {
-                    new Claim(EmployerClaimTypes.UserId, Guid.NewGuid().ToString()),
-                    new Claim(EmployerClaimTypes.EmailAddress, _configuration["NoAuthEmail"]),
-                    new Claim(EmployerClaimTypes.GivenName, "Stub-Given-Name"),
-                    new Claim(EmployerClaimTypes.FamilyName, "Stub-Family-Name"),
-                });
-
-                return claimsIdentity.Claims;
-            }
-
             if (_providerRelationshipsConfiguration.UseGovUkSignIn)
             {
                 var userId = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
