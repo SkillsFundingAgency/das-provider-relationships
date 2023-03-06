@@ -40,7 +40,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("")]
         public IActionResult Permissions(AccountProviderLegalEntityViewModel model)
         {
@@ -61,7 +60,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("Confirm")]
         public async Task<IActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
         {
