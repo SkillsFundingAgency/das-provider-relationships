@@ -355,7 +355,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return new AuthorizationHandlerContext(new List<IAuthorizationRequirement> { requirement }, user, resource);
         }
 
-        public Task<ActionResult> Index()
+        public Task<IActionResult> Index()
         {
             AccountProvidersRouteValues = new AccountProvidersRouteValues {
                 AccountId = 1
@@ -378,12 +378,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Index(AccountProvidersRouteValues);
         }
 
-        public Task<ActionResult> Find()
+        public Task<IActionResult> Find()
         {
             return AccountProvidersController.Find();
         }
 
-        public Task<ActionResult> PostFind(bool providerExists = false, bool providerAlreadyAdded = false)
+        public Task<IActionResult> PostFind(bool providerExists = false, bool providerAlreadyAdded = false)
         {
             var accountId = 1;
             var ukprn = 12345678;
@@ -401,7 +401,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Find(findProviderEditModel);
         }
 
-        public Task<ActionResult> Add()
+        public Task<IActionResult> Add()
         {
             AddAccountProviderRouteValues = new AddAccountProviderRouteValues
             {
@@ -420,7 +420,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Add(AddAccountProviderRouteValues);
         }
 
-        public Task<ActionResult> PostAdd(string choice = null)
+        public Task<IActionResult> PostAdd(string choice = null)
         {
             AddAccountProviderViewModel = new AddAccountProviderViewModel
             {
@@ -441,7 +441,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Add(AddAccountProviderViewModel);
         }
 
-        public Task<ActionResult> Added()
+        public Task<IActionResult> Added()
         {
             AddedAccountProviderRouteValues = new AddedAccountProviderRouteValues
             {
@@ -461,7 +461,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Added(AddedAccountProviderRouteValues);
         }
 
-        public ActionResult PostAdded(string choice = null)
+        public IActionResult PostAdded(string choice = null)
         {
             AddedAccountProviderViewModel = new AddedAccountProviderViewModel
             {
@@ -475,7 +475,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Added(AddedAccountProviderViewModel);
         }
 
-        public Task<ActionResult> AlreadyAdded()
+        public Task<IActionResult> AlreadyAdded()
         {
             AlreadyAddedAccountProviderRouteValues = new AlreadyAddedAccountProviderRouteValues
             {
@@ -495,7 +495,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderRouteValues);
         }
 
-        public ActionResult PostAlreadyAdded(string choice = null)
+        public IActionResult PostAlreadyAdded(string choice = null)
         {
             AlreadyAddedAccountProviderViewModel = new AlreadyAddedAccountProviderViewModel
             {
@@ -506,7 +506,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderViewModel);
         }
 
-        public Task<ActionResult> Get(int? accountLegalEntitiesCount = null)
+        public Task<IActionResult> Get(int? accountLegalEntitiesCount = null)
         {
             GetAccountProviderRouteValues = new GetAccountProviderRouteValues
             {
@@ -537,7 +537,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProvidersController.Get(GetAccountProviderRouteValues);
         }
 
-        public Task<ActionResult> Invitation()
+        public Task<IActionResult> Invitation()
         {
             var userRef = Guid.NewGuid();
             var correlationId = Guid.NewGuid();

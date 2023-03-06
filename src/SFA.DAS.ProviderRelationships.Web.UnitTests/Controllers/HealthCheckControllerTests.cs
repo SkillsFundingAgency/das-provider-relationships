@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             HealthCheckController = new HealthCheckController(Mediator.Object, Mapper);
         }
 
-        public Task<ActionResult> Index()
+        public Task<IActionResult> Index()
         {
             GetHealthCheckQueryResult = new GetHealthCheckQueryResult(new HealthCheckDto());
 
@@ -74,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return HealthCheckController.Index();
         }
 
-        public Task<ActionResult> PostIndex()
+        public Task<IActionResult> PostIndex()
         {
             HealthCheckRouteValues = new HealthCheckRouteValues { UserRef = Guid.NewGuid() };
             

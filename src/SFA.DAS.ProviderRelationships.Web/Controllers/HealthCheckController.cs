@@ -19,7 +19,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var query = new GetHealthCheckQuery();
             var response = await _mediator.Send(query);
@@ -31,7 +31,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("")]
-        public async Task<ActionResult> Index(HealthCheckRouteValues routeValues)
+        public async Task<IActionResult> Index(HealthCheckRouteValues routeValues)
         {
             var command = new RunHealthCheckCommand(routeValues.UserRef.Value);
             

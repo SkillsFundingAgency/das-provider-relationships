@@ -30,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpGet]
         [HttpNotFoundForNullModel]
         [Route("")]
-        public async Task<ActionResult> Permissions(AccountProviderLegalEntityRouteValues routeValues)
+        public async Task<IActionResult> Permissions(AccountProviderLegalEntityRouteValues routeValues)
         {
             var query = new GetAccountProviderLegalEntityQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value, routeValues.AccountLegalEntityId.Value);
             var result = await _mediator.Send(query);
@@ -42,7 +42,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("")]
-        public ViewResult Permissions(AccountProviderLegalEntityViewModel model)
+        public IActionResult Permissions(AccountProviderLegalEntityViewModel model)
         {
             for (var index = 0; index < model.Permissions.Count; index++)
             {
@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Confirm")]
-        public async Task<ActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
+        public async Task<IActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
         {
             if (command == "Change")
             {

@@ -63,12 +63,12 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             HomeController = new HomeController(EnvironmentService.Object, EmployerUrls.Object);
         }
 
-        public ActionResult Local()
+        public IActionResult Local()
         {
             return HomeController.Index();
         }
 
-        public ActionResult LocalWithEmployerAccountId(string employerAccountId)
+        public IActionResult LocalWithEmployerAccountId(string employerAccountId)
         {
             return HomeController.Index(employerAccountId);
         }

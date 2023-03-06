@@ -38,7 +38,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpGet]
         [Authorize(Policy = EmployerUserRole.Any)]
         [Route("")]
-        public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
+        public async Task<IActionResult> Index(AccountProvidersRouteValues routeValues)
         {
             var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
             var result = await _mediator.Send(query);
@@ -48,12 +48,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
 
-        public ActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
+        public IActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
         }
 
-        public ActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
+        public IActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
         {
             return PartialView(model);
         }
@@ -61,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("find")]
-        public async Task<ActionResult> Find()
+        public async Task<IActionResult> Find()
         {
             var query = new GetAllProvidersQuery();
             var result = await _mediator.Send(query);
@@ -73,7 +73,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("find")]
-        public async Task<ActionResult> Find(FindProviderEditModel model)
+        public async Task<IActionResult> Find(FindProviderEditModel model)
         {
             var ukprn = long.Parse(model.Ukprn);
             var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
@@ -99,7 +99,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("add")]
-        public async Task<ActionResult> Add(AddAccountProviderRouteValues routeValues)
+        public async Task<IActionResult> Add(AddAccountProviderRouteValues routeValues)
         {
             var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
             var result = await _mediator.Send(query);
@@ -112,7 +112,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("add")]
-        public async Task<ActionResult> Add(AddAccountProviderViewModel model)
+        public async Task<IActionResult> Add(AddAccountProviderViewModel model)
         {
             switch (model.Choice)
             {
@@ -132,7 +132,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
-        public async Task<ActionResult> Added(AddedAccountProviderRouteValues routeValues)
+        public async Task<IActionResult> Added(AddedAccountProviderRouteValues routeValues)
         {
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
@@ -145,7 +145,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/added")]
-        public ActionResult Added(AddedAccountProviderViewModel model)
+        public IActionResult Added(AddedAccountProviderViewModel model)
         {
             switch (model.Choice)
             {
@@ -164,7 +164,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/alreadyadded")]
-        public async Task<ActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
+        public async Task<IActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
         {
             var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
@@ -177,7 +177,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/alreadyadded")]
-        public ActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
+        public IActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
         {
             switch (model.Choice)
             {
@@ -194,7 +194,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [Authorize(Policy = EmployerUserRole.Any)]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
-        public async Task<ActionResult> Get(GetAccountProviderRouteValues routeValues)
+        public async Task<IActionResult> Get(GetAccountProviderRouteValues routeValues)
         {
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
@@ -213,7 +213,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("invitation/{correlationId}")]
-        public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
+        public async Task<IActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
         {
             HttpContext.Session.SetString("Invitation", "true");
 

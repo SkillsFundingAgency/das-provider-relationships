@@ -131,7 +131,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object, Mapper, EmployerUrls.Object);
         }
 
-        public Task<ActionResult> Permissions()
+        public Task<IActionResult> Permissions()
         {
             AccountProviderLegalEntityRouteValues = new AccountProviderLegalEntityRouteValues
             {
@@ -162,7 +162,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProviderLegalEntitiesController.Permissions(AccountProviderLegalEntityRouteValues);
         }
 
-        public Task<ActionResult> PostUpdate(bool? confirmation, string command, State recruitState)
+        public Task<IActionResult> PostUpdate(bool? confirmation, string command, State recruitState)
         {
             AccountProviderLegalEntityViewModel = new AccountProviderLegalEntityViewModel
             {
@@ -206,7 +206,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return AccountProviderLegalEntitiesController.Confirm(AccountProviderLegalEntityViewModel, command);
         }
 
-        public Task<ActionResult> Updated()
+        public Task<IActionResult> Updated()
         {
             AccountProviderLegalEntityRouteValues = new AccountProviderLegalEntityRouteValues
             {

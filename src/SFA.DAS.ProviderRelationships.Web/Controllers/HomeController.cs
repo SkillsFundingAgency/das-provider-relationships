@@ -16,7 +16,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult Index(string accountHashedId = null)
+        public IActionResult Index(string accountHashedId = null)
         {
             if (_environmentService.IsCurrent(DasEnv.LOCAL))
             {
