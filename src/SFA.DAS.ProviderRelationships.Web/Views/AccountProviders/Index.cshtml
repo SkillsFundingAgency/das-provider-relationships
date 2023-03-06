@@ -1,5 +1,6 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ProviderRelationships.Web.ViewComponents
 
 @{
     var isOwner = EmployerAccountAuthorizationHandler.IsEmployerAuthorised(AuthorizationContext, EmployerUserAuthorisationRole.Owner);
@@ -12,10 +13,10 @@
 }
 
 @section breadcrumb
-{
+    {
     <a href="@Html.EmployerUrls().Account()" class="govuk-back-link">Back</a>
 }
-  
+
 @if (TempData.ContainsKey("ProviderName"))
 {
     <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-8">
@@ -47,12 +48,14 @@
 
 @if (Model.AccountProviders.Count > 0)
 {
-    //todo: remove this call to child action :sadness:
-    //@Html.Action(Model.AccountLegalEntitiesCount == 1 ? "AccountProvidersWithSingleOrganisation" : "AccountProvidersWithMultipleOrganisation", new { model = Model })
+    @await Component.InvokeAsync(Model.AccountLegalEntitiesCount == 1
+               ? ComponentConstants.AccountProvidersWithSingleOrganisation
+               : ComponentConstants.AccountProvidersWithMultipleOrganisation, 
+               new { model = Model })
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name="_HowPermissionsWork"/>
+        <partial name="_HowPermissionsWork" />
     </div>
 </div>

@@ -46,18 +46,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             return View(model);
         }
-
-
-        public IActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
-        {
-            return PartialView(model);
-        }
-
-        public IActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
-        {
-            return PartialView(model);
-        }
-
+        
         [HttpGet]
         [Authorize(Policy = EmployerUserRole.Owner)]
         [Route("find")]
