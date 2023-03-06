@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewComponents;
 
-public class AccountProvidersWithSingleOrganisation: ViewComponent
+public class AccountProvidersWithSingleOrganisationViewComponent: ViewComponent
 {
     public IViewComponentResult Invoke(AccountProvidersViewModel model)
     {
