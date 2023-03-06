@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using NUnit.Framework;1
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
@@ -142,7 +143,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Authentication
             
             UnitOfWorkScope.Setup(s => s.RunAsync(It.IsAny<Func<IServiceProvider, Task>>())).Returns(Task.CompletedTask).Callback<Func<IServiceProvider, Task>>(o => o(Container.Object));
 
-            Handler = new PostAuthenticationHandler(MockOuterApiClient.Object, Mediator.Object, MockConfigOptions.Object);
+            Handler = new PostAuthenticationHandler(MockOuterApiClient.Object, Mediator.Object, MockConfigOptions.Object, Mock.Of<IConfiguration>());
         }
 
         public async Task Handle()
