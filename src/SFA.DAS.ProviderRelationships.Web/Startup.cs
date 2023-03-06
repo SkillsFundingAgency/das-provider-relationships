@@ -81,8 +81,8 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddEmployerAuthorisationServices();
             
             var clientId = "no-auth-id";
-            if (_configuration["ProviderRelationshipsWebConfiguration:UseGovUkSignIn"] != null && 
-                _configuration["ProviderRelationshipsWebConfiguration:UseGovUkSignIn"]
+            if (_configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"] != null && 
+                _configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"]
                     .Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 services.AddAndConfigureGovUkAuthentication(

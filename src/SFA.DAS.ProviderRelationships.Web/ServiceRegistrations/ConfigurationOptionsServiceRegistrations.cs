@@ -17,7 +17,7 @@ public static class AddConfigurationOptionsExtension
     {
         services.AddOptions();
 
-        services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection("ProviderRelationshipsWebConfiguration"));
+        services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationships));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
 
         services.Configure<OuterApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration"));
