@@ -31,20 +31,16 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
 
         public async Task<IEnumerable<Claim>> Handle(ClaimsIdentity claimsIdentity)
         {
-            if (_configuration["StubAuth"] != null && _configuration["StubAuth"]
-                    .Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            var useStubAuth = _configuration["StubAuth"] != null && _configuration["StubAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase);
+
+            if (useStubAuth)
             {
-                var accountClaims = new Dictionary<string, EmployerUserAccountItem>();
-                accountClaims.Add("", new EmployerUserAccountItem {
-                    Role = "Owner",
-                    AccountId = "ABC123",
-                    EmployerName = "Stub Employer"
-                });
                 claimsIdentity.AddClaims(new[]
                 {
-                    new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, JsonConvert.SerializeObject(accountClaims)),
-                    new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, _configuration["NoAuthEmail"]),
-                    new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString())
+                    new Claim(EmployerClaimTypes.UserId, Guid.NewGuid().ToString()),
+                    new Claim(EmployerClaimTypes.EmailAddress, _configuration["NoAuthEmail"]),
+                    new Claim(EmployerClaimTypes.GivenName, "Stub-Given-Name"),
+                    new Claim(EmployerClaimTypes.FamilyName, "Stub-Family-Name"),
                 });
 
                 return claimsIdentity.Claims;

@@ -71,7 +71,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("find")]
         public async Task<IActionResult> Find(FindProviderEditModel model)
         {
@@ -110,7 +109,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("add")]
         public async Task<IActionResult> Add(AddAccountProviderViewModel model)
         {
@@ -143,7 +141,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
         [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("{accountProviderId}/added")]
         public IActionResult Added(AddedAccountProviderViewModel model)
         {

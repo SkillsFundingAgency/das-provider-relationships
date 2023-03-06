@@ -29,7 +29,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("")]
         public async Task<IActionResult> Index(HealthCheckRouteValues routeValues)
         {
