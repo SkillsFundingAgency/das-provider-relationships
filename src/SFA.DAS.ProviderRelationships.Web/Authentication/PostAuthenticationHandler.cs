@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
     {
         private readonly IOuterApiClient _outerApiClient;
         private readonly IMediator _mediator;
-        private readonly ProviderRelationshipsConfiguration _webConfig;
+        private readonly ProviderRelationshipsConfiguration _providerRelationshipsConfiguration;
 
         public PostAuthenticationHandler(
             IOuterApiClient outerApiClient,
@@ -20,12 +20,12 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
         {
             _outerApiClient = outerApiClient;
             _mediator = mediator;
-            _webConfig = options.Value;
+            _providerRelationshipsConfiguration = options.Value;
         }
 
         public async Task Handle(ClaimsIdentity claimsIdentity)
         {
-            if (_webConfig.UseGovUkSignIn)
+            if (_providerRelationshipsConfiguration.UseGovUkSignIn)
             {
                 var userId = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 var email = claimsIdentity.Claims.First(claim => claim.Type == ClaimTypes.Email).Value;
@@ -45,6 +45,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                     email, 
                     apiResponse.FirstName, 
                     apiResponse.LastName);
+
                 await _mediator.Send(upsertUserCommand);
             }
             else
@@ -53,6 +54,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
                 var email = claimsIdentity.FindFirst(EmployerClaimTypes.EmailAddress).Value;
                 var firstName = claimsIdentity.FindFirst(EmployerClaimTypes.GivenName).Value;
                 var lastName = claimsIdentity.FindFirst(EmployerClaimTypes.FamilyName).Value;
+
                 var command = new CreateOrUpdateUserCommand(@ref, email, firstName, lastName);
             
                 await _mediator.Send(command);
