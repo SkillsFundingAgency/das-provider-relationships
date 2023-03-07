@@ -80,7 +80,7 @@ public class WhenAddingServicesToTheContainer
         var relationshipsConfiguration = configuration
             .GetSection(ConfigurationKeys.ProviderRelationships)
             .Get<ProviderRelationshipsConfiguration>();
-
+        
         services.AddSingleton<IConfiguration>(configuration);
 
         services.AddLogging();
@@ -122,18 +122,16 @@ public class WhenAddingServicesToTheContainer
                 new($"{ConfigurationKeys.ProviderRelationships}:EmployerFinanceOuterApiConfiguration:BaseUrl", "https://test.com/"),
                 new($"{ConfigurationKeys.ProviderRelationships}:EmployerFinanceOuterApiConfiguration:Key", "123edc"),
                 new($"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString", "Data Source=.;Initial Catalog=SFA.DAS.EmployerFinance;Integrated Security=True;Pooling=False;Connect Timeout=30"),
-                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:Uri", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:AuthKey", "test"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:ApiBaseUrl", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:IdentifierUri", "https://test.com"), 
-                new($"{ConfigurationKeys.ProviderRelationships}:ProviderRelationshipsApi:ApiBaseUrl", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:ProviderRelationshipsApi:IdentifierUri", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RecruitApiClientConfiguration:ApiBaseUrl", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RecruitApiClientConfiguration:IdentifierUri", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RegistrationApiClientConfiguration:ApiBaseUrl", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RegistrationApiClientConfiguration:IdentifierUri", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration:BaseUrl", "https://test.com"),
-                new($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration:Key", "test"),
+                new("RoatpApiClientSettings:ApiBaseUrl", "https://test.com"),
+                new("RoatpApiClientSettings:IdentifierUri", "https://test.com"), 
+                new("ProviderRelationshipsApi:ApiBaseUrl", "https://test.com"),
+                new("ProviderRelationshipsApi:IdentifierUri", "https://test.com"),
+                new("RecruitApiClientConfiguration:ApiBaseUrl", "https://test.com"),
+                new("RecruitApiClientConfiguration:IdentifierUri", "https://test.com"),
+                new("RegistrationApiClientConfiguration:ApiBaseUrl", "https://test.com"),
+                new("RegistrationApiClientConfiguration:IdentifierUri", "https://test.com"),
+                new($"{nameof(OuterApiConfiguration)}:BaseUrl", "https://test.com"),
+                new($"{nameof(OuterApiConfiguration)}:Key", "test"),
                 new("SFA.DAS.Encoding", "{'Encodings':[{'EncodingType':'AccountId','Salt':'test','MinHashLength':6,'Alphabet':'46789BCDFGHJKLMNPRSTVWXY'}]}"),
                 new("EnvironmentName", "test"),
             }

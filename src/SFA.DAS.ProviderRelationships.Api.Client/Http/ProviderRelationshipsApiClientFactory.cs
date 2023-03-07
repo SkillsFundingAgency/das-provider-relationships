@@ -29,13 +29,11 @@ namespace SFA.DAS.ProviderRelationships.Api.Client.Http
             {
                 return new AzureActiveDirectoryHttpClientFactory(_configuration);
             }
-            else
-            {
-                return new ManagedIdentityHttpClientFactory(_configuration);
-            }
+
+            return new ManagedIdentityHttpClientFactory(_configuration);
         }
 
-        private bool IsClientCredentialConfiguration(string clientId, string clientSecret, string tenant)
+        private static bool IsClientCredentialConfiguration(string clientId, string clientSecret, string tenant)
         {
             return !string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret) && !string.IsNullOrEmpty(tenant);
         }

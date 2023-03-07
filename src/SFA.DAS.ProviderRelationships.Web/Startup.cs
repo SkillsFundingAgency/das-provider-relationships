@@ -34,13 +34,14 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddSingleton(_configuration);
 
             var identityServerConfiguration = _configuration
-                .GetSection($"{ConfigurationKeys.ProviderRelationships}:Oidc")
+                .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
             
             services.AddLogging();
 
             services.AddAutoConfiguration();
             services.AddConfigurationOptions(_configuration);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;

@@ -76,7 +76,7 @@ public class WhenAddingServicesToTheContainer
                 new($"{ConfigurationKeys.ProviderRelationships}:CommitmentsApiV2ClientConfiguration:ApiBaseUrl", "https://test1.com/"),
                 new($"{ConfigurationKeys.ProviderRelationships}:EmployerFinanceOuterApiConfiguration:BaseUrl", "https://test.com/"),
                 new($"{ConfigurationKeys.ProviderRelationships}:EmployerFinanceOuterApiConfiguration:Key", "123edc"),
-                new($"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString", "Data Source=.;Initial Catalog=SFA.DAS.EmployerFinance;Integrated Security=True;Pooling=False;Connect Timeout=30"),
+                new("DatabaseConnectionString", "Data Source=.;Initial Catalog=SFA.DAS.EmployerFinance;Integrated Security=True;Pooling=False;Connect Timeout=30"),
                 new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:Uri", "https://test.com"),
                 new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:AuthKey", "test"),
                 new("SFA.DAS.Encoding", "{'Encodings':[{'EncodingType':'AccountId','Salt':'test','MinHashLength':6,'Alphabet':'46789BCDFGHJKLMNPRSTVWXY'}]}"),

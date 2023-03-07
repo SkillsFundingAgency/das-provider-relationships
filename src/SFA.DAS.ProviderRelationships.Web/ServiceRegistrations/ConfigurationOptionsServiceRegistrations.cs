@@ -20,10 +20,12 @@ public static class AddConfigurationOptionsExtension
         services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationships));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
 
-        services.Configure<OuterApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:OuterApiConfiguration"));
+        services.AddSingleton(configuration.Get<ProviderRelationshipsConfiguration>());
+
+        services.Configure<OuterApiConfiguration>(configuration.GetSection(nameof(OuterApiConfiguration)));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OuterApiConfiguration>>().Value);
 
-        services.Configure<IdentityServerConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:Oidc"));
+        services.Configure<IdentityServerConfiguration>(configuration.GetSection("Oidc"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<IdentityServerConfiguration>>().Value);
         //--- delving into the unknown: :scream:
         //notable ommissions: featuretoggle,
@@ -40,7 +42,7 @@ public static class AddConfigurationOptionsExtension
         services.Configure<ReadStoreConfiguration>(configuration.GetSection("ReadStore"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ReadStoreConfiguration>>().Value);
 
-        services.Configure<ProviderRelationshipsApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:ProviderRelationshipsApi"));
+        services.Configure<ProviderRelationshipsApiConfiguration>(configuration.GetSection("ProviderRelationshipsApi"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsApiConfiguration>>().Value);
 
         services.Configure<RoatpApiConfiguration>(configuration.GetSection("RoatpApiClientSettings"));
@@ -49,14 +51,12 @@ public static class AddConfigurationOptionsExtension
         services.Configure<PasAccountApiConfiguration>(configuration.GetSection("PasAccountApi"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<PasAccountApiConfiguration>>().Value);
 
-        services.Configure<RecruitApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:RecruitApiClientConfiguration"));
+        services.Configure<RecruitApiConfiguration>(configuration.GetSection("RecruitApiClientConfiguration"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<RecruitApiConfiguration>>().Value);
 
-        services.Configure<RegistrationApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:RegistrationApiClientConfiguration"));
+        services.Configure<RegistrationApiConfiguration>(configuration.GetSection("RegistrationApiClientConfiguration"));
         services.AddSingleton<IRegistrationApiConfiguration>(cfg => cfg.GetService<IOptions<RegistrationApiConfiguration>>().Value);
 
-        services.Configure<RoatpApiConfiguration>(configuration.GetSection($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings"));
-        services.AddSingleton(cfg => cfg.GetService<IOptions<RoatpApiConfiguration>>().Value);
 
         services.Configure<EncodingConfig>(config =>
         {
