@@ -13,6 +13,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
@@ -81,9 +82,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddEmployerAuthorisationServices();
             
             var clientId = "no-auth-id";
-            if (_configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"] != null && 
-                _configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"]
-                    .Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration, 
@@ -93,8 +92,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
             else //legacy auth
             {
-                if (_configuration["StubAuth"] != null && _configuration["StubAuth"]
-                        .Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                if (_configuration.UseStubAuth())
                 {
                     services.AddEmployerStubAuthentication();    
                 }

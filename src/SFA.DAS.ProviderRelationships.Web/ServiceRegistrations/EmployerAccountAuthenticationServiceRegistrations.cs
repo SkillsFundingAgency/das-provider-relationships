@@ -54,6 +54,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations
                         return Task.CompletedTask;
                     };
                 });
+
             services
                 .AddOptions<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme)
                 .Configure<ICustomClaims>((options, customClaims) =>

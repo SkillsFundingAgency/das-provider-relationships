@@ -1,0 +1,20 @@
+﻿using Microsoft.Extensions.Configuration;
+using SFA.DAS.ProviderRelationships.Configuration;
+
+namespace SFA.DAS.ProviderRelationships.Web.Extensions;
+
+public static class ConfigurationExtensions
+{
+    public static bool UseGovUkSignIn(this IConfiguration configuration)
+    {
+        return configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"] != null &&
+               configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"]
+                  .Equals("true", StringComparison.CurrentCultureIgnoreCase);
+    }
+
+    public static bool UseStubAuth(this IConfiguration configuration)
+    {
+        return configuration["StubAuth"] != null && configuration["StubAuth"]
+            .Equals("true", StringComparison.CurrentCultureIgnoreCase);
+    }
+}
