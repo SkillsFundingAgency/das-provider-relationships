@@ -1,22 +1,19 @@
 ﻿using Microsoft.OpenApi.Models;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
-using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
 using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
+using SFA.DAS.ProviderRelationships.Api.Extensions;
 using SFA.DAS.ProviderRelationships.Api.Filters;
 using SFA.DAS.ProviderRelationships.Api.Handlers;
 using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
-using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
-using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
-using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.Api;
@@ -27,33 +24,7 @@ public class Startup
 
     public Startup(IConfiguration configuration)
     {
-        var config = new ConfigurationBuilder()
-            .AddConfiguration(configuration)
-            .SetBasePath(Directory.GetCurrentDirectory());
-
-#if DEBUG
-        if (!configuration.IsDev())
-        {
-            config.AddJsonFile("appsettings.json", false)
-                .AddJsonFile("appsettings.Development.json", true);
-        }
-#endif
-
-        config.AddEnvironmentVariables();
-
-        if (!configuration.IsTest())
-        {
-            config.AddAzureTableStorage(options =>
-                {
-                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                    options.EnvironmentName = configuration["EnvironmentName"];
-                    options.PreFixConfigurationKeys = false;
-                    options.ConfigurationKeysRawJsonResult = new[] { "SFA.DAS.Encoding" };
-                }
-            );
-        }
-        _configuration = config.Build();
+        _configuration = configuration.BuildDasConfiguration();
     }
 
     public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
