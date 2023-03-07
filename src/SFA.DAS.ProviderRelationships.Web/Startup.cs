@@ -1,12 +1,10 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
-using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
@@ -28,30 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Web
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _environment = environment;
-            var config = new ConfigurationBuilder()
-                .AddConfiguration(configuration)
-                .SetBasePath(Directory.GetCurrentDirectory());
-#if DEBUG
-            if (!configuration.IsDev())
-            {
-                config.AddJsonFile("appsettings.json", false)
-                    .AddJsonFile("appsettings.Development.json", true);
-            }
-#endif
-            
-            config.AddEnvironmentVariables();
-            if (!configuration.IsDev())
-            {
-                config.AddAzureTableStorage(options =>
-                    {
-                        options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                        options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                        options.EnvironmentName = configuration["EnvironmentName"];
-                        options.PreFixConfigurationKeys = true;
-                    }
-                );
-            }
-            _configuration = config.Build();
+            _configuration = configuration.BuildDasConfiguration();
         }
 
         public void ConfigureServices(IServiceCollection services)
