@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
@@ -31,6 +32,12 @@ public static class AddAuthorisationExtensions
                     policy.Requirements.Add(new EmployerViewerRoleRequirement());
                     policy.RequireAuthenticatedUser();
                 });
+
+            // TODO fix authorization policies
+            options.AddPolicy(EmployerUserRole.Any, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+            });
         });
     }
 }
