@@ -11,11 +11,10 @@ public static class ConfigurationServiceRegistrations
         services.AddOptions();
         services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationships));
 
-        var providerRelationshipsConfiguration = configuration.Get<ProviderRelationshipsConfiguration>();
-        services.AddSingleton(providerRelationshipsConfiguration);
+        services.AddSingleton(configuration.Get<ProviderRelationshipsConfiguration>());
 
-        services.Configure<ReadStoreConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationshipsReadStore));
-        services.AddSingleton(configuration.GetSection(ConfigurationKeys.ProviderRelationshipsReadStore).Get<ReadStoreConfiguration>());
+        services.Configure<ReadStoreConfiguration>(configuration.GetSection("ReadStore"));
+        services.AddSingleton(configuration.GetSection("ReadStore").Get<ReadStoreConfiguration>());
 
         var encodingConfigJson = configuration.GetSection(ConfigurationKeys.EncodingConfig).Value;
         var encodingConfig = JsonConvert.DeserializeObject<EncodingConfig>(encodingConfigJson);
