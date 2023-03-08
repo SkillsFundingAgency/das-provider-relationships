@@ -43,6 +43,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\4.5.10\contentFiles\any\any\NLog.xsd" />
+        <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
     </ItemGroup>
     <ItemGroup>
         <None Update="nlog.config">
