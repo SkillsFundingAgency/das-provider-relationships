@@ -1,21 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-    <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net462</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <MSDeployPackagePublishDependsOn>CopyWebJobs</MSDeployPackagePublishDependsOn>
-        <WebJobProjects>$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj;$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj</WebJobProjects>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Web.WebJobs.Publish" Version="2.0.0" />
-    </ItemGroup>
-
-    <Target Name="CopyWebJobs">
-        <MSBuild Projects="$(WebJobProjects)" Targets="Restore;Build" Properties="DeployOnBuild=true;Configuration=$(Configuration);WebPublishMethod=FileSystem;PublishUrl=$(PublishIntermediateOutputPath)" RunEachTargetSeparately="true" StopOnFirstFailure="true" />
-    </Target>
-
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <MSDeployPackagePublishDependsOn>CopyWebJobs</MSDeployPackagePublishDependsOn>
+    <WebJobProjects>$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.Jobs\SFA.DAS.ProviderRelationships.Jobs.csproj;$(MSBuildProjectDirectory)\..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj</WebJobProjects>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebJobs.Publish" Version="2.0.0" />
+  </ItemGroup>
+  <Target Name="CopyWebJobs">
+    <MSBuild Projects="$(WebJobProjects)" Targets="Restore;Build" Properties="DeployOnBuild=true;Configuration=$(Configuration);WebPublishMethod=FileSystem;PublishUrl=$(PublishIntermediateOutputPath)" RunEachTargetSeparately="true" StopOnFirstFailure="true" />
+  </Target>
 </Project>
