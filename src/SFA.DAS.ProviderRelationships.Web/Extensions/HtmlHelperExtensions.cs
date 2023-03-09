@@ -83,7 +83,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
         public static HtmlString CdnLink(this IHtmlHelper html, string folderName, string fileName)
         {
-            var cdnLocation = "config.CdnBaseUrl"; //StructuremapMvc.StructureMapDependencyScope.Container.GetInstance<ProviderRelationshipsConfiguration>().CdnBaseUrl;
+            var cdnLocation = "config.CdnBaseUrl";
 
             var trimCharacters = new char[] { '/' };
             return new HtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
