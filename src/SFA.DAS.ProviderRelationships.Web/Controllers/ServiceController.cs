@@ -14,16 +14,21 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.Parameters.Clear();
             authenticationProperties.Parameters.Add("id_token",idToken);
-            return SignOut(
-                authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+            
+            return SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         [Route("signoutcleanup")]
         [AllowAnonymous]
-        public void SignOutCleanup()
+        public async Task SignOutCleanup()
         {
-            Response.Cookies.Delete("SFA.DAS.TODO_CookieName.Web.EmployerAuth");//todo
-            //_authenticationService.SignOutUser();
+            var idToken = await HttpContext.GetTokenAsync("id_token");
+
+            var authenticationProperties = new AuthenticationProperties();
+            authenticationProperties.Parameters.Clear();
+            authenticationProperties.Parameters.Add("id_token", idToken);
+
+            SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
     }
 }
