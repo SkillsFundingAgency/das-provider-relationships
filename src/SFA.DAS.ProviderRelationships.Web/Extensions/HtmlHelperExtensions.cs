@@ -32,7 +32,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
         }
 
         public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html)
-        {   
+        {
             var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
             var oidcConfiguration = new OidcConfiguration();//todo DependencyResolver.Current.GetService<IOidcConfiguration>();
             var requestRoot = GetRootUrl(html.ViewContext.HttpContext.Request);
