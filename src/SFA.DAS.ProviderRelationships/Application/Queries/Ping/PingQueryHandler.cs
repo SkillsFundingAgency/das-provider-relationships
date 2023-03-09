@@ -14,7 +14,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.Ping
         {
             _documentClient = documentClientFactory.CreateDocumentClient();
         }
-        
+
         protected override void Handle(PingQuery request)
         {
             var value = _documentClient.CreateDatabaseQuery()
