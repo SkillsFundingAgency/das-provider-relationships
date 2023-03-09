@@ -19,33 +19,24 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models
         [Ignore("To be run adhoc (but could live in an integration test)")]
         public void CheckDatabaseSchemaAgainstEntityFrameworkExpectedSchema()
         {
-            using (var container = new Container(c =>
-            {
-                //todo c.AddRegistry<ConfigurationRegistry>();
-            }))
-            {
-                var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
-                
-                using (var connection = new SqlConnection(configuration.DatabaseConnectionString))
-                {
-                    var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
+            using var container = new Container(c => { });
 
-                    using (var context = new ProviderRelationshipsDbContext(optionsBuilder.Options))
-                    {
-                        var config = new CompareEfSqlConfig
-                        {
-                            TablesToIgnoreCommaDelimited = "ClientOutboxData,OutboxData"
-                        };
-                        
-                        config.IgnoreTheseErrors("EXTRA IN DATABASE: SFA.DAS.ProviderRelationships.Database->Column 'Users', column name. Found = Id");
-                        
-                        var comparer = new CompareEfSql(config);
-                        var hasErrors = comparer.CompareEfWithDb(context);
+            var configuration = container.GetInstance<ProviderRelationshipsConfiguration>();
 
-                        hasErrors.Should().BeFalse(comparer.GetAllErrors);
-                    }
-                }
-            }
+            using var connection = new SqlConnection(configuration.DatabaseConnectionString);
+
+            var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
+
+            using var context = new ProviderRelationshipsDbContext(optionsBuilder.Options);
+
+            var config = new CompareEfSqlConfig { TablesToIgnoreCommaDelimited = "ClientOutboxData,OutboxData" };
+
+            config.IgnoreTheseErrors("EXTRA IN DATABASE: SFA.DAS.ProviderRelationships.Database->Column 'Users', column name. Found = Id");
+
+            var comparer = new CompareEfSql(config);
+            var hasErrors = comparer.CompareEfWithDb(context);
+
+            hasErrors.Should().BeFalse(comparer.GetAllErrors);
         }
     }
 }
