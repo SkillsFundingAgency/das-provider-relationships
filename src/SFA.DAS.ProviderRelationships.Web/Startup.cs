@@ -13,9 +13,9 @@ using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
+using SFA.DAS.ProviderRelationships.Web.Handlers;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
@@ -79,7 +79,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
-                    typeof(PostAuthenticationHandler));
+                    typeof(EmployerAccountPostAuthenticationClaimsHandler));
                 clientId = identityServerConfiguration.ClientId;
             }
             else

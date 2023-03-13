@@ -31,21 +31,21 @@ public static class AddAuthorisationExtensions
         {
             options.AddPolicy(PolicyNames.HasEmployerOwnerAccount, policy =>
                 {
-                    policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                    policy.RequireClaim(EmployerClaims.AccountsClaimsTypeIdentifier);
                     policy.Requirements.Add(new EmployerOwnerRoleRequirement());
                     policy.RequireAuthenticatedUser();
                 });
 
             options.AddPolicy(PolicyNames.HasEmployerViewAccount, policy =>
                 {
-                    policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                    policy.RequireClaim(EmployerClaims.AccountsClaimsTypeIdentifier);
                     policy.Requirements.Add(new EmployerViewerRoleRequirement());
                     policy.RequireAuthenticatedUser();
                 });
 
             options.AddPolicy(PolicyNames.HasEmployerOwnerOrViewerAccount, policy =>
             {
-                policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                policy.RequireClaim(EmployerClaims.AccountsClaimsTypeIdentifier);
                 policy.Requirements.Add(new EmployerAccountAllRolesRequirement());
                 policy.RequireAuthenticatedUser();
             });

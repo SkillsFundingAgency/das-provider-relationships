@@ -186,7 +186,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
 
-            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(_context.User, EmployerUserRoles.Owner);
+            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(_context.User, EmployerUserRole.Owner);
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {

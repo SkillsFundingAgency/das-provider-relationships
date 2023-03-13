@@ -27,12 +27,11 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
-namespace SFA.DAS.ProviderRelationships.Web.UnitTests;
+namespace SFA.DAS.ProviderRelationships.Web.UnitTests.AppStart;
 
 public class WhenAddingServicesToTheContainer
 {

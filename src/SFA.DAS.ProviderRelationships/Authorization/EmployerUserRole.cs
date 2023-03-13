@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Authorization;
 
-public enum EmployerUserRoles
+public enum EmployerUserRole
 {
     None = 0,
     Owner = 1,

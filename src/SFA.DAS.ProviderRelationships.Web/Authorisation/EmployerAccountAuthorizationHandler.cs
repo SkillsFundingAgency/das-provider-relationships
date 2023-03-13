@@ -12,7 +12,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
 public interface IEmployerAccountAuthorisationHandler
 {
     Task<bool> IsEmployerAuthorised(AuthorizationHandlerContext context, bool allowAllUserRoles);
-    bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRoles userRoleRequired);
+    bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired);
 }
 
 public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisationHandler
@@ -36,7 +36,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             return false;
         }
         var accountIdFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues[RouteValueKeys.AccountHashedId].ToString().ToUpper();
-        var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerClaimTypes.AccountsClaimsTypeIdentifier));
+        var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier));
 
         if (employerAccountClaim?.Value == null)
             return false;
@@ -64,7 +64,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
         if (employerAccounts == null || !employerAccounts.ContainsKey(accountIdFromUrl))
         {
             var requiredIdClaim = _configuration.UseGovUkSignIn
-                ? ClaimTypes.NameIdentifier : EmployerClaimTypes.IdamsUserIdClaimTypeIdentifier;
+                ? ClaimTypes.NameIdentifier : EmployerClaims.IdamsUserIdClaimTypeIdentifier;
 
             if (!context.User.HasClaim(c => c.Type.Equals(requiredIdClaim)))
                 return false;
@@ -79,7 +79,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             var result = await _accountsService.GetUserAccounts(userId, email);
 
             var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
-            var associatedAccountsClaim = new Claim(EmployerClaimTypes.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
+            var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
 
             var updatedEmployerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(associatedAccountsClaim.Value);
 
@@ -105,7 +105,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
         return true;
     }
 
-    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRoles userRoleRequired)
+    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired)
     {
         if (!_httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey(RouteValueKeys.AccountHashedId))
         {
@@ -114,7 +114,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
 
         Dictionary<string, EmployerUserAccountItem> employerAccounts;
         var accountIdFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues[RouteValueKeys.AccountHashedId].ToString().ToUpper();
-        var employerAccountClaim = user.FindFirst(c => c.Type.Equals(EmployerClaimTypes.AccountsClaimsTypeIdentifier));
+        var employerAccountClaim = user.FindFirst(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier));
         try
         {
             employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(employerAccountClaim.Value);
@@ -138,16 +138,16 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             return false;
         }
 
-        if (!Enum.TryParse<EmployerUserRoles>(employerIdentifier.Role, true, out var claimUserRole))
+        if (!Enum.TryParse<EmployerUserRole>(employerIdentifier.Role, true, out var claimUserRole))
         {
             return false;
         }
 
         switch (userRoleRequired)
         {
-            case EmployerUserRoles.Owner when claimUserRole == EmployerUserRoles.Owner:
-            case EmployerUserRoles.Transactor when claimUserRole is EmployerUserRoles.Owner or EmployerUserRoles.Transactor:
-            case EmployerUserRoles.Viewer when claimUserRole is EmployerUserRoles.Owner or EmployerUserRoles.Transactor or EmployerUserRoles.Viewer:
+            case EmployerUserRole.Owner when claimUserRole == EmployerUserRole.Owner:
+            case EmployerUserRole.Transactor when claimUserRole is EmployerUserRole.Owner or EmployerUserRole.Transactor:
+            case EmployerUserRole.Viewer when claimUserRole is EmployerUserRole.Owner or EmployerUserRole.Transactor or EmployerUserRole.Viewer:
                 return true;
             default:
                 return false;
@@ -156,11 +156,11 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
 
     private static bool CheckUserRoleForAccess(EmployerUserAccountItem employerIdentifier, bool allowAllUserRoles)
     {
-        if (!Enum.TryParse<EmployerUserRoles>(employerIdentifier.Role, true, out var userRole))
+        if (!Enum.TryParse<EmployerUserRole>(employerIdentifier.Role, true, out var userRole))
         {
             return false;
         }
 
-        return allowAllUserRoles || userRole == EmployerUserRoles.Owner;
+        return allowAllUserRoles || userRole == EmployerUserRole.Owner;
     }
 }

@@ -1,6 +1,6 @@
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 
-namespace SFA.DAS.ProviderRelationships.Web.Authentication;
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
 
 public class EmployerAllRolesAuthorizationHandler : AuthorizationHandler<EmployerAccountAllRolesRequirement>
 {
@@ -10,16 +10,14 @@ public class EmployerAllRolesAuthorizationHandler : AuthorizationHandler<Employe
     {
         _handler = handler;
     }
-    
+
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerAccountAllRolesRequirement requirement)
     {
-        if (!(await _handler.IsEmployerAuthorised(context, true)))
+        if (!await _handler.IsEmployerAuthorised(context, true))
         {
             return;
         }
 
         context.Succeed(requirement);
-
-        return;
     }
 }

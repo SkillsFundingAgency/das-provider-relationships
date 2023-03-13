@@ -9,7 +9,7 @@ public class StubAuthorisationHandler : IEmployerAccountAuthorisationHandler
         return Task.FromResult(true);
     }
 
-    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRoles userRoleRequired)
+    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired)
     {
         return true;
     }

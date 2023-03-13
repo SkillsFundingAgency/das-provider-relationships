@@ -13,7 +13,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation
     
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerViewerRoleRequirement requirement)
         {
-            if (!_employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRoles.Viewer))
+            if (!_employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer))
             {
                 return Task.CompletedTask;
             }

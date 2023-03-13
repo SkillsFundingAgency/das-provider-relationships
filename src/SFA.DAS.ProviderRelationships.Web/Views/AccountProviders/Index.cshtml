@@ -4,7 +4,7 @@
 @using SFA.DAS.ProviderRelationships.Web.ViewComponents
 
 @{
-    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(AuthorizationContext.User, EmployerUserRoles.Owner);
+    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(AuthorizationContext.User, EmployerUserRole.Owner);
 }
 
 @{

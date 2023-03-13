@@ -22,9 +22,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Authentication
             
             var claims = new[]
             {
-                new Claim(EmployerClaimTypes.AssociatedAccounts, JsonConvert.SerializeObject(accountClaims)),
-                new Claim(EmployerClaimTypes.EmailAddress, "testemployer@user.com"),
-                new Claim(EmployerClaimTypes.UserId, Guid.NewGuid().ToString())
+                new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, JsonConvert.SerializeObject(accountClaims)),
+                new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, "testemployer@user.com"),
+                new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString())
             };
             var identity = new ClaimsIdentity(claims, "Employer-stub");
             var principal = new ClaimsPrincipal(identity);

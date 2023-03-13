@@ -280,14 +280,14 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             {
                 fixture.EmployerAccountAuthorisationHandler.Setup(x =>
                     x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(),
-                        EmployerUserRoles.Owner)).Returns(expected);
+                        EmployerUserRole.Owner)).Returns(expected);
 
                 return fixture.Get();
             }, (fixture, result) =>
             {
                 var model = result.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
 
-                fixture.EmployerAccountAuthorisationHandler.Verify(x=> x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(), EmployerUserRoles.Owner));
+                fixture.EmployerAccountAuthorisationHandler.Verify(x=> x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(), EmployerUserRole.Owner));
                 model.AccountProvider.Should().BeSameAs(fixture.GetAccountProviderQueryResult.AccountProvider);
                 model.IsUpdatePermissionsOperationAuthorized.Should().Be(expected);
             });

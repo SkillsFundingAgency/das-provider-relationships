@@ -34,27 +34,27 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
             email = tokenValidatedContext.Principal.Claims
                 .First(c => c.Type.Equals(ClaimTypes.Email))
                 .Value;
-            claims.Add(new Claim(EmployerClaimTypes.IdamsUserEmailClaimTypeIdentifier, email));
+            claims.Add(new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, email));
         }
         else
         {
             userId = tokenValidatedContext.Principal.Claims
-                .First(c => c.Type.Equals(EmployerClaimTypes.IdamsUserIdClaimTypeIdentifier))
+                .First(c => c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier))
                 .Value;
         }
                 
         var result = await _userAccountService.GetUserAccounts(userId, email);
 
         var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
-        var associatedAccountsClaim = new Claim(EmployerClaimTypes.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
+        var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
         claims.Add(associatedAccountsClaim);
         if (!_employerFinanceConfiguration.UseGovUkSignIn)
         {
             return claims;
         }
                 
-        claims.Add(new Claim(EmployerClaimTypes.IdamsUserIdClaimTypeIdentifier, result.EmployerUserId));
-        claims.Add(new Claim(EmployerClaimTypes.IdamsUserDisplayNameClaimTypeIdentifier, result.FirstName + " " + result.LastName));
+        claims.Add(new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, result.EmployerUserId));
+        claims.Add(new Claim(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier, result.FirstName + " " + result.LastName));
             
         return claims;
             

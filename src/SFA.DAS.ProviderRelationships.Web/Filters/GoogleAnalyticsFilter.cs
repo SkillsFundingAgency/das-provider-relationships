@@ -18,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Filters
 
         private GaData PopulateGaData(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {
-            var userId = (context.HttpContext.User.Identity as ClaimsIdentity).FindFirst(c => c.Type == EmployerClaimTypes.UserId);
+            var userId = (context.HttpContext.User.Identity as ClaimsIdentity).FindFirst(c => c.Type == EmployerClaims.IdamsUserIdClaimTypeIdentifier);
             context.RouteData.Values.TryGetValue("AccountHashedId", out var accountHashedId);
 
             return new GaData {
