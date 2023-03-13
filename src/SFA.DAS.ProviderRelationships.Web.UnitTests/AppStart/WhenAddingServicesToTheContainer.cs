@@ -116,7 +116,7 @@ public class WhenAddingServicesToTheContainer
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddApiClients();
-        services.AddAuthenticationServices(useStubAuthHandler: false);
+        services.AddAuthenticationServices();
         services.AddConfigurationOptions(configuration);
         services.AddReadStoreServices();
         services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));

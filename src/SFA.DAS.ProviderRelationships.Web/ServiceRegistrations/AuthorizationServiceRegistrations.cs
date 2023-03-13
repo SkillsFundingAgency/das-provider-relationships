@@ -13,19 +13,12 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AuthorizationServiceRegistrations
 {
-    public static void AddAuthenticationServices(this IServiceCollection services, bool useStubAuthHandler)
+    public static void AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
 
-        if (useStubAuthHandler)
-        {
-            services.AddTransient<IEmployerAccountAuthorisationHandler, StubAuthorisationHandler>();
-        }
-        else
-        {
-            services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
-        }
-        
+        services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
+
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerAllRolesAuthorizationHandler>();
