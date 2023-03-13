@@ -72,7 +72,7 @@ public class WhenPopulatingAccountClaims
         actual.FirstOrDefault(c=>c.Type.Equals(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier)).Should().BeNull();
     }
 
-    private TokenValidatedContext ArrangeTokenValidatedContext(string nameIdentifier, string idamsIdentifier, string emailAddress)
+    private static TokenValidatedContext ArrangeTokenValidatedContext(string nameIdentifier, string idamsIdentifier, string emailAddress)
     {
         var identity = new ClaimsIdentity(new List<Claim>
         {

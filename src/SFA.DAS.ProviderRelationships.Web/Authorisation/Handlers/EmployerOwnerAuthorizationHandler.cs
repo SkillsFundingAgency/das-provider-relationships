@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ProviderRelationships.Web.Authorisation.Requirements;
+﻿using SFA.DAS.ProviderRelationships.Authorization;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Requirements;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 
@@ -11,12 +12,14 @@ public class EmployerOwnerAuthorizationHandler : AuthorizationHandler<EmployerOw
         _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
     }
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerOwnerRoleRequirement requirement)
+    protected override  Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerOwnerRoleRequirement requirement)
     {
-        if (!await _employerAccountAuthorizationHandler.IsEmployerAuthorised(context, false))
+        if (! _employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Owner))
         {
-            return;
+            return Task.CompletedTask;
         }
         context.Succeed(requirement);
+
+        return Task.CompletedTask;
     }
 }

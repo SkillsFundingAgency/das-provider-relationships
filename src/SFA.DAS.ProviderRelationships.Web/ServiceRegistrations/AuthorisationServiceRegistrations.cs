@@ -47,7 +47,7 @@ public static class AddAuthorisationExtensions
             options.AddPolicy(PolicyNames.HasEmployerOwnerOrViewerAccount, policy =>
             {
                 policy.RequireClaim(EmployerClaims.AccountsClaimsTypeIdentifier);
-                policy.Requirements.Add(new EmployerAccountAllRolesRequirement());
+                policy.Requirements.Add(new EmployerAllRolesRequirement());
                 policy.RequireAuthenticatedUser();
             });
         });
