@@ -59,7 +59,6 @@ namespace SFA.DAS.ProviderRelationships.Web
                     .AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
 
             var providerRelationshipsConfiguration = _configuration
-               // .GetSection(nameof(ProviderRelationshipsConfiguration))
                 .Get<ProviderRelationshipsConfiguration>();
 
             services.AddEntityFramework(providerRelationshipsConfiguration);
@@ -83,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     typeof(PostAuthenticationHandler));
                 clientId = identityServerConfiguration.ClientId;
             }
-            else //legacy auth
+            else
             {
                 if (_configuration.UseStubAuth())
                 {
