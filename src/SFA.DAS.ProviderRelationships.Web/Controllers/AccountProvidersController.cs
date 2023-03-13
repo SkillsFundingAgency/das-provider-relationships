@@ -9,6 +9,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;

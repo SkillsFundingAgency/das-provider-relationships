@@ -10,7 +10,7 @@ using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.Testing.AutoFixture;
 

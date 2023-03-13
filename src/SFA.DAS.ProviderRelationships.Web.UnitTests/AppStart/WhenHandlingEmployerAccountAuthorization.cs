@@ -15,7 +15,8 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Services.OuterApi;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Requirements;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -26,7 +27,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_True_If_Employer_Is_Authorized_For_Owner_Role(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -53,7 +54,7 @@ public class WhenHandlingEmployerAccountAuthorization
     public async Task Then_Returns_False_If_Employer_Is_Authorized_For_Role_That_Is_Not_Owner(
         string role, 
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -81,7 +82,7 @@ public class WhenHandlingEmployerAccountAuthorization
     public async Task Then_Viewer_And_Transactor_Are_Allowed_For_All_Roles(
         string role,
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -107,7 +108,7 @@ public class WhenHandlingEmployerAccountAuthorization
     public async Task Then_Returns_False_If_Employer_Is_Not_Authorized(
         string accountId,
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -136,7 +137,7 @@ public class WhenHandlingEmployerAccountAuthorization
         string userId,
         string email,
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         EmployerUserAccountItem serviceResponse,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         [Frozen] Mock<IUserAccountService> employerAccountService,
@@ -177,7 +178,7 @@ public class WhenHandlingEmployerAccountAuthorization
         string userId,
         string email,
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         EmployerUserAccountItem serviceResponse,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         [Frozen] Mock<IUserAccountService> employerAccountService,
@@ -217,7 +218,7 @@ public class WhenHandlingEmployerAccountAuthorization
         string accountId,
         string userId,
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         EmployerUserAccountItem serviceResponse,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         [Frozen] Mock<IUserAccountService> employerAccountService,
@@ -252,7 +253,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_False_If_Employer_Is_Authorized_But_Has_Invalid_Role_But_Should_Allow_All_known_Roles(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -279,7 +280,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_False_If_AccountId_Not_In_Url(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -305,7 +306,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_False_If_No_Matching_AccountIdentifier_Claim_Found(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {
@@ -331,7 +332,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_False_If_No_Matching_NameIdentifier_Claim_Found_For_GovSignIn(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> forecastingConfiguration,
         EmployerAccountAuthorisationHandler authorizationHandler)
@@ -359,7 +360,7 @@ public class WhenHandlingEmployerAccountAuthorization
     [Test, MoqAutoData]
     public async Task Then_Returns_False_If_The_Claim_Cannot_Be_Deserialized(
         EmployerIdentifier employerIdentifier,
-        EmployerAccountOwnerRequirement ownerRequirement,
+        EmployerOwnerRoleRequirement ownerRequirement,
         [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
         EmployerAccountAuthorisationHandler authorizationHandler)
     {

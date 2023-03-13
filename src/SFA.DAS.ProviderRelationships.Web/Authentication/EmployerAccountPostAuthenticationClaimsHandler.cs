@@ -3,9 +3,8 @@ using Newtonsoft.Json;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Services;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 
-namespace SFA.DAS.ProviderRelationships.Web.Handlers;
+namespace SFA.DAS.ProviderRelationships.Web.Authentication;
 
 public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 {
@@ -21,11 +20,11 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
     public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
     {
         var claims = new List<Claim>();
-        
-        
+
+
         string userId;
         var email = string.Empty;
-            
+
         if (_employerFinanceConfiguration.UseGovUkSignIn)
         {
             userId = tokenValidatedContext.Principal.Claims
@@ -42,7 +41,7 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
                 .First(c => c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier))
                 .Value;
         }
-                
+
         var result = await _userAccountService.GetUserAccounts(userId, email);
 
         var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
@@ -52,11 +51,11 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
         {
             return claims;
         }
-                
+
         claims.Add(new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, result.EmployerUserId));
         claims.Add(new Claim(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier, result.FirstName + " " + result.LastName));
-            
+
         return claims;
-            
+
     }
 }

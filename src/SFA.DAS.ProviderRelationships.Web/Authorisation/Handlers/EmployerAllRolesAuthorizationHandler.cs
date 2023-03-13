@@ -1,6 +1,6 @@
-using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Requirements;
 
-namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 
 public class EmployerAllRolesAuthorizationHandler : AuthorizationHandler<EmployerAccountAllRolesRequirement>
 {

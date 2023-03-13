@@ -7,7 +7,7 @@ using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 
-namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 
 public interface IEmployerAccountAuthorisationHandler
 {

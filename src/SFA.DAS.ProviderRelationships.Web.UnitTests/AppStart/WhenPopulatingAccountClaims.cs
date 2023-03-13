@@ -16,7 +16,6 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-using SFA.DAS.ProviderRelationships.Web.Handlers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.AppStart;

@@ -3,7 +3,8 @@ using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
-using SFA.DAS.ProviderRelationships.Web.Handlers;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Requirements;
 
 namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 

@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ProviderRelationships.Authorization;
 
-namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 
 public class StubAuthorisationHandler : IEmployerAccountAuthorisationHandler
 {
