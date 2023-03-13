@@ -1,9 +1,9 @@
 ﻿using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
-using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -12,7 +12,7 @@ using SFA.DAS.Validation.Mvc.Attributes;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [Authorize(Policy = EmployerUserRole.Owner)]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
     [Route("accounts/{accountHashedId}/providers/{accountProviderId}/legalentities/{accountLegalEntityId}")]
     public class AccountProviderLegalEntitiesController : Controller
     {

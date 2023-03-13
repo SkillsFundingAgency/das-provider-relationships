@@ -8,7 +8,6 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
@@ -37,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Any)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
         [Route("")]
         public async Task<IActionResult> Index(AccountProvidersRouteValues routeValues)
         {
@@ -47,9 +46,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 
             return View(model);
         }
-        
+
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("find")]
         public async Task<IActionResult> Find()
         {
@@ -59,8 +58,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("find")]
         public async Task<IActionResult> Find(FindProviderEditModel model)
         {
@@ -85,7 +84,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [HttpNotFoundForNullModel]
         [Route("add")]
         public async Task<IActionResult> Add(AddAccountProviderRouteValues routeValues)
@@ -97,8 +96,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("add")]
         public async Task<IActionResult> Add(AddAccountProviderViewModel model)
         {
@@ -116,8 +115,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
+        
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/added")]
         public async Task<IActionResult> Added(AddedAccountProviderRouteValues routeValues)
@@ -129,8 +129,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("{accountProviderId}/added")]
         public IActionResult Added(AddedAccountProviderViewModel model)
         {
@@ -148,7 +148,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}/alreadyadded")]
         public async Task<IActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
@@ -160,8 +160,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = EmployerUserRole.Owner)]
         [HttpPost]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("{accountProviderId}/alreadyadded")]
         public IActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
         {
@@ -177,7 +177,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Any)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
         [HttpNotFoundForNullModel]
         [Route("{accountProviderId}")]
         public async Task<IActionResult> Get(GetAccountProviderRouteValues routeValues)
@@ -185,7 +185,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
-           
+
             model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(_context.User, EmployerUserRoles.Owner);
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
@@ -197,7 +197,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = EmployerUserRole.Owner)]
+        [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [Route("invitation/{correlationId}")]
         public async Task<IActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
         {
