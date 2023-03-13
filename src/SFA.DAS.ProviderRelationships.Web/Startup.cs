@@ -67,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
                     .AddUnitOfWork();
 
-            services.AddAuthenticationServices(_configuration.IsDevOrLocal());
+            services.AddAuthenticationServices(useStubAuthHandler: _configuration.IsDevOrLocal());
 
             var identityServerConfiguration = _configuration
                 .GetSection("Oidc")

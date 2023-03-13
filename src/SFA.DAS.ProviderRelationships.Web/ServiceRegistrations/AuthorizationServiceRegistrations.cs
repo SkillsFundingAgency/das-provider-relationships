@@ -13,11 +13,11 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AuthorizationServiceRegistrations
 {
-    public static void AddAuthenticationServices(this IServiceCollection services, bool isLocal)
+    public static void AddAuthenticationServices(this IServiceCollection services, bool useStubAuthHandler)
     {
         services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
 
-        if (isLocal)
+        if (useStubAuthHandler)
         {
             services.AddTransient<IEmployerAccountAuthorisationHandler, StubAuthorisationHandler>();
         }
