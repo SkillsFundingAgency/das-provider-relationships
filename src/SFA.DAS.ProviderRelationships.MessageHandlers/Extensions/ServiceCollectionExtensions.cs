@@ -20,23 +20,27 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton(p =>
             {
-                var employerFinanceConfiguration = p.GetService<ProviderRelationshipsConfiguration>();
+                var providerRelationshipsConfiguration = p.GetService<ProviderRelationshipsConfiguration>();
                 var configuration = p.GetService<IConfiguration>();
                 var isLocal = configuration["EnvironmentName"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 
                 var endpointConfiguration = new EndpointConfiguration(EndpointName)
-                    .UseAzureServiceBusTransport(() => employerFinanceConfiguration.ServiceBusConnectionString, isLocal)
+                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
                     .UseErrorQueue($"{EndpointName}-errors")
                     .UseInstallers()
-                    .UseLicense(employerFinanceConfiguration.NServiceBusLicense)
                     .UseMessageConventions()
-                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(employerFinanceConfiguration.DatabaseConnectionString))
+                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
                     .UseNewtonsoftJsonSerializer()
                     .UseNLogFactory()
                     .UseOutbox()
                     .UseServicesBuilder(new UpdateableServiceProvider(services))
                     .UseUnitOfWork();
-                    
+
+                if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
+                {
+                    endpointConfiguration.UseLicense(providerRelationshipsConfiguration.NServiceBusLicense);
+                }
+
                 var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
 
                 return endpoint;

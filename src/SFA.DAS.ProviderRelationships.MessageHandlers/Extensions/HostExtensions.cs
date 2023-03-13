@@ -39,13 +39,26 @@ public static class HostExtensions
     {
         return hostBuilder.ConfigureAppConfiguration((context, builder) =>
         {
-            builder.AddAzureTableStorage(ConfigurationKeys.ProviderRelationships)
+            builder
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
+
+            var configuration = builder.Build();
+
+            builder.AddAzureTableStorage(options =>
+                {
+                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                    options.EnvironmentName = configuration["EnvironmentName"];
+                    options.PreFixConfigurationKeys = false;
+                    options.ConfigurationKeysRawJsonResult = new[] { "SFA.DAS.Encoding" };
+                }
+            );
+            builder.Build();
         });
     }
-
+    
     public static IHostBuilder ConfigureDasServices(this IHostBuilder hostBuilder)
     {
         hostBuilder.ConfigureServices((context, services) =>
