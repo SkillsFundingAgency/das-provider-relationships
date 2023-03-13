@@ -136,13 +136,13 @@ namespace SFA.DAS.ProviderRelationships.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseCookiePolicy();
+            app.UseUnitOfWork();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseUnitOfWork();
 
             app.Use(async (context, next) =>
             {
