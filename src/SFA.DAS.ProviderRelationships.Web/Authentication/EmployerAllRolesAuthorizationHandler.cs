@@ -2,11 +2,11 @@ using SFA.DAS.ProviderRelationships.Web.Authorisation;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication;
 
-public class EmployerAccountAllRolesAuthorizationHandler : AuthorizationHandler<EmployerAccountAllRolesRequirement>
+public class EmployerAllRolesAuthorizationHandler : AuthorizationHandler<EmployerAccountAllRolesRequirement>
 {
     private readonly IEmployerAccountAuthorisationHandler _handler;
 
-    public EmployerAccountAllRolesAuthorizationHandler(IEmployerAccountAuthorisationHandler handler)
+    public EmployerAllRolesAuthorizationHandler(IEmployerAccountAuthorisationHandler handler)
     {
         _handler = handler;
     }

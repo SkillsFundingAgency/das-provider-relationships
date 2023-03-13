@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
-using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
@@ -15,7 +14,7 @@ public static class AddAuthorisationExtensions
         services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
-        services.AddSingleton<IAuthorizationHandler, EmployerAnyAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, EmployerAllRolesAuthorizationHandler>();
         services.AddTransient<IUserAccountService, UserAccountService>();
         
         services.AddAuthorization(options =>
@@ -34,10 +33,10 @@ public static class AddAuthorisationExtensions
                     policy.RequireAuthenticatedUser();
                 });
 
-            options.AddPolicy(EmployerUserRole.Any, policy =>
+            options.AddPolicy(PolicyNames.HasEmployerOwnerOrViewerAccount, policy =>
             {
                 policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
-                policy.Requirements.Add(new EmployerAnyRoleRequirement());
+                policy.Requirements.Add(new EmployerAccountAllRolesRequirement());
                 policy.RequireAuthenticatedUser();
             });
         });

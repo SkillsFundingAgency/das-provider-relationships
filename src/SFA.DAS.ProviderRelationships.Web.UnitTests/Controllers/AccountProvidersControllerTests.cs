@@ -279,15 +279,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             return TestAsync(fixture =>
             {
                 fixture.EmployerAccountAuthorisationHandler.Setup(x =>
-                    x.IsEmployerAuthorised(It.IsAny<AuthorizationHandlerContext>(),
-                        EmployerUserAuthorisationRole.Owner)).Returns(expected);
+                    x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(),
+                        EmployerUserRoles.Owner)).Returns(expected);
 
                 return fixture.Get();
             }, (fixture, result) =>
             {
                 var model = result.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
 
-                fixture.EmployerAccountAuthorisationHandler.Verify(x=> x.IsEmployerAuthorised(It.IsAny<AuthorizationHandlerContext>(), EmployerUserAuthorisationRole.Owner));
+                fixture.EmployerAccountAuthorisationHandler.Verify(x=> x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(), EmployerUserRoles.Owner));
                 model.AccountProvider.Should().BeSameAs(fixture.GetAccountProviderQueryResult.AccountProvider);
                 model.IsUpdatePermissionsOperationAuthorized.Should().Be(expected);
             });
@@ -311,7 +311,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProvidersController AccountProvidersController { get; set; }
         public FindProviderViewModel FindProviderViewModel { get; set; }
         public Mock<IMediator> Mediator { get; set; }
-        public Mock<IEmployerAccountAuthorizationHandler> EmployerAccountAuthorisationHandler { get; set; }
+        public Mock<IEmployerAccountAuthorisationHandler> EmployerAccountAuthorisationHandler { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
@@ -336,7 +336,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
             Mediator = new Mock<IMediator>();
             Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
             EmployerUrls = new Mock<IEmployerUrls>();
-            EmployerAccountAuthorisationHandler = new Mock<IEmployerAccountAuthorizationHandler>();
+            EmployerAccountAuthorisationHandler = new Mock<IEmployerAccountAuthorisationHandler>();
 
             AccountProvidersController = new AccountProvidersController(
                 Mediator.Object,

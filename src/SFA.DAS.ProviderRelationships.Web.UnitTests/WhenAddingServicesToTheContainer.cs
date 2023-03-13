@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -24,6 +26,8 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
@@ -74,14 +78,30 @@ public class WhenAddingServicesToTheContainer
         Assert.IsNotNull(type);
     }
 
+    [Test]
+    public void Then_Resolves_Authorization_Handlers()
+    {
+        var serviceCollection = new ServiceCollection();
+        SetupServiceCollection(serviceCollection);
+        var provider = serviceCollection.BuildServiceProvider();
+
+        var type = provider.GetServices(typeof(IAuthorizationHandler)).ToList();
+
+        type.Should().NotBeNull();
+        type.Should().ContainSingle(c => c.GetType() == typeof(EmployerAllRolesAuthorizationHandler));
+        type.Should().ContainSingle(c => c.GetType() == typeof(EmployerOwnerAuthorizationHandler));
+        type.Should().ContainSingle(c => c.GetType() == typeof(EmployerViewerAuthorizationHandler));
+    }
+
     private static void SetupServiceCollection(IServiceCollection services)
     {
         var configuration = GenerateConfiguration();
         var relationshipsConfiguration = configuration
             .GetSection(ConfigurationKeys.ProviderRelationships)
             .Get<ProviderRelationshipsConfiguration>();
-        
+
         services.AddSingleton<IConfiguration>(configuration);
+        services.AddHttpContextAccessor();
 
         services.AddLogging();
         services.AddSingleton(Mock.Of<IWebHostEnvironment>());
@@ -123,7 +143,7 @@ public class WhenAddingServicesToTheContainer
                 new($"{ConfigurationKeys.ProviderRelationships}:EmployerFinanceOuterApiConfiguration:Key", "123edc"),
                 new($"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString", "Data Source=.;Initial Catalog=SFA.DAS.EmployerFinance;Integrated Security=True;Pooling=False;Connect Timeout=30"),
                 new("RoatpApiClientSettings:ApiBaseUrl", "https://test.com"),
-                new("RoatpApiClientSettings:IdentifierUri", "https://test.com"), 
+                new("RoatpApiClientSettings:IdentifierUri", "https://test.com"),
                 new("ProviderRelationshipsApi:ApiBaseUrl", "https://test.com"),
                 new("ProviderRelationshipsApi:IdentifierUri", "https://test.com"),
                 new("RecruitApiClientConfiguration:ApiBaseUrl", "https://test.com"),
