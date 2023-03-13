@@ -1,11 +1,14 @@
 ﻿global using System;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
+global using System.Data;
+global using System.Data.Common;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Linq;
 global using System.Net;
 global using System.Security.Claims;
 global using System.Text.Encodings.Web;
+global using System.Threading;
 global using System.Threading.Tasks;
 global using AutoMapper;
 global using MediatR;

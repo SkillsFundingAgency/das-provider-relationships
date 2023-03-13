@@ -4,17 +4,25 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.Mvc.Extensions;
+using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
+using ClientOutboxPersisterV2 = SFA.DAS.ProviderRelationships.Web.ServiceRegistrations.ClientOutboxPersisterV2;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -22,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.Web
     {
         private readonly IWebHostEnvironment _environment;
         private readonly IConfigurationRoot _configuration;
-        
+
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _environment = environment;
@@ -32,12 +40,8 @@ namespace SFA.DAS.ProviderRelationships.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(_configuration);
-
-            var identityServerConfiguration = _configuration
-                .GetSection("Oidc")
-                .Get<IdentityServerConfiguration>();
-            
             services.AddLogging();
+            services.AddHttpContextAccessor();
 
             services.AddAutoConfiguration();
             services.AddConfigurationOptions(_configuration);
@@ -47,21 +51,34 @@ namespace SFA.DAS.ProviderRelationships.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
-            services.AddApplicationServices();
-            services.AddApiClients();
-            
-            services.AddMediatR(typeof(FindProviderToAddQuery));
-            services.AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
-            services.AddDatabaseRegistration(_configuration, _configuration["EnvironmentName"]);
-            
+
+            services.AddApplicationServices()
+                    .AddApiClients();
+
+            services.AddMediatR(typeof(FindProviderToAddQuery))
+                    .AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
+
+            var providerRelationshipsConfiguration = _configuration
+               // .GetSection(nameof(ProviderRelationshipsConfiguration))
+                .Get<ProviderRelationshipsConfiguration>();
+
+            services.AddEntityFramework(providerRelationshipsConfiguration);
+
+            services.AddNServiceBusClientUnitOfWork()
+                    .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
+                    .AddUnitOfWork();
+
             services.AddEmployerAuthorisationServices();
-            
+
+            var identityServerConfiguration = _configuration
+                .GetSection("Oidc")
+                .Get<IdentityServerConfiguration>();
+
             var clientId = "no-auth-id";
             if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
-                    _configuration, 
+                    _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(PostAuthenticationHandler));
                 clientId = identityServerConfiguration.ClientId;
@@ -70,7 +87,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             {
                 if (_configuration.UseStubAuth())
                 {
-                    services.AddEmployerStubAuthentication();    
+                    services.AddEmployerStubAuthentication();
                 }
                 else
                 {
@@ -79,10 +96,9 @@ namespace SFA.DAS.ProviderRelationships.Web
                 }
                 services.AddAuthenticationCookie();
             }
-            
-            services.AddLogging();
+
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId,_configuration["Environment"]);
+            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["Environment"]);
 
             services.Configure<RouteOptions>(options => { })
                 .AddMvc(options =>
@@ -100,10 +116,20 @@ namespace SFA.DAS.ProviderRelationships.Web
             if (!_environment.IsDevelopment())
             {
                 services.AddHealthChecks();
+                services.AddDataProtection();
             }
 #if DEBUG
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews()
+                    .AddRazorRuntimeCompilation();
 #endif
+        }
+
+        public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
+        {
+            serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal() || _configuration.IsTest());
+            var serviceDescriptor = serviceProvider.FirstOrDefault(serv => serv.ServiceType == typeof(IClientOutboxStorageV2));
+            serviceProvider.Remove(serviceDescriptor);
+            serviceProvider.AddScoped<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -119,14 +145,14 @@ namespace SFA.DAS.ProviderRelationships.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-            //app.UseUnitOfWork();
+            app.UseUnitOfWork();
 
             app.Use(async (context, next) =>
             {
@@ -148,7 +174,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     await next();
                 }
             });
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

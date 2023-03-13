@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Data;
+using System.Data.Common;
+using System.Threading.Tasks;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data.Configuration;
 using SFA.DAS.ProviderRelationships.Models;
 
@@ -9,18 +11,9 @@ namespace SFA.DAS.ProviderRelationships.Data
 {
     public class ProviderRelationshipsDbContext : DbContext
     {
-        private static ILoggerFactory GetLoggerFactory()
-        {
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddLogging(builder =>
-                   builder
-                   .AddDebug()
-                          .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
-            
-            return serviceCollection
-                .BuildServiceProvider()
-                .GetService<ILoggerFactory>();
-        }
+        private readonly ProviderRelationshipsConfiguration _configuration;
+        private readonly AzureServiceTokenProvider _azureServiceTokenProvider;
+        private readonly IDbConnection _connection;
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountLegalEntity> AccountLegalEntities { get; set; }
@@ -38,17 +31,24 @@ namespace SFA.DAS.ProviderRelationships.Data
         {
         }
 
-        protected ProviderRelationshipsDbContext()
+        public ProviderRelationshipsDbContext(IDbConnection connection, ProviderRelationshipsConfiguration configuration, DbContextOptions options, AzureServiceTokenProvider azureServiceTokenProvider) : base(options)
         {
+            _configuration = configuration;
+            _azureServiceTokenProvider = azureServiceTokenProvider;
+            _connection = connection;
         }
+
+        protected ProviderRelationshipsDbContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-#if DEBUG
-            optionsBuilder
-                .UseLoggerFactory(GetLoggerFactory())
-                .EnableSensitiveDataLogging();
-#endif
+            if (_configuration == null || _azureServiceTokenProvider == null)
+            {
+                optionsBuilder.UseSqlServer().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                return;
+            }
+
+            optionsBuilder.UseSqlServer(_connection as DbConnection);
         }
 
         public virtual Task ExecuteSqlCommandAsync(string sql, params object[] parameters)

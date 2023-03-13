@@ -2,30 +2,40 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NServiceBus.Persistence;
+using SFA.DAS.NServiceBus.SqlServer.Data;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.UnitOfWork.Context;
 
 namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AddDatabaseRegistrationExtensions
 {
-    public static void AddDatabaseRegistration(this IServiceCollection services, IConfiguration config, string environmentName)
+    public static IServiceCollection AddEntityFramework(this IServiceCollection services, ProviderRelationshipsConfiguration config)
     {
-        if (environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase) ||
-            environmentName.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+        return services.AddScoped(p =>
         {
-            services.AddDbContext<ProviderRelationshipsDbContext>(
-                options => options.UseSqlServer(config[$"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString"]),
-                ServiceLifetime.Transient);
-        }
-        else
-        {
-            services.AddSingleton(new AzureServiceTokenProvider());
-            services.AddDbContext<ProviderRelationshipsDbContext>(ServiceLifetime.Transient);
-        }
+            var unitOfWorkContext = p.GetService<IUnitOfWorkContext>();
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            ProviderRelationshipsDbContext dbContext;
+            try
+            {
+                var synchronizedStorageSession = unitOfWorkContext.Get<SynchronizedStorageSession>();
+                var sqlStorageSession = synchronizedStorageSession.GetSqlStorageSession();
+                var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(sqlStorageSession.Connection);
+                dbContext = new ProviderRelationshipsDbContext(sqlStorageSession.Connection, config, optionsBuilder.Options, azureServiceTokenProvider);
+                dbContext.Database.UseTransaction(sqlStorageSession.Transaction);
+            }
+            catch (KeyNotFoundException)
+            {
+                var connection = DatabaseExtensions.GetSqlConnection(config.DatabaseConnectionString);
+                var optionsBuilder = new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseSqlServer(connection);
+                dbContext = new ProviderRelationshipsDbContext(optionsBuilder.Options);
+            }
 
-        services.AddTransient(provider => provider.GetService<ProviderRelationshipsDbContext>());
-        services.AddTransient(provider =>
-            new Lazy<ProviderRelationshipsDbContext>(provider.GetService<ProviderRelationshipsDbContext>()));
+            return dbContext;
+        });
     }
 }
