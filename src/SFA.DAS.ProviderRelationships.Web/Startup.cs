@@ -16,7 +16,6 @@ using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
-using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
@@ -47,12 +46,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddAutoConfiguration();
             services.AddConfigurationOptions(_configuration);
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             services.AddApplicationServices()
                     .AddApiClients();
 
@@ -68,7 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
                     .AddUnitOfWork();
 
-            services.AddAuthenticationServices(useStubAuthHandler: _configuration.IsDevOrLocal());
+            services.AddAuthenticationServices();
 
             var identityServerConfiguration = _configuration
                 .GetSection("Oidc")
@@ -96,13 +89,13 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.Configure<RouteOptions>(options => { })
                 .AddMvc(options =>
                 {
-                    options.Filters.Add(new GoogleAnalyticsFilter());
                     if (!_configuration.IsDev())
                     {
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
 
                 })
+                .EnableGoogleAnalytics()
                 .SetDefaultNavigationSection(NavigationSection.None);
 
             services.AddApplicationInsightsTelemetry();
