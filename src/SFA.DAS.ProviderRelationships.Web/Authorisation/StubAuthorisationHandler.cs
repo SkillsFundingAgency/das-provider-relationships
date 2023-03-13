@@ -1,0 +1,16 @@
+﻿using SFA.DAS.ProviderRelationships.Authorization;
+
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
+
+public class StubAuthorisationHandler : IEmployerAccountAuthorisationHandler
+{
+    public Task<bool> IsEmployerAuthorised(AuthorizationHandlerContext context, bool allowAllUserRoles)
+    {
+        return Task.FromResult(true);
+    }
+
+    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRoles userRoleRequired)
+    {
+        return true;
+    }
+}

@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
@@ -68,6 +69,13 @@ public class WhenAddingServicesToTheContainer
         RunTestForType(toResolve);
     }
 
+    [TestCase(typeof(IEmployerAccountAuthorisationHandler))]
+    [TestCase(typeof(ICustomClaims))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_AuthServices(Type toResolve)
+    {
+        RunTestForType(toResolve);
+    }
+
     private static void RunTestForType(Type toResolve)
     {
         var serviceCollection = new ServiceCollection();
@@ -109,7 +117,7 @@ public class WhenAddingServicesToTheContainer
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddApiClients();
-        services.AddAuthenticationServices();
+        services.AddAuthenticationServices(isLocal: false);
         services.AddConfigurationOptions(configuration);
         services.AddReadStoreServices();
         services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));

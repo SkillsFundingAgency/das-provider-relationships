@@ -3,19 +3,11 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
 
 namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations
 {
     public static class AddEmployerAccountAuthenticationExtensions
     {
-        public static void AddEmployerStubAuthentication(this IServiceCollection services)
-        {
-            services.AddAuthentication("Employer-stub").AddScheme<AuthenticationSchemeOptions, EmployerStubAuthHandler>(
-                "Employer-stub",
-                options => { });
-        }
-
         public static void AddAndConfigureEmployerAuthentication(
             this IServiceCollection services,
             IdentityServerConfiguration configuration)
@@ -37,11 +29,9 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations
                     options.ResponseType = "code";
                     options.UsePkce = false;
 
-                    var scopes = configuration.Scopes.Split(' ');
-                    foreach (var scope in scopes)
-                    {
-                        options.Scope.Add(scope);
-                    }
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+
                     options.ClaimActions.MapUniqueJsonKey("sub", "id");
                     options.Events.OnRemoteFailure = c =>
                     {
@@ -65,6 +55,17 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations
                         ctx.Principal.Identities.First().AddClaims(claims);
                     };
                 });
+
+            services.AddAuthentication().AddCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/error/403");
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.Cookie.Name = $"provider-relationships";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.SlidingExpiration = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.CookieManager = new ChunkingCookieManager { ChunkSize = 3000 };
+            });
         }
     }
 }

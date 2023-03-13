@@ -3,15 +3,25 @@ using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Handlers;
 
 namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AddAuthorisationExtensions
 {
-    public static void AddAuthenticationServices(this IServiceCollection services)
+    public static void AddAuthenticationServices(this IServiceCollection services, bool isLocal)
     {
-        services.AddScoped<ICustomClaims, PostAuthenticationHandler>();
-        services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
+        services.AddScoped<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
+
+        if (isLocal)
+        {
+            services.AddTransient<IEmployerAccountAuthorisationHandler, StubAuthorisationHandler>();
+        }
+        else
+        {
+            services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
+        }
+        
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerAllRolesAuthorizationHandler>();

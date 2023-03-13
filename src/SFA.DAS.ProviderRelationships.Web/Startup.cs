@@ -67,7 +67,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
                     .AddUnitOfWork();
 
-            services.AddAuthenticationServices();
+            services.AddAuthenticationServices(_configuration.IsDevOrLocal());
 
             var identityServerConfiguration = _configuration
                 .GetSection("Oidc")
@@ -84,16 +84,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
             else
             {
-                if (_configuration.UseStubAuth())
-                {
-                    services.AddEmployerStubAuthentication();
-                }
-                else
-                {
-                    services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
-                    clientId = identityServerConfiguration.ClientId;
-                }
-                services.AddAuthenticationCookie();
+                services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
             }
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
