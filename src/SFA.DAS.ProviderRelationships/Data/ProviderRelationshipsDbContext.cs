@@ -42,6 +42,12 @@ namespace SFA.DAS.ProviderRelationships.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // To allow use of InMemoryProvider in unit tests
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
+
             if (_configuration == null || _azureServiceTokenProvider == null)
             {
                 optionsBuilder.UseSqlServer().UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
