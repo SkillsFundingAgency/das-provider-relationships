@@ -8,6 +8,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
@@ -23,10 +24,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly IEmployerUrls _employerUrls;
-        private readonly IEmployerAccountAuthorizationHandler _employerAccountAuthorizationHandler;
+        private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
         private readonly AuthorizationHandlerContext _context;
 
-        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEmployerAccountAuthorizationHandler employerAccountAuthorizationHandler, AuthorizationHandlerContext context)
+        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler, AuthorizationHandlerContext context)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -185,7 +186,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
            
-            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.IsEmployerAuthorised(_context, EmployerUserAuthorisationRole.Owner);
+            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(_context.User, EmployerUserRoles.Owner);
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {

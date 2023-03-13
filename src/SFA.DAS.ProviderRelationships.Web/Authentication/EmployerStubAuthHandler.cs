@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Models;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication
 {

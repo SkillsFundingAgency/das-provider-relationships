@@ -1,9 +1,10 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ProviderRelationships.Authorization
 @using SFA.DAS.ProviderRelationships.Web.ViewComponents
 
 @{
-    var isOwner = EmployerAccountAuthorizationHandler.IsEmployerAuthorised(AuthorizationContext, EmployerUserAuthorisationRole.Owner);
+    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(AuthorizationContext.User, EmployerUserRoles.Owner);
 }
 
 @{

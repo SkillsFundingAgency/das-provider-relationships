@@ -1,17 +1,19 @@
-﻿namespace SFA.DAS.ProviderRelationships.Web.Authorisation
+﻿using SFA.DAS.ProviderRelationships.Authorization;
+
+namespace SFA.DAS.ProviderRelationships.Web.Authorisation
 {
     public class EmployerViewerAuthorizationHandler : AuthorizationHandler<EmployerViewerRoleRequirement>
     {
-        private readonly IEmployerAccountAuthorizationHandler _employerAccountAuthorizationHandler;
+        private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
 
-        public EmployerViewerAuthorizationHandler(IEmployerAccountAuthorizationHandler employerAccountAuthorizationHandler)
+        public EmployerViewerAuthorizationHandler(IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler)
         {
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         }
     
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerViewerRoleRequirement requirement)
         {
-            if (!_employerAccountAuthorizationHandler.IsEmployerAuthorised(context, EmployerUserAuthorisationRole.Viewer))
+            if (!_employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRoles.Viewer))
             {
                 return Task.CompletedTask;
             }

@@ -1,8 +1,9 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 @using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
+@using SFA.DAS.ProviderRelationships.Authorization
 
 @{
-    var isOwner = EmployerAccountAuthorizationHandler.IsEmployerAuthorised(AuthorizationContext, EmployerUserAuthorisationRole.Owner);
+    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(AuthorizationContext.User, EmployerUserRoles.Owner);
 }
 
 

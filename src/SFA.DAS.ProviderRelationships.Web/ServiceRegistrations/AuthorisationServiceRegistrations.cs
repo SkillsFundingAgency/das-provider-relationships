@@ -9,13 +9,14 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class AddAuthorisationExtensions
 {
-    public static void AddEmployerAuthorisationServices(this IServiceCollection services)
+    public static void AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddScoped<ICustomClaims, PostAuthenticationHandler>();
+        services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, EmployerAnyAuthorizationHandler>();
         services.AddTransient<IUserAccountService, UserAccountService>();
-        services.AddTransient<IEmployerAccountAuthorizationHandler, EmployerAccountAuthorizationHandler>();
         
         services.AddAuthorization(options =>
         {
@@ -33,9 +34,10 @@ public static class AddAuthorisationExtensions
                     policy.RequireAuthenticatedUser();
                 });
 
-            // TODO fix authorization policies
             options.AddPolicy(EmployerUserRole.Any, policy =>
             {
+                policy.RequireClaim(EmployerClaimTypes.AssociatedAccounts);
+                policy.Requirements.Add(new EmployerAnyRoleRequirement());
                 policy.RequireAuthenticatedUser();
             });
         });
