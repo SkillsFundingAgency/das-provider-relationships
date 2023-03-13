@@ -9,6 +9,7 @@ using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
+using SFA.DAS.Provider.Shared.UI.Startup;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
@@ -87,6 +88,8 @@ namespace SFA.DAS.ProviderRelationships.Web
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
             }
 
+            services.AddProviderUiServiceRegistration(_configuration);
+
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
             services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["Environment"]);
 
@@ -99,7 +102,8 @@ namespace SFA.DAS.ProviderRelationships.Web
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
 
-                });
+                })
+                .SetDefaultNavigationSection(NavigationSection.None);
 
             services.AddApplicationInsightsTelemetry();
 

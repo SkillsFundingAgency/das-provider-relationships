@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     public class ServiceController : Controller
     {
-        [Route("sign-out")]
+        [Route("provider-signout")]
         [AllowAnonymous]
         public async Task<IActionResult> SignOutEmployer()
         {
