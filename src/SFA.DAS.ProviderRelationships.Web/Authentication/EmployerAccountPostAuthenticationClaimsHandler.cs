@@ -21,7 +21,6 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
     {
         var claims = new List<Claim>();
 
-
         string userId;
         var email = string.Empty;
 

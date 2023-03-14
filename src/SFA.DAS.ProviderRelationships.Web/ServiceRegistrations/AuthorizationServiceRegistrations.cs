@@ -16,12 +16,12 @@ public static class AuthorizationServiceRegistrations
     public static void AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
-
         services.AddTransient<IEmployerAccountAuthorisationHandler, EmployerAccountAuthorisationHandler>();
 
         services.AddSingleton<IAuthorizationHandler, EmployerOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerViewerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, EmployerAllRolesAuthorizationHandler>();
+        
         services.AddTransient<IUserAccountService, UserAccountService>();
         
         services.AddAuthorization(options =>
