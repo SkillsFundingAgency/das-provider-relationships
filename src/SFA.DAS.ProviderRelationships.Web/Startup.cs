@@ -135,12 +135,12 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseUnitOfWork();
-            app.UseRouting();
-            app.UseAuthorization();
-
+           
             app.Use(async (context, next) =>
             {
                 if (context.Response.Headers.ContainsKey("X-Frame-Options"))
