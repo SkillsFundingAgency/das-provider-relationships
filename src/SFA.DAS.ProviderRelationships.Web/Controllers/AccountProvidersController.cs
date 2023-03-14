@@ -25,15 +25,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IEmployerUrls _employerUrls;
         private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
-        private readonly AuthorizationHandlerContext _context;
-
-        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler, AuthorizationHandlerContext context)
+       
+        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler)
         {
             _mediator = mediator;
             _mapper = mapper;
             _employerUrls = employerUrls;
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
-            _context = context;
         }
 
         [HttpGet]
@@ -187,7 +185,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var result = await _mediator.Send(query);
             var model = _mapper.Map<GetAccountProviderViewModel>(result);
 
-            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(_context.User, EmployerUserRole.Owner);
+            model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
 
             if (model?.AccountProvider.AccountLegalEntities.Count == 1)
             {
