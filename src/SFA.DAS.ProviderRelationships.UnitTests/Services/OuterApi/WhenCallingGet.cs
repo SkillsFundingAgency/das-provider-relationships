@@ -13,84 +13,94 @@ using SFA.DAS.ProviderRelationships.Services.OuterApi;
 namespace SFA.DAS.ProviderRelationships.UnitTests.Services.OuterApi;
 
 public class WhenCallingGet
+{
+    [Test]
+    [AutoData]
+    public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
+        string key,
+        string baseUrl,
+        GetTestRequest request,
+        List<string> responseContent)
     {
-        [Test]
-        [AutoData]
-        public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
-            string key,
-            string baseUrl,
-            GetTestRequest request,
-            List<string> responseContent)
-        {
-            //Arrange
-            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-            var response = new HttpResponseMessage {
-                Content = new StringContent(JsonConvert.SerializeObject(responseContent)),
-                StatusCode = HttpStatusCode.Accepted
-            };
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
-                response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
-            var client = new HttpClient(httpMessageHandler.Object);
-            var apiClient = new OuterApiClient(client, config);
+        //Arrange
+        var config = new OuterApiConfiguration { BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key };
+        var response = new HttpResponseMessage {
+            Content = new StringContent(JsonConvert.SerializeObject(responseContent)),
+            StatusCode = HttpStatusCode.Accepted
+        };
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
+            response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
+        var client = CreateClient(httpMessageHandler.Object, config);
+        var apiClient = new OuterApiClient(client);
 
-            //Act
-            var actual = await apiClient.Get<List<string>>(request);
+        //Act
+        var actual = await apiClient.Get<List<string>>(request);
 
-            //Assert
-            actual.Should().BeEquivalentTo(responseContent);
-        }
-
-        [Test]
-        [AutoData]
-        public void And_Not_Successful_Then_An_Exception_Is_Thrown(
-            string key,
-            string baseUrl,
-            GetTestRequest request)
-        {
-            //Arrange
-            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-            var response = new HttpResponseMessage {
-                Content = new StringContent(""),
-                StatusCode = HttpStatusCode.BadRequest
-            };
-
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
-                response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
-            var client = new HttpClient(httpMessageHandler.Object);
-            var apiClient = new OuterApiClient(client, config);
-
-            //Act Assert
-            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(request));
-        }
-
-        [Test]
-        [AutoData]
-        public async Task And_Not_Found_Then_Default_Object_Is_Returned(
-            string key,
-            string baseUrl,
-            GetTestRequest request)
-        {
-            //Arrange
-            var config = new OuterApiConfiguration {BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key};
-            var response = new HttpResponseMessage {
-                Content = new StringContent(""),
-                StatusCode = HttpStatusCode.NotFound
-            };
-
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
-                response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
-            var client = new HttpClient(httpMessageHandler.Object);
-            var apiClient = new OuterApiClient(client, config);
-
-            //Act
-            var result = await apiClient.Get<List<string>>(request);
-
-            // Assert
-            result.Should().BeNull();
-        }
+        //Assert
+        actual.Should().BeEquivalentTo(responseContent);
     }
 
-    public class GetTestRequest : IGetApiRequest
+    [Test]
+    [AutoData]
+    public void And_Not_Successful_Then_An_Exception_Is_Thrown(
+        string key,
+        string baseUrl,
+        GetTestRequest request)
     {
-        public string GetUrl => "test-url/get";
+        //Arrange
+        var config = new OuterApiConfiguration { BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key };
+        var response = new HttpResponseMessage {
+            Content = new StringContent(""),
+            StatusCode = HttpStatusCode.BadRequest
+        };
+
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
+            response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
+        var client = CreateClient(httpMessageHandler.Object, config);
+        var apiClient = new OuterApiClient(client);
+
+        //Act Assert
+        Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(request));
     }
+
+    [Test]
+    [AutoData]
+    public async Task And_Not_Found_Then_Default_Object_Is_Returned(
+        string key,
+        string baseUrl,
+        GetTestRequest request)
+    {
+        //Arrange
+        var config = new OuterApiConfiguration { BaseUrl = $"https://{baseUrl.ToLower()}/", Key = key };
+        var response = new HttpResponseMessage {
+            Content = new StringContent(""),
+            StatusCode = HttpStatusCode.NotFound
+        };
+
+        var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
+            response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
+        var client = CreateClient(httpMessageHandler.Object, config);
+        var apiClient = new OuterApiClient(client);
+
+        //Act
+        var result = await apiClient.Get<List<string>>(request);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    private static HttpClient CreateClient(HttpMessageHandler handler, OuterApiConfiguration configuration)
+    {
+        var client = new HttpClient(handler) { BaseAddress = new Uri(configuration.BaseUrl) };
+
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", configuration.Key);
+        client.DefaultRequestHeaders.Add("X-Version", "1");
+
+        return client;
+    }
+}
+
+public class GetTestRequest : IGetApiRequest
+{
+    public string GetUrl => "test-url/get";
+}
