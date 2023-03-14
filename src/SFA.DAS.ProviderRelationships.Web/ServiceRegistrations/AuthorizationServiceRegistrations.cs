@@ -70,8 +70,10 @@ public static class AuthorizationServiceRegistrations
                 options.ResponseType = "code";
                 options.UsePkce = false;
 
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
+                foreach (var scope in configuration.Scopes.Split(" "))
+                {
+                    options.Scope.Add(scope.Trim());
+                }
 
                 options.ClaimActions.MapUniqueJsonKey("sub", "id");
                 options.Events.OnRemoteFailure = c =>
