@@ -21,7 +21,6 @@ using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
-using ClientOutboxPersisterV2 = SFA.DAS.ProviderRelationships.Web.ClientOutboxPersisterV2;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -51,8 +50,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddMediatR(typeof(FindProviderToAddQuery))
                     .AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
 
-            var providerRelationshipsConfiguration = _configuration
-                .Get<ProviderRelationshipsConfiguration>();
+            var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
 
             services.AddEntityFramework(providerRelationshipsConfiguration);
 
@@ -66,14 +64,12 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
 
-            var clientId = "no-auth-id";
             if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(EmployerAccountPostAuthenticationClaimsHandler));
-                clientId = identityServerConfiguration.ClientId;
             }
             else
             {
@@ -84,8 +80,10 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
-            services.Configure<RouteOptions>(options => { })
-                .AddMvc(options =>
+            services.Configure<RouteOptions>(options =>
+                {
+
+                }).AddMvc(options =>
                 {
                     if (!_configuration.IsDev())
                     {
@@ -126,9 +124,9 @@ namespace SFA.DAS.ProviderRelationships.Web
             else
             {
                 app.UseHealthChecks();
-                app.UseExceptionHandler("/Error/500");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseExceptionHandler("/Error/500");
+                //// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //app.UseHsts();
             }
 
             app.UseAuthentication();
@@ -138,7 +136,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseUnitOfWork();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
-           
+
             app.Use(async (context, next) =>
             {
                 if (context.Response.Headers.ContainsKey("X-Frame-Options"))

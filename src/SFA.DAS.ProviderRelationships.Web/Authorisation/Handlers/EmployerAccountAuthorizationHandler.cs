@@ -6,7 +6,6 @@ using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
-
 namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 
 public interface IEmployerAccountAuthorisationHandler
@@ -22,13 +21,18 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
     private readonly ILogger<EmployerAccountAuthorisationHandler> _logger;
     private readonly ProviderRelationshipsConfiguration _configuration;
 
-    public EmployerAccountAuthorisationHandler(IHttpContextAccessor httpContextAccessor, IUserAccountService accountsService, ILogger<EmployerAccountAuthorisationHandler> logger, IOptions<ProviderRelationshipsConfiguration> configuration)
+    public EmployerAccountAuthorisationHandler(
+        IHttpContextAccessor httpContextAccessor,
+        IUserAccountService accountsService, 
+        ILogger<EmployerAccountAuthorisationHandler> logger, 
+        IOptions<ProviderRelationshipsConfiguration> configuration)
     {
         _httpContextAccessor = httpContextAccessor;
         _accountsService = accountsService;
         _logger = logger;
         _configuration = configuration.Value;
     }
+
     public async Task<bool> IsEmployerAuthorised(AuthorizationHandlerContext context, bool allowAllUserRoles)
     {
         if (!_httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey(RouteValueKeys.AccountHashedId))
