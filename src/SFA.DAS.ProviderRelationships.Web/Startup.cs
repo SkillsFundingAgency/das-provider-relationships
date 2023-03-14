@@ -6,16 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
-using SFA.DAS.Provider.Shared.UI;
-using SFA.DAS.Provider.Shared.UI.Startup;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.Filters;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
@@ -64,19 +65,22 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
 
+            var clientId = "no-auth-id";
+
             if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                clientId = identityServerConfiguration.ClientId;
             }
             else
             {
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
             }
 
-            services.AddProviderUiServiceRegistration(_configuration);
+            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["Environment"]);
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
@@ -87,12 +91,12 @@ namespace SFA.DAS.ProviderRelationships.Web
                 {
                     if (!_configuration.IsDev())
                     {
+                        options.Filters.Add(new GoogleAnalyticsFilter());
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
 
                 })
-                .EnableGoogleAnalytics()
-                .SetDefaultNavigationSection(NavigationSection.Home);
+                .SetDefaultNavigationSection(NavigationSection.None);
 
             services.AddApplicationInsightsTelemetry();
 
