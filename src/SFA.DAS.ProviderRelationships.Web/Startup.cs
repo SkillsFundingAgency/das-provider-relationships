@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
-using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
+using SFA.DAS.Provider.Shared.UI;
 using SFA.DAS.Provider.Shared.UI.Startup;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -16,7 +16,6 @@ using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
-using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
@@ -84,7 +83,6 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddProviderUiServiceRegistration(_configuration);
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["Environment"]);
 
             services.Configure<RouteOptions>(options => { })
                 .AddMvc(options =>
@@ -96,7 +94,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
                 })
                 .EnableGoogleAnalytics()
-                .SetDefaultNavigationSection(NavigationSection.None);
+                .SetDefaultNavigationSection(NavigationSection.Home);
 
             services.AddApplicationInsightsTelemetry();
 
@@ -137,9 +135,9 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseUnitOfWork();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
-            app.UseUnitOfWork();
            
             app.Use(async (context, next) =>
             {

@@ -157,7 +157,7 @@ public class WhenHandlingEmployerAccountAuthorization
         var userClaim = new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, userId);
         var employerAccounts = new Dictionary<string, EmployerIdentifier>{{employerIdentifier.AccountId, employerIdentifier}};
         var employerAccountClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, JsonConvert.SerializeObject(employerAccounts));
-        var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {employerAccountClaim, userClaim, new Claim(ClaimTypes.Email, email)})});
+        var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {employerAccountClaim, userClaim, new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, email)})});
         var context = new AuthorizationHandlerContext(new[] {ownerRequirement}, claimsPrinciple, null);
         var responseMock = new FeatureCollection();
         var httpContext = new DefaultHttpContext(responseMock);
@@ -198,7 +198,7 @@ public class WhenHandlingEmployerAccountAuthorization
         var userClaim = new Claim(ClaimTypes.NameIdentifier, userId);
         var employerAccounts = new Dictionary<string, EmployerIdentifier>{{employerIdentifier.AccountId, employerIdentifier}};
         var employerAccountClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, JsonConvert.SerializeObject(employerAccounts));
-        var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {employerAccountClaim, userClaim, new Claim(ClaimTypes.Email, email)})});
+        var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {employerAccountClaim, userClaim, new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, email)})});
         var context = new AuthorizationHandlerContext(new[] {ownerRequirement}, claimsPrinciple, null);
         var responseMock = new FeatureCollection();
         var httpContext = new DefaultHttpContext(responseMock);
