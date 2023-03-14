@@ -21,7 +21,7 @@ using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
-using ClientOutboxPersisterV2 = SFA.DAS.ProviderRelationships.Web.ServiceRegistrations.ClientOutboxPersisterV2;
+using ClientOutboxPersisterV2 = SFA.DAS.ProviderRelationships.Web.ClientOutboxPersisterV2;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {

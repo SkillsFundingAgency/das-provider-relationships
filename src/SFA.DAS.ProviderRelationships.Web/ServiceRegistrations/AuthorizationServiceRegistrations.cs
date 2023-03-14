@@ -101,7 +101,6 @@ public static class AuthorizationServiceRegistrations
 
         services.AddAuthentication().AddCookie(options =>
         {
-            //options.AccessDeniedPath = new PathString("/error/403");
             options.AccessDeniedPath = new PathString("/accessdenied");
             options.ExpireTimeSpan = TimeSpan.FromHours(1);
             options.Cookie.Name = $"{typeof(Startup).Assembly.GetName().Name}.Auth";

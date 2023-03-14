@@ -67,12 +67,12 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
                 ? ClaimTypes.NameIdentifier : EmployerClaims.IdamsUserIdClaimTypeIdentifier;
 
             if (!context.User.HasClaim(c => c.Type.Equals(requiredIdClaim)))
+            {
                 return false;
+            }
 
-            var userClaim = context.User.Claims
-                .First(c => c.Type.Equals(requiredIdClaim));
+            var userClaim = context.User.Claims.First(c => c.Type.Equals(requiredIdClaim));
 
-                //var email = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value;
             var email = context.User.Claims.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier))?.Value;
 
             var userId = userClaim.Value;
@@ -90,6 +90,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             {
                 return false;
             }
+
             employerIdentifier = updatedEmployerAccounts[accountIdFromUrl];
         }
 

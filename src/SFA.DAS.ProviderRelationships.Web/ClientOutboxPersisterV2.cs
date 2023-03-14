@@ -8,7 +8,7 @@ using SFA.DAS.NServiceBus.Services;
 using SFA.DAS.NServiceBus.SqlServer.Data;
 using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 
-namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
+namespace SFA.DAS.ProviderRelationships.Web;
 
 public class ClientOutboxPersisterV2 : IClientOutboxStorageV2
 {
@@ -60,13 +60,13 @@ public class ClientOutboxPersisterV2 : IClientOutboxStorageV2
         command.CommandType = CommandType.Text;
         command.AddParameter("CreatedAt", _dateTimeService.UtcNow.AddSeconds(-10.0));
         await using DbDataReader reader = await command.ExecuteReaderAsync().ConfigureAwait(continueOnCapturedContext: false);
-        List<IClientOutboxMessageAwaitingDispatch> clientOutboxMessages = new List<IClientOutboxMessageAwaitingDispatch>();
+        var clientOutboxMessages = new List<IClientOutboxMessageAwaitingDispatch>();
 
         while (await reader.ReadAsync().ConfigureAwait(continueOnCapturedContext: false))
         {
             Guid guid = reader.GetGuid(0);
             var @string = reader.GetString(1);
-            ClientOutboxMessageV2 item = new ClientOutboxMessageV2(guid, @string);
+            var item = new ClientOutboxMessageV2(guid, @string);
             clientOutboxMessages.Add(item);
         }
 
@@ -98,7 +98,7 @@ public class ClientOutboxPersisterV2 : IClientOutboxStorageV2
 
     public async Task StoreAsync(ClientOutboxMessageV2 clientOutboxMessage, IClientOutboxTransaction clientOutboxTransaction)
     {
-        SqlClientOutboxTransaction sqlClientOutboxTransaction = (SqlClientOutboxTransaction)clientOutboxTransaction;
+        var sqlClientOutboxTransaction = (SqlClientOutboxTransaction)clientOutboxTransaction;
         await using DbCommand dbCommand = sqlClientOutboxTransaction.Connection.CreateCommand();
         dbCommand.CommandText = "INSERT INTO dbo.ClientOutboxData (MessageId, EndpointName, CreatedAt, PersistenceVersion, Operations) VALUES (@MessageId, @EndpointName, @CreatedAt, '2.0.0', @Operations)";
         dbCommand.CommandType = CommandType.Text;

@@ -19,7 +19,8 @@ public class UserAccountService : IUserAccountService
     }
     public async Task<EmployerUserAccounts> GetUserAccounts(string userId, string email)
     {
-        var actual = await _outerApiClient.Get<GetUserAccountsResponse>(new GetEmployerAccountRequest(email, userId));
+        var apiRequest = new GetEmployerAccountRequest(userId, email);
+        var actual = await _outerApiClient.Get<GetUserAccountsResponse>(apiRequest);
 
         return actual;
     }
