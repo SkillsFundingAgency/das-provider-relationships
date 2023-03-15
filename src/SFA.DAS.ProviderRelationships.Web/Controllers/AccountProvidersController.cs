@@ -1,8 +1,10 @@
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
@@ -16,6 +18,7 @@ using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Validation.Mvc.Attributes;
 
+
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
     [Route("accounts/{accountHashedId}/providers")]
@@ -25,21 +28,29 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IEmployerUrls _employerUrls;
         private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
-       
-        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler)
+        private readonly IEncodingService _encodingService;
+
+        public AccountProvidersController(
+            IMediator mediator,
+            IMapper mapper,
+            IEmployerUrls employerUrls,
+            IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler,
+            IEncodingService encodingService)
         {
             _mediator = mediator;
             _mapper = mapper;
             _employerUrls = employerUrls;
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
+            _encodingService = encodingService;
         }
 
         [HttpGet]
         [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
         [Route("")]
-        public async Task<IActionResult> Index(AccountProvidersRouteValues routeValues)
+        public async Task<IActionResult> Index(string accountHashedId)
         {
-            var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
+            var accountId = _encodingService.Decode(accountHashedId, EncodingType.AccountId);
+            var query = new GetAccountProvidersQuery(accountId);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
 
@@ -114,7 +125,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             }
         }
 
-        
+
         [HttpGet]
         [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
         [HttpNotFoundForNullModel]

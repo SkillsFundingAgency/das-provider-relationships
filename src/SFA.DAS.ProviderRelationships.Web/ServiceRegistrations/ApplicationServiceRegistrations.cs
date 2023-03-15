@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
@@ -22,7 +23,8 @@ public static class ApplicationServiceRegistrations
         services.AddTransient<IEmployerUrls, EmployerUrls>();
         services.AddTransient<IRoatpService, RoatpService>();
         services.AddTransient<IDasRecruitService, DasRecruitService>();
-        
+        services.AddTransient<IEncodingService, EncodingService>();
+
         return services;
     }
 }

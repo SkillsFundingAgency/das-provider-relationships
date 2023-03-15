@@ -13,6 +13,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Mappings;
+using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
@@ -49,10 +50,12 @@ namespace SFA.DAS.ProviderRelationships.Web
                     .AddApiClients();
 
             services.AddMediatR(typeof(FindProviderToAddQuery))
-                    .AddAutoMapper(typeof(AccountProviderLegalEntityMappings));
+                    .AddAutoMapper(typeof(AccountProviderLegalEntityMappings),
+                        typeof(Web.Mappings.HealthCheckMappings));
 
             var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
 
+            services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
             services.AddEntityFramework(providerRelationshipsConfiguration);
 
             services.AddNServiceBusClientUnitOfWork()
