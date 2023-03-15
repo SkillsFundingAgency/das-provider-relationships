@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
         [TestCase(Permission.CreateCohort, State.Conditional, "")]
         [TestCase(Permission.Recruitment, State.No, "Do not allow")]
         [TestCase(Permission.Recruitment, State.Yes, "Allow")]
-        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before they�re advertised")]
+        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before they're advertised")]
 
         public void GetStateDescription_WhenGettingStateDescription_ThenShouldReturnDescription(Permission permission, State state, string expected)
         {
