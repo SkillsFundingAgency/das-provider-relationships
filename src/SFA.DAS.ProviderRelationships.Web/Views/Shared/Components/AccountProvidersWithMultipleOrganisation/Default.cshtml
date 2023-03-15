@@ -44,7 +44,7 @@
                     @if (isOwner)
                     {
                         <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-controller="AccountProviderLegalEntities" asp-action="Permissions" asp-route-accountHashedId="@Model.AccountHashedId" asp-route-accountProviderId="@accountProvider.Id" asp-route-accountLegalEntityId="@accountProviderLegalEntity.Id">
+                            <a class="govuk-link govuk-link--no-visited-state" asp-controller="AccountProviderLegalEntities" asp-action="Permissions" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" asp-route-accountProviderId="@accountProvider.Id" asp-route-accountLegalEntityId="@accountProviderLegalEntity.Id">
                                 @if (!accountProviderLegalEntity.HadPermissions)
                                 {
                                     <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName on behalf of @accountProviderLegalEntity.Name</span></span>

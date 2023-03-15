@@ -20,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.Services
         public async Task<BlockedOrganisationStatus> GetProviderBlockedStatusAsync(long providerUkprn, CancellationToken cancellationToken = default)
         {
             var blockedProviderStatusUri = $"/api/providers/{providerUkprn}/status";
-
+            
             try
             {
                 var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken);

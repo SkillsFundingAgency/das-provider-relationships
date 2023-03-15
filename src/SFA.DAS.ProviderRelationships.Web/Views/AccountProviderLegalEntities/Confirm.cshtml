@@ -19,7 +19,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" model="ViewData.ModelState" />
 
-        <form asp-controller="AccountProviderLegalEntities"
+        <form asp-controller="AccountProviderLegalEntities" method="post"
               asp-action="Confirm"
               asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]"
               asp-route-AccountProviderId="@ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]"
@@ -95,13 +95,13 @@
                             }
 
                             <div class="govuk-radios__item" id="confirmation">
-                                @Html.RadioButtonFor(m => m.Confirmation, true, new {id = "confirmation-yes", @class = "govuk-radios__input"})
+                                @Html.RadioButtonFor(m => m.Confirmation, true, new { id = "confirmation-yes", @class = "govuk-radios__input" })
                                 <label class="govuk-label govuk-radios__label" for="confirmation-yes">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                @Html.RadioButtonFor(m => m.Confirmation, false, new {id = "confirmation-no", @class = "govuk-radios__input"})
+                                @Html.RadioButtonFor(m => m.Confirmation, false, new { id = "confirmation-no", @class = "govuk-radios__input" })
                                 <label class="govuk-label govuk-radios__label" for="confirmation-no">
                                     No
                                 </label>

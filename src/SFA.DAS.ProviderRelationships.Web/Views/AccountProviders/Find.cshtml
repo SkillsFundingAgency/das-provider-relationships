@@ -10,7 +10,7 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
+    <a class="govuk-back-link" asp-controller="AccountProviders" asp-action="Index" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">

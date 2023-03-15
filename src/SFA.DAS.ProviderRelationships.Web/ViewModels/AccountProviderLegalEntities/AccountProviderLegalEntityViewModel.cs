@@ -26,7 +26,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         [Required]
         public long? AccountLegalEntityId { get; set; }
 
-        [Required]
         public Guid? UserRef { get; set; }
 
         [Required]

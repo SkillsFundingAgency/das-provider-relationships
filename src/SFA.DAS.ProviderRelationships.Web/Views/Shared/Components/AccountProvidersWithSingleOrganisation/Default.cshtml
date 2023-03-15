@@ -1,11 +1,9 @@
 ﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
-@using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
 @using SFA.DAS.ProviderRelationships.Authorization
 
 @{
     var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
 }
-
 
 <table class="govuk-table">
     <thead class="govuk-table__head">
@@ -43,7 +41,7 @@
                 @if (isOwner)
                 {
                     <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
-                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="AccountProviderLegalEntities" asp-action="Permissions" asp-route-accountHashedId="@Model.AccountHashedId" asp-route-accountProviderId="@accountProvider.Id" asp-route-accountLegalEntityId="@accountProvider.AccountLegalEntities.First().Id">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="AccountProviderLegalEntities" asp-action="Permissions" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" asp-route-accountProviderId="@accountProvider.Id" asp-route-accountLegalEntityId="@accountProvider.AccountLegalEntities.First().Id">
                             @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
                             {
                                 <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span></span>

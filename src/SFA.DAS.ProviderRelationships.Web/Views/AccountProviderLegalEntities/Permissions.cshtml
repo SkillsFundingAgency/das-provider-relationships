@@ -19,7 +19,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" model="ViewData.ModelState" />
 
-        <form asp-controller="AccountProviderLegalEntities"
+        <form asp-controller="AccountProviderLegalEntities" method="post"
               asp-action="Permissions"
               asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]"
               asp-route-AccountProviderId="@ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]"

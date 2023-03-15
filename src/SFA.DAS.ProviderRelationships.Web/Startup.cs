@@ -106,6 +106,8 @@ namespace SFA.DAS.ProviderRelationships.Web
 
             services.AddApplicationInsightsTelemetry();
 
+            services.AddSession(options => options.Cookie.IsEssential = true);
+
             if (!_environment.IsDevelopment())
             {
                 services.AddHealthChecks();
@@ -146,6 +148,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseUnitOfWork();
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.Use(async (context, next) =>
             {

@@ -6,5 +6,4 @@ public class AccountProvidersViewModel
 {
     public List<AccountProviderDto> AccountProviders { get; set; }
     public int AccountLegalEntitiesCount { get; set; }
-    public string AccountHashedId { get; set; }
 }

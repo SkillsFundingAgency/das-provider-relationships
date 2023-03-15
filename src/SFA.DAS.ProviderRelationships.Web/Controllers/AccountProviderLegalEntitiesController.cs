@@ -47,6 +47,7 @@ public class AccountProviderLegalEntitiesController : Controller
     [Route("")]
     public IActionResult Permissions(AccountProviderLegalEntityViewModel model)
     {
+        model.UserRef = User.GetUserRef();
         for (var index = 0; index < model.Permissions.Count; index++)
         {
             if (!model.Permissions[index].State.HasValue)
@@ -67,6 +68,8 @@ public class AccountProviderLegalEntitiesController : Controller
     [Route("Confirm")]
     public async Task<IActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
     {
+        model.UserRef = User.GetUserRef();
+
         if (command == "Change")
         {
             return View("Permissions", model);
@@ -97,6 +100,6 @@ public class AccountProviderLegalEntitiesController : Controller
             TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
         }
 
-        return RedirectToAction("Index", "AccountProviders");
+        return RedirectToAction("Index", "AccountProviders", new { model.AccountHashedId });
     }
 }

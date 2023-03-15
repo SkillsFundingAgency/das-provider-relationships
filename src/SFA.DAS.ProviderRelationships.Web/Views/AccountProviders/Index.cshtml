@@ -42,7 +42,7 @@
 
         @if (isOwner)
         {
-            <a class="govuk-button" asp-controller="AccountProviders" asp-action="Find" asp-route-accountHashedId="@Model.AccountHashedId" role="button">Add a training provider</a>
+            <a class="govuk-button" asp-controller="AccountProviders" asp-action="Find" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Add a training provider</a>
         }
     </div>
 </div>
