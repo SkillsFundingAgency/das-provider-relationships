@@ -16,11 +16,13 @@ public class AccountProviderMappings : Profile
             .ForMember(d=> d.IsUpdatePermissionsOperationAuthorized, o => o.Ignore());
 
         CreateMap<GetAddedAccountProviderQueryResult, AddedAccountProviderViewModel>()
-            .ForMember(d => d.Choice, o => o.Ignore());
+            .ForMember(d => d.Choice, o => o.Ignore())
+            .ForMember(d => d.AccountHashedId, o => o.Ignore());
             
         CreateMap<GetAddedAccountProviderQueryResult, AlreadyAddedAccountProviderViewModel>()
-            .ForMember(d => d.Choice, o => o.Ignore());
-            
+            .ForMember(d => d.Choice, o => o.Ignore())
+            .ForMember(d => d.AccountHashedId, o => o.Ignore());
+
         CreateMap<GetProviderToAddQueryResult, AddAccountProviderViewModel>()
             .ForMember(d => d.AccountHashedId, o => o.Ignore())
             .ForMember(d => d.Ukprn, o => o.Ignore())
