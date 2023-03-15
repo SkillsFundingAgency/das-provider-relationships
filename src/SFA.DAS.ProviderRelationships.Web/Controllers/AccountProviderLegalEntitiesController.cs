@@ -48,6 +48,7 @@ public class AccountProviderLegalEntitiesController : Controller
     public IActionResult Permissions(AccountProviderLegalEntityViewModel model)
     {
         model.UserRef = User.GetUserRef();
+
         for (var index = 0; index < model.Permissions.Count; index++)
         {
             if (!model.Permissions[index].State.HasValue)

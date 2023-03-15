@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Identity.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Encoding;
@@ -17,6 +19,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -125,8 +128,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public GetAccountProviderQueryResult GetAccountProviderQueryResult { get; set; }
         public long AccountId = 1;
 
+        private readonly ClaimsPrincipal _user = new(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString()) }));
+
         public AccountProviderLegalEntitiesControllerTestsFixture()
         {
+
             Mediator = new Mock<IMediator>();
             EncodingService = new Mock<IEncodingService>();
             Mapper = new MapperConfiguration(c => c.AddProfiles(new[] { new AccountProviderLegalEntityMappings() })).CreateMapper();
@@ -182,13 +188,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 },
                 Permissions = new List<PermissionViewModel>
                 {
-                    new PermissionViewModel
-                    {
+                    new() {
                         Value = Permission.CreateCohort,
                         State = State.Yes
                     },
-                    new PermissionViewModel
-                    {
+                    new() {
                         Value = Permission.Recruitment,
                         State = recruitState
                     }
@@ -244,9 +248,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSession()
         {
-            var context = new DefaultHttpContext() { Session = Mock.Of<ISession>() };
+            var context = new DefaultHttpContext() { Session = Mock.Of<ISession>(), User = _user };
             AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
-                HttpContext = context
+                HttpContext = context,
             };
             AccountProviderLegalEntitiesController.TempData = new TempDataDictionary(context, Mock.Of<ITempDataProvider>());
             return this;
@@ -263,7 +267,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 .Setup(e => e.Account(It.IsAny<string>()))
                 .Returns("https://localhost/accounts/ABC123/teams");
             AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
-                HttpContext = new DefaultHttpContext() { Session = session.Object }
+                HttpContext = new DefaultHttpContext() { Session = session.Object, User = _user }
             };
             return this;
         }
