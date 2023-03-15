@@ -95,6 +95,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                     if (!_configuration.IsDev())
                     {
                         options.Filters.Add(new GoogleAnalyticsFilter());
+                        options.Filters.Add(new UrlsViewBagFilter());
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
 

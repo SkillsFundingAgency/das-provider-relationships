@@ -122,13 +122,18 @@ public class WhenAddingServicesToTheContainer
         services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));
         services.AddAutoConfiguration();
 
+        AddControllers(services);
+
+        services.AddTransient(_ => CreateAuthorizationContext());
+    }
+
+    private static void AddControllers(IServiceCollection services)
+    {
         services.AddTransient<AccountProviderLegalEntitiesController>();
         services.AddTransient<AccountProvidersController>();
         services.AddTransient<HealthCheckController>();
         services.AddTransient<HomeController>();
         services.AddTransient<ServiceController>();
-
-        services.AddTransient(_ => CreateAuthorizationContext());
     }
 
     private static AuthorizationHandlerContext CreateAuthorizationContext()

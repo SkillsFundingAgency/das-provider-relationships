@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class ProviderRelationshipsConfiguration
+    public class ProviderRelationshipsConfiguration : IProviderRelationshipsConfiguration
     {
         public string CdnBaseUrl { get; set; }
 

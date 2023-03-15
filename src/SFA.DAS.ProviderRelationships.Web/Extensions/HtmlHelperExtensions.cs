@@ -15,26 +15,19 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return (IEmployerUrls)htmlHelper.ViewBag.EmployerUrls;
         }
 
-        public static ICookieBannerViewModel GetCookieBannerViewModel(this IHtmlHelper html)
+        public static ICookieBannerViewModel GetCookieBannerViewModel(this IHtmlHelper html, IEmployerUrlsConfiguration configuration)
         {
-            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
-
-            return new CookieBannerViewModel(new CookieBannerConfiguration
-            {
+            return new CookieBannerViewModel(new CookieBannerConfiguration {
                 ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
             },
-            new UserContext
-            {
+            new UserContext {
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString()
-            }
-            );
+            });
         }
 
-        public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html)
+        public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html, IEmployerUrlsConfiguration configuration, IOidcConfiguration oidcConfiguration)
         {
-            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
-            var oidcConfiguration = new OidcConfiguration();//todo DependencyResolver.Current.GetService<IOidcConfiguration>();
             var requestRoot = GetRootUrl(html.ViewContext.HttpContext.Request);
 
             var headerModel = new HeaderViewModel(new HeaderConfiguration {
@@ -46,23 +39,21 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 ClientId = oidcConfiguration.ClientId,
                 EmployerRecruitBaseUrl = configuration.EmployerRecruitBaseUrl,
                 SignOutUrl = new Uri($"{requestRoot}/signOut"),
-                ChangeEmailReturnUrl = new System.Uri(configuration.EmployerPortalBaseUrl + "/service/email/change"),
-                ChangePasswordReturnUrl = new System.Uri(configuration.EmployerPortalBaseUrl + "/service/password/change")
+                ChangeEmailReturnUrl = new Uri(configuration.EmployerPortalBaseUrl + "/service/email/change"),
+                ChangePasswordReturnUrl = new Uri(configuration.EmployerPortalBaseUrl + "/service/password/change")
             },
             new UserContext {
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString()
             });
 
-            headerModel.SelectMenu("home");         
+            headerModel.SelectMenu("home");
 
             return headerModel;
         }
 
-        public static IFooterViewModel GetFooterViewModel(this IHtmlHelper html)
+        public static IFooterViewModel GetFooterViewModel(this IHtmlHelper html, IEmployerUrlsConfiguration configuration)
         {
-            var configuration = new EmployerUrlsConfiguration();//todo DependencyResolver.Current.GetService<IEmployerUrlsConfiguration>();
-
             return new FooterViewModel(new FooterConfiguration {
                 ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl,
                 AuthenticationAuthorityUrl = configuration.EmployerUsersBaseUrl
@@ -70,8 +61,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             new UserContext {
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString()
-            }
-            );
+            });
         }
 
         private static string GetRootUrl(HttpRequest request)
@@ -81,12 +71,10 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
             return $"{requestUrl.Scheme}://{requestUrl.Authority}";
         }
 
-        public static HtmlString CdnLink(this IHtmlHelper html, string folderName, string fileName)
+        public static HtmlString CdnLink(this IHtmlHelper html, string folderName, string fileName, string cdnBaseUrl)
         {
-            var cdnLocation = "config.CdnBaseUrl";
-
             var trimCharacters = new char[] { '/' };
-            return new HtmlString($"{cdnLocation.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
+            return new HtmlString($"{cdnBaseUrl.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
         }
     }
 }

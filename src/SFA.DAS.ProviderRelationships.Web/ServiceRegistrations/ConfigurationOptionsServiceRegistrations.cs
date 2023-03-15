@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Encoding;
 using SFA.DAS.PAS.Account.Api.ClientV2.Configuration;
@@ -20,7 +21,7 @@ public static class AddConfigurationOptionsExtension
         services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationships));
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
 
-        services.AddSingleton(configuration.Get<ProviderRelationshipsConfiguration>());
+        services.AddSingleton<IProviderRelationshipsConfiguration>(configuration.Get<ProviderRelationshipsConfiguration>());
 
         services.Configure<OuterApiConfiguration>(configuration.GetSection(nameof(OuterApiConfiguration)));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OuterApiConfiguration>>().Value);
@@ -57,12 +58,11 @@ public static class AddConfigurationOptionsExtension
         services.Configure<RegistrationApiConfiguration>(configuration.GetSection("RegistrationApiClientConfiguration"));
         services.AddSingleton<IRegistrationApiConfiguration>(cfg => cfg.GetService<IOptions<RegistrationApiConfiguration>>().Value);
 
+        services.Configure<OidcConfiguration>(configuration.GetSection("Oidc"));
+        services.AddSingleton<IOidcConfiguration>(cfg => cfg.GetService<IOptions<OidcConfiguration>>().Value);
 
-        services.Configure<EncodingConfig>(config =>
-        {
-            var encodings = configuration.GetSection("Encodings").Get<List<Encoding.Encoding>>();
-            config.Encodings = encodings;
-        });
-        services.AddSingleton(cfg => cfg.GetService<IOptions<EncodingConfig>>().Value);
+        var encodingConfigJson = configuration.GetSection(ConfigurationKeys.EncodingConfig).Value;
+        var encodingConfig = JsonConvert.DeserializeObject<EncodingConfig>(encodingConfigJson);
+        services.AddSingleton(encodingConfig);
     }
 }

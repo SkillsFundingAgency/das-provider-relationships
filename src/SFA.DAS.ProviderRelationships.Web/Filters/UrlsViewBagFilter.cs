@@ -1,29 +1,23 @@
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 
-namespace SFA.DAS.ProviderRelationships.Web.Filters
+namespace SFA.DAS.ProviderRelationships.Web.Filters;
+
+public class UrlsViewBagFilter : ActionFilterAttribute
 {
-    public class UrlsViewBagFilter : ActionFilterAttribute
+    public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        private readonly Func<IEmployerUrls> _employerUrls;
+        var employerUrls =  filterContext.HttpContext.RequestServices.GetRequiredService<IEmployerUrls>();
 
-        public UrlsViewBagFilter(Func<IEmployerUrls> employerUrls)
-        {
-            _employerUrls = employerUrls;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            var employerUrls = _employerUrls();
-            var accountHashedId = (string)filterContext.RouteData.Values[RouteValueKeys.AccountHashedId];
+        var accountHashedId = (string)filterContext.RouteData.Values[RouteValueKeys.AccountHashedId];
             
-            employerUrls.Initialize(accountHashedId);
+        employerUrls.Initialize(accountHashedId);
 
-            if (filterContext.Controller is Controller controller)
-            {
-                controller.ViewBag.EmployerUrls = employerUrls;
-            }
+        if (filterContext.Controller is Controller controller)
+        {
+            controller.ViewBag.EmployerUrls = employerUrls;
         }
     }
 }
