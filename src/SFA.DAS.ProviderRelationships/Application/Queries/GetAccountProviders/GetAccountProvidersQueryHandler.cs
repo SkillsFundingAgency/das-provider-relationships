@@ -10,47 +10,42 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders
+namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
+
+public class GetAccountProvidersQueryHandler : IRequestHandler<GetAccountProvidersQuery, GetAccountProvidersQueryResult>
 {
-    public class GetAccountProvidersQueryHandler : IRequestHandler<GetAccountProvidersQuery, GetAccountProvidersQueryResult>
+    private readonly Lazy<ProviderRelationshipsDbContext> _db;
+    private readonly IConfigurationProvider _configurationProvider;
+
+    public GetAccountProvidersQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
-        private readonly IConfigurationProvider _configurationProvider;
+        _db = db;
+        _configurationProvider = configurationProvider;
+    }
 
-        public GetAccountProvidersQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IConfigurationProvider configurationProvider)
+    public async Task<GetAccountProvidersQueryResult> Handle(GetAccountProvidersQuery request, CancellationToken cancellationToken)
+    {
+        var accountProviderIds = await _db.Value.AccountProviders
+            .Where(ap => ap.Account.Id == request.AccountId)
+            .ToListAsync(cancellationToken);
+
+        var accountLegalEntitiesCount =  await _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
+
+        var accountProviders = new List<AccountProviderDto>();
+
+        foreach (var accountProvider in accountProviderIds)
         {
-            _db = db;
-            _configurationProvider = configurationProvider;
+            accountProviders.Add(await GetAccountProvider(request.AccountId, accountProvider.Id, cancellationToken));
         }
 
-        public async Task<GetAccountProvidersQueryResult> Handle(GetAccountProvidersQuery request, CancellationToken cancellationToken)
-        {
-            var accountProviders = new List<AccountProviderDto>();
+        return new GetAccountProvidersQueryResult(accountProviders, accountLegalEntitiesCount);
+    }
 
-            var accountProviderIdsTask = _db.Value.AccountProviders
-                .Where(ap => ap.Account.Id == request.AccountId)
-                .ToListAsync(cancellationToken);
-
-            var accountLegalEntitiesCountTask =  _db.Value.AccountLegalEntities.CountAsync(ale => ale.AccountId == request.AccountId, cancellationToken);
-
-
-            await Task.WhenAll(accountProviderIdsTask, accountLegalEntitiesCountTask).ConfigureAwait(false);
-
-            foreach (var accountProvider in accountProviderIdsTask.Result)
-            {
-                accountProviders.Add(await GetAccountProvider(request.AccountId, accountProvider.Id, cancellationToken));
-            }
-
-            return new GetAccountProvidersQueryResult(accountProviders, accountLegalEntitiesCountTask.Result);
-        }
-
-        private async Task<AccountProviderDto> GetAccountProvider(long accountId, long accountProviderId, CancellationToken cancellationToken)
-        {
-            return await _db.Value.AccountProviders
-                .Where(ap => ap.Id == accountProviderId && ap.Account.Id == accountId)
-                .ProjectTo<AccountProviderDto>(_configurationProvider, new {accountProviderId})
-                .SingleOrDefaultAsync(cancellationToken);
-        }
+    private async Task<AccountProviderDto> GetAccountProvider(long accountId, long accountProviderId, CancellationToken cancellationToken)
+    {
+        return await _db.Value.AccountProviders
+            .Where(ap => ap.Id == accountProviderId && ap.Account.Id == accountId)
+            .ProjectTo<AccountProviderDto>(_configurationProvider, new {accountProviderId})
+            .SingleOrDefaultAsync(cancellationToken);
     }
 }
-
