@@ -52,7 +52,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             var query = new GetAccountProvidersQuery(accountId);
             var result = await _mediator.Send(query);
             var model = _mapper.Map<AccountProvidersViewModel>(result);
-
+            model.AccountHashedId = accountHashedId;
+            
             return View(model);
         }
 

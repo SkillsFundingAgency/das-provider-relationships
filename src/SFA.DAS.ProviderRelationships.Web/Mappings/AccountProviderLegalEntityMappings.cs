@@ -10,7 +10,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Mappings
         {
             CreateMap<GetAccountProviderLegalEntityQueryResult, AccountProviderLegalEntityViewModel>()
                 .ForMember(d => d.Confirmation, o => o.Ignore())
-                .ForMember(d => d.AccountId, o => o.Ignore())
+                .ForMember(d => d.AccountHashedId, o => o.Ignore())
                 .ForMember(d => d.UserRef, o => o.Ignore())
                 .ForMember(d => d.AccountProviderId, o => o.MapFrom(s => s.AccountProvider.Id))
                 .ForMember(d => d.AccountLegalEntityId, o => o.MapFrom(s => s.AccountLegalEntity.Id))

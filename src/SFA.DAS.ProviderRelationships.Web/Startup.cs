@@ -23,6 +23,7 @@ using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
+using SFA.DAS.Validation.Mvc.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
@@ -92,13 +93,14 @@ namespace SFA.DAS.ProviderRelationships.Web
 
                 }).AddMvc(options =>
                 {
+                    options.AddValidation();
+
                     if (!_configuration.IsDev())
                     {
                         options.Filters.Add(new GoogleAnalyticsFilter());
                         options.Filters.Add(new UrlsViewBagFilter());
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
-
                 })
                 .SetDefaultNavigationSection(NavigationSection.None);
 

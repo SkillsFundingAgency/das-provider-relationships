@@ -21,41 +21,41 @@
         </tr>
     </thead>
     <tbody class="govuk-table__body">
-    @foreach (var accountProvider in Model.AccountProviders)
-    {
-        <tr class="govuk-table__row">
-            <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
-            <td class="govuk-table__cell das-table-cell-width-50">
-                @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
-                {
-                    @:No permissions set
-                }
-                else
-                {
-                    <ul class="govuk-list govuk-!-margin-bottom-0">
-                    @foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions())
+        @foreach (var accountProvider in Model.AccountProviders)
+        {
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell das-table-cell-width-30">@accountProvider.ProviderName</td>
+                <td class="govuk-table__cell das-table-cell-width-50">
+                    @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
                     {
-                        <li>@permission.ToString()</li>
+                        @:No permissions set
                     }
-                    </ul>
-                }
-            </td>
-            @if (isOwner)
-            {
-                <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
-                    <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = accountProvider.Id, AccountLegalEntityId = accountProvider.AccountLegalEntities.First().Id })">
-                        @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
-                        {
-                            <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span></span>
-                        }
-                        else
-                        {
-                            <span>Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span></span>
-                        }
-                    </a>
+                    else
+                    {
+                        <ul class="govuk-list govuk-!-margin-bottom-0">
+                            @foreach (var permission in accountProvider.AccountLegalEntities.First().Operations.ToPermissions())
+                            {
+                                <li>@permission.ToString()</li>
+                            }
+                        </ul>
+                    }
                 </td>
-            }
-        </tr>
-    }
+                @if (isOwner)
+                {
+                    <td class="govuk-table__cell govuk-table__cell--numeric das-table-cell-width-20">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-controller="AccountProviderLegalEntities" asp-action="Permissions" asp-route-accountHashedId="@Model.AccountHashedId" asp-route-accountProviderId="@accountProvider.Id" asp-route-accountLegalEntityId="@accountProvider.AccountLegalEntities.First().Id">
+                            @if (!accountProvider.AccountLegalEntities.First().HadPermissions)
+                            {
+                                <span>Set permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span></span>
+                            }
+                            else
+                            {
+                                <span>Change permissions<span class="govuk-visually-hidden"> for @accountProvider.ProviderName</span></span>
+                            }
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>
