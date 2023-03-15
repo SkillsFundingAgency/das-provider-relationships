@@ -6,10 +6,9 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
     {
         public ProviderDto Provider { get; set; }
 
-        [Required]
         public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
-        [Required]
         public Guid? UserRef { get; set; }
         
         [Required]

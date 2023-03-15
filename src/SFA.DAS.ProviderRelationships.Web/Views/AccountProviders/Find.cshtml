@@ -9,19 +9,20 @@
 }
 
 @section breadcrumb
-{
+    {
     <a class="govuk-back-link" asp-controller="AccountProviders" asp-action="Index" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name="_ValidationSummary" model="ViewData.ModelState"/>
+        <partial name="_ValidationSummary" model="ViewData.ModelState" />
     </div>
 </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<form method="post"
+      asp-controller="AccountProviders"
+      asp-action="Find"
+      asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">
 
     <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--xl" for="Ukprn">
@@ -51,7 +52,7 @@
         </div>
     </div>
 
-}
+</form>
 
 <script>
     document.title = document.getElementById('jsChgTitle').textContent;

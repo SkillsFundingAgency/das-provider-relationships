@@ -5,7 +5,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
     public class FindProviderEditModel
     {
         [Required]
-        public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredUkprn)]
         public string Ukprn { get; set; }

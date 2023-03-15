@@ -22,6 +22,7 @@ public class AccountProviderMappings : Profile
             .ForMember(d => d.Choice, o => o.Ignore());
             
         CreateMap<GetProviderToAddQueryResult, AddAccountProviderViewModel>()
+            .ForMember(d => d.AccountHashedId, o => o.Ignore())
             .ForMember(d => d.Ukprn, o => o.Ignore())
             .ForMember(d => d.AccountId, o => o.Ignore())
             .ForMember(d => d.UserRef, o => o.Ignore())

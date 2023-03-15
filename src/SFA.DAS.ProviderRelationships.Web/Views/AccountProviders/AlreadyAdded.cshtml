@@ -20,6 +20,6 @@
             You cannot add @Model.AccountProvider.ProviderName,(@Model.AccountProvider.ProviderUkprn) because they're already on your
             list of training providers.
         </p>
-        <a class="govuk-button" href="@Url.Action("Index")" role="button">Return to your training providers</a>
+        <a class="govuk-button" asp-action="Index" asp-controller="AccountProviders" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Return to your training providers</a>
     </div>
 </div> 

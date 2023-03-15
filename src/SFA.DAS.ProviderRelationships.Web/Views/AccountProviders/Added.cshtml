@@ -14,12 +14,12 @@
                 You've successfully added @Model.AccountProvider.ProviderName
             </h1>
         </div>
-        <h2 class="govuk-heading-m govuk-!-margin-top-7">What happens next</h2>        
+        <h2 class="govuk-heading-m govuk-!-margin-top-7">What happens next</h2>
         <div class="govuk-body">
             <p>You need to set permissions for @Model.AccountProvider.ProviderName so that they can act on your behalf.</p>
             <p>You can set permissions in the 'your training providers' section of your account.</p>
         </div>
-        <a class="govuk-button" href="@Url.Action("Index")" role="button">Return to your training providers</a>
+        <a class="govuk-button" asp-action="Index" asp-controller="AccountProviders" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Return to your training providers</a>
     </div>
 </div>
 

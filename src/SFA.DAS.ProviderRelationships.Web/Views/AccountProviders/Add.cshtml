@@ -9,7 +9,7 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Find")">Back</a>
+    <a class="govuk-back-link" asp-action="Find" asp-controller="AccountProviders" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">    
@@ -22,7 +22,6 @@
 
         @using (Html.BeginForm())
         {
-            @Html.AntiForgeryToken()
             <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

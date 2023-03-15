@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Encoding;
@@ -25,6 +26,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -33,6 +35,8 @@ using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
 using SFA.DAS.Testing;
 using SFA.DAS.Testing.AutoFixture;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using Operation = SFA.DAS.ProviderRelationships.Types.Models.Operation;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 {
@@ -334,6 +338,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProvidersControllerTestsFixture()
         {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString()) }));
             Mediator = new Mock<IMediator>();
             EncodingService = new Mock<IEncodingService>();
             Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
@@ -347,17 +352,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 EmployerAccountAuthorisationHandler.Object,
                 EncodingService.Object
                 );
+            AccountProvidersController.ControllerContext = new ControllerContext() {
+                HttpContext = new DefaultHttpContext {  User = user }
+            };
         }
-
-        private static AuthorizationHandlerContext CreateAuthorizationContext()
-        {
-            var resource = new { Name = "test" };
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "homer.simpson") }));
-            var requirement = new OperationAuthorizationRequirement { Name = "Read" };
-
-            return new AuthorizationHandlerContext(new List<IAuthorizationRequirement> { requirement }, user, resource);
-        }
-
+        
         public Task<IActionResult> Index()
         {
             const long accountId = 1;
@@ -389,14 +388,17 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<IActionResult> PostFind(bool providerExists = false, bool providerAlreadyAdded = false)
         {
+            var encodedAccountId = "ABC123";
             var accountId = 1;
             var ukprn = 12345678;
             var accountProviderId = 2;
 
             var findProviderEditModel = new FindProviderEditModel {
-                AccountId = accountId,
+                AccountHashedId = encodedAccountId,
                 Ukprn = ukprn.ToString()
             };
+
+            EncodingService.Setup(x => x.Decode(encodedAccountId, EncodingType.AccountId)).Returns(accountId);
 
             FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null, providerAlreadyAdded ? accountProviderId : (int?)null);
 
@@ -444,8 +446,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<IActionResult> Added()
         {
+            const string encodedAccountId = "ABVBAS";
+            const long accountId = 1;
+
             AddedAccountProviderRouteValues = new AddedAccountProviderRouteValues {
-                AccountId = 1,
+                AccountHashedId = encodedAccountId,
                 AccountProviderId = 2
             };
 
@@ -455,7 +460,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 ProviderName = "Foo"
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
+            EncodingService.Setup(x => x.Decode(encodedAccountId, EncodingType.AccountId)).Returns(accountId);
+
+            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == accountId && q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
 
             return AccountProvidersController.Added(AddedAccountProviderRouteValues);
         }
@@ -475,8 +482,11 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public Task<IActionResult> AlreadyAdded()
         {
+            const string encodedAccountId = "ABVBAS";
+            const long accountId = 1;
+
             AlreadyAddedAccountProviderRouteValues = new AlreadyAddedAccountProviderRouteValues {
-                AccountId = 1,
+                AccountHashedId = encodedAccountId,
                 AccountProviderId = 2
             };
 
@@ -486,7 +496,9 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 ProviderName = "Foo"
             });
 
-            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == AlreadyAddedAccountProviderRouteValues.AccountId && q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
+            EncodingService.Setup(x => x.Decode(encodedAccountId, EncodingType.AccountId)).Returns(accountId);
+
+            Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == accountId && q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
 
             return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderRouteValues);
         }
@@ -516,7 +528,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                         .Select(i => new AccountLegalEntityDto {
                             Id = i,
                             Name = i.ToString(),
-                            Operations = new List<Operation>
+                            Operations = new List<SFA.DAS.ProviderRelationships.Types.Models.Operation>
                             {
                                 Operation.CreateCohort
                             }
