@@ -120,7 +120,7 @@ public class AccountProvidersController : Controller
                 var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
                 var accountProviderId = await _mediator.Send(command);
 
-                return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId, AccountHashedId = model.AccountHashedId });
+                return RedirectToAction("Added", new { AccountProviderId = accountProviderId, model.AccountHashedId });
             case "ReEnterUkprn":
                 return RedirectToAction("Find", new { model.AccountHashedId });
             default:
@@ -150,9 +150,9 @@ public class AccountProvidersController : Controller
         switch (model.Choice)
         {
             case "SetPermissions":
-                return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
+                return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
             case "AddTrainingProvider":
-                return RedirectToAction("Find");
+                return RedirectToAction("Find", new { model.AccountHashedId });
             case "GoToHomepage":
                 return Redirect(_employerUrls.Account());
             default:
@@ -182,9 +182,9 @@ public class AccountProvidersController : Controller
         switch (model.Choice)
         {
             case "SetPermissions":
-                return RedirectToAction("Get");
+                return RedirectToAction("Get", new { model.AccountHashedId });
             case "AddTrainingProvider":
-                return RedirectToAction("Find");
+                return RedirectToAction("Find", new { model.AccountHashedId });
             default:
                 throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
         }
@@ -196,7 +196,8 @@ public class AccountProvidersController : Controller
     [Route("{accountProviderId}")]
     public async Task<IActionResult> Get(GetAccountProviderRouteValues routeValues)
     {
-        var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var query = new GetAccountProviderQuery(accountId, routeValues.AccountProviderId.Value);
         var result = await _mediator.Send(query);
         var model = _mapper.Map<GetAccountProviderViewModel>(result);
 
@@ -204,7 +205,11 @@ public class AccountProvidersController : Controller
 
         if (model?.AccountProvider.AccountLegalEntities.Count == 1)
         {
-            return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
+            return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues {
+                AccountHashedId = routeValues.AccountHashedId,
+                AccountProviderId = model.AccountProvider.Id,
+                AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id
+            });
         }
 
         return View(model);
@@ -219,15 +224,16 @@ public class AccountProvidersController : Controller
 
         var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
 
-        var verify = await _mediator.Send(new FindProviderToAddQuery(routeValues.AccountId.Value, invitation.Invitation.Ukprn));
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var verify = await _mediator.Send(new FindProviderToAddQuery(accountId, invitation.Invitation.Ukprn));
 
         if (verify.ProviderNotFound || verify.ProviderAlreadyAdded)
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { routeValues.AccountHashedId });
         }
 
-        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
+        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
-        return RedirectToAction("Get", new { AccountProviderId = accountProviderId });
+        return RedirectToAction("Get", new { AccountProviderId = accountProviderId, routeValues.AccountHashedId });
     }
 }

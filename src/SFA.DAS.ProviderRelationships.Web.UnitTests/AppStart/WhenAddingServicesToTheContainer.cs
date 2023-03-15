@@ -1,17 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using FluentAssertions;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Memory;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
