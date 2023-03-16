@@ -62,7 +62,7 @@ public class AccountProviderLegalEntitiesController : Controller
             return View(model);
         }
 
-        return View(AccountProviders.ViewNames.Confirm, model);
+        return View(AccountProviderLegalEntities.ViewNames.Confirm, model);
     }
 
     [HttpPost]
@@ -73,13 +73,13 @@ public class AccountProviderLegalEntitiesController : Controller
 
         if (command == "Change")
         {
-            return View(AccountProviders.ViewNames.Permissions, model);
+            return View(AccountProviderLegalEntities.ViewNames.Permissions, model);
         }
 
         if (model.Permissions[1].State == State.No && !model.Confirmation.HasValue)
         {
             ModelState.AddModelError("confirmation", $"Select if you want to change {model.AccountProvider.ProviderName} permissions");
-            return View(AccountProviders.ViewNames.Confirm, model);
+            return View(AccountProviderLegalEntities.ViewNames.Confirm, model);
         }
 
         if (model.Confirmation.GetValueOrDefault() || model.Permissions[1].State != State.No)
@@ -101,6 +101,6 @@ public class AccountProviderLegalEntitiesController : Controller
             TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
         }
 
-        return RedirectToAction(AccountProviders.ActionNames.Index, AccountProviders.ControllerName, new { model.AccountHashedId });
+        return RedirectToAction(AccountProviderLegalEntities.ActionNames.Index, AccountProviderLegalEntities.ControllerName, new { model.AccountHashedId });
     }
 }

@@ -27,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             TestAsync(f => f.Permissions(), (f, r) =>
             {
-                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == AccountProviders.ViewNames.Permissions);
+                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == AccountProviderLegalEntities.ViewNames.Permissions);
             });
         }
 
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Update_WhenPostingPermissionsActionWithoutConfirmationSet_ThenShouldSetErrorState()
         {
             return TestAsync(f => f.CreateSession(), f => f.PostUpdate(null, null, State.No), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
-                v => v.ViewName.Equals(AccountProviders.ViewNames.Confirm) &&
+                v => v.ViewName.Equals(AccountProviderLegalEntities.ViewNames.Confirm) &&
                      f.AccountProviderLegalEntitiesController.ModelState.ContainsKey("Confirmation")));
         }
 
@@ -69,7 +69,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public Task Update_WhenPostingPermissionsActionWithChangeCommand_ThenShouldReturnPermissionsView()
         {
             return TestAsync(f => f.CreateSession(), f => f.PostUpdate(false, "Change", State.Yes), (f, r) => r.Should().NotBeNull().And.Match<ViewResult>(
-                v => v.ViewName.Equals(AccountProviders.ViewNames.Permissions)));
+                v => v.ViewName.Equals(AccountProviderLegalEntities.ViewNames.Permissions)));
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 f => f.CreateSession(),
                 f => f.PostUpdate(true, null, State.No),
                 (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                    a.ActionName.Equals(AccountProviders.ActionNames.Index) &&
-                    a.ControllerName.Equals(AccountProviders.ControllerName) &&
+                    a.ActionName.Equals(AccountProviderLegalEntities.ActionNames.Index) &&
+                    a.ControllerName.Equals(AccountProviderLegalEntities.ControllerName) &&
                     a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("ProviderName") &&

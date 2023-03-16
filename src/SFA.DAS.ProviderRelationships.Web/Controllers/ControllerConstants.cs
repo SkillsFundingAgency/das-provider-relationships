@@ -1,8 +1,8 @@
 ﻿namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
-public static class AccountProviders
+public static class AccountProviderLegalEntities
 {
-    public const string ControllerName = nameof(AccountProviders);
+    public const string ControllerName = nameof(AccountProviderLegalEntities);
 
     public static class ViewNames
     {
