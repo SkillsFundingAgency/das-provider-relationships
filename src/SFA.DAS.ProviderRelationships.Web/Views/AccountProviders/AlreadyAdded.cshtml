@@ -1,3 +1,5 @@
+@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AlreadyAddedAccountProviderViewModel
 
 @{
@@ -8,7 +10,7 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Find")">Back</a>
+    <a class="govuk-back-link" asp-action="@AccountProviders.ActionNames.Find" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -20,6 +22,6 @@
             You cannot add @Model.AccountProvider.ProviderName,(@Model.AccountProvider.ProviderUkprn) because they're already on your
             list of training providers.
         </p>
-        <a class="govuk-button" asp-action="Index" asp-controller="AccountProviders" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Return to your training providers</a>
+        <a class="govuk-button" asp-action="@AccountProviders.ActionNames.Index" asp-controller="@AccountProviders.ControllerName" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Return to your training providers</a>
     </div>
 </div> 

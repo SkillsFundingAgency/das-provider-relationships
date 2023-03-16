@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.ProviderRelationships.Types.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ProviderRelationships.Web.Controllers
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
 
 @{
@@ -19,8 +20,8 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ValidationSummary" model="ViewData.ModelState" />
 
-        <form asp-controller="AccountProviderLegalEntities" method="post"
-              asp-action="Confirm"
+        <form asp-controller="@AccountProviderLegalEntities.ControllerName" method="post"
+              asp-action="@AccountProviderLegalEntities.ActionNames.Confirm"
               asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]"
               asp-route-AccountProviderId="@ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]"
               asp-route-AccountLegalEntityId="@ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]">

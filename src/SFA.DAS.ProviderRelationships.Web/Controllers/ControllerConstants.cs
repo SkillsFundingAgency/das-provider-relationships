@@ -33,6 +33,7 @@ public static class AccountProviderLegalEntities
     public static class ActionNames
     {
         public const string Index = nameof(Index);
+        public const string Confirm = nameof(Confirm);
         public const string Permissions = nameof(Permissions);
     }
 }

@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
+﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
 
 @{
     var pageTitleNonJs = "Select the training provider you want to add";
@@ -9,8 +11,8 @@
 }
 
 @section breadcrumb
-    {
-    <a class="govuk-back-link" asp-controller="AccountProviders" asp-action="Index" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
+{
+    <a class="govuk-back-link" asp-controller="@AccountProviders.ControllerName" asp-action="@AccountProviders.ActionNames.Index" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -20,8 +22,8 @@
 </div>
 
 <form method="post"
-      asp-controller="AccountProviders"
-      asp-action="Find"
+      asp-controller="@AccountProviders.ControllerName"
+      asp-action="@AccountProviders.ActionNames.Find"
       asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">
 
     <h1 class="govuk-label-wrapper">
