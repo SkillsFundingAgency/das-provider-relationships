@@ -10,6 +10,7 @@ using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
@@ -81,7 +82,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
                     a.ActionName.Equals(AccountProviders.ActionNames.Index) &&
                     a.ControllerName.Equals(AccountProviders.ControllerName) &&
-                    a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
+                    a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId) &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("ProviderName") &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("LegalEntityName") &&
