@@ -70,11 +70,5 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 
             return $"{requestUrl.Scheme}://{requestUrl.Authority}";
         }
-
-        public static HtmlString CdnLink(this IHtmlHelper html, string folderName, string fileName, string cdnBaseUrl)
-        {
-            var trimCharacters = new char[] { '/' };
-            return new HtmlString($"{cdnBaseUrl.Trim(trimCharacters)}/{folderName.Trim(trimCharacters)}/{fileName.Trim(trimCharacters)}");
-        }
     }
 }

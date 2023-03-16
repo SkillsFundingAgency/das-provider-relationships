@@ -2,9 +2,6 @@
 @inject IEmployerUrlsConfiguration EmployerUrlsConfiguration
 @inject IProviderRelationshipsConfiguration ProviderRelationshipsConfiguration
 @inject IOidcConfiguration OidcConfiguration
-@{
-    var cdnBaseUrl = ProviderRelationshipsConfiguration.CdnBaseUrl;
-}
 
 <!doctype html>
 
@@ -18,23 +15,17 @@
 
     <meta name="theme-color" content="#0b0c0c" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:image" content="@Html.CdnLink("assets/images","govuk-opengraph-image.png", cdnBaseUrl)">
+    <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
 
-    <link rel="mask-icon" href="@Html.CdnLink("assets/images","govuk-mask-icon.svg", cdnBaseUrl)" color="#0b0c0c">
-    <link rel="apple-touch-icon" sizes="180x180" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-180x180.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" sizes="167x167" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-167x167.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" sizes="152x152" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-152x152.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon.png", cdnBaseUrl)">
-    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="@Html.CdnLink("assets/images","favicon.ico", cdnBaseUrl)" type="image/x-icon" />
-    <!--[if !IE 8]><!-->
-
-    <link href="/Content/css/application.css" rel="stylesheet" />
-
-    <link href="@Html.CdnLink("css", "main.css", cdnBaseUrl)" rel="stylesheet" />
-    <!--<![endif]-->
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="assets/images/govuk-mask-icon.svg" color="#0b0c0c"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/govuk-apple-touch-icon-180x180.png"/>
+    <link rel="apple-touch-icon" sizes="167x167" href="assets/images/govuk-apple-touch-icon-167x167.png"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png"/>
+    <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png"/>
+    <link href="css/main.css" rel="stylesheet" />
 
     <partial name="_ZenDeskWidget" />
-
     <partial name="_GoogleAnalyticsHead" />
 
 </head>
@@ -49,30 +40,24 @@
 
     <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
 
-
     <partial name="_CookieBanner" model="@Html.GetCookieBannerViewModel(EmployerUrlsConfiguration)" />
-
     <partial name="_Header" model="@Html.GetHeaderViewModel(EmployerUrlsConfiguration, OidcConfiguration)" />
-
 
     <div class="govuk-width-container">
         @await RenderSectionAsync("breadcrumb", false)
         <main class="govuk-main-wrapper " id="main-content" role="main">
             @RenderBody()
-
         </main>
-
     </div>
-
 
     <partial name="_Footer" model="@Html.GetFooterViewModel(EmployerUrlsConfiguration)" />
     <partial name="_GoogleAnalyticsInfo" />
 
-    <script src="@Html.CdnLink("libs/accessible-autocomplete","accessible-autocomplete.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("libs/jquery","jquery.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("libs/govuk-frontend","all.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("js","das-all.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("js","app.min.js", cdnBaseUrl)"></script>
+    <script src="/libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/govuk-frontend/all.js"></script>
+    <script src="/js/das-all.min.js"></script>
+    <script src="/js/app.min.js"></script>
 
     <script>
         window.GOVUKFrontend.initAll();

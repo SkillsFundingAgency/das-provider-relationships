@@ -38,13 +38,11 @@
                     <div class="error-panel">
                         <div class="govuk-warning-text">
                             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                            <strong class="govuk-warning-text__text">
+                            <div class="govuk-warning-text__text">
                                 <span class="govuk-warning-text__assistive">Warning</span>
-                                All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.
-                                <br />
-                                <br />
-                                Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.
-                            </strong>
+                                <p class="govuk-!-font-weight-bold">All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.</p>
+                                <p class="govuk-!-font-weight-bold">Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.</p>
+                            </div>
                         </div>
                     </div>
                 }
@@ -71,12 +69,12 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Add apprentice records</dt>
                         <dd class="govuk-summary-list__value">@Model.Permissions[0].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
+                        <dd class="govuk-summary-list__actions"><input class="das-button--inline-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Recruit apprentices</dt>
                         <dd class="govuk-summary-list__value">@Model.Permissions[1].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command" /></dd>
+                        <dd class="govuk-summary-list__actions"><input class="das-button--inline-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                 </dl>
 
