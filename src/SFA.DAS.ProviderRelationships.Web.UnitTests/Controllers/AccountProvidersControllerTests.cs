@@ -54,7 +54,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             fixture => fixture.PostFind(true),
             (fixture, result) => result.Should().NotBeNull().And.Match<RedirectToActionResult>(actionResult =>
-                actionResult.ActionName.Equals("Add") &&
+                actionResult.ActionName.Equals(AccountProviders.ActionNames.Add) &&
                 actionResult.ControllerName == null &&
                 actionResult.RouteValues["Ukprn"].Equals(fixture.FindProvidersQueryResult.Ukprn) &&
                 actionResult.RouteValues["AccountHashedId"].Equals(fixture.AccountHashedId)
@@ -77,7 +77,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             fixture => fixture.PostFind(),
             (fixture, result) => result.Should().NotBeNull().And.Match<RedirectToActionResult>(actionResult =>
-                actionResult.ActionName.Equals("Find") &&
+                actionResult.ActionName.Equals(AccountProviders.ActionNames.Find) &&
                 actionResult.RouteValues["AccountHashedId"].Equals(fixture.AccountHashedId) &&
                 actionResult.ControllerName == null)
             );
@@ -89,7 +89,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             f => f.PostFind(true, true),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("AlreadyAdded") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.AlreadyAdded) &&
                 a.ControllerName == null &&
                 a.RouteValues["AccountProviderId"].Equals(f.FindProvidersQueryResult.AccountProviderId) &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId)
@@ -125,7 +125,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             f => f.PostAdd("Confirm"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                        a.ActionName.Equals("Added") &&
+                        a.ActionName.Equals(AccountProviders.ActionNames.Added) &&
                         a.ControllerName == null &&
                         a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId) &&
                         a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId)
@@ -145,7 +145,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             f => f.PostAdd("ReEnterUkprn"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Find") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Find) &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                 a.ControllerName == null));
     }
@@ -176,7 +176,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             f => f.CreateSession(),
             f => f.Invitation(),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Get") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Get) &&
                 a.ControllerName == null &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) && 
                 a.RouteValues["AccountProviderId"].Equals(f.AccountProviderId)));
@@ -197,7 +197,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         Test(
             f => f.PostAdded("SetPermissions"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Get") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Get) &&
                 a.ControllerName == null &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                 a.RouteValues["AccountProviderId"].Equals(f.AddedAccountProviderViewModel.AccountProviderId)));
@@ -209,7 +209,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         Test(
             f => f.PostAdded("AddTrainingProvider"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Find") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Find) &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                 a.ControllerName == null));
     }
@@ -244,7 +244,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         Test(
             f => f.PostAlreadyAdded("SetPermissions"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Get") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Get) &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                 a.ControllerName == null));
     }
@@ -255,7 +255,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         Test(
             f => f.PostAlreadyAdded("AddTrainingProvider"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Find") &&
+                a.ActionName.Equals(AccountProviders.ActionNames.Find) &&
                 a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                 a.ControllerName == null));
     }
@@ -300,13 +300,13 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     }
 
     [Test]
-    public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesGetAction()
+    public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesPermissionsAction()
     {
         return TestAsync(
             f => f.Get(1),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                a.ActionName.Equals("Permissions") &&
-                a.ControllerName.Equals("AccountProviderLegalEntities") &&
+                a.ActionName.Equals(AccountProviderLegalEntities.ActionNames.Permissions) &&
+                a.ControllerName.Equals(AccountProviderLegalEntities.ControllerName) &&
                 a.RouteValues["AccountProviderId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&
                 a.RouteValues["AccountLegalEntityId"].Equals(f.GetAccountProviderQueryResult.AccountProvider.AccountLegalEntities[0].Id)));
     }
@@ -321,7 +321,6 @@ public class AccountProvidersControllerTestsFixture
     public Mock<IEmployerAccountAuthorisationHandler> EmployerAccountAuthorisationHandler { get; set; }
     public IMapper Mapper { get; set; }
     public Mock<IEmployerUrls> EmployerUrls { get; set; }
-    public AccountProvidersRouteValues AccountProvidersRouteValues { get; set; }
     public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
     public FindProviderToAddQueryResult FindProvidersQueryResult { get; set; }
     public AddAccountProviderRouteValues AddAccountProviderRouteValues { get; set; }
@@ -440,8 +439,8 @@ public class AccountProvidersControllerTestsFixture
 
         Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
 
-        var contex = new System.ComponentModel.DataAnnotations.ValidationContext(AddAccountProviderViewModel);
-        Validator.ValidateObject(AddAccountProviderViewModel, contex);
+        var context = new ValidationContext(AddAccountProviderViewModel);
+        Validator.ValidateObject(AddAccountProviderViewModel, context);
 
         return AccountProvidersController.Add(AddAccountProviderViewModel);
     }
@@ -532,7 +531,7 @@ public class AccountProvidersControllerTestsFixture
                     .Select(i => new AccountLegalEntityDto {
                         Id = i,
                         Name = i.ToString(),
-                        Operations = new List<SFA.DAS.ProviderRelationships.Types.Models.Operation>
+                        Operations = new List<Operation>
                         {
                             Operation.CreateCohort
                         }

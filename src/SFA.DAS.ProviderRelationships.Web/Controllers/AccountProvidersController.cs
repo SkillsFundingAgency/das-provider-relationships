@@ -82,15 +82,15 @@ public class AccountProvidersController : Controller
         {
             ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.RequiredUkprn);
 
-            return RedirectToAction("Find", new { model.AccountHashedId });
+            return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
         }
 
         if (result.ProviderAlreadyAdded)
         {
-            return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
+            return RedirectToAction(AccountProviders.ActionNames.AlreadyAdded, new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
         }
 
-        return RedirectToAction("Add", new { result.Ukprn, model.AccountHashedId });
+        return RedirectToAction(AccountProviders.ActionNames.Add, new { result.Ukprn, model.AccountHashedId });
     }
 
     [HttpGet]
@@ -120,9 +120,9 @@ public class AccountProvidersController : Controller
                 var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
                 var accountProviderId = await _mediator.Send(command);
 
-                return RedirectToAction("Added", new { AccountProviderId = accountProviderId, model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Added, new { AccountProviderId = accountProviderId, model.AccountHashedId });
             case "ReEnterUkprn":
-                return RedirectToAction("Find", new { model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
             default:
                 throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
         }
@@ -150,9 +150,9 @@ public class AccountProvidersController : Controller
         switch (model.Choice)
         {
             case "SetPermissions":
-                return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Get, new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
             case "AddTrainingProvider":
-                return RedirectToAction("Find", new { model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
             case "GoToHomepage":
                 return Redirect(_employerUrls.Account());
             default:
@@ -182,9 +182,9 @@ public class AccountProvidersController : Controller
         switch (model.Choice)
         {
             case "SetPermissions":
-                return RedirectToAction("Get", new { model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Get, new { model.AccountHashedId });
             case "AddTrainingProvider":
-                return RedirectToAction("Find", new { model.AccountHashedId });
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
             default:
                 throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
         }
@@ -205,7 +205,7 @@ public class AccountProvidersController : Controller
 
         if (model?.AccountProvider.AccountLegalEntities.Count == 1)
         {
-            return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues {
+            return RedirectToAction(AccountProviderLegalEntities.ActionNames.Permissions, AccountProviderLegalEntities.ControllerName, new AccountProviderLegalEntityRouteValues {
                 AccountHashedId = routeValues.AccountHashedId,
                 AccountProviderId = model.AccountProvider.Id,
                 AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id
@@ -229,11 +229,11 @@ public class AccountProvidersController : Controller
 
         if (verify.ProviderNotFound || verify.ProviderAlreadyAdded)
         {
-            return RedirectToAction("Index", new { routeValues.AccountHashedId });
+            return RedirectToAction(AccountProviders.ActionNames.Index, new { routeValues.AccountHashedId });
         }
 
         var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
-        return RedirectToAction("Get", new { AccountProviderId = accountProviderId, routeValues.AccountHashedId });
+        return RedirectToAction(AccountProviders.ActionNames.Get, new { AccountProviderId = accountProviderId, routeValues.AccountHashedId });
     }
 }

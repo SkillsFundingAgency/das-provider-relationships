@@ -79,8 +79,8 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 f => f.CreateSession(),
                 f => f.PostUpdate(true, null, State.No),
                 (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                    a.ActionName.Equals(AccountProviderLegalEntities.ActionNames.Index) &&
-                    a.ControllerName.Equals(AccountProviderLegalEntities.ControllerName) &&
+                    a.ActionName.Equals(AccountProviders.ActionNames.Index) &&
+                    a.ControllerName.Equals(AccountProviders.ControllerName) &&
                     a.RouteValues["AccountHashedId"].Equals(f.AccountHashedId) &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("PermissionsChanged") &&
                     f.AccountProviderLegalEntitiesController.TempData.ContainsKey("ProviderName") &&

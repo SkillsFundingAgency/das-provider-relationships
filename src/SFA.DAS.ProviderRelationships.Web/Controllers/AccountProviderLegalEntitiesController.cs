@@ -101,6 +101,6 @@ public class AccountProviderLegalEntitiesController : Controller
             TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
         }
 
-        return RedirectToAction(AccountProviderLegalEntities.ActionNames.Index, AccountProviderLegalEntities.ControllerName, new { model.AccountHashedId });
+        return RedirectToAction(AccountProviders.ActionNames.Index, AccountProviders.ControllerName, new { model.AccountHashedId });
     }
 }
