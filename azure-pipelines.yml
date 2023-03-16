@@ -1,0 +1,37 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - "main"
+
+variables:
+- name: SolutionBaseName
+  value: SFA.DAS.ProviderRelationships
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: any cpu
+
+pool:
+  name: DAS - Continuous Integration Agents
+  demands: LATEST_DOTNET_VERSION -equals 3.1
+  workspace:
+    clean: all
+
+resources:
+  repositories:
+  - repository: self
+  - repository: das-platform-building-blocks
+    type: github
+    name: SkillsFundingAgency/das-platform-building-blocks
+    ref: refs/tags/2.1.0
+    endpoint: SkillsFundingAgency
+
+stages:
+- stage: Build
+  jobs:
+  - template: pipeline-templates/job/code-build.yml
+    parameters:
+      SolutionBaseName: $(SolutionBaseName)
+      BuildConfiguration: $(BuildConfiguration)
+  - template: pipeline-templates/job/dacpac-build.yml
