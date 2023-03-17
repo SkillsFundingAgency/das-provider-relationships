@@ -9,12 +9,12 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Models;
 
 public class AccountTests
 {
-    // Test will fail with null reference on Entity.UnitOfWorkContext if this isn't here.
-    private UnitOfWorkContext UnitOfWorkContext { get; } = new UnitOfWorkContext();
-
     [Test]
     public void And_Provider_Already_Exists_Then_Throws_Exception()
     {
+        // Test will fail with null reference on Entity.UnitOfWorkContext if this isn't here.
+        new UnitOfWorkContext();
+
         //arrange
         var account = new Account(2, "hashedid", "pub", "name", DateTime.Now);
         var provider = EntityActivator.CreateInstance<Provider>().Set(p => p.Ukprn, 12345678).Set(p => p.Name, "Foo");

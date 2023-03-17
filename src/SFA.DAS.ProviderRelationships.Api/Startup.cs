@@ -57,7 +57,6 @@ public class Startup
             });
         });
 
-
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddConfigurationSections(_configuration)
@@ -68,8 +67,6 @@ public class Startup
                 {
                     opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
                 }
-
-                // opt.AddValidation();
             });
 
         services.AddLogging();
@@ -97,12 +94,8 @@ public class Startup
             .UseSwagger()
             .UseSwaggerUI(opt =>
             {
-                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Employer Accounts API");
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Provider Relationships API");
                 opt.RoutePrefix = string.Empty;
             });
-    }
-
-    private void ConfigureMvcOptions(MvcOptions mvcOptions)
-    {
     }
 }

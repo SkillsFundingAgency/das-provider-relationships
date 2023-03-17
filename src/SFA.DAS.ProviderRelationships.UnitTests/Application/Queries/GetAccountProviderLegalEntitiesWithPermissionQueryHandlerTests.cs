@@ -99,7 +99,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         
         public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
         {
-            // need to new up one of these, so it's static Events is there.. so lame
+            // need to new up one of these, so it's static Events is there
             new UnitOfWorkContext();
 
             Account = EntityActivator.CreateInstance<Account>()
