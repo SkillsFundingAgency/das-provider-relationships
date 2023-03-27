@@ -4,29 +4,33 @@ using MediatR;
 using Microsoft.Azure.Documents;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
-namespace SFA.DAS.ProviderRelationships.Application.Queries.Ping
+namespace SFA.DAS.ProviderRelationships.Application.Queries.Ping;
+
+public class PingQueryHandler : RequestHandler<PingQuery>
 {
-    public class PingQueryHandler : RequestHandler<PingQuery>
+    private readonly IDocumentClient _documentClient;
+
+    public PingQueryHandler(IDocumentClientFactory documentClientFactory)
     {
-        private readonly IDocumentClient _documentClient;
+        _documentClient = documentClientFactory.CreateDocumentClient();
+    }
 
-        public PingQueryHandler(IDocumentClientFactory documentClientFactory)
+    protected override void Handle(PingQuery request)
+    {
+        var value = _documentClient.CreateDatabaseQuery()
+            .Where(d => d.Id == DocumentSettings.DatabaseName)
+            .Select(d => 1)
+            .AsEnumerable()
+            .FirstOrDefault();
+
+        if (value == 0)
         {
-            _documentClient = documentClientFactory.CreateDocumentClient();
-        }
-
-        protected override void Handle(PingQuery request)
-        {
-            var value = _documentClient.CreateDatabaseQuery()
-                .Where(d => d.Id == DocumentSettings.DatabaseName)
-                .Select(d => 1)
-                .AsEnumerable()
-                .FirstOrDefault();
-
-            if (value == 0)
-            {
-                throw new Exception("Read store database ping failed");
-            }
+            throw new PingQueryException("Read store database ping failed");
         }
     }
+}
+
+public class PingQueryException : Exception
+{
+    public PingQueryException(string message): base(message) { }
 }

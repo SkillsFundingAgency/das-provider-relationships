@@ -37,17 +37,17 @@ public class RegistrationApiClient : ApiClientBase, IRegistrationApiClient
         await _client.SendAsync(httpRequestMessage).ConfigureAwait(false);
     }
 
-    public async Task<string> GetInvitations(string correlationId, CancellationToken cancellationToken = default)
+    public async Task<string> GetInvitations(string correlationId, CancellationToken cancellationToken)
     {
         var url = $"{_apiBaseUrl}api/invitations/{correlationId}";
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
         
         await AddAuthenticationHeader(httpRequestMessage);
         
-        var response = await _client.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        var response = await _client.SendAsync(httpRequestMessage, cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
     private async Task AddAuthenticationHeader(HttpRequestMessage httpRequestMessage)

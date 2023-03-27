@@ -1,11 +1,10 @@
-namespace SFA.DAS.ProviderRelationships.Web.Urls
-{
-    public interface IEmployerUrls
-    {
-        void Initialize(string accountHashedId);
-        
-        string Account(string hashedAccountId = null);
+namespace SFA.DAS.ProviderRelationships.Web.Urls;
 
-        string Homepage();
-    }
+public interface IEmployerUrls
+{
+    void Initialize(string accountHashedId);
+        
+    string Account(string accountHashedId = null);
+
+    string Homepage();
 }

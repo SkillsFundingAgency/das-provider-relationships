@@ -1,12 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ProviderRelationships.Services
-{
-    public interface IRegistrationApiClient
-    {
-        Task Unsubscribe(string CorrelationId);
+namespace SFA.DAS.ProviderRelationships.Services;
 
-        Task<string> GetInvitations(string CorrelationId, CancellationToken cancellationToken);
-    }
+public interface IRegistrationApiClient
+{
+    Task Unsubscribe(string correlationId);
+
+    Task<string> GetInvitations(string correlationId, CancellationToken cancellationToken);
 }
