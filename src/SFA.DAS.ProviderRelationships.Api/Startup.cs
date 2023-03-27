@@ -37,7 +37,8 @@ public class Startup
         var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
         var isDevelopment = _configuration.IsDevOrLocal();
 
-        services.AddMediatR(typeof(RevokePermissionsCommand));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
+
         services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddReadStoreServices();

@@ -50,9 +50,9 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddApplicationServices()
                     .AddApiClients();
 
-            services.AddMediatR(typeof(FindProviderToAddQuery))
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(FindProviderToAddQuery)))
                     .AddAutoMapper(typeof(AccountProviderLegalEntityMappings),
-                        typeof(Web.Mappings.HealthCheckMappings));
+                        typeof(Mappings.HealthCheckMappings));
 
             var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
 

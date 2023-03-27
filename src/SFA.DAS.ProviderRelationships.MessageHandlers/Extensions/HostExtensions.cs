@@ -66,6 +66,8 @@ public static class HostExtensions
             services.AddConfigurationSections(context.Configuration);
             services.AddClientRegistrations();
             services.AddNServiceBus();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(AddAccountLegalEntityCommand)));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Program)));
             services.AddMediatR(typeof(AddAccountLegalEntityCommand));
             services.AddApplicationServices();
             services.AddDatabaseRegistration(context.Configuration[$"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString"]);

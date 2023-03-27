@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public DeletedPermissionsEventAuditCommand Command { get; set; }
-        public IRequestHandler<DeletedPermissionsEventAuditCommand, Unit> Handler { get; set; }
+        public IRequestHandler<DeletedPermissionsEventAuditCommand> Handler { get; set; }
 
         public DeletedPermissionsEventAuditCommandHandlerTestsFixture()
         {

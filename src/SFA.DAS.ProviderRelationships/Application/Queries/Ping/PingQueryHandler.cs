@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Azure.Documents;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.Ping;
 
-public class PingQueryHandler : RequestHandler<PingQuery>
+public class PingQueryHandler : IRequestHandler<PingQuery>
 {
     private readonly IDocumentClient _documentClient;
 
@@ -15,7 +17,7 @@ public class PingQueryHandler : RequestHandler<PingQuery>
         _documentClient = documentClientFactory.CreateDocumentClient();
     }
 
-    protected override void Handle(PingQuery request)
+    public Task Handle(PingQuery request, CancellationToken cancellationToken)
     {
         var value = _documentClient.CreateDatabaseQuery()
             .Where(d => d.Id == DocumentSettings.DatabaseName)
@@ -27,6 +29,8 @@ public class PingQueryHandler : RequestHandler<PingQuery>
         {
             throw new PingQueryException("Read store database ping failed");
         }
+
+        return Task.CompletedTask;
     }
 }
 

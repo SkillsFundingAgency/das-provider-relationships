@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public CreateAccountCommand Command { get; set; }
-        public IRequestHandler<CreateAccountCommand, Unit> Handler { get; set; }
+        public IRequestHandler<CreateAccountCommand> Handler { get; set; }
         
         public CreateAccountCommandHandlerTestFixture()
         {

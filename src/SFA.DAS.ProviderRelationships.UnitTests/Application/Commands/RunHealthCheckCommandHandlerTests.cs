@@ -36,7 +36,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public ProviderRelationshipsDbContext Db { get; set; }
         public User User { get; set; }
         public RunHealthCheckCommand RunHealthCheckCommand { get; set; }
-        public IRequestHandler<RunHealthCheckCommand, Unit> Handler { get; set; }
+        public IRequestHandler<RunHealthCheckCommand> Handler { get; set; }
         public UnitOfWorkContext UnitOfWorkContext { get; set; }
         public Mock<IRoatpService> ProviderApiClient { get; set; }
         public Mock<IProviderRelationshipsApiClient> ProviderRelationshipsApiClient { get; set; }

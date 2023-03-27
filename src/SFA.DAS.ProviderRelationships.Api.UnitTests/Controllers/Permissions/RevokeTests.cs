@@ -99,8 +99,7 @@ public class RevokeTestsFixture
 
         Mediator = new Mock<IMediator>();
         Mediator
-            .Setup(x => x.Send(It.IsAny<RevokePermissionsCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Unit.Value);
+            .Setup(x => x.Send(It.IsAny<RevokePermissionsCommand>(), It.IsAny<CancellationToken>()));
 
         PermissionsController = new PermissionsController(Mediator.Object);
     }

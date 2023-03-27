@@ -104,7 +104,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture
     {
         public SendUpdatedPermissionsNotificationCommand Command { get; set; }
-        public IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit> Handler { get; set; }
+        public IRequestHandler<SendUpdatedPermissionsNotificationCommand> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long Ukprn { get; set; }

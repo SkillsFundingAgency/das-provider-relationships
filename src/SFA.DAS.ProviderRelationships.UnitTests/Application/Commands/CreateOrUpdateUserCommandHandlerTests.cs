@@ -63,7 +63,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public CreateOrUpdateUserCommand CreateOrUpdateUserCommand { get; set; }
-        public IRequestHandler<CreateOrUpdateUserCommand, Unit> Handler { get; set; }
+        public IRequestHandler<CreateOrUpdateUserCommand> Handler { get; set; }
         public DateTime Now { get; set; }
         public User User { get; set; }
 

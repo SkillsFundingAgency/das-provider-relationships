@@ -34,7 +34,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     public class SendDeletedPermissionsNotificationCommandHandlerTestsFixture
     {
         public SendDeletedPermissionsNotificationCommand Command { get; set; }
-        public IRequestHandler<SendDeletedPermissionsNotificationCommand, Unit> Handler { get; set; }
+        public IRequestHandler<SendDeletedPermissionsNotificationCommand> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long Ukprn { get; set; }

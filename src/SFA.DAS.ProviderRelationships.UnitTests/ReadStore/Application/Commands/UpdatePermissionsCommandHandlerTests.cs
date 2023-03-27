@@ -105,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository;
         public List<AccountProviderLegalEntity> Relationships;
         public UpdatePermissionsCommand Command;
-        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler;
+        public IRequestHandler<UpdatePermissionsCommand> Handler;
         
         public UpdatePermissionsCommandHandlerTestsFixture()
         {

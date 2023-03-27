@@ -199,7 +199,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     ProviderName = "Foo Bar"
                 });
 
-            Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None)).ReturnsAsync(Unit.Value);
+            Mediator.Setup(m => m.Send(It.IsAny<UpdatePermissionsCommand>(), CancellationToken.None));
             Mediator.Setup(m => m.Send(It.IsAny<GetAccountProviderQuery>(), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
 
             return AccountProviderLegalEntitiesController.Confirm(AccountProviderLegalEntityViewModel, command);

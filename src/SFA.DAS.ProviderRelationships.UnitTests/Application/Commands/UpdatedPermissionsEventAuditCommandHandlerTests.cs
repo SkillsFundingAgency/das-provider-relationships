@@ -40,7 +40,7 @@ public class UpdatedPermissionsEventAuditCommandHandlerTestsFixture
 {
     public ProviderRelationshipsDbContext Db { get; set; }
     public UpdatedPermissionsEventAuditCommand Command { get; set; }
-    public IRequestHandler<UpdatedPermissionsEventAuditCommand, Unit> Handler { get; set; }
+    public IRequestHandler<UpdatedPermissionsEventAuditCommand> Handler { get; set; }
 
     public UpdatedPermissionsEventAuditCommandHandlerTestsFixture()
     {

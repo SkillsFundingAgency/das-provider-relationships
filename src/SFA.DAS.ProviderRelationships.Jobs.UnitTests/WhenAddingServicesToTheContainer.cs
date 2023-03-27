@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Jobs.Extensions;
 using SFA.DAS.ProviderRelationships.Jobs.ScheduledJobs;
@@ -41,7 +42,7 @@ public class WhenAddingServicesToTheContainer
         services.AddNServiceBus();
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddUnitOfWork();
-        services.AddMediatR(typeof(Program));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Program)));
         services.AddLogging(_ => { });
         services.AddApplicationServices();
         services.AddTransient<ImportProvidersJob>();

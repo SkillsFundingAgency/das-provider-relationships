@@ -33,7 +33,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Queries
         internal PingQuery Query { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public Mock<IDocumentClient> DocumentClient { get; set; }
-        internal IRequestHandler<PingQuery, Unit> Handler { get; set; }
+        internal IRequestHandler<PingQuery> Handler { get; set; }
         public Mock<IDocumentClientFactory> DocumentClientFactory { get; set; }
         public List<Database> Databases { get; set; }
 

@@ -45,19 +45,19 @@ public class WhenAddingServicesToTheContainer
        RunTestForType(toResolve);
     }
 
-    [TestCase(typeof(IRequestHandler<AddAccountLegalEntityCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<UpdateAccountNameCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<CreateAccountCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<RemoveAccountLegalEntityCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<UpdateAccountLegalEntityNameCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<AddedAccountProviderEventAuditCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<DeletedPermissionsEventAuditCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<DeletePermissionsCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<SendDeletedPermissionsNotificationCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<UpdatedPermissionsEventAuditCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand, Unit>))]
-    [TestCase(typeof(IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<AddAccountLegalEntityCommand>))]
+    [TestCase(typeof(IRequestHandler<UpdateAccountNameCommand>))]
+    [TestCase(typeof(IRequestHandler<CreateAccountCommand>))]
+    [TestCase(typeof(IRequestHandler<RemoveAccountLegalEntityCommand>))]
+    [TestCase(typeof(IRequestHandler<UpdateAccountLegalEntityNameCommand>))]
+    [TestCase(typeof(IRequestHandler<AddedAccountProviderEventAuditCommand>))]
+    [TestCase(typeof(IRequestHandler<DeletedPermissionsEventAuditCommand>))]
+    [TestCase(typeof(IRequestHandler<DeletePermissionsCommand>))]
+    [TestCase(typeof(IRequestHandler<SendDeletedPermissionsNotificationCommand>))]
+    [TestCase(typeof(IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand>))]
+    [TestCase(typeof(IRequestHandler<UpdatedPermissionsEventAuditCommand>))]
+    [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand>))]
+    [TestCase(typeof(IRequestHandler<SendUpdatedPermissionsNotificationCommand>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_CommandHandlers(Type toResolve)
     {
        RunTestForType(toResolve);
@@ -85,7 +85,7 @@ public class WhenAddingServicesToTheContainer
         services.AddNServiceBus();
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddUnitOfWork();
-        services.AddMediatR(typeof(UpdatePermissionsCommand));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(UpdatePermissionsCommand)));
         services.AddLogging(_ => { });
         services.AddApplicationServices();
 
