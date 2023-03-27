@@ -13,7 +13,7 @@ using SFA.DAS.ProviderRelationships.Types.Models;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 
-public class SendUpdatedPermissionsNotificationCommandHandler : AsyncRequestHandler<SendUpdatedPermissionsNotificationCommand>
+public class SendUpdatedPermissionsNotificationCommandHandler : IRequestHandler<SendUpdatedPermissionsNotificationCommand>
 {
     private readonly IPasAccountApiClient _client;
     private readonly IProviderUrls _providerUrls;
@@ -27,7 +27,7 @@ public class SendUpdatedPermissionsNotificationCommandHandler : AsyncRequestHand
         _db = db;
     }
 
-    protected override async Task Handle(SendUpdatedPermissionsNotificationCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SendUpdatedPermissionsNotificationCommand request, CancellationToken cancellationToken)
     {
         var organisation = await _db.Value.AccountLegalEntities.SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 

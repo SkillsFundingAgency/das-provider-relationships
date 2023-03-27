@@ -10,7 +10,7 @@ using SFA.DAS.ProviderRelationships.Data;
 
 namespace SFA.DAS.ProviderRelationships.Application.Commands.SendDeletedPermissionsNotification;
 
-public class SendDeletedPermissionsNotificationCommandHandler : AsyncRequestHandler<SendDeletedPermissionsNotificationCommand>
+public class SendDeletedPermissionsNotificationCommandHandler : IRequestHandler<SendDeletedPermissionsNotificationCommand>
 {
     private readonly IPasAccountApiClient _client;
     private readonly Lazy<ProviderRelationshipsDbContext> _db;
@@ -22,7 +22,7 @@ public class SendDeletedPermissionsNotificationCommandHandler : AsyncRequestHand
         _db = db;
     }
 
-    protected override async Task Handle(SendDeletedPermissionsNotificationCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SendDeletedPermissionsNotificationCommand request, CancellationToken cancellationToken)
     {
         var organisation = await _db.Value.AccountLegalEntities.IgnoreQueryFilters().SingleAsync(a => a.Id == request.AccountLegalEntityId, cancellationToken);
 
