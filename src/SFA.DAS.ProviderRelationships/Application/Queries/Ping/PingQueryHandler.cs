@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -34,7 +35,10 @@ public class PingQueryHandler : IRequestHandler<PingQuery>
     }
 }
 
+[Serializable]
 public class PingQueryException : Exception
 {
     public PingQueryException(string message): base(message) { }
+
+    protected PingQueryException(SerializationInfo info, StreamingContext context): base(info, context) { }
 }

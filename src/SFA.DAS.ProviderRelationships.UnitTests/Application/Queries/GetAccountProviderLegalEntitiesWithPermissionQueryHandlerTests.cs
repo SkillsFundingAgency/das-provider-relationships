@@ -48,19 +48,30 @@ public class GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTests : Fl
     [Test]
     public Task Handle_WhenUkprnIsFoundButAccountLegalEntityIsDeleted_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
     {
-        return TestAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+        return TestAsync(f => f.SetAccountProviderLegalEntities().SetAccountLegalEntityDeleted(),
+            f => f.Handle(), 
+            (_, r) => AssertEmptyResult(r));
     }
 
     [Test]
     public Task Handle_WhenUkprnIsFoundAndAccountProviderLegalEntityHasNotGotPermissionForSuppliedOperation_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
     {
-        return TestAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+        return TestAsync(f => f.SetAccountProviderLegalEntities().RemovePermission(), 
+            f => f.Handle(), 
+            (_, r) => AssertEmptyResult(r));
     }
 
     [Test]
     public Task Handle_WhenUkprnIsNotFound_ThenShouldReturnGetAccountProviderLegalEntitiesWithPermissionQueryResultWithEmptyAccountProviderLegalEntitiesDtos()
     {
-        return TestAsync(f => f.Handle(), (f, r) => f.AssertEmptyResult(r));
+        return TestAsync(f => f.Handle(), 
+            (_, r) => AssertEmptyResult(r));
+    }
+
+    public static void AssertEmptyResult(GetAccountProviderLegalEntitiesWithPermissionQueryResult result)
+    {
+        result.Should().NotBeNull();
+        result.Should().BeEquivalentTo(new GetAccountProviderLegalEntitiesWithPermissionQueryResult(Array.Empty<AccountProviderLegalEntityDto>()));
     }
 }
 
@@ -151,11 +162,5 @@ public class GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixtu
         Db.Permissions.RemoveRange(Db.Permissions);
         Db.SaveChanges();
         return this;
-    }
-
-    public void AssertEmptyResult(GetAccountProviderLegalEntitiesWithPermissionQueryResult result)
-    {
-        result.Should().NotBeNull();
-        result.Should().BeEquivalentTo(new GetAccountProviderLegalEntitiesWithPermissionQueryResult(Array.Empty<AccountProviderLegalEntityDto>()));
     }
 }

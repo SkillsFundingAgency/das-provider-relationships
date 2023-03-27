@@ -59,10 +59,10 @@ public class WhenAddingServicesToTheContainer
                 new($"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString", "Data Source=.;Initial Catalog=Testing;Integrated Security=True;Pooling=False;Connect Timeout=30"),
                 new($"{ConfigurationKeys.ProviderRelationships}:ServiceBusConnectionString", "test"),
                 new($"{ConfigurationKeys.ProviderRelationships}:NServiceBusLicense", "test"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:ApiBaseUrl", "http://test/"),
-                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:IdentifierUri", "http://test/"),
+                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:ApiBaseUrl", "https://test/"),
+                new($"{ConfigurationKeys.ProviderRelationships}:RoatpApiClientSettings:IdentifierUri", "https://test/"),
                 new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:AuthKey", "test"),
-                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:Uri", "http://test/"),
+                new($"{ConfigurationKeys.ProviderRelationshipsReadStore}:Uri", "https://test/"),
                 new("EnvironmentName", "LOCAL"),
             }
         };
