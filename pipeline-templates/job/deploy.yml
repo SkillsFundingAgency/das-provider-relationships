@@ -1,9 +1,9 @@
 parameters:
-  ServiceConnection:
-  SolutionBaseName:
   Environment:
-  OverrideBlockOnPossibleDataLoss:
+  SolutionBaseName:
+  ServiceConnection:
   AppRoleAssignmentsServiceConnection:
+  OverrideBlockOnPossibleDataLoss:
 
 jobs:
 - deployment: DeployWebApp

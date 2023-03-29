@@ -67,6 +67,7 @@ stages:
       Environment: AT
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+      AppRoleAssignmentsServiceConnection: das-app-role-assignments-CDS
       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_TEST
@@ -81,6 +82,7 @@ stages:
 #     parameters:
 #       Environment: TEST
 #       ServiceConnection: SFA-DAS-DevTest-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-CDS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_TEST2
@@ -95,6 +97,7 @@ stages:
 #     parameters:
 #       Environment: TEST2
 #       ServiceConnection: SFA-DAS-DevTest-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-CDS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_PP
@@ -109,6 +112,7 @@ stages:
 #     parameters:
 #       Environment: PP
 #       ServiceConnection: SFA-DIG-PreProd-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_PROD
@@ -124,6 +128,7 @@ stages:
 #     parameters:
 #       Environment: PROD
 #       ServiceConnection: SFA-DIG-Prod-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_MO
@@ -138,6 +143,7 @@ stages:
 #     parameters:
 #       Environment: MO
 #       ServiceConnection: SFA-ASM-ModelOffice-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_DEMO
@@ -152,4 +158,5 @@ stages:
 #     parameters:
 #       Environment: DEMO
 #       ServiceConnection: SFA-DAS-DevTest-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-CDS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
