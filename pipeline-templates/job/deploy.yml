@@ -64,7 +64,7 @@ jobs:
             SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-providerrelationships
             StorageAccountName: $(ConfigurationStorageAccountName)
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
-            TargetFileName: '*.schema.json'
+            TargetFileName: 'SFA.DAS.ProviderRelationshipsV2.schema.json'
             TableName: Configuration
             ConfigurationSecrets:
               DefaultSessionRedisConnectionString: $(DefaultSessionRedisConnectionString)
