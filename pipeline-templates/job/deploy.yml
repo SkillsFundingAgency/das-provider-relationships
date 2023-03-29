@@ -79,6 +79,7 @@ jobs:
               NServiceBusLicense: $(NServiceBusLicense)
               PublicHashstring: $(PublicHashstring)
               ReadStoreAuthKey: $(ReadStoreAuthKey)
+              ProviderRelationshipsApimSubscriptionKey: $(ProviderRelationshipsApimSubscriptionKey)
         - template: azure-pipelines-templates/deploy/step/app-role-assignments.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.AppRoleAssignmentsServiceConnection }}
