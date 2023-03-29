@@ -49,7 +49,7 @@
 
     <ItemGroup>
         <Content Update="appsettings.json">
-            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
         <Content Update="appsettings.Development.json">
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
