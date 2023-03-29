@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class NServiceBusServiceRegistrations
 {
-    private const string EndPointName = "SFA.DAS.ProviderRelationships";
+    private const string EndPointName = "SFA.DAS.ProviderRelationships.Web";
 
     public static void StartNServiceBus(this UpdateableServiceProvider services, IConfiguration configuration, bool isDevOrLocal)
     {
