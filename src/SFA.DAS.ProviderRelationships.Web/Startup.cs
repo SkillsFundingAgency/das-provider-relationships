@@ -135,6 +135,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
             else
             {
+                app.UseExceptionHandler("/error/500");
                 app.UseHealthChecks();
             }
 
