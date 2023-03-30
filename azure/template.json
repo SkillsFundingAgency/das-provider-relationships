@@ -397,30 +397,6 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat('das-provider-relationships-api-cert-', parameters('utcNow'))]",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
-            "type": "Microsoft.Resources/deployments",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "keyVaultCertificateName": {
-                        "value": "[parameters('apiKeyVaultCertificateName')]"
-                    },
-                    "keyVaultName": {
-                        "value": "[parameters('sharedKeyVaultName')]"
-                    },
-                    "keyVaultResourceGroup": {
-                        "value": "[parameters('sharedManagementResourceGroup')]"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "2021-04-01",
             "name": "[concat(variables('apiAppServiceName'), '-', parameters('utcNow'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
