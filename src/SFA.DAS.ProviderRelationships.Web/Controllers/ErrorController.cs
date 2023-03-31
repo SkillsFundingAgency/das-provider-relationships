@@ -1,21 +1,23 @@
-﻿namespace SFA.DAS.ProviderRelationships.Web.Controllers;
+﻿using SFA.DAS.ProviderRelationships.Web.RouteValues;
+
+namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
 [Route("error")]
 public class ErrorController : Controller
 {
-    [Route("403")]
+    [Route(RouteNames.AccessDenied)]
     public IActionResult AccessDenied()
     {
         return View();
     }
 
-    [Route("404")]
+    [Route(RouteNames.PageNotFound)]
     public IActionResult PageNotFound()
     {
         return View();
     }
-    
-    [Route("500")]
+
+    [Route(RouteNames.Error)]
     public IActionResult Error()
     {
         return View();

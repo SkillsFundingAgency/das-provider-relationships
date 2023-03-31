@@ -85,7 +85,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
             }
 
-            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["EnvironmentName"]);
+            services.AddMaMenuConfiguration(RouteNames.SignOut, clientId, _configuration["EnvironmentName"]);
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 

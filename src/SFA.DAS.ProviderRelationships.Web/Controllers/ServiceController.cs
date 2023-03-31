@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
 public class ServiceController : Controller
 {
-    [Route("signout")]
+    [Route(RouteNames.SignOut)]
     [AllowAnonymous]
     public async Task<IActionResult> SignOutEmployer()
     {
@@ -18,7 +19,7 @@ public class ServiceController : Controller
         return SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
     }
 
-    [Route("signoutcleanup")]
+    [Route(RouteNames.SignOutCleanup)]
     [AllowAnonymous]
     public async Task SignOutCleanup()
     {

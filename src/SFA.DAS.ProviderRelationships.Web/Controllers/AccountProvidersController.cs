@@ -12,6 +12,7 @@ using SFA.DAS.ProviderRelationships.Validation;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
@@ -58,7 +59,7 @@ public class AccountProvidersController : Controller
 
     [HttpGet]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
-    [Route("find")]
+    [Route(RouteNames.Find)]
     public async Task<IActionResult> Find()
     {
         var query = new GetAllProvidersQuery();
@@ -69,7 +70,7 @@ public class AccountProvidersController : Controller
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
-    [Route("find")]
+    [Route(RouteNames.Find)]
     public async Task<IActionResult> Find(FindProviderEditModel model)
     {
         var accountId = _encodingService.Decode(model.AccountHashedId, EncodingType.AccountId);
@@ -96,7 +97,7 @@ public class AccountProvidersController : Controller
     [HttpGet]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
     [HttpNotFoundForNullModel]
-    [Route("add")]
+    [Route(RouteNames.Add)]
     public async Task<IActionResult> Add(AddAccountProviderRouteValues routeValues)
     {
         var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
@@ -108,7 +109,7 @@ public class AccountProvidersController : Controller
 
     [HttpPost]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
-    [Route("add")]
+    [Route(RouteNames.Add)]
     public async Task<IActionResult> Add(AddAccountProviderViewModel model)
     {
         model.UserRef = User.GetUserRef();
