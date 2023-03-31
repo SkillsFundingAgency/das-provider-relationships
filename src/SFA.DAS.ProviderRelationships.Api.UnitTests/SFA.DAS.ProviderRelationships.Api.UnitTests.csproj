@@ -19,7 +19,7 @@
     <PackageReference Include="NLog" Version="5.1.2" />
     <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
     <PackageReference Include="SFA.DAS.Validation" Version="6.0.30" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.4.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.410601">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
