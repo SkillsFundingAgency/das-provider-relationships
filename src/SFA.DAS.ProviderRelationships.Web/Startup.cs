@@ -29,6 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         private readonly IWebHostEnvironment _environment;
         private readonly IConfigurationRoot _configuration;
 
