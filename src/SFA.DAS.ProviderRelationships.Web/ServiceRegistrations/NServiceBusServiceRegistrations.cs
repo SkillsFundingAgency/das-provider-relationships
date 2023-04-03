@@ -36,7 +36,7 @@ public static class NServiceBusServiceRegistrations
             .UseMessageConventions()
             .UseServicesBuilder(services)
             .UseNewtonsoftJsonSerializer()
-            //.UseOutbox(true)
+            .UseOutbox(true)
             .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(databaseConnectionString))
             .UseUnitOfWork();
 
