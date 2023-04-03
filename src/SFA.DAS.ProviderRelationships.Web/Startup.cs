@@ -122,7 +122,7 @@ namespace SFA.DAS.ProviderRelationships.Web
 
         public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
         {
-            serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal() || _configuration.IsTest());
+            serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal());
             var outboxStorageService = serviceProvider.FirstOrDefault(serv => serv.ServiceType == typeof(IClientOutboxStorageV2));
             serviceProvider.Remove(outboxStorageService);
             serviceProvider.AddScoped<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
