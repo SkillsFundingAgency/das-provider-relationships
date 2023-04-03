@@ -68,7 +68,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
         {
             var requestUrl = new Uri(request.Host.ToUriComponent());
 
-            return $"{requestUrl.Scheme}://{requestUrl.Authority}";
+            return $"{request.Scheme}://{requestUrl.AbsoluteUri}";
         }
     }
 }
