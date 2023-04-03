@@ -70,22 +70,19 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
 
-            var clientId = "no-auth-id";
-
             if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(EmployerAccountPostAuthenticationClaimsHandler));
-                clientId = identityServerConfiguration.ClientId;
             }
             else
             {
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
             }
 
-            services.AddMaMenuConfiguration(RouteNames.SignOut, clientId, _configuration["EnvironmentName"]);
+            services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["EnvironmentName"]);
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 

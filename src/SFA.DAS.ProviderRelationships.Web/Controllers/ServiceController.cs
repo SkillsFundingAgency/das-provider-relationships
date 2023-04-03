@@ -6,21 +6,21 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
 public class ServiceController : Controller
 {
-    [Route(RouteNames.SignOut)]
     [AllowAnonymous]
+    [Route(RouteNames.SignOut)]
     public async Task<IActionResult> SignOutEmployer()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
 
         var authenticationProperties = new AuthenticationProperties();
         authenticationProperties.Parameters.Clear();
-        authenticationProperties.Parameters.Add("id_token",idToken);
-            
+        authenticationProperties.Parameters.Add("id_token", idToken);
+
         return SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
     }
 
-    [Route(RouteNames.SignOutCleanup)]
     [AllowAnonymous]
+    [Route(RouteNames.SignOutCleanup)]
     public async Task<IActionResult> SignOutCleanup()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
