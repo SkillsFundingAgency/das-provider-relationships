@@ -21,7 +21,7 @@ public class ServiceController : Controller
 
     [Route(RouteNames.SignOutCleanup)]
     [AllowAnonymous]
-    public async Task SignOutCleanup()
+    public async Task<IActionResult> SignOutCleanup()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
 
@@ -29,6 +29,6 @@ public class ServiceController : Controller
         authenticationProperties.Parameters.Clear();
         authenticationProperties.Parameters.Add("id_token", idToken);
 
-        SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+        return SignOut(authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
     }
 }
