@@ -56,7 +56,7 @@
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </Content>
         <Content Update="nlog.config">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
