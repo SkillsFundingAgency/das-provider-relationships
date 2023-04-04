@@ -1,7 +1,10 @@
-﻿@{
+﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     ViewBag.PageID = "page-access-denied";
     ViewBag.Title = "Access denied";
     ViewBag.HideNav = true;
+    var accountHashedId = ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString();
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -11,8 +14,8 @@
                 Your account does not have the right access
             </h1>
             <p class="govuk-body">
-                <a class="govuk-button" href="/">
-                    Return to account home
+                <a asp-controller="@AccountProviders.ControllerName" asp-action="@AccountProviders.ActionNames.Index" asp-route-accountHashedId="@accountHashedId" class="govuk-button">
+                    Return to training providers
                 </a>
             </p>
         </div>

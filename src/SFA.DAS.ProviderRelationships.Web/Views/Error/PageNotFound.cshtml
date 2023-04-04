@@ -1,7 +1,9 @@
-﻿@{
+﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
+@{
     ViewBag.PageID = "page-not-found";
     ViewBag.Title = "Page not found";
     ViewBag.HideNav = true;
+    var accountHashedId = ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString();
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -11,8 +13,8 @@
                 Page not found
             </h1>
             <p class="govuk-body">
-                <a class="govuk-button" href="/">
-                    Return to account home
+                <a asp-controller="@AccountProviders.ControllerName" asp-action="@AccountProviders.ActionNames.Index" asp-route-accountHashedId="@accountHashedId" class="govuk-button">
+                    Return to training providers
                 </a>
             </p>
         </div>
