@@ -29,21 +29,19 @@ public class AccountProvidersController : Controller
     private readonly IEmployerUrls _employerUrls;
     private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
     private readonly IEncodingService _encodingService;
-    private readonly ILogger<AccountProvidersController> _logger;
 
     public AccountProvidersController(
         IMediator mediator,
         IMapper mapper,
         IEmployerUrls employerUrls,
         IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler,
-        IEncodingService encodingService, ILogger<AccountProvidersController> logger)
+        IEncodingService encodingService)
     {
         _mediator = mediator;
         _mapper = mapper;
         _employerUrls = employerUrls;
         _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         _encodingService = encodingService;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -116,8 +114,6 @@ public class AccountProvidersController : Controller
     {
         model.UserRef = User.GetUserRef();
         model.AccountId = _encodingService.Decode(model.AccountHashedId, EncodingType.AccountId);
-
-        _logger.LogInformation($"Choice: {model.Choice}, AccountId: {model.AccountId}, HashedId: {model.AccountHashedId}, UserRef: {model.UserRef}, UkPrn: {model.Ukprn} ");
 
         switch (model.Choice)
         {
