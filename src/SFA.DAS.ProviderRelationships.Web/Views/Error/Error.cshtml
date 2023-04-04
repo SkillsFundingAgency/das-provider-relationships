@@ -1,9 +1,7 @@
-﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
-@{
+﻿@{
     ViewBag.PageID = "page-error";
     ViewBag.Title = "Error";
     ViewBag.HideNav = true;
-    var accountHashedId = ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]?.ToString();
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -13,8 +11,8 @@
                 There's been an error
             </h1>
             <p class="govuk-body">
-                <a asp-controller="@AccountProviders.ControllerName" asp-action="@AccountProviders.ActionNames.Index" asp-route-accountHashedId="@accountHashedId" class="govuk-button">
-                    Return to training providers
+                <a href="/" class="govuk-button">
+                    Return to account home
                 </a>
             </p>
         </div>
