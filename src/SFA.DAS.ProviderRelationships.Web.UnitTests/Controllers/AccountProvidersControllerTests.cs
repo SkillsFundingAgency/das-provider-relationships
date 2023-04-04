@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
@@ -179,7 +180,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
                 a.ActionName.Equals(AccountProviders.ActionNames.Get) &&
                 a.ControllerName == null &&
-                a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId) && 
+                a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId) &&
                 a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.AccountProviderId)));
     }
 
@@ -353,8 +354,9 @@ public class AccountProvidersControllerTestsFixture
             Mapper,
             EmployerUrls.Object,
             EmployerAccountAuthorisationHandler.Object,
-            EncodingService.Object
-        );
+            EncodingService.Object,
+            Mock.Of<ILogger<AccountProvidersController>>());
+
         AccountProvidersController.ControllerContext = new ControllerContext() {
             HttpContext = new DefaultHttpContext { User = user }
         };
