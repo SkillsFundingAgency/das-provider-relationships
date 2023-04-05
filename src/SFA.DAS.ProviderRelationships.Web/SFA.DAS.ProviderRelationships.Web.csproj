@@ -51,9 +51,7 @@
     <ItemGroup>
         <Content Update="appsettings.json">
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <Content Update="appsettings.Development.json">
-            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </Content>
         <Content Update="nlog.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

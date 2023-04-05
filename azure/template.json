@@ -143,7 +143,9 @@
         "workerAppServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
         "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
         "cosmosDbName": "[concat(variables('resourceNamePrefix'), '-cdb')]",
-        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]"
+        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]",
+        "configNames": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.EmployerFeatures,SFA.DAS.Encoding,SFA.DAS.Employer.GovSignIn",
+        "configNamesApi": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.ReadStore,SFA.DAS.Encoding"
     },
     "resources": [
         {
@@ -327,6 +329,10 @@
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
                                     "value": "[parameters('TokenCertificateThumbprint')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
                                 }
                             ]
                         }
@@ -444,6 +450,10 @@
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                     "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNamesApi')]"
                                 }
                             ]
                         }
