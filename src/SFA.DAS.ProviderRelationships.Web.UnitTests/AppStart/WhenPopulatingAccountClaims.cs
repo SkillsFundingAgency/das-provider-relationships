@@ -22,6 +22,7 @@ public class WhenPopulatingAccountClaims
         [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> configuration,
         EmployerAccountPostAuthenticationClaimsHandler handler)
     {
+        accountData.IsSuspended = false;
         configuration.Object.Value.UseGovUkSignIn = true;
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, idamsIdentifier, emailAddress);
         accountService.Setup(x => x.GetUserAccounts(nameIdentifier,emailAddress)).ReturnsAsync(accountData);
@@ -36,6 +37,7 @@ public class WhenPopulatingAccountClaims
         actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should().Be(accountData.EmployerUserId);
         actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier)).Value.Should().Be(accountData.FirstName + " " + accountData.LastName);
         actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier)).Value.Should().Be(emailAddress);
+        actual.FirstOrDefault(c=>c.Type.Equals(ClaimTypes.AuthorizationDecision))?.Value.Should().BeNull();
     }
 
     [Test, MoqAutoData]
@@ -61,7 +63,33 @@ public class WhenPopulatingAccountClaims
         actual.FirstOrDefault(c=>c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier)).Should().BeNull();
         actual.FirstOrDefault(c=>c.Type.Equals(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier)).Should().BeNull();
     }
-
+    [Test, MoqAutoData]
+    public async Task Then_The_Claims_Are_Populated_For_Gov_User_If_Suspended(
+        string nameIdentifier,
+        string idamsIdentifier,
+        string emailAddress,
+        EmployerUserAccounts accountData,
+        [Frozen] Mock<IUserAccountService> accountService,
+        [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> configuration,
+        EmployerAccountPostAuthenticationClaimsHandler handler)
+    {
+        accountData.IsSuspended = true;
+        configuration.Object.Value.UseGovUkSignIn = true;
+        var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, idamsIdentifier, emailAddress);
+        accountService.Setup(x => x.GetUserAccounts(nameIdentifier,emailAddress)).ReturnsAsync(accountData);
+    
+        var actual = await handler.GetClaims(tokenValidatedContext);
+    
+        accountService.Verify(x=>x.GetUserAccounts(nameIdentifier,emailAddress), Times.Once);
+        accountService.Verify(x=>x.GetUserAccounts(idamsIdentifier,emailAddress), Times.Never);
+        actual.Should().ContainSingle(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier));
+        var actualClaimValue = actual.First(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier)).Value;
+        JsonConvert.SerializeObject(accountData.EmployerAccounts.ToDictionary(k => k.AccountId)).Should().Be(actualClaimValue);
+        actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should().Be(accountData.EmployerUserId);
+        actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier)).Value.Should().Be(accountData.FirstName + " " + accountData.LastName);
+        actual.First(c=>c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier)).Value.Should().Be(emailAddress);
+        actual.First(c=>c.Type.Equals(ClaimTypes.AuthorizationDecision)).Value.Should().Be("Suspended");
+    }
     private static TokenValidatedContext ArrangeTokenValidatedContext(string nameIdentifier, string idamsIdentifier, string emailAddress)
     {
         var identity = new ClaimsIdentity(new List<Claim>
