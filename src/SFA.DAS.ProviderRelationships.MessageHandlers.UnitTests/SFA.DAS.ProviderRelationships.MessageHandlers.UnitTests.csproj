@@ -2,13 +2,6 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <TargetFramework>net6.0</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
@@ -31,8 +24,5 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System" />
     </ItemGroup>
 </Project>
