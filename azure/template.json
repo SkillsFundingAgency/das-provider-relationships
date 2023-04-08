@@ -131,6 +131,9 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow()]"
+        },
+        "stubAuth": {
+            "type": "string"
         }
     },
     "variables": {
@@ -333,6 +336,10 @@
                                 {
                                     "name": "ConfigNames",
                                     "value": "[variables('configNames')]"
+                                },
+                                {
+                                    "name": "StubAuth",
+                                    "value": "[parameters('stubAuth')]"
                                 }
                             ]
                         }
