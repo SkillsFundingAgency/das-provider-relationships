@@ -5,7 +5,6 @@ function AutoComplete(selectField) {
 
 AutoComplete.prototype.init = function() {
     this.autoComplete()
-    console.log(123)
 }
 
 AutoComplete.prototype.autoComplete = function() {
