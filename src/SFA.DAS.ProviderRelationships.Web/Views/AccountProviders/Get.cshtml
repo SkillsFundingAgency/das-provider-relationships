@@ -65,7 +65,9 @@
                         @if (Model.IsUpdatePermissionsOperationAuthorized)
                         {
                             <td class="govuk-table__cell">
-                                <a asp-controller="@AccountProviderLegalEntities.ControllerName" asp-action="@AccountProviderLegalEntities.ActionNames.Permissions" asp-route-AccountProviderId="@Model.AccountProvider.Id" asp-route-AccountLegalEntityId="@accountLegalEntity.Id">Set permissions</a>
+                                <a asp-controller="@AccountProviderLegalEntities.ControllerName" asp-action="@AccountProviderLegalEntities.ActionNames.Permissions" asp-route-AccountProviderId="@Model.AccountProvider.Id" asp-route-AccountLegalEntityId="@accountLegalEntity.Id">
+                                    Set permissions<span class="govuk-visually-hidden"> @accountLegalEntity.Name</span>
+                                </a>
                             </td>
                         }
                     </tr>

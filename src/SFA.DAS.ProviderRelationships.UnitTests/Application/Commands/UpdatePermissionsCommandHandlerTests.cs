@@ -97,7 +97,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public DateTime Now { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public UpdatePermissionsCommand Command { get; set; }
-        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<UpdatePermissionsCommand> Handler { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         
         public UpdatePermissionsCommandHandlerTestsFixture()

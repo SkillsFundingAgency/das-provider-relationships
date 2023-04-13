@@ -1,9 +1,9 @@
 parameters:
-  ServiceConnection:
-  SolutionBaseName:
   Environment:
-  OverrideBlockOnPossibleDataLoss:
+  SolutionBaseName:
+  ServiceConnection:
   AppRoleAssignmentsServiceConnection:
+  OverrideBlockOnPossibleDataLoss:
 
 jobs:
 - deployment: DeployWebApp
@@ -64,7 +64,7 @@ jobs:
             SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-providerrelationships
             StorageAccountName: $(ConfigurationStorageAccountName)
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
-            TargetFileName: '*.schema.json'
+            TargetFileName: 'SFA.DAS.ProviderRelationshipsV2.schema.json'
             TableName: Configuration
             ConfigurationSecrets:
               DefaultSessionRedisConnectionString: $(DefaultSessionRedisConnectionString)
@@ -79,6 +79,8 @@ jobs:
               NServiceBusLicense: $(NServiceBusLicense)
               PublicHashstring: $(PublicHashstring)
               ReadStoreAuthKey: $(ReadStoreAuthKey)
+              ProviderRelationshipsApimSubscriptionKey: $(ProviderRelationshipsApimSubscriptionKey)
+              ServiceBusConnectionString: $(ServiceBusConnectionString)
         - template: azure-pipelines-templates/deploy/step/app-role-assignments.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.AppRoleAssignmentsServiceConnection }}

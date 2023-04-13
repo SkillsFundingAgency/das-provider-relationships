@@ -8,10 +8,10 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-        <PackageReference Include="MediatR" Version="11.1.0" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
+        <PackageReference Include="Azure.Identity" Version="1.8.2" />
+        <PackageReference Include="MediatR" Version="12.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="NLog.Extensions.Logging" Version="1.7.5" />
@@ -21,15 +21,14 @@
         <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
         <PackageReference Include="SFA.DAS.NServiceBus" Version="16.0.21" />
         <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
-        <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.4.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="SFA.DAS.PAS.Account.Api.ClientV2" Version="17267.0.542" />
         <PackageReference Include="SFA.DAS.UnitOfWork" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.Validation" Version="6.0.30" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     </ItemGroup>

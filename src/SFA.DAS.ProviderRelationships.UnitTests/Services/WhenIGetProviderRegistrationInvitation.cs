@@ -91,7 +91,7 @@ class WhenIGetInvitation
     }
 
 
-    private IConfigurationRoot GenerateConfiguration()
+    private static IConfigurationRoot GenerateConfiguration()
     {
         var configSource = new MemoryConfigurationSource { InitialData = new List<KeyValuePair<string, string>> { new("EnvironmentName", "LOCAL") } };
 

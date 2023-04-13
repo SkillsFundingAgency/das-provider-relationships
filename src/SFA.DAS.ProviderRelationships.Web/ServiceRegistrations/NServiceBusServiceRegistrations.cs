@@ -17,7 +17,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 public static class NServiceBusServiceRegistrations
 {
-    private const string EndPointName = "SFA.DAS.ProviderRelationships";
+    private const string EndPointName = "SFA.DAS.ProviderRelationships.Web";
 
     public static void StartNServiceBus(this UpdateableServiceProvider services, IConfiguration configuration, bool isDevOrLocal)
     {
@@ -27,7 +27,7 @@ public static class NServiceBusServiceRegistrations
 
         if (string.IsNullOrWhiteSpace(databaseConnectionString))
         {
-            throw new Exception("DatabaseConnectionString configuration value is empty.");
+            throw new InvalidOperationException("DatabaseConnectionString configuration value is empty.");
         }
 
         var endpointConfiguration = new EndpointConfiguration(EndPointName)

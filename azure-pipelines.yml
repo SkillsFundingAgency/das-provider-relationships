@@ -65,7 +65,9 @@ stages:
   - template: pipeline-templates/job/deploy.yml
     parameters:
       Environment: AT
+      SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DAS-DevTest-ARM
+      AppRoleAssignmentsServiceConnection: das-app-role-assignments-CDS
       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 - stage: Deploy_TEST
@@ -123,6 +125,7 @@ stages:
 #     parameters:
 #       Environment: PROD
 #       ServiceConnection: SFA-DIG-Prod-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 # - stage: Deploy_MO
@@ -137,6 +140,7 @@ stages:
 #     parameters:
 #       Environment: MO
 #       ServiceConnection: SFA-ASM-ModelOffice-ARM
+#       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
 #       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
 - stage: Deploy_DEMO

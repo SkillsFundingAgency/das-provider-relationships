@@ -1,118 +1,84 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject IEmployerUrlsConfiguration EmployerUrlsConfiguration
-@inject IProviderRelationshipsConfiguration ProviderRelationshipsConfiguration
-@inject IOidcConfiguration OidcConfiguration
+﻿@using SFA.DAS.Employer.Shared.UI.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
-    var cdnBaseUrl = ProviderRelationshipsConfiguration.CdnBaseUrl;
+    var tagManagerCode = "GTM-KWQBWGJ";
+    string accountId = (string)this.ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId] ?? "";
+    ViewBag.HideHeaderBorder = true;
+    var footerModel = new FooterModel { AccountId = accountId, UsePrivacyV2 = true };
+    
 }
+<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+    <head>
+        <meta charset="utf-8" />
+        <title>@(ViewData["Title"] ?? "GOV.UK - The best place to find government services and information")</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#0b0c0c" />
 
-<!doctype html>
+        <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <link rel="mask-icon" href="assets/images/govuk-mask-icon.svg" color="#0b0c0c"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/images/govuk-apple-touch-icon-180x180.png"/>
+        <link rel="apple-touch-icon" sizes="167x167" href="assets/images/govuk-apple-touch-icon-167x167.png"/>
+        <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png"/>
+        <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png"/>
 
-<html class="govuk-template" lang="en">
+        <!--[if !IE 8]><!-->
+        <link href="css/main.css" rel="stylesheet" />
+        <link href="/css/app.css" rel="stylesheet" no-cdn />
 
-<head>
+        @RenderSection("styles", required: false)
 
-    <meta charset="utf-8" />
+        <!--<![endif]-->
 
-    <title>@ViewBag.Title - Provider relationships</title>
+        <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','@tagManagerCode');
+        </script>
+        <!-- End Google Tag Manager -->
+    </head>
+    <body class="govuk-template__body ">
+        <script nws-csp-add-nonce="true">
+            document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+        </script>
+        <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
-    <meta name="theme-color" content="#0b0c0c" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:image" content="@Html.CdnLink("assets/images","govuk-opengraph-image.png", cdnBaseUrl)">
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        <partial name="_Header">
+            @* ReSharper disable once Mvc.PartialViewNotResolved *@
+            <partial name="_Menu" model="@accountId">
+            </partial>
+        </partial>
 
-    <link rel="mask-icon" href="@Html.CdnLink("assets/images","govuk-mask-icon.svg", cdnBaseUrl)" color="#0b0c0c">
-    <link rel="apple-touch-icon" sizes="180x180" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-180x180.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" sizes="167x167" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-167x167.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" sizes="152x152" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon-152x152.png", cdnBaseUrl)">
-    <link rel="apple-touch-icon" href="@Html.CdnLink("assets/images","govuk-apple-touch-icon.png", cdnBaseUrl)">
-    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="@Html.CdnLink("assets/images","favicon.ico", cdnBaseUrl)" type="image/x-icon" />
-    <!--[if !IE 8]><!-->
+        <div class="govuk-width-container">
+            @RenderSection("breadcrumb", required: false)
+            <main class="govuk-main-wrapper" id="main-content" role="main">
+                @RenderBody()
+            </main>
+        </div>
+        
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        <partial name="_Footer" model="@footerModel"/>
+        
+        <script src="/libs/jquery/jquery.min.js"></script>
+        <script src="/libs/govuk-frontend/all.js"></script>
+        <script src="/js/das-all.min.js"></script>
+        <script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
+        <script src="/js/app.min.js"></script>
 
-    <link href="/Content/css/application.css" rel="stylesheet" />
+        @RenderSection("javascript", required: false)
 
-    <link href="@Html.CdnLink("css", "main.css", cdnBaseUrl)" rel="stylesheet" />
-    <!--<![endif]-->
+        <script src="/js/app.js" no-cdn></script>
 
-    <partial name="_ZenDeskWidget" />
-
-    <partial name="_GoogleAnalyticsHead" />
-
-</head>
-
-<body class="govuk-template__body">
-
-    <partial name="_GoogleAnalyticsBody" />
-
-    <script>
-        document.body.className = (document.body.className ? document.body.className + ' js-enabled' : 'js-enabled');
-    </script>
-
-    <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
-
-
-    <partial name="_CookieBanner" model="@Html.GetCookieBannerViewModel(EmployerUrlsConfiguration)" />
-
-    <partial name="_Header" model="@Html.GetHeaderViewModel(EmployerUrlsConfiguration, OidcConfiguration)" />
-
-
-    <div class="govuk-width-container">
-        @await RenderSectionAsync("breadcrumb", false)
-        <main class="govuk-main-wrapper " id="main-content" role="main">
-            @RenderBody()
-
-        </main>
-
-    </div>
-
-
-    <partial name="_Footer" model="@Html.GetFooterViewModel(EmployerUrlsConfiguration)" />
-    <partial name="_GoogleAnalyticsInfo" />
-
-    <script src="@Html.CdnLink("libs/accessible-autocomplete","accessible-autocomplete.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("libs/jquery","jquery.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("libs/govuk-frontend","all.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("js","das-all.min.js", cdnBaseUrl)"></script>
-    <script src="@Html.CdnLink("js","app.min.js", cdnBaseUrl)"></script>
-
-    <script>
-        window.GOVUKFrontend.initAll();
-        window.DASFrontend.initAll();
-    </script>
-
-    <script>
-
-        var idSelectField = 'Ukprn';
-
-        var selectEl = document.querySelector('#' + idSelectField);
-        if (selectEl) {
-            accessibleAutocomplete.enhanceSelectElement({
-                selectElement: selectEl,
-                minLength: 3,
-                autoselect: true,
-                defaultValue: '',
-                displayMenu: 'overlay',
-                placeholder: '',
-                onConfirm: function (opt) {
-                    var txtInput = document.querySelector('#' + idSelectField);
-                    var searchString = opt || txtInput.value;
-                    var requestedOption = [].filter.call(this.selectElement.options,
-                        function (option) {
-                            return (option.textContent || option.innerText) === searchString
-                        }
-                    )[0];
-                    if (requestedOption) {
-                        requestedOption.selected = true;
-                    } else {
-                        this.selectElement.selectedIndex = 0;
-                    }
-                }
-
-            });
-        }
-
-    </script>
-
-    @await RenderSectionAsync("footerJS", required: false)
-
-</body>
+        <script>
+            window.GOVUKFrontend.initAll();
+            window.DASFrontend.initAll();
+        </script>
+       
+    </body>
 </html>

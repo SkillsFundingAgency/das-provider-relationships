@@ -32,7 +32,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IRequestHandler<GetAccountProviderLegalEntitiesWithPermissionQuery, GetAccountProviderLegalEntitiesWithPermissionQueryResult>))]
     [TestCase(typeof(IRequestHandler<HasPermissionQuery, bool>))]
     [TestCase(typeof(IRequestHandler<HasRelationshipWithPermissionQuery, bool>))]
-    [TestCase(typeof(IRequestHandler<RevokePermissionsCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<RevokePermissionsCommand>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Mediator_Handlers(Type toResolve)
     {
        RunTestForType(toResolve);
@@ -56,7 +56,7 @@ public class WhenAddingServicesToTheContainer
             .Get<ProviderRelationshipsConfiguration>();
 
         services.AddSingleton(Mock.Of<IWebHostEnvironment>());
-        services.AddMediatR(typeof(RevokePermissionsCommand));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddConfigurationSections(configuration);

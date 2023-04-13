@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public AccountLegalEntity AccountLegalEntity { get; set; }
         public UpdateAccountLegalEntityNameCommand Command { get; set; }
-        public IRequestHandler<UpdateAccountLegalEntityNameCommand, Unit> Handler { get; set; }
+        public IRequestHandler<UpdateAccountLegalEntityNameCommand> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public string OriginalAccountLegalEntityName { get; set; }

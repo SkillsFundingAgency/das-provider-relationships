@@ -14,17 +14,24 @@
 
 @section breadcrumb
 {
-    <a href="@Html.EmployerUrls().Account()" class="govuk-back-link">Back</a>
+    <a href="@UrlBuilder.AccountsLink()" class="govuk-back-link">Back</a>
 }
 
 @if (TempData.ContainsKey("ProviderName"))
 {
-    <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-8">
-        <h1 class="govuk-panel__title">
-            You've successfully changed @TempData["ProviderName"] permissions
-        </h1>
-        <div class="govuk-panel__body">
-            We’ll send @TempData["ProviderName"] an email to let them know that you’ve changed their permissions and what their new permissions are.
+    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+        aria-labelledby="govuk-notification-banner-title"
+        data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Success
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <h3 class="govuk-notification-banner__heading">
+                You've successfully changed @TempData["ProviderName"] permissions
+            </h3>
+            <p class="govuk-body">We’ll send @TempData["ProviderName"] an email to let them know that you’ve changed their permissions and what their new permissions are.</p>
         </div>
     </div>
 }

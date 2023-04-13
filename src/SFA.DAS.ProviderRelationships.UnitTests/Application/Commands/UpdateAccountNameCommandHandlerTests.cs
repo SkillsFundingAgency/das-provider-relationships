@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public Account Account { get; set; }
         public UpdateAccountNameCommand Command { get; set; }
-        public IRequestHandler<UpdateAccountNameCommand, Unit> Handler { get; set; }
+        public IRequestHandler<UpdateAccountNameCommand> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public string OriginalAccountName { get; set; }

@@ -90,14 +90,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
                    Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
                    Assert.AreEqual("set your apprenticeship service permissions to:", f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
+                   Assert.AreEqual(NormaliseNewLines(expectedSetPermissionPart2), f.ResultEmailRequest.Tokens["part2_text"]);
                });
+        /// <summary>
+        /// Normalising newlines to environment as pipelines running on Linux will fail tests as Linux newlines are \n whereas windows is \r\n.
+        /// </summary>
+        private static string NormaliseNewLines(string value)
+        {
+            return value.Replace("\r\n", Environment.NewLine);
+        }
     }
 
     public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture
     {
         public SendUpdatedPermissionsNotificationCommand Command { get; set; }
-        public IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit> Handler { get; set; }
+        public IRequestHandler<SendUpdatedPermissionsNotificationCommand> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long Ukprn { get; set; }

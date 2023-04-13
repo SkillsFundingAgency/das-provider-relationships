@@ -14,9 +14,8 @@ public class DeletedPermissionsEventV2Handler : IHandleMessages<DeletedPermissio
 
     public Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
     {
-        return Task.WhenAll(
-            _mediator.Send(new SendDeletedPermissionsNotificationCommand(
-                message.Ukprn,
-                message.AccountLegalEntityId)));
+        var command = new SendDeletedPermissionsNotificationCommand(message.Ukprn, message.AccountLegalEntityId);
+
+        return _mediator.Send(command);
     }
 }

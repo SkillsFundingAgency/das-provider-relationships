@@ -7,52 +7,51 @@ using SFA.DAS.CosmosDb;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
 
-namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions
+namespace SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
+
+public class UpdatePermissionsCommandHandler : IRequestHandler<UpdatePermissionsCommand>
 {
-    public class UpdatePermissionsCommandHandler : AsyncRequestHandler<UpdatePermissionsCommand>
+    private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
+    private readonly ILogger<UpdatePermissionsCommandHandler> _log;
+
+    public UpdatePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository, ILogger<UpdatePermissionsCommandHandler> log)
     {
-        private readonly IAccountProviderLegalEntitiesRepository _accountProviderLegalEntitiesRepository;
-        private readonly ILogger<UpdatePermissionsCommandHandler> _log;
-
-        public UpdatePermissionsCommandHandler(IAccountProviderLegalEntitiesRepository accountProviderLegalEntitiesRepository, ILogger<UpdatePermissionsCommandHandler> log)
-        {
-            _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
-            _log = log;
-        }
+        _accountProviderLegalEntitiesRepository = accountProviderLegalEntitiesRepository;
+        _log = log;
+    }
         
-        protected override async Task Handle(UpdatePermissionsCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdatePermissionsCommand request, CancellationToken cancellationToken)
+    {
+        var accountProviderLegalEntity = await _accountProviderLegalEntitiesRepository.CreateQuery().SingleOrDefaultAsync(r => 
+            r.Ukprn == request.Ukprn && r.AccountProviderLegalEntityId == request.AccountProviderLegalEntityId, cancellationToken);
+
+        if (accountProviderLegalEntity == null)
         {
-            var accountProviderLegalEntity = await _accountProviderLegalEntitiesRepository.CreateQuery().SingleOrDefaultAsync(r => 
-                r.Ukprn == request.Ukprn && r.AccountProviderLegalEntityId == request.AccountProviderLegalEntityId, cancellationToken);
-
-            if (accountProviderLegalEntity == null)
+            try
             {
-                try
-                {
-                    accountProviderLegalEntity = new AccountProviderLegalEntity(
-                        request.AccountId,
-                        request.AccountLegalEntityId,
-                        request.AccountProviderId,
-                        request.AccountProviderLegalEntityId,
-                        request.Ukprn,
-                        request.GrantedOperations,
-                        request.Updated,
-                        request.MessageId);
+                accountProviderLegalEntity = new AccountProviderLegalEntity(
+                    request.AccountId,
+                    request.AccountLegalEntityId,
+                    request.AccountProviderId,
+                    request.AccountProviderLegalEntityId,
+                    request.Ukprn,
+                    request.GrantedOperations,
+                    request.Updated,
+                    request.MessageId);
 
-                    await _accountProviderLegalEntitiesRepository.Add(accountProviderLegalEntity, null, cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    _log.LogError(ex, $"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}");
-                    throw;
-                }
+                await _accountProviderLegalEntitiesRepository.Add(accountProviderLegalEntity, null, cancellationToken);
             }
-            else
+            catch (Exception ex)
             {
-                accountProviderLegalEntity.UpdatePermissions(request.GrantedOperations, request.Updated, request.MessageId);
+                _log.LogError(ex, $"Failed to add Account Provider Legal Entity - AccountId={request.AccountId}, AccountLegalEntityId={request.AccountLegalEntityId}, AccountProviderId={request.AccountProviderId}, AccountProviderLegalEntityId={request.AccountProviderLegalEntityId}, Ukprn={request.Ukprn}");
+                throw;
+            }
+        }
+        else
+        {
+            accountProviderLegalEntity.UpdatePermissions(request.GrantedOperations, request.Updated, request.MessageId);
                 
-                await _accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity, null, cancellationToken);
-            }
+            await _accountProviderLegalEntitiesRepository.Update(accountProviderLegalEntity, null, cancellationToken);
         }
     }
 }

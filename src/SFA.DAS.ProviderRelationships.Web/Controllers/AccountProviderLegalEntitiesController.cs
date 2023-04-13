@@ -6,6 +6,7 @@ using SFA.DAS.ProviderRelationships.Extensions;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities;
@@ -66,7 +67,7 @@ public class AccountProviderLegalEntitiesController : Controller
     }
 
     [HttpPost]
-    [Route("Confirm")]
+    [Route(RouteNames.Confirm)]
     public async Task<IActionResult> Confirm(AccountProviderLegalEntityViewModel model, string command)
     {
         model.UserRef = User.GetUserRef();

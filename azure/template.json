@@ -74,6 +74,9 @@
         "sharedApimName": {
             "type": "string"
         },
+        "sharedServiceBusName": {
+            "type": "string"
+        },
         "sharedApimResourceGroup": {
             "type": "string"
         },
@@ -128,6 +131,9 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow()]"
+        },
+        "stubAuth": {
+            "type": "string"
         }
     },
     "variables": {
@@ -140,7 +146,9 @@
         "workerAppServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
         "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
         "cosmosDbName": "[concat(variables('resourceNamePrefix'), '-cdb')]",
-        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]"
+        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]",
+        "configNames": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.EmployerFeatures,SFA.DAS.Encoding,SFA.DAS.Employer.GovSignIn",
+        "configNamesApi": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.ReadStore,SFA.DAS.Encoding"
     },
     "resources": [
         {
@@ -324,6 +332,14 @@
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
                                     "value": "[parameters('TokenCertificateThumbprint')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
+                                },
+                                {
+                                    "name": "StubAuth",
+                                    "value": "[parameters('stubAuth')]"
                                 }
                             ]
                         }
@@ -338,6 +354,34 @@
                         "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat('provider-relationships-role-assignments-', copyIndex(), '-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'role-assignments/role-assignment-service-bus.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[createArray(reference(concat(variables('uiAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value, reference(concat(variables('uiAppServiceName'), '-', parameters('utcValue'))).outputs.stagingManagedServiceIdentityId.value, reference(concat(variables('apiAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value, reference(concat(variables('apiAppServiceName'), '-', parameters('utcValue'))).outputs.stagingManagedServiceIdentityId.value, reference(concat(variables('workerAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value)[copyIndex()]]"
+                    },
+                    "assignmentType": {
+                        "value": "ServiceBusOwner"
+                    },
+                    "resourceName": {
+                        "value": "[parameters('sharedServiceBusName')]"
+                    }
+                }
+            },
+            "copy": {
+                "name": "role-assignments",
+                "count": 5
             }
         },
         {
@@ -413,6 +457,10 @@
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                     "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNamesApi')]"
                                 }
                             ]
                         }

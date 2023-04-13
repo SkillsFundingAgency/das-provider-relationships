@@ -132,7 +132,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     public class RevokePermissionsCommandHandlerTestsFixture
     {
         public RevokePermissionsCommand RevokePermissionsCommand;
-        public IRequestHandler<RevokePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<RevokePermissionsCommand> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public Mock<IEncodingService> EncodingService { get; set; }

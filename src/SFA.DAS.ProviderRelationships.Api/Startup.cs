@@ -1,12 +1,10 @@
-﻿using Microsoft.OpenApi.Models;
-using NServiceBus.ObjectBuilder.MSDependencyInjection;
+﻿using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
 using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.Extensions;
-using SFA.DAS.ProviderRelationships.Api.Filters;
 using SFA.DAS.ProviderRelationships.Api.Handlers;
 using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
@@ -37,7 +35,8 @@ public class Startup
         var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
         var isDevelopment = _configuration.IsDevOrLocal();
 
-        services.AddMediatR(typeof(RevokePermissionsCommand));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
+
         services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddReadStoreServices();
@@ -47,17 +46,8 @@ public class Startup
 
         services.AddApiAuthentication(_configuration, isDevelopment);
         services.AddApiAuthorization(isDevelopment);
-
-        services.AddSwaggerGen(c =>
-        {
-            c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
-            c.SwaggerDoc("v1", new OpenApiInfo {
-                Version = "v1",
-                Title = "Provider Relationships API"
-            });
-        });
-
-
+        services.AddDasSwagger();
+        
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddConfigurationSections(_configuration)
@@ -68,8 +58,6 @@ public class Startup
                 {
                     opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
                 }
-
-                // opt.AddValidation();
             });
 
         services.AddLogging();
@@ -97,12 +85,8 @@ public class Startup
             .UseSwagger()
             .UseSwaggerUI(opt =>
             {
-                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Employer Accounts API");
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Provider Relationships API");
                 opt.RoutePrefix = string.Empty;
             });
-    }
-
-    private void ConfigureMvcOptions(MvcOptions mvcOptions)
-    {
     }
 }

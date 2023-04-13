@@ -39,7 +39,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public AddAccountLegalEntityCommand Command { get; set; }
-        public IRequestHandler<AddAccountLegalEntityCommand, Unit> Handler { get; set; }
+        public IRequestHandler<AddAccountLegalEntityCommand> Handler { get; set; }
         public Account Account { get; set; }
         
         public AddAccountLegalEntityCommandHandlerTestsFixture()

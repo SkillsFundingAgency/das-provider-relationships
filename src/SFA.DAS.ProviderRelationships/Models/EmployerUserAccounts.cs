@@ -11,28 +11,22 @@ public class EmployerUserAccounts
     public string LastName { get; set; }
     public string FirstName { get; set; }
     public IEnumerable<EmployerUserAccountItem> EmployerAccounts { get; set; }
+    public bool IsSuspended { get; set; }
 
     public static implicit operator EmployerUserAccounts(GetUserAccountsResponse source)
     {
-        if (source?.UserAccounts == null)
-        {
-            return new EmployerUserAccounts
-            {
-                FirstName = source?.FirstName,
-                LastName = source?.LastName,
-                EmployerUserId = source?.EmployerUserId,
-                Email = source?.Email,
-                EmployerAccounts = new List<EmployerUserAccountItem>()
-            };
-        }
-
+        var accounts = source?.UserAccounts == null
+            ? new List<EmployerUserAccountItem>()
+            : source.UserAccounts.Select(c => (EmployerUserAccountItem) c).ToList();
+        
         return new EmployerUserAccounts
         {
-            FirstName = source.FirstName,
-            LastName = source.LastName,
-            EmployerUserId = source.EmployerUserId,
-            Email = source.Email,
-            EmployerAccounts = source.UserAccounts.Select(c => (EmployerUserAccountItem)c).ToList()
+            FirstName = source?.FirstName,
+            LastName = source?.LastName,
+            EmployerUserId = source?.EmployerUserId,
+            Email = source?.Email,
+            IsSuspended = source?.IsSuspended ?? false,
+            EmployerAccounts = accounts
         };
     }
 }

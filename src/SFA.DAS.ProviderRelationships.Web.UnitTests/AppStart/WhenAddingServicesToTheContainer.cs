@@ -45,10 +45,10 @@ public class WhenAddingServicesToTheContainer
         RunTestForType(toResolve);
     }
 
-    [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<UpdatePermissionsCommand>))]
     [TestCase(typeof(IRequestHandler<AddAccountProviderCommand, long>))]
     [TestCase(typeof(IRequestHandler<AddAccountProviderCommand, long>))]
-    [TestCase(typeof(IRequestHandler<RunHealthCheckCommand, Unit>))]
+    [TestCase(typeof(IRequestHandler<RunHealthCheckCommand>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_MediatorCommandHandlers(Type toResolve)
     {
         RunTestForType(toResolve);
@@ -98,7 +98,7 @@ public class WhenAddingServicesToTheContainer
 
         services.AddLogging();
         services.AddSingleton(Mock.Of<IWebHostEnvironment>());
-        services.AddMediatR(typeof(GetAccountProviderLegalEntityQuery));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(GetAccountProviderLegalEntityQuery)));
         services.AddDatabaseRegistration(relationshipsConfiguration.DatabaseConnectionString);
         services.AddApplicationServices();
         services.AddApiClients();

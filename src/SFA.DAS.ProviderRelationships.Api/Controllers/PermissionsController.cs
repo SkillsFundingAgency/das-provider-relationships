@@ -98,6 +98,7 @@ public class PermissionsController : ControllerBase
             ukprn: routeValues.Ukprn.Value,
             accountLegalEntityPublicHashedId: routeValues.AccountLegalEntityPublicHashedId,
             operationsToRevoke: routeValues.OperationsToRevoke);
+
         await _mediator.Send(command);
 
         return Ok();

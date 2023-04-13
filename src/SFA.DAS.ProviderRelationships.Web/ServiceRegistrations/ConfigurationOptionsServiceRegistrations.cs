@@ -28,9 +28,7 @@ public static class AddConfigurationOptionsExtension
 
         services.Configure<IdentityServerConfiguration>(configuration.GetSection("Oidc"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<IdentityServerConfiguration>>().Value);
-        //--- delving into the unknown: :scream:
-        //notable ommissions: featuretoggle,
-        // these were prev part of ProviderRelationshipsConfiguration: roatpapi, pasaccountapi, recruitapi, registrationapi 
+
         services.Configure<OidcConfiguration>(configuration.GetSection("Oidc"));
         services.AddSingleton(cfg => cfg.GetService<IOptions<OidcConfiguration>>().Value);
 

@@ -50,9 +50,9 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddApplicationServices()
                     .AddApiClients();
 
-            services.AddMediatR(typeof(FindProviderToAddQuery))
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(FindProviderToAddQuery)))
                     .AddAutoMapper(typeof(AccountProviderLegalEntityMappings),
-                        typeof(Web.Mappings.HealthCheckMappings));
+                        typeof(Mappings.HealthCheckMappings));
 
             var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
 
@@ -69,22 +69,21 @@ namespace SFA.DAS.ProviderRelationships.Web
                 .GetSection("Oidc")
                 .Get<IdentityServerConfiguration>();
 
-            var clientId = "no-auth-id";
-
             if (_configuration.UseGovUkSignIn())
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(EmployerAccountPostAuthenticationClaimsHandler));
-                clientId = identityServerConfiguration.ClientId;
+                services.AddMaMenuConfiguration(RouteNames.SignOut, _configuration["EnvironmentName"]);
             }
             else
             {
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
+                services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["EnvironmentName"]);
             }
 
-            services.AddMaMenuConfiguration(RouteNames.EmployerSignOut, clientId, _configuration["Environment"]);
+            
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
@@ -97,8 +96,8 @@ namespace SFA.DAS.ProviderRelationships.Web
 
                     if (!_configuration.IsDev())
                     {
-                        options.Filters.Add(new GoogleAnalyticsFilter());
-                        options.Filters.Add(new UrlsViewBagFilter());
+                        options.Filters.Add(new GoogleAnalyticsFilterAttribute());
+                        options.Filters.Add(new UrlsViewBagFilterAttribute());
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
                 })
@@ -135,6 +134,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             }
             else
             {
+                app.UseExceptionHandler("/error/500");
                 app.UseHealthChecks();
             }
 

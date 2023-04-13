@@ -70,7 +70,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         {
             HealthCheckRouteValues = new HealthCheckRouteValues { UserRef = Guid.NewGuid() };
             
-            Mediator.Setup(m => m.Send(It.Is<RunHealthCheckCommand>(c => c.UserRef == HealthCheckRouteValues.UserRef), CancellationToken.None)).ReturnsAsync(Unit.Value);
+            Mediator.Setup(m => m.Send(It.Is<RunHealthCheckCommand>(c => c.UserRef == HealthCheckRouteValues.UserRef), CancellationToken.None));
 
             return HealthCheckController.Index(HealthCheckRouteValues);
         }

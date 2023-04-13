@@ -78,7 +78,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AccountProvider AccountProvider { get; set; }
         public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public RemoveAccountLegalEntityCommand Command { get; set; }
-        public IRequestHandler<RemoveAccountLegalEntityCommand, Unit> Handler { get; set; }
+        public IRequestHandler<RemoveAccountLegalEntityCommand> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public DateTime Now { get; set; }

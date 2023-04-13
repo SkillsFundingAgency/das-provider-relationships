@@ -44,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
     {
         public DeletePermissionsCommand Command { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public IRequestHandler<DeletePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<DeletePermissionsCommand> Handler { get; set; }
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository { get; set; }
         public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public DateTime Now { get; set; }

@@ -1,22 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
+[Route("error")]
 public class ErrorController : Controller
 {
-    [Route("accessdenied")]
+    [Route(RouteNames.AccessDenied)]
     public IActionResult AccessDenied()
     {
-        Response.StatusCode = (int)HttpStatusCode.Forbidden;
-
         return View();
     }
 
-    [Route("error")]
+    [Route(RouteNames.PageNotFound)]
+    public IActionResult PageNotFound()
+    {
+        return View();
+    }
+
+    [Route(RouteNames.Error)]
     public IActionResult Error()
     {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
         return View();
     }
 }

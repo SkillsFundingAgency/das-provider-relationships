@@ -19,7 +19,6 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ChangePasswordLinkFormatted()
         {
             return BaseAddress.Replace("/identity", "") + string.Format(ChangePasswordUrl, ClientId);
-        } 
-        public ClaimIdentifierConfiguration ClaimIdentifierConfiguration { get; set; }
+        }
     }
 }

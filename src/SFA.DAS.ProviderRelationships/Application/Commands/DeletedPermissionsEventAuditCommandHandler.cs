@@ -1,24 +1,25 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands
+namespace SFA.DAS.ProviderRelationships.Application.Commands;
+
+public class DeletedPermissionsEventAuditCommandHandler : IRequestHandler<DeletedPermissionsEventAuditCommand>
 {
-    public class DeletedPermissionsEventAuditCommandHandler : RequestHandler<DeletedPermissionsEventAuditCommand>
+    private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+    public DeletedPermissionsEventAuditCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        _db = db;
+    }
 
-        public DeletedPermissionsEventAuditCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
-        {
-            _db = db;
-        }
+    public async Task Handle(DeletedPermissionsEventAuditCommand request, CancellationToken cancellationToken)
+    {
+        var audit = new DeletedPermissionsEventAudit(request.AccountProviderLegalEntityId, request.Ukprn, request.Deleted);
 
-        protected override void Handle(DeletedPermissionsEventAuditCommand request)
-        {
-            var audit = new DeletedPermissionsEventAudit(request.AccountProviderLegalEntityId, request.Ukprn, request.Deleted);
-            
-            _db.Value.DeletedPermissionsEventAudits.Add(audit);
-        }
+        await _db.Value.DeletedPermissionsEventAudits.AddAsync(audit, cancellationToken);
     }
 }

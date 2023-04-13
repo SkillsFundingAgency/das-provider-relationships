@@ -2,18 +2,11 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <TargetFramework>net6.0</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsGenerateRunCommandFileDisabled>true</IsGenerateRunCommandFileDisabled>
         <IsWebJobProject>true</IsWebJobProject>
         <OutputType>Exe</OutputType>
         <WebJobName>ProviderRelationships-Jobs</WebJobName>
         <WebJobType>Continuous</WebJobType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
@@ -21,10 +14,8 @@
         <PackageReference Include="morelinq" Version="3.3.2" />
         <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
         <PackageReference Include="NLog.Schema" Version="5.1.2" />
-        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.2.1" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
-        <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="4.0.1" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.34" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
@@ -40,10 +31,6 @@
             <DependentUpon>App.config</DependentUpon>
             <IsTransformFile>True</IsTransformFile>
         </None>
-    </ItemGroup>
-    <ItemGroup>
-        <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\4.5.10\contentFiles\any\any\NLog.xsd" />
-        <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
     </ItemGroup>
     <ItemGroup>
         <None Update="nlog.config">

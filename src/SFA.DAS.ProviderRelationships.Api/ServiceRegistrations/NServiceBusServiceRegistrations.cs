@@ -23,7 +23,7 @@ public static class NServiceBusServiceRegistrations
 
         if (string.IsNullOrWhiteSpace(databaseConnectionString))
         {
-            throw new Exception("DatabaseConnectionString configuration value is empty.");
+            throw new InvalidOperationException("DatabaseConnectionString configuration value is empty.");
         }
 
         var endpointConfiguration = new EndpointConfiguration(EndPointName)
@@ -42,7 +42,6 @@ public static class NServiceBusServiceRegistrations
         }
         else
         {
-            //TODO MAC-192
             endpointConfiguration.UseAzureServiceBusTransport(providerRelationshipsConfiguration.ServiceBusConnectionString, r => { });
         }
 

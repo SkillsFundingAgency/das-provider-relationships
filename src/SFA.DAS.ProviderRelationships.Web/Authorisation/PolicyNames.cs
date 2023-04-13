@@ -1,9 +1,8 @@
-﻿namespace SFA.DAS.ProviderRelationships.Web.Authorisation
+﻿namespace SFA.DAS.ProviderRelationships.Web.Authorisation;
+
+public static class PolicyNames
 {
-    public static class PolicyNames
-    {
-        public static string HasEmployerOwnerAccount => nameof(HasEmployerOwnerAccount);
-        public static string HasEmployerViewAccount => nameof(HasEmployerViewAccount);
-        public static string HasEmployerOwnerOrViewerAccount = nameof(HasEmployerOwnerOrViewerAccount);
-    }
+    public const string HasEmployerOwnerAccount = nameof(HasEmployerOwnerAccount);
+    public const string HasEmployerViewAccount = nameof(HasEmployerViewAccount);
+    public const string HasEmployerOwnerOrViewerAccount = nameof(HasEmployerOwnerOrViewerAccount);
 }
