@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
 
@@ -28,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public ServiceControllerTestsFixture()
         {
-            ServiceController = new ServiceController();
+            ServiceController = new ServiceController(null, new StubAuthenticationService(null));
         }
 
         public Task<IActionResult> SignOut()
