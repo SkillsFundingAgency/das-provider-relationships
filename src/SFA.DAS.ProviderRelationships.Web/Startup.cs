@@ -75,13 +75,15 @@ namespace SFA.DAS.ProviderRelationships.Web
                     _configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                services.AddMaMenuConfiguration(RouteNames.SignOut, _configuration["EnvironmentName"]);
             }
             else
             {
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
+                services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["EnvironmentName"]);
             }
 
-            services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["EnvironmentName"]);
+            
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
