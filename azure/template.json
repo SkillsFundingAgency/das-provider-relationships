@@ -340,6 +340,10 @@
                                 {
                                     "name": "StubAuth",
                                     "value": "[parameters('stubAuth')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 }
                             ]
                         }
