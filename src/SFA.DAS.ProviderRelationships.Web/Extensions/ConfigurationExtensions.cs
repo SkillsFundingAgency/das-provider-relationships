@@ -9,9 +9,8 @@ public static class ConfigurationExtensions
 {
     public static bool UseGovUkSignIn(this IConfiguration configuration)
     {
-        return configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"] != null &&
-               configuration[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"]
-                  .Equals("true", StringComparison.CurrentCultureIgnoreCase);
+        return configuration["UseGovUkSignIn"] != null &&
+               configuration["UseGovUkSignIn"].Equals("true", StringComparison.CurrentCultureIgnoreCase);
     }
 
     public static bool UseStubAuth(this IConfiguration configuration)

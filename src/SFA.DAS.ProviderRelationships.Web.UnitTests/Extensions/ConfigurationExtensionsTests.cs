@@ -15,7 +15,7 @@ public class ConfigurationExtensionsTests
     {
         // Arrange
         var configuration = new Mock<IConfiguration>();
-        configuration.Setup(x => x[$"{ConfigurationKeys.ProviderRelationships}:UseGovUkSignIn"]).Returns(configValue);
+        configuration.Setup(x => x[$"UseGovUkSignIn"]).Returns(configValue);
 
         // Act
         var result = configuration.Object.UseGovUkSignIn();
