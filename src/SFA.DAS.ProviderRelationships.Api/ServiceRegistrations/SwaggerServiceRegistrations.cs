@@ -29,7 +29,7 @@ public static class SwaggerServiceRegistrations
                             Id = "bearerAuth"
                         }
                     },
-                    new string[] {}
+                    Array.Empty<string>()
                 }
             };
 
