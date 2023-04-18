@@ -4,10 +4,10 @@ namespace SFA.DAS.ProviderRelationships.Services.OuterApi;
 
 public class EmployerIdentifier
 {
-    [JsonProperty("EncodedAccountId")]
+    [JsonProperty("encodedAccountId")]
     public string AccountId { get; set; }
-    [JsonProperty("DasAccountName")]
+    [JsonProperty("dasAccountName")]
     public string EmployerName { get; set; }
-    [JsonProperty("Role")]
+    [JsonProperty("role")]
     public string Role { get; set; }
 }

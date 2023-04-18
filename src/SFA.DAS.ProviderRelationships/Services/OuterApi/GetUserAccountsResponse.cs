@@ -5,16 +5,16 @@ namespace SFA.DAS.ProviderRelationships.Services.OuterApi;
 
 public class GetUserAccountsResponse
 {
-    [JsonProperty]
+    [JsonProperty(PropertyName = "employerUsedId")]
     public string EmployerUserId { get; set; }
-    [JsonProperty]
+    [JsonProperty(PropertyName = "firstName")]
     public string FirstName { get; set; }
-    [JsonProperty]
+    [JsonProperty(PropertyName = "lastName")]
     public string LastName { get; set; }
-    [JsonProperty]
+    [JsonProperty(PropertyName = "userAccounts")]
     public List<EmployerIdentifier> UserAccounts { get; set; }
-    [JsonProperty]
+    [JsonProperty(PropertyName = "email")]
     public string Email { get; set; }
-    [JsonProperty]
+    [JsonProperty(PropertyName = "isSuspended")]
     public bool IsSuspended { get; set; }
 }
