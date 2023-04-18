@@ -109,7 +109,7 @@ public class GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixtu
         
     public GetAccountProviderLegalEntitiesWithPermissionQueryHandlerTestsFixture SetAccountProviderLegalEntities()
     {
-        // need to new up one of these, so it's static Events is there
+        // need to new up one of these, so its static Events is there
         new UnitOfWorkContext();
 
         Account = EntityActivator.CreateInstance<Account>()
