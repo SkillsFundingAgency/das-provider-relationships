@@ -50,7 +50,6 @@ public class CreateReadStoreDatabaseJob
             OfferThroughput = 1000
         };
             
-        //todo: logging from eas
         await _documentClient.CreateDatabaseIfNotExistsAsync(database);
         await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection, requestOptions);
     }
