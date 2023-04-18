@@ -14,7 +14,7 @@ public static class ErrorHandlerExtensions
             var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
             if (contextFeature != null)
             {
-                logger.LogError($"Something went wrong: {contextFeature.Error}");
+                logger.LogError("Something went wrong: {Error}", contextFeature.Error);
             }
 
             return Task.CompletedTask;
