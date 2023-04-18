@@ -6,18 +6,18 @@ public static class AuthorizationExtensions
     {
         services.AddAuthorization(options =>
         {
-            {
-                AddDefaultPolicy(isDevelopment, options);
+            AddDefaultPolicy(isDevelopment, options);
 
-                options.DefaultPolicy = options.GetPolicy("default");
+            options.DefaultPolicy = options.GetPolicy("default");
 
-                AddReadPolicy(isDevelopment, options);
+            AddReadPolicy(isDevelopment, options);
 
-                AddWritePolicy(isDevelopment, options);
-            }
+            AddWritePolicy(isDevelopment, options);
+
         });
 
-        if (isDevelopment){
+        if (isDevelopment)
+        {
             services.AddSingleton<IAuthorizationHandler, LocalAuthorizationHandler>();
         }
 
