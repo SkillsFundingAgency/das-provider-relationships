@@ -27,7 +27,7 @@ public class Startup
 
     public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
     {
-        serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal() || _configuration.IsTest());
+        serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal());
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -54,7 +54,7 @@ public class Startup
             .Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
             .AddMvc(opt =>
             {
-                if (!_configuration.IsDevOrLocal() && !_configuration.IsTest())
+                if (!_configuration.IsDevOrLocal())
                 {
                     opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
                 }
