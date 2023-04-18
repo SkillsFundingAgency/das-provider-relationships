@@ -24,12 +24,14 @@ public class DasRecruitService : IDasRecruitService
         try
         {
             var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken, cancellationToken);
-            _log.LogInformation($"After getting organisation status for provider {providerUkprn}  and status is {blockedOrgStatus} ");
+            
+            _log.LogInformation("After getting organisation status for provider {ProviderUkprn}  and status is {BlockedOrgStatus} ", providerUkprn, blockedOrgStatus);
+            
             return blockedOrgStatus;
         }
         catch (Exception ex)
         {
-            _log.LogWarning($"Failed to call Provider Blocked Status endpoint of Recruit API: {ex.Message}");
+            _log.LogWarning("Failed to call Provider Blocked Status endpoint of Recruit API: {Message}", ex.Message);
             throw;
         }
     }
