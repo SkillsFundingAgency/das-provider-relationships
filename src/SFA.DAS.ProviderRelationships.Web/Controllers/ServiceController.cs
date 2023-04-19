@@ -19,7 +19,7 @@ public class ServiceController : Controller
     }
     
     [AllowAnonymous]
-    [Route(RouteNames.SignOut)]
+    [Route("signout", Name = RouteNames.SignOut)]
     public async Task<IActionResult> SignOutEmployer()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
@@ -32,7 +32,7 @@ public class ServiceController : Controller
     }
 
     [AllowAnonymous]
-    [Route(RouteNames.SignOutCleanup)]
+    [Route("signoutcleanup",Name=RouteNames.SignOutCleanup)]
     public async Task<IActionResult> SignOutCleanup()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
