@@ -18,7 +18,7 @@ public static class AddConfigurationOptionsExtension
     {
         services.AddOptions();
 
-        services.Configure<ProviderRelationshipsConfiguration>(configuration.GetSection(ConfigurationKeys.ProviderRelationships));
+        services.Configure<ProviderRelationshipsConfiguration>(configuration);
         services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderRelationshipsConfiguration>>().Value);
 
         services.AddSingleton<IProviderRelationshipsConfiguration>(configuration.Get<ProviderRelationshipsConfiguration>());
