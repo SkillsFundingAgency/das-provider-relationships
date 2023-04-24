@@ -73,8 +73,9 @@ namespace SFA.DAS.ProviderRelationships.Web
             {
                 services.AddAndConfigureGovUkAuthentication(
                     _configuration,
-                    $"{typeof(Startup).Assembly.GetName().Name}.Auth",
-                    typeof(EmployerAccountPostAuthenticationClaimsHandler));
+                    typeof(EmployerAccountPostAuthenticationClaimsHandler),
+                    "",
+                    "/service/SignIn-Stub");
                 services.AddMaMenuConfiguration(RouteNames.SignOut, _configuration["ResourceEnvironmentName"]);
             }
             else
