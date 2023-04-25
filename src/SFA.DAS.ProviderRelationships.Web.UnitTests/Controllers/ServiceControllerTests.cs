@@ -29,7 +29,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public ServiceControllerTestsFixture()
         {
-            ServiceController = new ServiceController(null, new StubAuthenticationService(null));
+            ServiceController = new ServiceController(null, new StubAuthenticationService(null, null, null));
         }
 
         public Task<IActionResult> SignOut()

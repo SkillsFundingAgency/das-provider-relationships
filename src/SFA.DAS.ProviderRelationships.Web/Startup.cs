@@ -111,7 +111,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             if (!_environment.IsDevelopment())
             {
                 services.AddHealthChecks();
-                services.AddDataProtection();
+                services.AddDataProtection(_configuration);
             }
 #if DEBUG
             services.AddControllersWithViews()

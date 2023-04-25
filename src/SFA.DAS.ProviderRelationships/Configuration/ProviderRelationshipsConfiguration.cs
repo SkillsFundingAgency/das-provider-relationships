@@ -25,5 +25,7 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string EnvironmentName { get; set; }
         public string ApplicationBaseUrl { get; set; }
         public bool UseGovUkSignIn { get; set; }
+        public string DataProtectionKeysDatabase { get; set; }
+        public string RedisConnectionString { get; set; }
     }
 }
