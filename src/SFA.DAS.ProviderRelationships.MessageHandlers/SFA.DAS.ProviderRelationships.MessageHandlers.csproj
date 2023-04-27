@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
     <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <TargetFramework>net6.0</TargetFramework>
-        <IsGenerateRunCommandFileDisabled>true</IsGenerateRunCommandFileDisabled>
         <IsWebJobProject>true</IsWebJobProject>
         <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
         <WebJobName>ProviderRelationships-MessageHandlers</WebJobName>
+        <LangVersion>latest</LangVersion>
         <WebJobType>Continuous</WebJobType>
     </PropertyGroup>
     <ItemGroup>

@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
     <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <TargetFramework>net6.0</TargetFramework>
-        <IsGenerateRunCommandFileDisabled>true</IsGenerateRunCommandFileDisabled>
         <IsWebJobProject>true</IsWebJobProject>
         <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
         <WebJobName>ProviderRelationships-Jobs</WebJobName>
+        <LangVersion>latest</LangVersion>
         <WebJobType>Continuous</WebJobType>
     </PropertyGroup>
     <ItemGroup>
@@ -33,7 +32,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
+        <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
     </ItemGroup>
     <ItemGroup>
         <None Update="nlog.config">
@@ -43,7 +42,7 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="run.cmd">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="settings.job">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
