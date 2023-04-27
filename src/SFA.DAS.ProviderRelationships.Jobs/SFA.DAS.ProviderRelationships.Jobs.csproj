@@ -8,6 +8,9 @@
         <WebJobType>Continuous</WebJobType>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="4.1.0" />
         <PackageReference Include="morelinq" Version="3.3.2" />
