@@ -2,12 +2,10 @@
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.MicrosoftDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
-using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Hosting;
 using SFA.DAS.NServiceBus.SqlServer.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
-using SFA.DAS.UnitOfWork.NServiceBus.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -18,23 +16,21 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddNServiceBus(this IServiceCollection services)
     {
         return services
-            .AddSingleton(p =>
+            .AddSingleton(provider =>
             {
-                var providerRelationshipsConfiguration = p.GetService<ProviderRelationshipsConfiguration>();
-                var configuration = p.GetService<IConfiguration>();
+                var providerRelationshipsConfiguration = provider.GetService<ProviderRelationshipsConfiguration>();
+                var configuration = provider.GetService<IConfiguration>();
                 var isLocal = configuration["EnvironmentName"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 
                 var endpointConfiguration = new EndpointConfiguration(EndpointName)
-                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
                     .UseErrorQueue($"{EndpointName}-errors")
                     .UseInstallers()
-                    .UseMessageConventions()
-                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
-                    .UseNewtonsoftJsonSerializer()
-                    .UseNLogFactory()
                     .UseOutbox()
-                    .UseServicesBuilder(new UpdateableServiceProvider(services))
-                    .UseUnitOfWork();
+                    .UseMessageConventions()
+                    .UseNewtonsoftJsonSerializer()
+                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
+                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
+                    .UseServicesBuilder(new UpdateableServiceProvider(services));
 
                 if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
                 {
