@@ -1,10 +1,12 @@
-﻿using NServiceBus.ObjectBuilder.MSDependencyInjection;
+﻿using Microsoft.OpenApi.Models;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
 using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
 using SFA.DAS.ProviderRelationships.Api.Authorization;
 using SFA.DAS.ProviderRelationships.Api.Extensions;
+using SFA.DAS.ProviderRelationships.Api.Filters;
 using SFA.DAS.ProviderRelationships.Api.Handlers;
 using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
@@ -46,8 +48,16 @@ public class Startup
 
         services.AddApiAuthentication(_configuration, isDevelopment);
         services.AddApiAuthorization(isDevelopment);
-        services.AddDasSwagger();
-        
+
+        services.AddSwaggerGen(c =>
+        {
+            c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            c.SwaggerDoc("v1", new OpenApiInfo {
+                Version = "v1",
+                Title = "Provider Relationships API"
+            });
+        });
+
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddConfigurationSections(_configuration)
