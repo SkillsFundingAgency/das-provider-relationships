@@ -16,7 +16,6 @@
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="4.0.1" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.34" />
         <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
