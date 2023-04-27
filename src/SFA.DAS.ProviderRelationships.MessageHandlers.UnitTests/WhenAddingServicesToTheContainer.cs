@@ -117,10 +117,10 @@ public class WhenAddingServicesToTheContainer
                 new("SFA.DAS.ProviderRelationshipsV2:NServiceBusLicense", "test"),
                 new("SFA.DAS.ProviderRelationshipsV2:RoatpApiClientSettings:ApiBaseUrl", "https://test/"),
                 new("SFA.DAS.ProviderRelationshipsV2:RoatpApiClientSettings:IdentifierUri", "https://test/"),
-                new("SFA.DAS.ProviderRelationshipsV2:ReadStore:AuthKey", "test"),
-                new("SFA.DAS.ProviderRelationshipsV2:ReadStore:Uri", "https://test/"),
-                new("SFA.DAS.ProviderRelationshipsV2:PasAccountApi:ApiBaseUrl", "https://test/"),
-                new("SFA.DAS.ProviderRelationshipsV2:PasAccountApi:IdentifierUri", "https://test/"),
+                new("ReadStore:AuthKey", "test"),
+                new("ReadStore:Uri", "https://test/"),
+                new("PasAccountApi:ApiBaseUrl", "https://test/"),
+                new("PasAccountApi:IdentifierUri", "https://test/"),
                 new("EnvironmentName", "LOCAL"),
             }
         };
