@@ -71,7 +71,7 @@ public static class HostExtensions
             services.AddNServiceBus();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddAccountLegalEntityCommand).Assembly, typeof(Program).Assembly));
             services.AddApplicationServices();
-            services.AddDatabaseRegistration(context.Configuration[$"{ConfigurationKeys.ProviderRelationships}:DatabaseConnectionString"]);
+            services.AddDatabaseRegistration(context.Configuration["DatabaseConnectionString"]);
             services.AddUnitOfWork();
             services.AddTransient<IRetryStrategy>(_ => new ExponentialBackoffRetryAttribute(5, "00:00:10", "00:00:20"));
             services.BuildServiceProvider();
