@@ -42,7 +42,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(UpdatedPermissionsEventHandler))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_EventHandlers(Type toResolve)
     {
-       RunTestForType(toResolve);
+        RunTestForType(toResolve);
     }
 
     [TestCase(typeof(IRequestHandler<AddAccountLegalEntityCommand>))]
@@ -60,7 +60,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IRequestHandler<SendUpdatedPermissionsNotificationCommand>))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_CommandHandlers(Type toResolve)
     {
-       RunTestForType(toResolve);
+        RunTestForType(toResolve);
     }
 
     private static void RunTestForType(Type toResolve)
@@ -105,7 +105,6 @@ public class WhenAddingServicesToTheContainer
             services.AddTransient(handlerType);
         }
     }
-
 
     private static IConfigurationRoot GenerateConfiguration()
     {
