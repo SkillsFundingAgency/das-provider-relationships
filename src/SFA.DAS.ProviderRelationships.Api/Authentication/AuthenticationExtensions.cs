@@ -24,8 +24,9 @@ public static class AuthenticationExtensions
 
             var policies = new Dictionary<string, string> { { PolicyNames.Default, RoleNames.Default } };
             services.AddAuthentication(azureAdConfiguration, policies);
-            services.AddSingleton<IClaimsTransformation, AzureAdScopeClaimTransformation>();
         }
+
+        services.AddSingleton<IClaimsTransformation, AzureAdScopeClaimTransformation>();
 
         return services;
     }
