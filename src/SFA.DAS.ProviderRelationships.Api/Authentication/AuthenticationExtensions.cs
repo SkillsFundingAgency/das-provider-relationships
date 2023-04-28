@@ -2,7 +2,6 @@
 using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
-using SFA.DAS.Api.Common.Infrastructure.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Api.Authentication;
