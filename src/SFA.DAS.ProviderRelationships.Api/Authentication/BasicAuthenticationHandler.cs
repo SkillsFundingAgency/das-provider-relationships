@@ -17,7 +17,7 @@ public class BasicAuthenticationHandler :AuthenticationHandler<AuthenticationSch
     {
     }
 
-    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         string username;
         try
@@ -48,6 +48,6 @@ public class BasicAuthenticationHandler :AuthenticationHandler<AuthenticationSch
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-        return await Task.FromResult(AuthenticateResult.Success(ticket));
+        return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 }
