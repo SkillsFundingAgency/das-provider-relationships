@@ -2,18 +2,23 @@
 
 public static class AuthorizationExtensions
 {
+    private static readonly string[] PolicyRoles =
+    {
+        ApiRoles.Read,
+        ApiRoles.Write,
+    };
+
+    private const string DefaultPolicyName = "default";
+
     public static IServiceCollection AddApiAuthorization(this IServiceCollection services, bool isDevelopment = false)
     {
         services.AddAuthorization(options =>
         {
             AddDefaultPolicy(isDevelopment, options);
 
-            options.DefaultPolicy = options.GetPolicy("default");
+            options.DefaultPolicy = options.GetPolicy(DefaultPolicyName);
 
-            AddReadPolicy(isDevelopment, options);
-
-            AddWritePolicy(isDevelopment, options);
-
+            AddRolePolicies(isDevelopment, options);
         });
 
         if (isDevelopment)
@@ -26,7 +31,7 @@ public static class AuthorizationExtensions
 
     private static void AddDefaultPolicy(bool isDevelopment, AuthorizationOptions options)
     {
-        options.AddPolicy("default", policy =>
+        options.AddPolicy(DefaultPolicyName, policy =>
         {
             if (isDevelopment)
             {
@@ -39,31 +44,22 @@ public static class AuthorizationExtensions
         });
     }
 
-    private static void AddWritePolicy(bool isDevelopment, AuthorizationOptions options)
+    private static void AddRolePolicies(bool isDevelopment, AuthorizationOptions options)
     {
-        options.AddPolicy(ApiRoles.Write, policy =>
+        foreach (var roleName in PolicyRoles)
         {
-            if (isDevelopment)
-                policy.AllowAnonymousUser();
-            else
+            options.AddPolicy(roleName, policy =>
             {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(ApiRoles.Write);
-            }
-        });
-    }
-
-    private static void AddReadPolicy(bool isDevelopment, AuthorizationOptions options)
-    {
-        options.AddPolicy(ApiRoles.Read, policy =>
-        {
-            if (isDevelopment)
-                policy.AllowAnonymousUser();
-            else
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(ApiRoles.Read);
-            }
-        });
+                if (isDevelopment)
+                {
+                    policy.AllowAnonymousUser();
+                }
+                else
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole(roleName);
+                }
+            });
+        }
     }
 }
