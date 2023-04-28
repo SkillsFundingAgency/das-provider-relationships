@@ -3,10 +3,11 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using SFA.DAS.ProviderRelationships.Api.Authorization;
 
 namespace SFA.DAS.ProviderRelationships.Api.Authentication;
 
-public class BasicAuthenticationHandler :AuthenticationHandler<AuthenticationSchemeOptions>
+public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -29,21 +30,22 @@ public class BasicAuthenticationHandler :AuthenticationHandler<AuthenticationSch
         }
         catch
         {
-            //if no authorization header specified default to employer.
-            username = "employer";
+            //if no authorization header specified default to reader.
+            username = "Read";
         }
 
-        bool isProvider = false;
-        if (username == "provider")
+        bool isWriter = false;
+        if (username == "Write")
         {
-            isProvider = true;
+            isWriter = true;
         }
 
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, username),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role,  isProvider ? "Provider" : "Employer"),
+            new Claim(ClaimTypes.Role,  isWriter ? ApiRoles.Write : ApiRoles.Read),
         };
+
         var identity = new ClaimsIdentity(claims, Scheme.Name);
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, Scheme.Name);

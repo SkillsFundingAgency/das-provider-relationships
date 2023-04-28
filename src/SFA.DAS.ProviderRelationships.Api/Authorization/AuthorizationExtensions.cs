@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ProviderRelationships.Api.Authorization;
+﻿using SFA.DAS.Api.Common.Infrastructure;
+
+namespace SFA.DAS.ProviderRelationships.Api.Authorization;
 
 public static class AuthorizationExtensions
 {
