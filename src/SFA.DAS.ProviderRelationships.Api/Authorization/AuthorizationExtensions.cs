@@ -16,9 +16,9 @@ public static class AuthorizationExtensions
         {
             AddDefaultPolicy(isDevelopment, options);
 
-            options.DefaultPolicy = options.GetPolicy(DefaultPolicyName);
-
             AddRolePolicies(isDevelopment, options);
+
+            options.DefaultPolicy = options.GetPolicy(DefaultPolicyName);           
         });
 
         if (isDevelopment)

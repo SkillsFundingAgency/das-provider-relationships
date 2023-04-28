@@ -49,13 +49,13 @@ public class Startup
         services.AddTransient<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
 
         services.AddSwaggerGen(c =>
-  {
-      c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
-      c.SwaggerDoc("v1", new OpenApiInfo {
-          Version = "v1",
-          Title = "Provider Relationships API"
-      });
-  });
+              {
+                  c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+                  c.SwaggerDoc("v1", new OpenApiInfo {
+                      Version = "v1",
+                      Title = "Provider Relationships API"
+                  });
+              });
 
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
