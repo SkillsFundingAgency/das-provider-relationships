@@ -31,45 +31,41 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddConfigurationSections(_configuration);
+
         var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
         var isDevelopment = _configuration.IsDevOrLocal();
+
+        services.AddLogging();
 
         services.AddApiAuthentication(_configuration, isDevelopment)
                 .AddApiAuthorization(isDevelopment);
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
-
-        services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
-        services.AddApplicationServices();
-        services.AddReadStoreServices();
-
-        //services.AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>();
-        //services.AddNServiceBusClientUnitOfWork();
-
-        services.AddTransient<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
-
         services.AddSwaggerGen(c =>
-              {
-                  c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
-                  c.SwaggerDoc("v1", new OpenApiInfo {
-                      Version = "v1",
-                      Title = "Provider Relationships API"
-                  });
-              });
+        {
+            c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            c.SwaggerDoc("v1", new OpenApiInfo {
+                Version = "v1",
+                Title = "Provider Relationships API"
+            });
+        });
 
+        services.AddApplicationServices();
+        services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
+        services.AddReadStoreServices();
+        services.AddTransient<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-        services.AddConfigurationSections(_configuration)
-            .Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
-            .AddMvc(opt =>
-            {
-                if (!_configuration.IsDevOrLocal())
-                {
-                    opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
-                }
-            });
+        services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
+             .AddMvc(opt =>
+             {
+                 if (!_configuration.IsDevOrLocal())
+                 {
+                     opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                 }
+             });
 
-        services.AddLogging();
         services.AddApplicationInsightsTelemetry();
     }
 
@@ -79,10 +75,14 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseHsts();
+        }
 
         app.UseHttpsRedirection()
-            .UseApiGlobalExceptionHandler(loggerFactory.CreateLogger("Startup"))
-            .UseStaticFiles()
+            .UseApiGlobalExceptionHandler(loggerFactory.CreateLogger(nameof(Startup)))
+            .UseAuthentication()
             .UseRouting()
             .UseAuthorization()
             .UseEndpoints(endpoints =>
