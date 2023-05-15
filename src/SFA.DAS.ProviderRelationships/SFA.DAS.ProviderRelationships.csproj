@@ -26,6 +26,7 @@
         <PackageReference Include="SFA.DAS.UnitOfWork" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
     </ItemGroup>
 
