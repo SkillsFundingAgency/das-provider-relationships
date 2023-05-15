@@ -9,12 +9,6 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
     [Parallelizable]
     public class PermissionOperationExtensionsTests : FluentTest<object>
     {
-        [Test]
-        public void GetDescription_WhenGettingDescription_ThenShouldReturnDescription()
-        {
-            Test(f => Permission.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Add apprentice records"));
-            Test(f => Permission.Recruitment.GetDescription(), (f, r) => r.Should().Be("Recruit apprentices"));
-        }
 
         [TestCase(Permission.CreateCohort, State.No, "Do not allow")]
         [TestCase(Permission.CreateCohort, State.Yes, "Allow")]

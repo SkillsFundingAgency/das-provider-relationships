@@ -7,14 +7,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class PermissionOperationExtensions
     {
-        public static string GetDescription(this Permission permission)
-        {
-            return permission.GetType()
-                .GetMember(permission.ToString()).First()
-                .GetCustomAttributes<DisplayAttribute>().First()
-                .Name;
-        }
-
         public static List<PermissionViewModel> ToPermissions(this IList<Operation> operations)
         {
             return Enum.GetValues(typeof(Permission))
