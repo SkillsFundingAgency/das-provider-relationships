@@ -11,7 +11,8 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
     private readonly ProviderRelationshipsConfiguration _employerFinanceConfiguration;
     private readonly IUserAccountService _userAccountService;
 
-    public EmployerAccountPostAuthenticationClaimsHandler(IUserAccountService userAccountService, IOptions<ProviderRelationshipsConfiguration> providerRelationshipsConfiguration)
+    public EmployerAccountPostAuthenticationClaimsHandler(IUserAccountService userAccountService,
+        IOptions<ProviderRelationshipsConfiguration> providerRelationshipsConfiguration)
     {
         _userAccountService = userAccountService;
         _employerFinanceConfiguration = providerRelationshipsConfiguration.Value;
@@ -29,9 +30,11 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
             userId = tokenValidatedContext.Principal.Claims
                 .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
                 .Value;
+
             email = tokenValidatedContext.Principal.Claims
                 .First(c => c.Type.Equals(ClaimTypes.Email))
                 .Value;
+
             claims.Add(new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, email));
         }
         else
@@ -39,27 +42,36 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
             userId = tokenValidatedContext.Principal.Claims
                 .First(c => c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier))
                 .Value;
+
+            email = tokenValidatedContext.Principal.Claims
+                .First(c => c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier)).Value;
+
+            claims.AddRange(tokenValidatedContext.Principal.Claims);
+            claims.Add(new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, userId));
         }
 
         var result = await _userAccountService.GetUserAccounts(userId, email);
 
-        var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
-        var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
-        claims.Add(associatedAccountsClaim);
-        if (!_employerFinanceConfiguration.UseGovUkSignIn)
-        {
-            return claims;
-        }
-        
         if (result.IsSuspended)
         {
             claims.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
         }
 
+        var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
+        var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
+            JsonClaimValueTypes.Json);
+
+        claims.Add(associatedAccountsClaim);
+
+        if (!_employerFinanceConfiguration.UseGovUkSignIn)
+        {
+            return claims;
+        }
+
         claims.Add(new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, result.EmployerUserId));
-        claims.Add(new Claim(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier, result.FirstName + " " + result.LastName));
+        claims.Add(new Claim(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier,
+            $"{result.FirstName} {result.LastName}"));
 
         return claims;
-
     }
 }
