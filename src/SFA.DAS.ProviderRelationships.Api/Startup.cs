@@ -53,7 +53,6 @@ public class Startup
         });
 
         services.AddApplicationServices();
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
         services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));
         services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
