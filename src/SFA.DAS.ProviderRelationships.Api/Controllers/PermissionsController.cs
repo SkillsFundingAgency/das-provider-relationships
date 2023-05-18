@@ -36,6 +36,10 @@ public class PermissionsController : ControllerBase
         {
             ModelState.AddModelError(nameof(routeValues.Operation), "A Operation needs to be supplied");
         }
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
 
         var hasPermission = await _mediator.Send(new HasPermissionQuery(routeValues.Ukprn.Value, routeValues.AccountLegalEntityId.Value, routeValues.Operation.Value), cancellationToken);
         return Ok(hasPermission);
@@ -44,7 +48,7 @@ public class PermissionsController : ControllerBase
     [Route("has-relationship-with")]
     [HttpGet]
     [Authorize(Policy = ApiRoles.Read)]
-    public async Task<IActionResult> HasRelationshipWithPermission([FromRoute] HasRelationshipWithPermissionRouteValues routeValues, CancellationToken cancellationToken)
+    public async Task<IActionResult> HasRelationshipWithPermission([FromQuery] HasRelationshipWithPermissionRouteValues routeValues, CancellationToken cancellationToken)
     {
         if (routeValues.Ukprn == null)
         {
@@ -54,6 +58,11 @@ public class PermissionsController : ControllerBase
         if (routeValues.Operation == null)
         {
             ModelState.AddModelError(nameof(routeValues.Operation), "A Operation needs to be supplied");
+        }
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
         var hasPermission = await _mediator.Send(new HasRelationshipWithPermissionQuery(routeValues.Ukprn.Value, routeValues.Operation.Value), cancellationToken);

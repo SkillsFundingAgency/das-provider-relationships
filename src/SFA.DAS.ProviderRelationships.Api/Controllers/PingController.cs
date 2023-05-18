@@ -1,5 +1,6 @@
 namespace SFA.DAS.ProviderRelationships.Api.Controllers;
 
+[AllowAnonymous]
 [Route("ping")]
 public class PingController : ControllerBase
 {
