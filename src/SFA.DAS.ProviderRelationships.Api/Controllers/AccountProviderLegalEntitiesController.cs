@@ -28,7 +28,7 @@ public class AccountProviderLegalEntitiesController : ControllerBase
     /// Operation: Filter AccountProviderLegalEntities to only those which have this permission
     /// </param>
     [HttpGet]
-    public async Task<IActionResult> Get([FromRoute] GetAccountProviderLegalEntitiesRouteValues routeValues, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get([FromQuery] GetAccountProviderLegalEntitiesRouteValues routeValues, CancellationToken cancellationToken)
     {
         if (routeValues.Ukprn == null && string.IsNullOrWhiteSpace(routeValues.AccountHashedId))
         {
@@ -51,7 +51,7 @@ public class AccountProviderLegalEntitiesController : ControllerBase
             routeValues.Operations = new List<Operation> {routeValues.Operation.Value};
         }
             
-        var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operations), cancellationToken);
+        var result = await _mediator.Send(new GetAccountProviderLegalEntitiesWithPermissionQuery(routeValues.Ukprn, routeValues.AccountHashedId, routeValues.AccountLegalEntityPublicHashedId, routeValues.Operations),cancellationToken);
 
         var response = new GetAccountProviderLegalEntitiesWithPermissionResponse {
             AccountProviderLegalEntities = result.AccountProviderLegalEntities

@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
@@ -11,6 +11,8 @@ using SFA.DAS.ProviderRelationships.Api.Handlers;
 using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 
 namespace SFA.DAS.ProviderRelationships.Api;
@@ -51,6 +53,8 @@ public class Startup
         });
 
         services.AddApplicationServices();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
+        services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));
         services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
         services.AddReadStoreServices();

@@ -4,9 +4,9 @@ namespace SFA.DAS.ProviderRelationships.Api.RouteValues.AccountProviderLegalEnti
 
 public class GetAccountProviderLegalEntitiesRouteValues
 {
-    public string AccountHashedId { get; set; }
-    public string AccountLegalEntityPublicHashedId { get; set; }
+    public string? AccountHashedId { get; set; }
+    public string? AccountLegalEntityPublicHashedId { get; set; }
     public long? Ukprn { get; set; }
     public Operation? Operation { get; set; }
-    public List<Operation> Operations { get; set; }
+    public List<Operation>? Operations { get; set; }
 }
