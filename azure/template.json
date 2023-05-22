@@ -286,7 +286,7 @@
                         "value": "[variables('uiAppServiceName')]"
                     },
                     "subscriptionScope": {
-                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerAccountsOuterApi')]"
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/ProviderRelationshipsOuterApi')]"
                     }
                 }
             }
