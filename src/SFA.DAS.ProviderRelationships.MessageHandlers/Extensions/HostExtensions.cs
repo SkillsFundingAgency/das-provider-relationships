@@ -31,8 +31,6 @@ public static class HostExtensions
                 loggingBuilder.AddNLog(context.HostingEnvironment.IsDevelopment() ? "nlog.development.config" : "nlog.config");
                 loggingBuilder.AddApplicationInsightsWebJobs(o => o.InstrumentationKey = appInsightsKey);
             }
-
-            loggingBuilder.AddConsole();
         });
 
         return builder;

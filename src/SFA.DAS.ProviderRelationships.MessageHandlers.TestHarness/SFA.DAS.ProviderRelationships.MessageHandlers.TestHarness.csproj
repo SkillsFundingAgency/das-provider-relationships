@@ -6,20 +6,18 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
-      <None Remove="C:\Users\ADM_HarrisJo\.nuget\packages\nlog.schema\5.1.2\contentFiles\any\any\NLog.xsd" />
-    </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="NLog" Version="4.7.15" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="NLog.Schema" Version="5.1.4" />
-        <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
-        <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
+        <PackageReference Include="SFA.DAS.Authentication" Version="1.1.2" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="16.0.21" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFramework" Version="9.0.13" />
+        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
+        <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
