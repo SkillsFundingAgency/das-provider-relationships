@@ -1,6 +1,5 @@
 ﻿using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
-using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Hosting;
 using SFA.DAS.NServiceBus.SqlServer.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -17,7 +16,7 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton(p =>
             {
-                var employerFinanceConfiguration = p.GetService<ProviderRelationshipsConfiguration>();
+                var providerRelationshipsConfiguration = p.GetService<ProviderRelationshipsConfiguration>();
                 var configuration = p.GetService<IConfiguration>();
                 var isLocal = configuration["EnvironmentName"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 
@@ -25,13 +24,16 @@ public static class ServiceCollectionExtensions
                     .UseErrorQueue($"{EndpointName}-errors")
                     .UseInstallers()
                     .UseSendOnly()
-                    .UseNLogFactory()
-                    .UseLicense(employerFinanceConfiguration.NServiceBusLicense)
                     .UseMessageConventions()
                     .UseNewtonsoftJsonSerializer()
-                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(employerFinanceConfiguration.DatabaseConnectionString))
-                    .UseAzureServiceBusTransport(() => employerFinanceConfiguration.ServiceBusConnectionString, isLocal);
+                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
+                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal);
 
+                if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
+                {
+                    endpointConfiguration.UseLicense(providerRelationshipsConfiguration.NServiceBusLicense);
+                }
+                
                 var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
 
                 return endpoint;
