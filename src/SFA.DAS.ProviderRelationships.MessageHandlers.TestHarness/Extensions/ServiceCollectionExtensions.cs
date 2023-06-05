@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
-using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Hosting;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
@@ -30,7 +29,6 @@ public static class ServiceCollectionExtensions
                     .UseInstallers()
                     .UseMessageConventions()
                     .UseNewtonsoftJsonSerializer()
-                    .UseNLogFactory()
                     .UseSendOnly();
 
                 var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
