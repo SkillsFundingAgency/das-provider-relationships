@@ -2,10 +2,12 @@
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.MicrosoftDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
+using SFA.DAS.NServiceBus.Configuration.NLog;
 using SFA.DAS.NServiceBus.Hosting;
 using SFA.DAS.NServiceBus.SqlServer.Configuration;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Extensions;
+using SFA.DAS.UnitOfWork.NServiceBus.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -27,6 +29,7 @@ public static class ServiceCollectionExtensions
                     .UseInstallers()
                     .UseOutbox()
                     .UseMessageConventions()
+                    .UseUnitOfWork()
                     .UseNewtonsoftJsonSerializer()
                     .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
                     .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
