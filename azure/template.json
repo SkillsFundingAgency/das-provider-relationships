@@ -329,8 +329,8 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
                                 },
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
@@ -466,8 +466,8 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
                                 },
                                 {
                                     "name": "ConfigNames",
@@ -538,8 +538,8 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
                                 }
                             ]
                         }
