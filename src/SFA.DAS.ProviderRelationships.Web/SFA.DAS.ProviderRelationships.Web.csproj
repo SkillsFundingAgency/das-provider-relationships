@@ -15,7 +15,6 @@
         <PackageReference Include="NLog" Version="5.1.4" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
         <PackageReference Include="SFA.DAS.Api.Common" Version="1.0.28" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="17.0.49" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.15" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.16" />

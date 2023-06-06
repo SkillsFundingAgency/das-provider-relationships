@@ -12,13 +12,14 @@
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
+        <PackageReference Include="NLog" Version="5.1.1" />
         <PackageReference Include="NLog.Extensions.Logging" Version="5.2.1" />
         <PackageReference Include="SFA.DAS.Authentication.Extensions.Legacy" Version="1.0.29" />
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
         <PackageReference Include="SFA.DAS.Encoding" Version="1.1.76" />
         <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
-        <PackageReference Include="SFA.DAS.NServiceBus" Version="17.0.49" />
-        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="17.0.49" />
+        <PackageReference Include="SFA.DAS.NServiceBus" Version="16.0.21" />
+        <PackageReference Include="SFA.DAS.NServiceBus.SqlServer" Version="16.0.21" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="SFA.DAS.PAS.Account.Api.ClientV2" Version="17267.0.542" />
         <PackageReference Include="SFA.DAS.UnitOfWork" Version="9.0.28" />
