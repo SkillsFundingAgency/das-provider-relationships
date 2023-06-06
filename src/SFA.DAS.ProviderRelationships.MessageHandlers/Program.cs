@@ -3,14 +3,17 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers;
 
-public static class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {
-        using (var host = CreateHost(args))
-        {
-            await host.RunAsync();
-        }
+        using var host = CreateHost(args);
+        
+        var logger = host.Services.GetService<ILogger<Program>>();
+        
+        logger.LogInformation("SFA.DAS.ProviderRelationships.MessageHandlers starting up ...");
+        
+        await host.RunAsync();
     }
 
     private static IHost CreateHost(string[] args)
