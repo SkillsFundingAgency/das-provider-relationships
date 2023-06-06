@@ -1,4 +1,5 @@
-﻿using NServiceBus.ObjectBuilder.MSDependencyInjection;
+﻿using System.Net;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.MicrosoftDependencyInjection;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
@@ -24,19 +25,19 @@ public static class ServiceCollectionExtensions
                 var isLocal = configuration["EnvironmentName"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
 
                 var endpointConfiguration = new EndpointConfiguration(EndpointName)
+                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
                     .UseErrorQueue($"{EndpointName}-errors")
                     .UseInstallers()
-                    .UseOutbox()
-                    .UseMessageConventions()
-                    .UseUnitOfWork()
-                    .UseNewtonsoftJsonSerializer()
                     .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
-                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
+                    .UseNewtonsoftJsonSerializer()
+                    .UseOutbox()
+                    .UseUnitOfWork()
                     .UseServicesBuilder(new UpdateableServiceProvider(services));
 
                 if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
                 {
-                    endpointConfiguration.UseLicense(providerRelationshipsConfiguration.NServiceBusLicense);
+                    var decodedLicence = WebUtility.HtmlDecode(providerRelationshipsConfiguration.NServiceBusLicense);
+                    endpointConfiguration.UseLicense(decodedLicence);
                 }
 
                 var endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
