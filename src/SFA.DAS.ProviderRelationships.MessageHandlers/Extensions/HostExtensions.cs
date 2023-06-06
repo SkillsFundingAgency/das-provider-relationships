@@ -8,6 +8,7 @@ using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -44,23 +45,23 @@ public static class HostExtensions
     {
         return hostBuilder.ConfigureAppConfiguration((context, builder) =>
         {
-            builder
+            //var configuration = builder.Build();
+
+            builder.AddAzureTableStorage(options =>
+                    {
+                        options.ConfigurationKeys = new[]
+                            { ConfigurationKeys.ProviderRelationships, ConfigurationKeys.EncodingConfig };
+                        // options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                        // options.EnvironmentName = configuration["EnvironmentName"];
+                        options.PreFixConfigurationKeys = false;
+                        options.ConfigurationKeysRawJsonResult = new[] { ConfigurationKeys.EncodingConfig };
+                    }
+                )
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
-
-            var configuration = builder.Build();
-
-            builder.AddAzureTableStorage(options =>
-                {
-                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                    options.EnvironmentName = configuration["EnvironmentName"];
-                    options.PreFixConfigurationKeys = false;
-                    options.ConfigurationKeysRawJsonResult = new[] { "SFA.DAS.Encoding" };
-                }
-            );
-            builder.Build();
+            ;
+            // builder.Build();
         });
     }
 
@@ -69,12 +70,14 @@ public static class HostExtensions
         hostBuilder.ConfigureServices((context, services) =>
         {
             services.AddConfigurationSections(context.Configuration);
-            services.AddClientRegistrations();
             services.AddNServiceBus();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(AddAccountLegalEntityCommand).Assembly, typeof(Program).Assembly));
+            services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblies(typeof(AddAccountLegalEntityCommand).Assembly,
+                    typeof(Program).Assembly));
             services.AddApplicationServices();
             services.AddDatabaseRegistration(context.Configuration["DatabaseConnectionString"]);
             services.AddUnitOfWork();
+            services.AddNServiceBusUnitOfWork();
             services.AddTransient<IRetryStrategy>(_ => new ExponentialBackoffRetryAttribute(5, "00:00:10", "00:00:20"));
             services.BuildServiceProvider();
         });
