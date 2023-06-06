@@ -29,7 +29,6 @@
         <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
         
         <PackageReference Include="NLog" Version="5.1.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
         <PackageReference Include="NLog.Extensions.Logging" Version="5.2.1" />
