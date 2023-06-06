@@ -1,14 +1,12 @@
-﻿using System.Reflection;
-using System.Reflection.Emit;
-using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.Configuration;
+﻿using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountLegalEntity;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
-using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -70,6 +68,7 @@ public static class HostExtensions
         hostBuilder.ConfigureServices((context, services) =>
         {
             services.AddConfigurationSections(context.Configuration);
+            services.AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>();
             services.AddNServiceBus();
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssemblies(typeof(AddAccountLegalEntityCommand).Assembly,
@@ -77,7 +76,6 @@ public static class HostExtensions
             services.AddApplicationServices();
             services.AddDatabaseRegistration(context.Configuration["DatabaseConnectionString"]);
             services.AddUnitOfWork();
-            services.AddNServiceBusUnitOfWork();
             services.AddTransient<IRetryStrategy>(_ => new ExponentialBackoffRetryAttribute(5, "00:00:10", "00:00:20"));
             services.BuildServiceProvider();
         });
