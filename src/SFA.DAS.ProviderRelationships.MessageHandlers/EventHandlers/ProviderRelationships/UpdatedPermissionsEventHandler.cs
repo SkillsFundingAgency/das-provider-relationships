@@ -8,14 +8,18 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 public class UpdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissionsEvent>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<UpdatedPermissionsEventHandler> _logger;
 
-    public UpdatedPermissionsEventHandler(IMediator mediator)
+    public UpdatedPermissionsEventHandler(IMediator mediator, ILogger<UpdatedPermissionsEventHandler> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public async Task Handle(UpdatedPermissionsEvent message, IMessageHandlerContext context)
     {
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(UpdatedPermissionsEventHandler));
+        
         var tasks = Task.WhenAll(
             _mediator.Send(new UpdatedPermissionsEventAuditCommand(
                 message.AccountId,
@@ -46,5 +50,7 @@ public class UpdatedPermissionsEventHandler : IHandleMessages<UpdatedPermissions
                 message.PreviousOperations,
                 message.GrantedOperations));
         }
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(UpdatedPermissionsEventHandler));
     }
 }

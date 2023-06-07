@@ -6,14 +6,22 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountNameEvent>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<ChangedAccountNameEvent> _logger;
 
-    public ChangedAccountNameEventHandler(IMediator mediator)
+    public ChangedAccountNameEventHandler(IMediator mediator, ILogger<ChangedAccountNameEvent> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
     {
-        return _mediator.Send(new UpdateAccountNameCommand(message.AccountId, message.CurrentName, message.Created));
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(ChangedAccountNameEventHandler));
+        
+        var result = _mediator.Send(new UpdateAccountNameCommand(message.AccountId, message.CurrentName, message.Created));
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(ChangedAccountNameEventHandler));
+
+        return result;
     }
 }

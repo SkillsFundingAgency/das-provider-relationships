@@ -6,14 +6,22 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntityEvent>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<UpdatedLegalEntityEventHandler> _logger;
 
-    public UpdatedLegalEntityEventHandler(IMediator mediator)
+    public UpdatedLegalEntityEventHandler(IMediator mediator, ILogger<UpdatedLegalEntityEventHandler> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
     {
-        return _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
+        
+        var result = _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
+
+        return result;
     }
 }

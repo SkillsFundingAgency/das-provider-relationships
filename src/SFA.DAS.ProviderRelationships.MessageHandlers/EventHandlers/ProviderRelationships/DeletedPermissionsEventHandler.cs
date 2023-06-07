@@ -7,15 +7,19 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissionsEvent>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<DeletedPermissionsEventHandler> _logger;
 
-    public DeletedPermissionsEventHandler(IMediator mediator)
+    public DeletedPermissionsEventHandler(IMediator mediator, ILogger<DeletedPermissionsEventHandler> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
     {
-        return Task.WhenAll(
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(DeletedPermissionsEventHandler));
+        
+        var result =  Task.WhenAll(
             _mediator.Send(new DeletedPermissionsEventAuditCommand(
                 message.AccountProviderLegalEntityId,
                 message.Ukprn,
@@ -24,7 +28,12 @@ public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissions
                 message.AccountProviderLegalEntityId,
                 message.Ukprn,
                 message.Deleted,
-                context.MessageId)));
+                context.MessageId))
+            );
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(DeletedPermissionsEventHandler));
+        
+        return result;
     }
 }
 #pragma warning restore 618

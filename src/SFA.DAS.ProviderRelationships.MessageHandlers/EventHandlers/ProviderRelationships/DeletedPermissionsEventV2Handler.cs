@@ -6,16 +6,24 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 public class DeletedPermissionsEventV2Handler : IHandleMessages<DeletedPermissionsEventV2>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<DeletedPermissionsEventV2Handler> _logger;
 
-    public DeletedPermissionsEventV2Handler(IMediator mediator)
+    public DeletedPermissionsEventV2Handler(IMediator mediator, ILogger<DeletedPermissionsEventV2Handler> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
     {
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(DeletedPermissionsEventV2Handler));
+        
         var command = new SendDeletedPermissionsNotificationCommand(message.Ukprn, message.AccountLegalEntityId);
 
-        return _mediator.Send(command);
+        var result = _mediator.Send(command);
+
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(DeletedPermissionsEventV2Handler));
+
+        return result;
     }
 }

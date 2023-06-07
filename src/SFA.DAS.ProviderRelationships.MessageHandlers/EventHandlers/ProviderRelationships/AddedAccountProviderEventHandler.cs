@@ -6,19 +6,27 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.ProviderRe
 public class AddedAccountProviderEventHandler : IHandleMessages<AddedAccountProviderEvent>
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<AddedAccountProviderEventHandler> _logger;
 
-    public AddedAccountProviderEventHandler(IMediator mediator)
+    public AddedAccountProviderEventHandler(IMediator mediator, ILogger<AddedAccountProviderEventHandler> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     public Task Handle(AddedAccountProviderEvent message, IMessageHandlerContext context)
     {
-        return _mediator.Send(new AddedAccountProviderEventAuditCommand(
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(AddedAccountProviderEventHandler));
+        
+        var result = _mediator.Send(new AddedAccountProviderEventAuditCommand(
             message.AccountProviderId,
             message.AccountId,
             message.ProviderUkprn,
             message.UserRef,
             message.Added));
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(AddedAccountProviderEventHandler));
+
+        return result;
     }
 }
