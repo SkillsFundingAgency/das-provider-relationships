@@ -20,23 +20,23 @@ public static class ServiceCollectionExtensions
         return services
             .AddSingleton(provider =>
             {
-                var providerRelationshipsConfiguration = provider.GetService<ProviderRelationshipsConfiguration>();
-                var configuration = provider.GetService<IConfiguration>();
-                var isLocal = configuration["EnvironmentName"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
+                var configuration = provider.GetService<ProviderRelationshipsConfiguration>();
+                var hostingEnvironment = provider.GetService<IHostEnvironment>();
+                var isDevelopment = hostingEnvironment.IsDevelopment();
 
                 var endpointConfiguration = new EndpointConfiguration(EndpointName)
-                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal)
+                    .UseAzureServiceBusTransport(() => configuration.ServiceBusConnectionString, isDevelopment)
                     .UseErrorQueue($"{EndpointName}-errors")
                     .UseInstallers()
-                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
+                    .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(configuration.DatabaseConnectionString))
                     .UseNewtonsoftJsonSerializer()
                     .UseOutbox()
                     .UseUnitOfWork()
                     .UseServicesBuilder(new UpdateableServiceProvider(services));
 
-                if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
+                if (!string.IsNullOrEmpty(configuration.NServiceBusLicense))
                 {
-                    var decodedLicence = WebUtility.HtmlDecode(providerRelationshipsConfiguration.NServiceBusLicense);
+                    var decodedLicence = WebUtility.HtmlDecode(configuration.NServiceBusLicense);
                     endpointConfiguration.UseLicense(decodedLicence);
                 }
 
