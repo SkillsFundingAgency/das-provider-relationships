@@ -1,5 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,8 @@ public class ProviderRelationshipsDbContext : DbContext
     {
     }
 
-    public ProviderRelationshipsDbContext(IDbConnection connection, ProviderRelationshipsConfiguration configuration, DbContextOptions options, AzureServiceTokenProvider azureServiceTokenProvider) : base(options)
+    public ProviderRelationshipsDbContext(IDbConnection connection, ProviderRelationshipsConfiguration configuration,
+        DbContextOptions options, AzureServiceTokenProvider azureServiceTokenProvider) : base(options)
     {
         _configuration = configuration;
         _azureServiceTokenProvider = azureServiceTokenProvider;
@@ -72,5 +75,18 @@ public class ProviderRelationshipsDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ProviderConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new UpdatedPermissionsEventAuditConfiguration());
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+#if DEBUG
+        var entries = ChangeTracker.Entries();
+
+        var modificationHistoryList =
+            entries.Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+        var hasChanges = modificationHistoryList.Any();
+#endif
+        return base.SaveChangesAsync(cancellationToken);
     }
 }
