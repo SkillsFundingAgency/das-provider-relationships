@@ -14,14 +14,12 @@ public class RemovedLegalEntityEventHandler : IHandleMessages<RemovedLegalEntity
         _logger = logger;
     }
 
-    public Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
+    public async Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(RemovedLegalEntityEventHandler));
         
-        var result = _mediator.Send(new RemoveAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.Created));
+        await _mediator.Send(new RemoveAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.Created));
         
         _logger.LogInformation("Completed {TypeName} handler.", nameof(RemovedLegalEntityEventHandler));
-
-        return result;
     }
 }

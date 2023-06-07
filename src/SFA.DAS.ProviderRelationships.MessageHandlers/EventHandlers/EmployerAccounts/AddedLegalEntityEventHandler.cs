@@ -14,14 +14,13 @@ public class AddedLegalEntityEventHandler : IHandleMessages<AddedLegalEntityEven
         _logger = logger;
     }
 
-    public Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
+    public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(AddedLegalEntityEventHandler));
-        
-       var result = _mediator.Send(new AddAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created));
-        
-        _logger.LogInformation("Completed {TypeName} handler.", nameof(AddedLegalEntityEventHandler));
 
-        return result;
+        await _mediator.Send(new AddAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId,
+            message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created));
+
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(AddedLegalEntityEventHandler));
     }
 }

@@ -14,14 +14,12 @@ public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountName
         _logger = logger;
     }
 
-    public Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
+    public async Task Handle(ChangedAccountNameEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(ChangedAccountNameEventHandler));
         
-        var result = _mediator.Send(new UpdateAccountNameCommand(message.AccountId, message.CurrentName, message.Created));
+        await _mediator.Send(new UpdateAccountNameCommand(message.AccountId, message.CurrentName, message.Created));
         
         _logger.LogInformation("Completed {TypeName} handler.", nameof(ChangedAccountNameEventHandler));
-
-        return result;
     }
 }

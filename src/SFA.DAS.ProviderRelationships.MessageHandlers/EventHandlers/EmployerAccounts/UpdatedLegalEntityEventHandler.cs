@@ -14,14 +14,12 @@ public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntity
         _logger = logger;
     }
 
-    public Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
+    public async Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
         
-        var result = _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
+        await _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
         
         _logger.LogInformation("Completed {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
-
-        return result;
     }
 }

@@ -14,11 +14,11 @@ public class AddedAccountProviderEventHandler : IHandleMessages<AddedAccountProv
         _logger = logger;
     }
 
-    public Task Handle(AddedAccountProviderEvent message, IMessageHandlerContext context)
+    public async Task Handle(AddedAccountProviderEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(AddedAccountProviderEventHandler));
         
-        var result = _mediator.Send(new AddedAccountProviderEventAuditCommand(
+        await _mediator.Send(new AddedAccountProviderEventAuditCommand(
             message.AccountProviderId,
             message.AccountId,
             message.ProviderUkprn,
@@ -26,7 +26,5 @@ public class AddedAccountProviderEventHandler : IHandleMessages<AddedAccountProv
             message.Added));
         
         _logger.LogInformation("Completed {TypeName} handler.", nameof(AddedAccountProviderEventHandler));
-
-        return result;
     }
 }

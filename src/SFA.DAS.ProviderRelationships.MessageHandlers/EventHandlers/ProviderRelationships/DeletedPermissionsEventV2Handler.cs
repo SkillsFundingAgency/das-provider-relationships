@@ -14,16 +14,12 @@ public class DeletedPermissionsEventV2Handler : IHandleMessages<DeletedPermissio
         _logger = logger;
     }
 
-    public Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
+    public async Task Handle(DeletedPermissionsEventV2 message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(DeletedPermissionsEventV2Handler));
-        
-        var command = new SendDeletedPermissionsNotificationCommand(message.Ukprn, message.AccountLegalEntityId);
 
-        var result = _mediator.Send(command);
+        await _mediator.Send(new SendDeletedPermissionsNotificationCommand(message.Ukprn, message.AccountLegalEntityId));
 
         _logger.LogInformation("Completed {TypeName} handler.", nameof(DeletedPermissionsEventV2Handler));
-
-        return result;
     }
 }

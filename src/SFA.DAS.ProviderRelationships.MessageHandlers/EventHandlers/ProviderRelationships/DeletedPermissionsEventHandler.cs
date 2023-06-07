@@ -15,11 +15,11 @@ public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissions
         _logger = logger;
     }
 
-    public Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
+    public async Task Handle(DeletedPermissionsEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(DeletedPermissionsEventHandler));
-        
-        var result =  Task.WhenAll(
+
+        await Task.WhenAll(
             _mediator.Send(new DeletedPermissionsEventAuditCommand(
                 message.AccountProviderLegalEntityId,
                 message.Ukprn,
@@ -29,11 +29,9 @@ public class DeletedPermissionsEventHandler : IHandleMessages<DeletedPermissions
                 message.Ukprn,
                 message.Deleted,
                 context.MessageId))
-            );
-        
+        );
+
         _logger.LogInformation("Completed {TypeName} handler.", nameof(DeletedPermissionsEventHandler));
-        
-        return result;
     }
 }
 #pragma warning restore 618

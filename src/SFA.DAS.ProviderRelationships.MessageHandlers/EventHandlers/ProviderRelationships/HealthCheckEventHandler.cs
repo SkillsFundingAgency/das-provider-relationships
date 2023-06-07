@@ -14,14 +14,12 @@ public class HealthCheckEventHandler : IHandleMessages<HealthCheckEvent>
         _logger = logger;
     }
 
-    public Task Handle(HealthCheckEvent message, IMessageHandlerContext context)
+    public async Task Handle(HealthCheckEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(HealthCheckEventHandler));
-        
-        var result = _mediator.Send(new ReceiveProviderRelationshipsHealthCheckEventCommand(message.Id));
-        
-        _logger.LogInformation("Completed {TypeName} handler.", nameof(HealthCheckEventHandler));
 
-        return result;
+        await _mediator.Send(new ReceiveProviderRelationshipsHealthCheckEventCommand(message.Id));
+
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(HealthCheckEventHandler));
     }
 }

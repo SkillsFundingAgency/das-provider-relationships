@@ -14,15 +14,13 @@ public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
         _logger = logger;
     }
 
-    public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
+    public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
     {
         _logger.LogInformation("Starting {TypeName} handler.", nameof(CreatedAccountEventHandler));
-        
-        var result = _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
-            message.Name, message.Created));
-        
-        _logger.LogInformation("Completed {TypeName} handler.", nameof(CreatedAccountEventHandler));
 
-        return result;
+        await _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
+            message.Name, message.Created));
+
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(CreatedAccountEventHandler));
     }
 }
