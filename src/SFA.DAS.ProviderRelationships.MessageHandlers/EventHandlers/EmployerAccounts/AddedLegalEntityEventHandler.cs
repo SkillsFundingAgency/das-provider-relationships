@@ -16,7 +16,7 @@ public class AddedLegalEntityEventHandler : IHandleMessages<AddedLegalEntityEven
 
     public async Task Handle(AddedLegalEntityEvent message, IMessageHandlerContext context)
     {
-        _logger.LogInformation("Starting {TypeName} handler.", nameof(AddedLegalEntityEventHandler));
+        _logger.LogInformation("Starting {TypeName} handler for accountId: '{AccountId}'.", nameof(AddedLegalEntityEventHandler), message.AccountId);
 
         await _mediator.Send(new AddAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId,
             message.AccountLegalEntityPublicHashedId, message.OrganisationName, message.Created));

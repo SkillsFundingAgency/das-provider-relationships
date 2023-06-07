@@ -16,7 +16,7 @@ public class RemovedLegalEntityEventHandler : IHandleMessages<RemovedLegalEntity
 
     public async Task Handle(RemovedLegalEntityEvent message, IMessageHandlerContext context)
     {
-        _logger.LogInformation("Starting {TypeName} handler.", nameof(RemovedLegalEntityEventHandler));
+        _logger.LogInformation("Starting {TypeName} handler for accountId: '{AccountId}'.", nameof(RemovedLegalEntityEventHandler), message.AccountId);
         
         await _mediator.Send(new RemoveAccountLegalEntityCommand(message.AccountId, message.AccountLegalEntityId, message.Created));
         

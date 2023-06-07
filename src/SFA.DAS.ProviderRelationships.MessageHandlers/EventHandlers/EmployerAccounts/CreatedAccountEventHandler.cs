@@ -16,7 +16,7 @@ public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
 
     public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
     {
-        _logger.LogInformation("Starting {TypeName} handler.", nameof(CreatedAccountEventHandler));
+        _logger.LogInformation("Starting {TypeName} handler for accountId: '{AccountId}'.", nameof(CreatedAccountEventHandler), message.AccountId);
 
         await _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
             message.Name, message.Created));
