@@ -43,14 +43,10 @@ public static class HostExtensions
     {
         return hostBuilder.ConfigureAppConfiguration((context, builder) =>
         {
-            //var configuration = builder.Build();
-
             builder.AddAzureTableStorage(options =>
                     {
                         options.ConfigurationKeys = new[]
                             { ConfigurationKeys.ProviderRelationships, ConfigurationKeys.EncodingConfig };
-                        // options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                        // options.EnvironmentName = configuration["EnvironmentName"];
                         options.PreFixConfigurationKeys = false;
                         options.ConfigurationKeysRawJsonResult = new[] { ConfigurationKeys.EncodingConfig };
                     }
@@ -58,8 +54,6 @@ public static class HostExtensions
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
-            ;
-            // builder.Build();
         });
     }
 
