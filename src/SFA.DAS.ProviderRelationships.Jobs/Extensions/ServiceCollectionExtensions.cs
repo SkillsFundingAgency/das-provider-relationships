@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
                     .UseMessageConventions()
                     .UseNewtonsoftJsonSerializer()
                     .UseSqlServerPersistence(() => DatabaseExtensions.GetSqlConnection(providerRelationshipsConfiguration.DatabaseConnectionString))
-                    .UseAzureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal);
+                    .ConfigureServiceBusTransport(() => providerRelationshipsConfiguration.ServiceBusConnectionString, isLocal);
 
                 if (!string.IsNullOrEmpty(providerRelationshipsConfiguration.NServiceBusLicense))
                 {
