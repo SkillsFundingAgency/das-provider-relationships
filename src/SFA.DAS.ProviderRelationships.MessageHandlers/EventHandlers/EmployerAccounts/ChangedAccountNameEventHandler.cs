@@ -6,9 +6,9 @@ namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAc
 public class ChangedAccountNameEventHandler : IHandleMessages<ChangedAccountNameEvent>
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<ChangedAccountNameEvent> _logger;
+    private readonly ILogger<ChangedAccountNameEventHandler> _logger;
 
-    public ChangedAccountNameEventHandler(IMediator mediator, ILogger<ChangedAccountNameEvent> logger)
+    public ChangedAccountNameEventHandler(IMediator mediator, ILogger<ChangedAccountNameEventHandler> logger)
     {
         _mediator = mediator;
         _logger = logger;

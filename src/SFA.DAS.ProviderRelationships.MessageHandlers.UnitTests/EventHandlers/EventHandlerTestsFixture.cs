@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NServiceBus;
 
@@ -38,7 +39,7 @@ public class EventHandlerTestsFixture<TEvent, TEventHandler> where TEventHandler
 
     private TEventHandler ConstructHandler()
     {
-        return (TEventHandler)Activator.CreateInstance(typeof(TEventHandler), Mediator.Object);
+        return (TEventHandler)Activator.CreateInstance(typeof(TEventHandler), Mediator.Object, Mock.Of<ILogger<TEventHandler>>());
     }
 
     public void VerifySend<TCommand>(Func<TCommand,TEvent,bool> verifyCommand) where TCommand : IRequest
