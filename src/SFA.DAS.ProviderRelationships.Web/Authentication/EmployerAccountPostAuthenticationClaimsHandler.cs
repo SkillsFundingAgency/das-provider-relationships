@@ -6,6 +6,7 @@ using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication;
 
@@ -57,8 +58,8 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 
         // TODO: This needs removing and was only added back into this area to facilitate the completion of the NET6 upgrade work.
         // If provider-relationships is going to keep a local cache of users then it needs a better way to keep it in sync
-        var mediator  = tokenValidatedContext.HttpContext.RequestServices?.GetService<IMediator>();
-        await SaveUser(mediator, result, email);
+        var unitOfWorkScope = tokenValidatedContext.HttpContext.RequestServices?.GetService<IUnitOfWorkScope>();
+        await SaveUser(unitOfWorkScope, result, email);
 
         if (result.IsSuspended)
         {
@@ -83,21 +84,25 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
         return claims;
     }
 
-    private static async Task SaveUser(ISender mediator, EmployerUserAccounts account, string email)
+    private static async Task SaveUser(IUnitOfWorkScope unitOfWorkScope, EmployerUserAccounts account, string email)
     {
         // Just for unit testing purposes ...
-        if (mediator == null)
+        if (unitOfWorkScope == null)
         {
             return;
         }
-        
+
         var command = new CreateOrUpdateUserCommand(
             Guid.Parse(account.EmployerUserId),
             email,
             account.FirstName,
             account.LastName
         );
-        
-        await mediator.Send(command);
+
+        await unitOfWorkScope.RunAsync(c =>
+        {
+            var mediator = c.GetService<IMediator>();
+            return mediator.Send(command);
+        });
     }
 }
