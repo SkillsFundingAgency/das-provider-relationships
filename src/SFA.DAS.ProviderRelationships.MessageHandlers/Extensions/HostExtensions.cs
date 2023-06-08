@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -68,7 +69,7 @@ public static class HostExtensions
                 cfg.RegisterServicesFromAssemblies(typeof(AddAccountLegalEntityCommand).Assembly,
                     typeof(Program).Assembly));
             services.AddApplicationServices();
-            services.AddDatabaseRegistration(context.Configuration["DatabaseConnectionString"]);
+            services.AddDatabaseRegistration(context.Configuration["DatabaseConnectionString"], ServiceLifetime.Scoped);
             services.AddUnitOfWork();
             services.AddTransient<IRetryStrategy>(_ => new ExponentialBackoffRetryAttribute(5, "00:00:10", "00:00:20"));
             services.BuildServiceProvider();
