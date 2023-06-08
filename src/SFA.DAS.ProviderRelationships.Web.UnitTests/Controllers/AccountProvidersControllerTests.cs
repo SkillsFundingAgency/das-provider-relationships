@@ -354,7 +354,8 @@ public class AccountProvidersControllerTestsFixture
             Mapper,
             EmployerUrls.Object,
             EmployerAccountAuthorisationHandler.Object,
-            EncodingService.Object);
+            EncodingService.Object,
+            Mock.Of<ILogger<AccountProvidersController>>());
 
         AccountProvidersController.ControllerContext = new ControllerContext() {
             HttpContext = new DefaultHttpContext { User = user }

@@ -29,19 +29,22 @@ public class AccountProvidersController : Controller
     private readonly IEmployerUrls _employerUrls;
     private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
     private readonly IEncodingService _encodingService;
+    private readonly ILogger<AccountProvidersController> _logger;
 
     public AccountProvidersController(
         IMediator mediator,
         IMapper mapper,
         IEmployerUrls employerUrls,
         IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler,
-        IEncodingService encodingService)
+        IEncodingService encodingService,
+        ILogger<AccountProvidersController> logger)
     {
         _mediator = mediator;
         _mapper = mapper;
         _employerUrls = employerUrls;
         _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         _encodingService = encodingService;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -112,9 +115,13 @@ public class AccountProvidersController : Controller
     [Route(RouteNames.Add)]
     public async Task<IActionResult> Add(AddAccountProviderViewModel model)
     {
+        _logger.LogInformation("Starting controller action 'Add' in {TypeName}.", nameof(AccountProvidersController));
+        
         model.UserRef = User.GetUserRef();
         model.AccountId = _encodingService.Decode(model.AccountHashedId, EncodingType.AccountId);
-
+        
+        _logger.LogInformation("UserRef: '{UserRef}', AccountHashedId: '{AccountHashedId}' AccountId: '{AccountId}', UkPrn: '{UkPrn}'.", model.UserRef, model.AccountHashedId, model.AccountId, model.Ukprn);
+        
         switch (model.Choice)
         {
             case "Confirm":
