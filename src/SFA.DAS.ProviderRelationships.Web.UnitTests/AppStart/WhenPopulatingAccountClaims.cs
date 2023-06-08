@@ -126,9 +126,7 @@ public class WhenPopulatingAccountClaims
 
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(identity));
 
-        var httpContext = new DefaultHttpContext();
-
-        return new TokenValidatedContext(httpContext,
+        return new TokenValidatedContext(new DefaultHttpContext(),
             new AuthenticationScheme(",", "", typeof(TestAuthHandler)),
             new OpenIdConnectOptions(), Mock.Of<ClaimsPrincipal>(), new AuthenticationProperties()) {
             Principal = claimsPrincipal
