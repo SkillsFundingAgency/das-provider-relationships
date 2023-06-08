@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Persistence;
 using SFA.DAS.NServiceBus.SqlServer.Data;
