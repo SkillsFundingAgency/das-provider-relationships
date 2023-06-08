@@ -29,5 +29,7 @@ public class CreateOrUpdateUserCommandHandler : IRequestHandler<CreateOrUpdateUs
         {
             user.Update(request.Email, request.FirstName, request.LastName);
         }
+
+        await _db.Value.SaveChangesAsync(cancellationToken);
     }
 }

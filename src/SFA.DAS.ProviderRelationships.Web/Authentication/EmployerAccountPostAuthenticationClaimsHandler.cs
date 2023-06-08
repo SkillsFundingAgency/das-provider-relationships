@@ -13,14 +13,11 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 {
     private readonly ProviderRelationshipsConfiguration _employerFinanceConfiguration;
     private readonly IUserAccountService _userAccountService;
-    private readonly IMediator _mediator;
 
     public EmployerAccountPostAuthenticationClaimsHandler(IUserAccountService userAccountService,
-        IOptions<ProviderRelationshipsConfiguration> providerRelationshipsConfiguration,
-        IMediator mediator)
+        IOptions<ProviderRelationshipsConfiguration> providerRelationshipsConfiguration)
     {
         _userAccountService = userAccountService;
-        _mediator = mediator;
         _employerFinanceConfiguration = providerRelationshipsConfiguration.Value;
     }
 
@@ -60,7 +57,8 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 
         // TODO: This needs removing and was only added back into this area to facilitate the completion of the NET6 upgrade work.
         // If provider-relationships is going to keep a local cache of users then it needs a better way to keep it in sync
-        await SaveUser(result);
+        var mediator  = tokenValidatedContext.HttpContext.RequestServices?.GetService<IMediator>();
+        await SaveUser(mediator, result, email);
 
         if (result.IsSuspended)
         {
@@ -85,15 +83,21 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
         return claims;
     }
 
-    private async Task SaveUser(EmployerUserAccounts account)
+    private static async Task SaveUser(ISender mediator, EmployerUserAccounts account, string email)
     {
+        // Just for unit testing purposes ...
+        if (mediator == null)
+        {
+            return;
+        }
+        
         var command = new CreateOrUpdateUserCommand(
             Guid.Parse(account.EmployerUserId),
-            account.Email,
+            email,
             account.FirstName,
             account.LastName
         );
-
-        await _mediator.Send(command);
+        
+        await mediator.Send(command);
     }
 }
