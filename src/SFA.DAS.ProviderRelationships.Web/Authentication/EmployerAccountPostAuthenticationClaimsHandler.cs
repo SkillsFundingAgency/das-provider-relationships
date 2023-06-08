@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SFA.DAS.GovUK.Auth.Services;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
 
 namespace SFA.DAS.ProviderRelationships.Web.Authentication;
@@ -52,6 +55,10 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 
         var result = await _userAccountService.GetUserAccounts(userId, email);
 
+        // TODO: This needs removing and was only added back into this area to facilitate the completion of the NET6 upgrade work.
+        // If provider-relationships is going to keep a local cache of users then it needs a better way to keep it in sync
+        await SaveUser(tokenValidatedContext.HttpContext.RequestServices, result);
+
         if (result.IsSuspended)
         {
             claims.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
@@ -73,5 +80,16 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
             $"{result.FirstName} {result.LastName}"));
 
         return claims;
+    }
+
+    private static async Task SaveUser(IServiceProvider serviceProvider, EmployerUserAccounts account)
+    {
+        var mediator = serviceProvider?.GetService<IMediator>();
+
+        if (mediator != null)
+        {
+            var command = new CreateOrUpdateUserCommand(Guid.Parse(account.EmployerUserId), account.Email, account.FirstName, account.LastName);
+            await mediator.Send(command);
+        }
     }
 }

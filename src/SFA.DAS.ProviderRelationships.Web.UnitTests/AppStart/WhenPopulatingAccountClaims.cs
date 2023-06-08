@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.Testing.AutoFixture;
+using SFA.DAS.Testing.Builders;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.AppStart;
 
@@ -22,6 +23,7 @@ public class WhenPopulatingAccountClaims
         [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> configuration,
         EmployerAccountPostAuthenticationClaimsHandler handler)
     {
+        accountData.EmployerUserId = Guid.NewGuid().ToString();
         accountData.IsSuspended = false;
         configuration.Object.Value.UseGovUkSignIn = true;
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, idamsIdentifier, emailAddress);
@@ -54,6 +56,8 @@ public class WhenPopulatingAccountClaims
         [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> configuration,
         EmployerAccountPostAuthenticationClaimsHandler handler)
     {
+        accountData.EmployerUserId = Guid.NewGuid().ToString();
+
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, idamsIdentifier, emailAddress);
         accountService.Setup(x => x.GetUserAccounts(idamsIdentifier, emailAddress)).ReturnsAsync(accountData);
         configuration.Object.Value.UseGovUkSignIn = false;
@@ -69,7 +73,8 @@ public class WhenPopulatingAccountClaims
         JsonConvert.SerializeObject(accountData.EmployerAccounts.ToDictionary(k => k.AccountId)).Should()
             .Be(actualClaimValue);
 
-        actual.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should().Be(idamsIdentifier);
+        actual.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should()
+            .Be(idamsIdentifier);
         actual.First(c => c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier)).Value.Should()
             .Be(emailAddress);
         actual.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserDisplayNameClaimTypeIdentifier)).Should()
@@ -86,6 +91,7 @@ public class WhenPopulatingAccountClaims
         [Frozen] Mock<IOptions<ProviderRelationshipsConfiguration>> configuration,
         EmployerAccountPostAuthenticationClaimsHandler handler)
     {
+        accountData.EmployerUserId = Guid.NewGuid().ToString();
         accountData.IsSuspended = true;
         configuration.Object.Value.UseGovUkSignIn = true;
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, idamsIdentifier, emailAddress);
@@ -119,7 +125,10 @@ public class WhenPopulatingAccountClaims
         });
 
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(identity));
-        return new TokenValidatedContext(new DefaultHttpContext(),
+
+        var httpContext = new DefaultHttpContext();
+
+        return new TokenValidatedContext(httpContext,
             new AuthenticationScheme(",", "", typeof(TestAuthHandler)),
             new OpenIdConnectOptions(), Mock.Of<ClaimsPrincipal>(), new AuthenticationProperties()) {
             Principal = claimsPrincipal
