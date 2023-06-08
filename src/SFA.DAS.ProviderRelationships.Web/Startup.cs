@@ -19,7 +19,6 @@ using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
-using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
@@ -57,11 +56,11 @@ namespace SFA.DAS.ProviderRelationships.Web
             var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
 
             services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
-            services.AddEntityFramework(providerRelationshipsConfiguration);
 
-            services.AddNServiceBusClientUnitOfWork()
-                    .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
-                    .AddUnitOfWork();
+            services
+                .AddEntityFramework(providerRelationshipsConfiguration)
+                .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
+                .AddNServiceBusClientUnitOfWork();
 
             services.AddAuthenticationServices();
 
@@ -83,8 +82,6 @@ namespace SFA.DAS.ProviderRelationships.Web
                 services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
                 services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["ResourceEnvironmentName"]);
             }
-
-            
 
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
