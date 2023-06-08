@@ -19,7 +19,7 @@ public class WhenHandlingEmployerViewerAuthorizationHandler
         var context = new AuthorizationHandlerContext(new [] {requirement}, new ClaimsPrincipal(), null);
         var httpContext = new DefaultHttpContext(new FeatureCollection());
         httpContextAccessor.Setup(x => x.HttpContext).Returns(httpContext);
-        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer)).Returns(true);
+        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer)).ReturnsAsync(true);
         
         //Act
         await authorizationHandler.HandleAsync(context);
@@ -39,7 +39,7 @@ public class WhenHandlingEmployerViewerAuthorizationHandler
         var context = new AuthorizationHandlerContext(new [] {requirement}, new ClaimsPrincipal(), null);
         var httpContext = new DefaultHttpContext(new FeatureCollection());
         httpContextAccessor.Setup(x => x.HttpContext).Returns(httpContext);
-        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer)).Returns(false);
+        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer)).ReturnsAsync(false);
 
         //Act
         await authorizationHandler.HandleAsync(context);

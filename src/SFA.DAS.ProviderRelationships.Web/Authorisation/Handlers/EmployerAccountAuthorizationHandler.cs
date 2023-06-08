@@ -11,7 +11,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 public interface IEmployerAccountAuthorisationHandler
 {
     Task<bool> IsEmployerAuthorised(AuthorizationHandlerContext context, bool allowAllUserRoles);
-    bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired);
+    Task<bool> CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired);
 }
 
 public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisationHandler
@@ -57,47 +57,13 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             return false;
         }
 
-        EmployerUserAccountItem employerIdentifier = null;
+        EmployerUserAccountItem employerIdentifier = await GetAccountIdentifier(employerAccounts, context.User, accountIdFromUrl);
 
-        if (employerAccounts != null)
+        if (employerIdentifier == null)
         {
-            employerIdentifier = employerAccounts.ContainsKey(accountIdFromUrl)
-                ? employerAccounts[accountIdFromUrl] : null;
+            return false;
         }
-
-        if (employerAccounts == null || !employerAccounts.ContainsKey(accountIdFromUrl))
-        {
-            var requiredIdClaim = _configuration.UseGovUkSignIn
-                ? ClaimTypes.NameIdentifier : EmployerClaims.IdamsUserIdClaimTypeIdentifier;
-
-            if (!context.User.HasClaim(c => c.Type.Equals(requiredIdClaim)))
-            {
-                return false;
-            }
-
-            var userClaim = context.User.Claims.First(c => c.Type.Equals(requiredIdClaim));
-
-            var email = context.User.Claims.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier))?.Value;
-
-            var userId = userClaim.Value;
-
-            var result = await _accountsService.GetUserAccounts(userId, email);
-
-            var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
-            var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
-
-            var updatedEmployerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(associatedAccountsClaim.Value);
-
-            userClaim.Subject.AddClaim(associatedAccountsClaim);
-
-            if (!updatedEmployerAccounts.ContainsKey(accountIdFromUrl))
-            {
-                return false;
-            }
-
-            employerIdentifier = updatedEmployerAccounts[accountIdFromUrl];
-        }
-
+        
         if (!_httpContextAccessor.HttpContext.Items.ContainsKey("Employer"))
         {
             _httpContextAccessor.HttpContext.Items.Add("Employer", employerAccounts.GetValueOrDefault(accountIdFromUrl));
@@ -111,7 +77,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
         return true;
     }
 
-    public bool CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired)
+    public async Task<bool> CheckUserAccountAccess(ClaimsPrincipal user, EmployerUserRole userRoleRequired)
     {
         if (!_httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey(RouteValueKeys.AccountHashedId))
         {
@@ -136,8 +102,7 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             return false;
         }
 
-        var employerIdentifier = employerAccounts.ContainsKey(accountIdFromUrl)
-            ? employerAccounts[accountIdFromUrl] : null;
+        var employerIdentifier = await GetAccountIdentifier(employerAccounts, user, accountIdFromUrl);
 
         if (employerIdentifier == null)
         {
@@ -168,5 +133,44 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
         }
 
         return allowAllUserRoles || userRole == EmployerUserRole.Owner;
+    }
+
+    private async Task<EmployerUserAccountItem> GetAccountIdentifier(Dictionary<string, EmployerUserAccountItem> employerAccounts, ClaimsPrincipal user, string accountId )
+    {
+        if (employerAccounts == null || !employerAccounts.ContainsKey(accountId))
+        {
+            var requiredIdClaim = _configuration.UseGovUkSignIn
+                ? ClaimTypes.NameIdentifier : EmployerClaims.IdamsUserIdClaimTypeIdentifier;
+
+            if (!user.HasClaim(c => c.Type.Equals(requiredIdClaim)))
+            {
+                return null;
+            }
+
+            var userClaim = user.Claims.First(c => c.Type.Equals(requiredIdClaim));
+
+            var email = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerClaims.IdamsUserEmailClaimTypeIdentifier))?.Value;
+
+            var userId = userClaim.Value;
+
+            var result = await _accountsService.GetUserAccounts(userId, email);
+
+            var accountsAsJson = JsonConvert.SerializeObject(result.EmployerAccounts.ToDictionary(k => k.AccountId));
+            var associatedAccountsClaim = new Claim(EmployerClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
+
+            var updatedEmployerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(associatedAccountsClaim.Value);
+
+            userClaim.Subject.AddClaim(associatedAccountsClaim);
+
+            if (!updatedEmployerAccounts.ContainsKey(accountId))
+            {
+                return null;
+            }
+
+            return updatedEmployerAccounts[accountId];
+        }
+        
+        return employerAccounts.ContainsKey(accountId)
+            ? employerAccounts[accountId] : null;
     }
 }

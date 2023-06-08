@@ -12,16 +12,14 @@ namespace SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers
             _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerViewerRoleRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerViewerRoleRequirement requirement)
         {
-            if (!_employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer))
+            if (!await _employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Viewer))
             {
-                return Task.CompletedTask;
+                return;
             }
 
             context.Succeed(requirement);
-
-            return Task.CompletedTask;
         }
     }
 }

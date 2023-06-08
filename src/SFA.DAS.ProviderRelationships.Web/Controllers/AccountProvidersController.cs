@@ -209,7 +209,7 @@ public class AccountProvidersController : Controller
         var result = await _mediator.Send(query);
         var model = _mapper.Map<GetAccountProviderViewModel>(result);
 
-        model.IsUpdatePermissionsOperationAuthorized = _employerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
+        model.IsUpdatePermissionsOperationAuthorized = await _employerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
 
         if (model?.AccountProvider.AccountLegalEntities.Count == 1)
         {

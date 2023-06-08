@@ -12,14 +12,12 @@ public class EmployerOwnerAuthorizationHandler : AuthorizationHandler<EmployerOw
         _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
     }
 
-    protected override  Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerOwnerRoleRequirement requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerOwnerRoleRequirement requirement)
     {
-        if (! _employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Owner))
+        if (!await  _employerAccountAuthorizationHandler.CheckUserAccountAccess(context.User, EmployerUserRole.Owner))
         {
-            return Task.CompletedTask;
+            return;
         }
         context.Succeed(requirement);
-
-        return Task.CompletedTask;
     }
 }
