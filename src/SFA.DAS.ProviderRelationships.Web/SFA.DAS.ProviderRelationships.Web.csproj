@@ -59,4 +59,10 @@
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Content\lib\govuk-frontend\dist\assets\images\favicon.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
