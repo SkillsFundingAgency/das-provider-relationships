@@ -60,13 +60,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Content\lib\govuk-frontend\dist\assets\images\favicon.ico" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      </Content>
+      <Folder Include="wwwroot\Content" />
     </ItemGroup>
 
 </Project>
