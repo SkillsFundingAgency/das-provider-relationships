@@ -60,9 +60,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Content\lib\govuk-frontend\dist\assets\images\favicon.ico">
+      <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      </Content>
     </ItemGroup>
 
 </Project>
