@@ -64,7 +64,8 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="Content\lib\govuk-frontend\dist\assets\images\favicon.ico">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       </Content>
     </ItemGroup>
 
