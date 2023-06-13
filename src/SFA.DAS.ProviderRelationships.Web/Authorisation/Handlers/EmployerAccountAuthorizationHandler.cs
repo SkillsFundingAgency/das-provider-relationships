@@ -84,12 +84,15 @@ public class EmployerAccountAuthorisationHandler : IEmployerAccountAuthorisation
             return false;
         }
 
-        Dictionary<string, EmployerUserAccountItem> employerAccounts;
+        Dictionary<string, EmployerUserAccountItem> employerAccounts = null;
         var accountIdFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues[RouteValueKeys.AccountHashedId].ToString().ToUpper();
         var employerAccountClaim = user.FindFirst(c => c.Type.Equals(EmployerClaims.AccountsClaimsTypeIdentifier));
         try
         {
-            employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(employerAccountClaim.Value);
+            if (employerAccountClaim != null)
+            {
+                employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerUserAccountItem>>(employerAccountClaim.Value);    
+            }
         }
         catch (JsonSerializationException e)
         {
