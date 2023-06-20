@@ -98,7 +98,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 f => f.CreateSessionFromInvitation(),
                 f => f.PostUpdate(true, null, State.No),
                 (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
-                a.Url.Equals($"https://localhost/accounts/{f.AccountHashedId}/teams/addedprovider/Foo+Bar")));
+                a.Url.Equals($"https://localhost/accounts/{f.AccountHashedId}/teams/addedprovider/Foo%20Bar")));
         }
     }
 

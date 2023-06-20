@@ -94,7 +94,7 @@ public class AccountProviderLegalEntitiesController : Controller
             if (HttpContext.Session.GetString("Invitation").ToNullable<bool>() == true)
             {
                 var provider = await _mediator.Send(new GetAccountProviderQuery(accountId, model.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/addedprovider/{WebUtility.UrlEncode(provider.AccountProvider.ProviderName)}");
+                return Redirect($"{_employerUrls.Account()}/addedprovider/{Uri.EscapeDataString(provider.AccountProvider.ProviderName)}");
             }
 
             TempData["PermissionsChanged"] = true;
