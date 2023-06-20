@@ -288,7 +288,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         {
             fixture.EmployerAccountAuthorisationHandler.Setup(x =>
                 x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(),
-                    EmployerUserRole.Owner)).Returns(expected);
+                    EmployerUserRole.Owner)).ReturnsAsync(expected);
 
             return fixture.Get();
         }, (fixture, result) =>

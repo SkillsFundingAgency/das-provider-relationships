@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Encoding;
+﻿using System;
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity;
@@ -94,7 +95,7 @@ public class AccountProviderLegalEntitiesController : Controller
             if (HttpContext.Session.GetString("Invitation").ToNullable<bool>() == true)
             {
                 var provider = await _mediator.Send(new GetAccountProviderQuery(accountId, model.AccountProviderId.Value));
-                return Redirect($"{_employerUrls.Account()}/addedprovider/{Uri.EscapeDataString(provider.AccountProvider.ProviderName)}");
+                return Redirect($"{_employerUrls.Account(model.AccountHashedId)}/addedprovider/{Uri.EscapeDataString(provider.AccountProvider.ProviderName)}");
             }
 
             TempData["PermissionsChanged"] = true;

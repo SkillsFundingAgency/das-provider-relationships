@@ -2,7 +2,7 @@
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AccountProvidersViewModel
 
 @{
-    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
+    var isOwner = await EmployerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
 }
 
 @foreach (var accountProvider in Model.AccountProviders)

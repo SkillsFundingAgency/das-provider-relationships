@@ -19,7 +19,7 @@ public class WhenHandlingEmployerOwnerRoleAuthorizationHandler
         var context = new AuthorizationHandlerContext(new[] { ownerRequirement }, new ClaimsPrincipal(), null);
         var httpContext = new DefaultHttpContext(new FeatureCollection());
         httpContextAccessor.Setup(x => x.HttpContext).Returns(httpContext);
-        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Owner)).Returns(true);
+        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Owner)).ReturnsAsync(true);
 
         //Act
         await authorizationHandler.HandleAsync(context);
@@ -39,7 +39,7 @@ public class WhenHandlingEmployerOwnerRoleAuthorizationHandler
         var context = new AuthorizationHandlerContext(new[] { ownerRequirement }, new ClaimsPrincipal(), null);
         var httpContext = new DefaultHttpContext(new FeatureCollection());
         httpContextAccessor.Setup(x => x.HttpContext).Returns(httpContext);
-        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Owner)).Returns(false);
+        handler.Setup(x => x.CheckUserAccountAccess(context.User, EmployerUserRole.Owner)).ReturnsAsync(false);
 
         //Act
         await authorizationHandler.HandleAsync(context);

@@ -2,7 +2,7 @@
 @using SFA.DAS.ProviderRelationships.Authorization
 
 @{
-    var isOwner = EmployerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
+    var isOwner = await EmployerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
 }
 
 <table class="govuk-table">

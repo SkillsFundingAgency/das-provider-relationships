@@ -12,14 +12,13 @@
 <!--        <PackageReference Include="Azure.Identity" Version="1.8.2" />-->
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.14.0" />
-        <PackageReference Include="NLog" Version="5.1.4" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
         <PackageReference Include="SFA.DAS.Api.Common" Version="1.0.28" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.15" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.16" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.18" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.16" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.9" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.16" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
@@ -27,7 +26,7 @@
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
         <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.44" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
-        <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.45-prerelease-14" />
+        <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.49" />
 
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.UnitOfWork.Mvc" Version="9.0.28" />
@@ -57,6 +56,10 @@
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Api.Client\SFA.DAS.ProviderRelationships.Api.Client.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Types\SFA.DAS.ProviderRelationships.Types.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\Content" />
     </ItemGroup>
 
 </Project>
