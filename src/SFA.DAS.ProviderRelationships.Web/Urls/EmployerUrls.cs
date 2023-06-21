@@ -1,4 +1,3 @@
-using System;
 using SFA.DAS.ProviderRelationships.Configuration;
 
 namespace SFA.DAS.ProviderRelationships.Web.Urls
@@ -18,21 +17,13 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
             _accountHashedId = accountHashedId;
         }
         
-        #region Accounts
-        
         public string Account(string accountHashedId = null) => Accounts("teams", accountHashedId);
 
         private string Accounts(string path, string accountHashedId) => AccountAction(_employerUrlsConfiguration.EmployerAccountsBaseUrl, path, accountHashedId);
         
-        #endregion Accounts
-
-        #region Portal
-
         public string Homepage() => Portal(null);
 
         private string Portal(string path) => Action(_employerUrlsConfiguration.EmployerPortalBaseUrl, path);
-
-        #endregion Portal
         
         private string AccountAction(string baseUrl, string path, string accountHashedId)
         {
@@ -49,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Urls
             return Action(baseUrl, $"accounts/{accountHashedId}/{path}");
         }
 
-        private string Action(string baseUrl, string path)
+        private static string Action(string baseUrl, string path)
         {
             if (string.IsNullOrWhiteSpace(baseUrl))
             {

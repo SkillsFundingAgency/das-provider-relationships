@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using FluentAssertions;
-using MoreLinq;
-using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
@@ -13,19 +9,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Extensions
     [Parallelizable]
     public class PermissionOperationExtensionsTests : FluentTest<object>
     {
-        [Test]
-        public void GetDescription_WhenGettingDescription_ThenShouldReturnDescription()
-        {
-            Run(f => Permission.CreateCohort.GetDescription(), (f, r) => r.Should().Be("Add apprentice records"));
-            Run(f => Permission.Recruitment.GetDescription(), (f, r) => r.Should().Be("Recruit apprentices"));
-        }
 
         [TestCase(Permission.CreateCohort, State.No, "Do not allow")]
         [TestCase(Permission.CreateCohort, State.Yes, "Allow")]
         [TestCase(Permission.CreateCohort, State.Conditional, "")]
         [TestCase(Permission.Recruitment, State.No, "Do not allow")]
         [TestCase(Permission.Recruitment, State.Yes, "Allow")]
-        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before they’re advertised")]
+        [TestCase(Permission.Recruitment, State.Conditional, "Allow, but I want to review adverts before they're advertised")]
 
         public void GetStateDescription_WhenGettingStateDescription_ThenShouldReturnDescription(Permission permission, State state, string expected)
         {

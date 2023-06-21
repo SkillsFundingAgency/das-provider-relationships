@@ -21,17 +21,22 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
-            return RunAsync(f => f.Handle(), f =>
-            {
-                f.AccountProviderLegalEntity.Operations.Should().BeEmpty();
-                f.AccountProviderLegalEntity.Deleted.Should().Be(f.Command.Deleted);
-            });
+            return TestAsync(
+                f => f.Handle(),
+                f =>
+                {
+                    f.AccountProviderLegalEntity.Operations.Should().BeEmpty();
+                    f.AccountProviderLegalEntity.Deleted.Should().Be(f.Command.Deleted);
+                });
         }
         
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntityDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            return TestExceptionAsync(
+                f => f.SetAccountProviderLegalEntityDeletedBeforeCommand(), 
+                f => f.Handle(), 
+                (f, r) => r.Should().ThrowAsync<InvalidOperationException>());
         }
     }
 
@@ -39,7 +44,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
     {
         public DeletePermissionsCommand Command { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
-        public IRequestHandler<DeletePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<DeletePermissionsCommand> Handler { get; set; }
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository { get; set; }
         public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public DateTime Now { get; set; }

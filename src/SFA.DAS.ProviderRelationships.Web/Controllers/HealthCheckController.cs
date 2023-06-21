@@ -1,17 +1,11 @@
-﻿using System.Threading.Tasks;
-using System.Web.Mvc;
-using AutoMapper;
-using MediatR;
-using SFA.DAS.Authorization.Mvc;
-using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
+﻿using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers
 {
-    [DasAuthorize]
-    [RoutePrefix("healthcheck")]
+    [Route("healthcheck")]
     public class HealthCheckController : Controller
     {
         private readonly IMediator _mediator;
@@ -23,8 +17,9 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
             _mapper = mapper;
         }
 
-        [Route]
-        public async Task<ActionResult> Index()
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> Index()
         {
             var query = new GetHealthCheckQuery();
             var response = await _mediator.Send(query);
@@ -34,9 +29,8 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route]
-        public async Task<ActionResult> Index(HealthCheckRouteValues routeValues)
+        [Route("")]
+        public async Task<IActionResult> Index(HealthCheckRouteValues routeValues)
         {
             var command = new RunHealthCheckCommand(routeValues.UserRef.Value);
             

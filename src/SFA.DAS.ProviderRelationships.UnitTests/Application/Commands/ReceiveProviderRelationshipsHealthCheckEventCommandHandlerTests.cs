@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.ReceiveProviderRelationshipsHealthCheckEvent;
 using SFA.DAS.ProviderRelationships.Data;
@@ -22,7 +21,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingReceiveProviderRelationshipsHealthCheckEventCommand_ThenShouldUpdateHealthCheck()
         {
-            return RunAsync(f => f.Handle(), f => f.HealthChecks[1].ReceivedProviderRelationshipsEvent.Should().NotBeNull());
+            return TestAsync(f => f.Handle(), f => f.HealthChecks[1].ReceivedProviderRelationshipsEvent.Should().NotBeNull());
         }
     }
 
@@ -31,7 +30,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public List<HealthCheck> HealthChecks { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public ReceiveProviderRelationshipsHealthCheckEventCommand Command { get; set; }
-        public IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand, Unit> Handler { get; set; }
+        public IRequestHandler<ReceiveProviderRelationshipsHealthCheckEventCommand> Handler { get; set; }
 
         public ReceiveProviderRelationshipsHealthCheckEventCommandHandlerTestsFixture()
         {
@@ -42,7 +41,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             };
             
             Command = new ReceiveProviderRelationshipsHealthCheckEventCommand(HealthChecks[1].Id);
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             
             Db.HealthChecks.AddRange(HealthChecks);
             Db.SaveChanges();

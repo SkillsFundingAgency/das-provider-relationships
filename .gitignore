@@ -339,3 +339,4 @@ src/Tools/**/*.*
 !src/DasIDPCert.pfx
 !src/localhost.pfx
 *.DotSettings
+.DS_Store

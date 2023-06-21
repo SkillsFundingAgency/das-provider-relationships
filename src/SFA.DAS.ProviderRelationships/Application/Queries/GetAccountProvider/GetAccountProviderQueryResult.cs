@@ -5,12 +5,10 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider
     public class GetAccountProviderQueryResult
     {
         public AccountProviderDto AccountProvider { get; }
-        public bool IsUpdatePermissionsOperationAuthorized { get; }
 
-        public GetAccountProviderQueryResult(AccountProviderDto accountProvider, bool isOwner)
+        public GetAccountProviderQueryResult(AccountProviderDto accountProvider)
         {
             AccountProvider = accountProvider;
-            IsUpdatePermissionsOperationAuthorized = isOwner;
         }
     }
 }

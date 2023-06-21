@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -10,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.PAS.Account.Api.Client;
+using SFA.DAS.PAS.Account.Api.ClientV2;
 using SFA.DAS.PAS.Account.Api.Types;
 using SFA.DAS.ProviderRelationships.Application.Commands.SendUpdatedPermissionsNotification;
 using SFA.DAS.ProviderRelationships.Data;
@@ -30,7 +27,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotify() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
@@ -41,12 +38,15 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 },
                 assert: f =>
                 {
-                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(f.Provider.Ukprn, It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedProviderPermissionsNotification")));
+                    f.Client.Verify(c => c.SendEmailToAllProviderRecipients(
+                        f.Provider.Ukprn, 
+                        It.Is<ProviderEmailRequest>(r => r.TemplateId == "UpdatedProviderPermissionsNotification"), 
+                        It.IsAny<CancellationToken>()));
                 });
 
         [Test]
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithOrganisationAndProviderName() =>
-            RunAsync(
+            TestAsync(
                 arrange: f =>
                 {
                     f.Command.GrantedOperations = new HashSet<Operation> { Operation.CreateCohort, Operation.Recruitment };
@@ -62,7 +62,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                     r.Tokens["organisation_name"] == f.AccountLegalEntity.Name &&
                     r.Tokens["training_provider_name"] == f.Provider.Name &&
                     r.Tokens["manage_recruitment_emails_url"] == f.ManageNotificationsUrl
-                    )));
+                    ), It.IsAny<CancellationToken>()));
                 });
 
         [Test]
@@ -74,7 +74,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public Task Handle_WhenHandlingSendUpdatedPermissionsNotificationCommand_ThenShouldCallClientToNotifyWithPermissions(
             Operation[] operations,
             string expectedSetPermissionPart2) =>
-           RunAsync(
+           TestAsync(
                arrange: f =>
                {
                    f.Command.PreviousOperations = new HashSet<Operation> { };
@@ -90,14 +90,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                    Assert.AreEqual(f.AccountLegalEntity.Name, f.ResultEmailRequest.Tokens["organisation_name"]);
                    Assert.AreEqual(f.Provider.Name, f.ResultEmailRequest.Tokens["training_provider_name"]);
                    Assert.AreEqual("set your apprenticeship service permissions to:", f.ResultEmailRequest.Tokens["part1_text"]);
-                   Assert.AreEqual(expectedSetPermissionPart2, f.ResultEmailRequest.Tokens["part2_text"]);
+                   Assert.AreEqual(NormaliseNewLines(expectedSetPermissionPart2), f.ResultEmailRequest.Tokens["part2_text"]);
                });
+        /// <summary>
+        /// Normalising newlines to environment as pipelines running on Linux will fail tests as Linux newlines are \n whereas windows is \r\n.
+        /// </summary>
+        private static string NormaliseNewLines(string value)
+        {
+            return value.Replace("\r\n", Environment.NewLine);
+        }
     }
 
     public class SendUpdatedPermissionsNotificationCommandHandlerTestsFixture
     {
         public SendUpdatedPermissionsNotificationCommand Command { get; set; }
-        public IRequestHandler<SendUpdatedPermissionsNotificationCommand, Unit> Handler { get; set; }
+        public IRequestHandler<SendUpdatedPermissionsNotificationCommand> Handler { get; set; }
         public Mock<IPasAccountApiClient> Client { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public long Ukprn { get; set; }
@@ -131,8 +138,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 new HashSet<Operation>());
 
             Client
-                .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>()))
-                .Callback((long ukprn, ProviderEmailRequest provEmail) =>
+                .Setup(c => c.SendEmailToAllProviderRecipients(Provider.Ukprn, It.IsAny<ProviderEmailRequest>(), It.IsAny<CancellationToken>()))
+                .Callback((long ukprn, ProviderEmailRequest provEmail, CancellationToken token) =>
                 {
                     ResultEmailRequest = provEmail;
                 })
@@ -182,10 +189,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             var optionsBuilder =
               new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
-                  .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                  .ConfigureWarnings(warnings =>
-                      warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)
-                  );
+                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
             Db = new ProviderRelationshipsDbContext(optionsBuilder.Options);
         }
 

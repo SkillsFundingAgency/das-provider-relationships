@@ -1,64 +1,56 @@
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 
-namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs
-{
-    public class CreateReadStoreDatabaseJob
-    {
-        private readonly IDocumentClient _documentClient;
+namespace SFA.DAS.ProviderRelationships.Jobs.StartupJobs;
 
-        public CreateReadStoreDatabaseJob(IDocumentClient documentClient)
-        {
-            _documentClient = documentClient;
-        }
+public class CreateReadStoreDatabaseJob
+{
+    private readonly IDocumentClient _documentClient;
+
+    public CreateReadStoreDatabaseJob(IDocumentClient documentClient)
+    {
+        _documentClient = documentClient;
+    }
         
-        [NoAutomaticTrigger]
-        public async Task Run(ILogger logger)
+    [NoAutomaticTrigger]
+    public async Task Run(ILogger logger)
+    {
+        var database = new Database
         {
-            var database = new Database
-            {
-                Id = DocumentSettings.DatabaseName
-            };
+            Id = DocumentSettings.DatabaseName
+        };
             
-            var documentCollection = new DocumentCollection
+        var documentCollection = new DocumentCollection
+        {
+            Id = DocumentSettings.AccountProviderLegalEntitiesCollectionName,
+            PartitionKey = new PartitionKeyDefinition
             {
-                Id = DocumentSettings.AccountProviderLegalEntitiesCollectionName,
-                PartitionKey = new PartitionKeyDefinition
+                Paths = new Collection<string>
                 {
-                    Paths = new Collection<string>
-                    {
-                        "/ukprn"
-                    }
-                },
-                UniqueKeyPolicy = new UniqueKeyPolicy
+                    "/ukprn"
+                }
+            },
+            UniqueKeyPolicy = new UniqueKeyPolicy
+            {
+                UniqueKeys = new Collection<UniqueKey>
                 {
-                    UniqueKeys = new Collection<UniqueKey>
+                    new UniqueKey
                     {
-                        new UniqueKey
-                        {
-                            Paths = new Collection<string> { "/accountProviderLegalEntityId" }
-                        },
-                        new UniqueKey
-                        {
-                            Paths = new Collection<string> { "/accountLegalEntityId" }
-                        }
+                        Paths = new Collection<string> { "/accountProviderLegalEntityId" }
+                    },
+                    new UniqueKey
+                    {
+                        Paths = new Collection<string> { "/accountLegalEntityId" }
                     }
                 }
-            };
+            }
+        };
             
-            var requestOptions = new RequestOptions
-            {
-                OfferThroughput = 1000
-            };
+        var requestOptions = new RequestOptions
+        {
+            OfferThroughput = 1000
+        };
             
-            //todo: logging from eas
-            await _documentClient.CreateDatabaseIfNotExistsAsync(database);
-            await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection, requestOptions);
-        }
+        await _documentClient.CreateDatabaseIfNotExistsAsync(database);
+        await _documentClient.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(database.Id), documentCollection, requestOptions);
     }
 }

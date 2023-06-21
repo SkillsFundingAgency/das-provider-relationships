@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using SFA.DAS.Authorization;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities
 {
-    public class AccountProviderLegalEntityViewModel : IAuthorizationContextModel
+    public class AccountProviderLegalEntityViewModel
     {
         public AccountProviderLegalEntityViewModel()
         {
@@ -23,7 +18,7 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         public int AccountLegalEntitiesCount { get; set; }
 
         [Required]
-        public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
         [Required]
         public long? AccountProviderId { get; set; }
@@ -31,7 +26,6 @@ namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntit
         [Required]
         public long? AccountLegalEntityId { get; set; }
 
-        [Required]
         public Guid? UserRef { get; set; }
 
         [Required]

@@ -1,32 +1,33 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser
+namespace SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
+
+public class CreateOrUpdateUserCommandHandler : IRequestHandler<CreateOrUpdateUserCommand>
 {
-    public class CreateOrUpdateUserCommandHandler : RequestHandler<CreateOrUpdateUserCommand>
+    private readonly Lazy<ProviderRelationshipsDbContext> _db;
+
+    public CreateOrUpdateUserCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
     {
-        private readonly Lazy<ProviderRelationshipsDbContext> _db;
+        _db = db;
+    }
 
-        public CreateOrUpdateUserCommandHandler(Lazy<ProviderRelationshipsDbContext> db)
+    public async Task Handle(CreateOrUpdateUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref);
+
+        if (user == null)
         {
-            _db = db;
+           await _db.Value.Users.AddAsync(new User(request.Ref, request.Email, request.FirstName, request.LastName), cancellationToken);
         }
-
-        protected override void Handle(CreateOrUpdateUserCommand request)
+        else
         {
-            var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref);
-
-            if (user == null)
-            {
-                _db.Value.Users.Add(new User(request.Ref, request.Email, request.FirstName, request.LastName));
-            }
-            else
-            {
-                user.Update(request.Email, request.FirstName, request.LastName);
-            }
+            user.Update(request.Email, request.FirstName, request.LastName);
         }
     }
 }

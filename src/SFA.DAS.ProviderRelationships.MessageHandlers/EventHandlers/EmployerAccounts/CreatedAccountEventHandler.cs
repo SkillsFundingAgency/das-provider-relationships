@@ -1,24 +1,26 @@
-﻿using System.Threading.Tasks;
-using MediatR;
-using NServiceBus;
-using SFA.DAS.EmployerAccounts.Messages.Events;
+﻿using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateAccount;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+
+public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
 {
-    public class CreatedAccountEventHandler : IHandleMessages<CreatedAccountEvent>
+    private readonly IMediator _mediator;
+    private readonly ILogger<CreatedAccountEventHandler> _logger;
+
+    public CreatedAccountEventHandler(IMediator mediator, ILogger<CreatedAccountEventHandler> logger)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+        _logger = logger;
+    }
 
-        public CreatedAccountEventHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+    public async Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
+    {
+        _logger.LogInformation("Starting {TypeName} handler for accountId: '{AccountId}'.", nameof(CreatedAccountEventHandler), message.AccountId);
 
-        public Task Handle(CreatedAccountEvent message, IMessageHandlerContext context)
-        {
-            return _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
-                message.Name, message.Created));
-        }
+        await _mediator.Send(new CreateAccountCommand(message.AccountId, message.HashedId, message.PublicHashedId,
+            message.Name, message.Created));
+
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(CreatedAccountEventHandler));
     }
 }

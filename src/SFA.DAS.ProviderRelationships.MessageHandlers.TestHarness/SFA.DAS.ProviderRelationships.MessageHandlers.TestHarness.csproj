@@ -1,38 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net462</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <TargetFramework>net6.0</TargetFramework>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
-
     <ItemGroup>
-        <PackageReference Include="NLog.Schema" Version="4.5.10" />
-        <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.3.2040" />
-        <PackageReference Include="SFA.DAS.NLog.Logger" Version="1.1.5" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.13" />
-        <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.13" />
-        <PackageReference Include="StructureMap" Version="4.7.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="SFA.DAS.EmployerAccounts.Messages" Version="1.6.3195" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
     </ItemGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.Messages\SFA.DAS.ProviderRelationships.Messages.csproj" />
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships\SFA.DAS.ProviderRelationships.csproj" />
     </ItemGroup>
-
     <ItemGroup>
-        <Reference Include="System" />
+        <Content Include="appsettings.json" />
     </ItemGroup>
-
     <ItemGroup>
-        <None Include="App.config">
-            <TransformOnBuild>true</TransformOnBuild>
-        </None>
-        <None Include="App.*.config">
-            <DependentUpon>App.config</DependentUpon>
-            <IsTransformFile>True</IsTransformFile>
-        </None>
+      <Folder Include="Properties\" />
     </ItemGroup>
-
 </Project>

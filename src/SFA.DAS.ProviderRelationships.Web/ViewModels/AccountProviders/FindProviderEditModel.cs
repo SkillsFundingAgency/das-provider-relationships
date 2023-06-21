@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
-using SFA.DAS.ProviderRelationships.Validation;
+﻿using SFA.DAS.ProviderRelationships.Validation;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
-    public class FindProviderEditModel : IAuthorizationContextModel
+    public class FindProviderEditModel
     {
         [Required]
-        public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredUkprn)]
         public string Ukprn { get; set; }

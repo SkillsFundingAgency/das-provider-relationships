@@ -1,41 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.Http;
-using SFA.DAS.NLog.Logger;
 
-namespace SFA.DAS.ProviderRelationships.Services
+namespace SFA.DAS.ProviderRelationships.Services;
+
+public class DasRecruitService : IDasRecruitService
 {
-    public class DasRecruitService : IDasRecruitService
+    private readonly ILogger<DasRecruitService> _log;
+    private readonly IRestHttpClient _httpClient;
+
+    public DasRecruitService(ILogger<DasRecruitService> log, IRecruitApiHttpClientFactory recruitApiHttpClientFactory)
     {
-        private readonly ILog _log;
-        private readonly IRestHttpClient _httpClient;
+        _log = log;
+        _httpClient = recruitApiHttpClientFactory.CreateRestHttpClient();
+    }
 
-        public DasRecruitService(ILog log, IRecruitApiHttpClientFactory recruitApiHttpClientFactory)
+    public async Task<BlockedOrganisationStatus> GetProviderBlockedStatusAsync(long providerUkprn, CancellationToken cancellationToken)
+    {
+        var blockedProviderStatusUri = $"/api/providers/{providerUkprn}/status";
+            
+        try
         {
-            _log = log;
-            _httpClient = recruitApiHttpClientFactory.CreateRestHttpClient();
+            var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken, cancellationToken);
+            
+            _log.LogInformation("After getting organisation status for provider {ProviderUkprn}  and status is {BlockedOrgStatus} ", providerUkprn, blockedOrgStatus);
+            
+            return blockedOrgStatus;
         }
-
-        public async Task<BlockedOrganisationStatus> GetProviderBlockedStatusAsync(long providerUkprn, CancellationToken cancellationToken = default)
+        catch (Exception ex)
         {
-            var blockedProviderStatusUri = $"/api/providers/{providerUkprn}/status";
-
-            try
-            {
-                var blockedOrgStatus = await _httpClient.Get<BlockedOrganisationStatus>(blockedProviderStatusUri, cancellationToken);
-                _log.Info($"After getting organisation status for provider {providerUkprn}  and status is {blockedOrgStatus} ");
-                return blockedOrgStatus;
-            }
-            catch (Exception ex)
-            {
-                _log.Warn($"Failed to call Provider Blocked Status endpoint of Recruit API: {ex.Message}");
-                throw;
-            }
+            _log.LogWarning("Failed to call Provider Blocked Status endpoint of Recruit API: {Message}", ex.Message);
+            throw;
         }
-
     }
 }

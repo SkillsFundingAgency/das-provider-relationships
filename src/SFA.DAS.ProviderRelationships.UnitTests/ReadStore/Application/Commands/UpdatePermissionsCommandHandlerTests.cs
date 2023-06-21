@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.NLog.Logger;
 using SFA.DAS.ProviderRelationships.ReadStore.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.ReadStore.Data;
 using SFA.DAS.ProviderRelationships.ReadStore.Models;
@@ -23,7 +23,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenDocumentDoesNotExist_ThenShouldCreateDocument()
         {
-            return RunAsync(f => f.Handler.Handle(f.Command, CancellationToken.None),
+            return TestAsync(f => f.Handler.Handle(f.Command, CancellationToken.None),
                 f => f.RelationshipsRepository.Verify(x => x.Add(It.Is<AccountProviderLegalEntity>(p =>
                         p.Ukprn == f.Ukprn &&
                         p.AccountProviderId == f.AccountProviderId &&
@@ -40,7 +40,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenDocumentExists_ThenShouldUpdateDocument()
         {
-            return RunAsync(f => f.FindMatchingRelationship(),
+            return TestAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Ukprn == f.Ukprn &&
@@ -56,7 +56,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenCommandIsNotDuplicateAndIsHandledChronologically_ThenShouldAddUpdateMessageIdToOutbox()
         {
-            return RunAsync(f => f.FindMatchingRelationship(),
+            return TestAsync(f => f.FindMatchingRelationship(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.OutboxData.Count() == 2 &&
@@ -68,7 +68,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenCommandIsDuplicate_ThenShouldSimplyIgnoreTheUpdate()
         {
-            return RunAsync(f => f.FindMatchingRelationshipWithUpdateMessageAlreadyProcessed(),
+            return TestAsync(f => f.FindMatchingRelationshipWithUpdateMessageAlreadyProcessed(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Operations.Contains(Operation.CreateCohort) == false
@@ -79,7 +79,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         [Test]
         public Task Handle_WhenCommandIsNotHandledChronologically_ThenShouldSimplySwallowTheMessageAndAddItToTheOutbox()
         {
-            return RunAsync(f => f.FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage(),
+            return TestAsync(f => f.FindMatchingRelationshipWhichWasUpdatedLaterThanNewMessage(),
                 f => f.Handler.Handle(f.Command, CancellationToken.None),
                 f => f.RelationshipsRepository.Verify(x => x.Update(It.Is<AccountProviderLegalEntity>(p =>
                         p.Operations.Contains(Operation.CreateCohort) == false &&
@@ -105,7 +105,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
         public Mock<IAccountProviderLegalEntitiesRepository> RelationshipsRepository;
         public List<AccountProviderLegalEntity> Relationships;
         public UpdatePermissionsCommand Command;
-        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler;
+        public IRequestHandler<UpdatePermissionsCommand> Handler;
         
         public UpdatePermissionsCommandHandlerTestsFixture()
         {
@@ -114,7 +114,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.ReadStore.Application.Commands
 
             RelationshipsRepository.SetupInMemoryCollection(Relationships);
 
-            Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object, Mock.Of<ILog>());
+            Handler = new UpdatePermissionsCommandHandler(RelationshipsRepository.Object, Mock.Of<ILogger<UpdatePermissionsCommandHandler>>());
             Command = new UpdatePermissionsCommand(AccountId, AccountLegalEntityId, AccountProviderId, AccountProviderLegalEntityId, Ukprn, Operations, Updated, UpdateMessageId);
         }
 

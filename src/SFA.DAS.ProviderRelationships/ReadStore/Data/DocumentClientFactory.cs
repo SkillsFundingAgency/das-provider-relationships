@@ -3,29 +3,28 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using SFA.DAS.ProviderRelationships.Configuration;
 
-namespace SFA.DAS.ProviderRelationships.ReadStore.Data
+namespace SFA.DAS.ProviderRelationships.ReadStore.Data;
+
+public class DocumentClientFactory : IDocumentClientFactory
 {
-    public class DocumentClientFactory : IDocumentClientFactory
+    private readonly ReadStoreConfiguration _configuration;
+
+    public DocumentClientFactory(ReadStoreConfiguration configuration)
     {
-        private readonly ReadStoreConfiguration _configuration;
+        _configuration = configuration;
+    }
 
-        public DocumentClientFactory(ReadStoreConfiguration configuration)
+    public IDocumentClient CreateDocumentClient()
+    {
+        var connectionPolicy = new ConnectionPolicy
         {
-            _configuration = configuration;
-        }
-
-        public IDocumentClient CreateDocumentClient()
-        {
-            var connectionPolicy = new ConnectionPolicy
+            RetryOptions =
             {
-                RetryOptions =
-                {
-                    MaxRetryAttemptsOnThrottledRequests = 4,
-                    MaxRetryWaitTimeInSeconds = 10
-                }
-            };
+                MaxRetryAttemptsOnThrottledRequests = 4,
+                MaxRetryWaitTimeInSeconds = 10
+            }
+        };
 
-            return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
-        }
+        return new DocumentClient(new Uri(_configuration.Uri), _configuration.AuthKey, connectionPolicy);
     }
 }

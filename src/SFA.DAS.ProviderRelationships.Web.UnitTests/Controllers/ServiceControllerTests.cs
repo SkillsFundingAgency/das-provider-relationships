@@ -1,8 +1,6 @@
-using System.Web.Mvc;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.ProviderRelationships.Web.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.Testing;
 
@@ -13,50 +11,30 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
     public class ServiceControllerTests : FluentTest<ServiceControllerTestsFixture>
     {
         [Test]
-        public void SignOut_WhenGettingSignOutAction_ThenShouldSignOutUser()
+        public void SignOut_WhenGettingSignOutAction_ThenShouldReturnSignOutResult()
         {
-            Run(f => f.SignOut(), (f, r) => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
-        }
-        
-        [Test]
-        public void SignOut_WhenGettingSignOutAction_ThenShouldReturnRedirectActionResult()
-        {
-            Run(f => f.SignOut(), (f, r) => r.Should().NotBeNull().And.BeOfType<RedirectResult>().Which.Url.Should().Be(f.LogoutEndpoint));
-        }
-        
-        [Test]
-        public void SignOutCleanup_WhenGettingSignOutCleanupAction_ThenShouldSignOutUser()
-        {
-            Run(f => f.SignOutCleanup(), f => f.AuthenticationService.Verify(s => s.SignOutUser(), Times.Once));
+            TestAsync(
+                f => f.SignOut(), 
+                (f, r) => r.Should().NotBeNull().And.BeOfType<SignOutResult>().And.Match<SignOutResult>(result =>
+                    result.Properties.Items.ContainsKey("id_token") &&
+                    result.AuthenticationSchemes.Contains(CookieAuthenticationDefaults.AuthenticationScheme) &&
+                    result.AuthenticationSchemes.Contains(OpenIdConnectDefaults.AuthenticationScheme)
+                ));
         }
     }
 
     public class ServiceControllerTestsFixture
     {
-        public Mock<IAuthenticationService> AuthenticationService { get; set; }
         public ServiceController ServiceController { get; set; }
-        public string LogoutEndpoint { get; set; }
-        public Mock<IAuthenticationUrls> AuthenticationUrls { get; set; }
 
         public ServiceControllerTestsFixture()
         {
-            AuthenticationService = new Mock<IAuthenticationService>();
-            LogoutEndpoint = "/logout";
-            AuthenticationUrls = new Mock<IAuthenticationUrls>();
-
-            AuthenticationUrls.Setup(u => u.LogoutEndpoint).Returns(LogoutEndpoint);
-            
-            ServiceController = new ServiceController(AuthenticationService.Object, AuthenticationUrls.Object);
+            ServiceController = new ServiceController(null, new StubAuthenticationService(null, null, null));
         }
 
-        public ActionResult SignOut()
+        public Task<IActionResult> SignOut()
         {
-            return ServiceController.SignOut();
-        }
-
-        public void SignOutCleanup()
-        {
-            ServiceController.SignOutCleanup();
+            return ServiceController.SignOutEmployer();
         }
     }
 }

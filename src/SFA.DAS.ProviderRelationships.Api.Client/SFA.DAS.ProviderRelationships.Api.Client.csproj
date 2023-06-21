@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <Authors>DAS</Authors>
@@ -17,15 +17,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MediatR" Version="6.0.0" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.2.6" />
+        <PackageReference Include="Microsoft.Data.OData" Version="5.8.4" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="SFA.DAS.AutoConfiguration" Version="2.2.17" />
         <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
-        <PackageReference Include="StructureMap" Version="4.7.1" />
-        <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     </ItemGroup>
 
     <ItemGroup>

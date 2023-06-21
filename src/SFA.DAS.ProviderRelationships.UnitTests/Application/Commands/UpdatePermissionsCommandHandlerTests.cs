@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityDoesNotExist_ThenShouldCreatePermissions()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.AccountProviderLegalEntities
+            return TestAsync(f => f.Handle(), f => f.Db.AccountProviderLegalEntities
                 .SingleOrDefault(aple =>
                     aple.AccountProviderId == f.AccountProvider.Id &&
                     aple.AccountLegalEntityId == f.AccountLegalEntity.Id &&
@@ -39,7 +39,9 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityDoesNotExist_ThenShouldPublishUpdatedPermissionsEvent()
         {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+            return TestAsync(
+                f => f.Handle(), 
+                f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
                 .And.Match<UpdatedPermissionsEvent>(e =>
                     e.AccountId == f.Account.Id &&
                     e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
@@ -54,28 +56,34 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityExists_ThenShouldUpdatePermissions()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.Db.AccountProviderLegalEntities
-                .SingleOrDefault(aple =>
-                    aple.Id == f.AccountProviderLegalEntity.Id &&
-                    aple.Permissions.All(p => f.Command.GrantedOperations.Contains(p.Operation)) &&
-                    aple.Updated >= f.Now)
-                .Should()
-                .NotBeNull());
+            return TestAsync(
+                f => f.SetAccountProviderLegalEntity(), 
+                f => f.Handle(), 
+                f => f.Db.AccountProviderLegalEntities
+                    .SingleOrDefault(aple =>
+                        aple.Id == f.AccountProviderLegalEntity.Id &&
+                        aple.Permissions.All(p => f.Command.GrantedOperations.Contains(p.Operation)) &&
+                        aple.Updated >= f.Now)
+                    .Should()
+                    .NotBeNull());
         }
         
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityExists_ThenShouldPublishUpdatedPermissionsEvent()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
-                .And.Match<UpdatedPermissionsEvent>(e =>
-                    e.AccountId == f.Account.Id &&
-                    e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
-                    e.AccountProviderId == f.AccountProvider.Id &&
-                    e.AccountProviderLegalEntityId == f.AccountProviderLegalEntity.Id &&
-                    e.Ukprn == f.AccountProvider.ProviderUkprn &&
-                    e.UserRef == f.User.Ref &&
-                    e.GrantedOperations == f.Command.GrantedOperations &&
-                    e.Updated == f.AccountProviderLegalEntity.Updated));
+            return TestAsync(
+                f => f.SetAccountProviderLegalEntity(), 
+                f => f.Handle(), 
+                f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().NotBeNull()
+                    .And.Match<UpdatedPermissionsEvent>(e =>
+                        e.AccountId == f.Account.Id &&
+                        e.AccountLegalEntityId == f.AccountLegalEntity.Id &&
+                        e.AccountProviderId == f.AccountProvider.Id &&
+                        e.AccountProviderLegalEntityId == f.AccountProviderLegalEntity.Id &&
+                        e.Ukprn == f.AccountProvider.ProviderUkprn &&
+                        e.UserRef == f.User.Ref &&
+                        e.GrantedOperations == f.Command.GrantedOperations &&
+                        e.Updated == f.AccountProviderLegalEntity.Updated));
         }
     }
 
@@ -89,19 +97,35 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public DateTime Now { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public UpdatePermissionsCommand Command { get; set; }
-        public IRequestHandler<UpdatePermissionsCommand, Unit> Handler { get; set; }
+        public IRequestHandler<UpdatePermissionsCommand> Handler { get; set; }
         public AccountProviderLegalEntity AccountProviderLegalEntity { get; set; }
         
         public UpdatePermissionsCommandHandlerTestsFixture()
         {
             Now = DateTime.UtcNow;;
             UnitOfWorkContext = new UnitOfWorkContext();
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new UpdatePermissionsCommand(1, 2, 3, Guid.NewGuid(), new HashSet<Operation> { Operation.CreateCohort });
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Command.AccountId);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, Command.AccountProviderId).Set(ap => ap.AccountId, Account.Id);
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, Command.AccountLegalEntityId).Set(ale => ale.AccountId, Account.Id);
-            User = EntityActivator.CreateInstance<User>().Set(u => u.Ref, Command.UserRef);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Command.AccountId)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, Command.AccountProviderId)
+                .Set(ap => ap.AccountId, Account.Id);
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, Command.AccountLegalEntityId)
+                .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString())
+                .Set(ale => ale.AccountId, Account.Id);
+            User = EntityActivator.CreateInstance<User>()
+                .Set(u => u.Ref, Command.UserRef)
+                .Set(u => u.Email, Guid.NewGuid().ToString())
+                .Set(u => u.FirstName, Guid.NewGuid().ToString())
+                .Set(u => u.LastName, Guid.NewGuid().ToString());
             
             Db.Accounts.Add(Account);
             Db.AccountProviders.Add(AccountProvider);
@@ -125,7 +149,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
                 .Set(aple => aple.AccountProviderId, AccountProvider.Id)
                 .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id);
             
-            AccountProvider.Add(ap => ap.AccountProviderLegalEntities, AccountProviderLegalEntity);
+            Db.AccountProviderLegalEntities.Add(AccountProviderLegalEntity);
             
             Db.SaveChanges();
             

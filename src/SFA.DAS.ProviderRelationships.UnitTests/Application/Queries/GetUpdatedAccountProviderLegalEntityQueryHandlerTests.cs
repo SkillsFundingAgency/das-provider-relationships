@@ -24,7 +24,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingGetUpdatedAccountProviderLegalEntityQuery_ThenShouldReturnGetUpdatedAccountProviderLegalEntityQueryResult()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
+            return TestAsync(f => f.SetAccountProviderLegalEntity(), f => f.Handle(), (f, r) => r.Should().NotBeNull()
                 .And.Match<GetUpdatedAccountProviderLegalEntityQueryResult>(r2 =>
                     r2.AccountProviderLegalEntity.Id == f.AccountProviderLegalEntity.Id &&
                     r2.AccountProviderLegalEntity.ProviderName == f.Provider.Name &&
@@ -35,7 +35,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenAccountProviderLegalEntityIsNotFound_ThenShouldReturnNull()
         {
-            return RunAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
+            return TestAsync(f => f.Handle(), (f, r) => r.Should().BeNull());
         }
     }
 
@@ -55,7 +55,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetUpdatedAccountProviderLegalEntityQueryHandlerTestsFixture()
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(AccountProviderLegalEntityMappings)));
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>(){new AccountProviderLegalEntityMappings()}));
             Query = new GetUpdatedAccountProviderLegalEntityQuery(1, 3, 4);
             Handler = new GetUpdatedAccountProviderLegalEntityQueryHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), ConfigurationProvider);
         }
@@ -67,7 +67,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
 
         public GetUpdatedAccountProviderLegalEntityQueryHandlerTestsFixture SetAccountProviderLegalEntity()
         {
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, Query.AccountId);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, Query.AccountId);
             
             Provider = EntityActivator.CreateInstance<Provider>()
                 .Set(p => p.Ukprn, 12345678)
@@ -81,7 +82,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
             AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
                 .Set(ale => ale.Id, Query.AccountLegalEntityId)
                 .Set(ale => ale.Name, "Account legal entity A")
-                .Set(ale => ale.AccountId, Account.Id);
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
             
             AccountLegalEntities = new List<AccountLegalEntity>
             {
@@ -89,11 +91,13 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
                 EntityActivator.CreateInstance<AccountLegalEntity>()
                     .Set(ale => ale.Id, 5)
                     .Set(ale => ale.Name, "Account legal entity B")
-                    .Set(ale => ale.AccountId, Account.Id),
+                    .Set(ale => ale.AccountId, Account.Id)
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString()),
                 EntityActivator.CreateInstance<AccountLegalEntity>()
                     .Set(ale => ale.Id, 6)
                     .Set(ale => ale.Name, "Account legal entity C")
                     .Set(ale => ale.AccountId, 2)
+                    .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString())
             };
             
             AccountProviderLegalEntity = EntityActivator.CreateInstance<AccountProviderLegalEntity>()

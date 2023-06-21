@@ -1,33 +1,104 @@
-﻿using System.Web.Http;
-using Owin;
-using Microsoft.Owin;
-using WebApi.StructureMap;
-using SFA.DAS.NLog.Logger;
-using SFA.DAS.ProviderRelationships.Api;
+using Microsoft.OpenApi.Models;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
+using SFA.DAS.Api.Common.Infrastructure;
+using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
+using SFA.DAS.NServiceBus.SqlServer.Features.ClientOutbox.Data;
 using SFA.DAS.ProviderRelationships.Api.Authentication;
-using StructureMap;
-using StructureMap.Pipeline;
+using SFA.DAS.ProviderRelationships.Api.Authorization;
+using SFA.DAS.ProviderRelationships.Api.Extensions;
+using SFA.DAS.ProviderRelationships.Api.Filters;
+using SFA.DAS.ProviderRelationships.Api.Handlers;
+using SFA.DAS.ProviderRelationships.Api.ServiceRegistrations;
+using SFA.DAS.ProviderRelationships.Application.Commands.RevokePermissions;
+using SFA.DAS.ProviderRelationships.Configuration;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Mappings;
+using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 
-[assembly: OwinStartup(typeof(Startup))]
+namespace SFA.DAS.ProviderRelationships.Api;
 
-namespace SFA.DAS.ProviderRelationships.Api
+public class Startup
 {
-    public class Startup
-    {
-        public void Configuration(IAppBuilder app)
-        {
-            var container = GlobalConfiguration.Configuration.DependencyResolver.GetService<IContainer>();
-            var logger = container.GetInstance<ILog>();
-            
-            logger.Info("Starting Provider Relationships api");
+    private readonly IConfiguration _configuration;
 
-            var authenticationStartupArgs = new ExplicitArguments();
-            
-            authenticationStartupArgs.Set(app);
-  
-            var authenticationStartup = container.GetInstance<IAuthenticationStartup>(authenticationStartupArgs);
-            
-            authenticationStartup.Initialize();
+    public Startup(IConfiguration configuration)
+    {
+        _configuration = configuration.BuildDasConfiguration();
+    }
+
+    public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
+    {
+        serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal());
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddConfigurationSections(_configuration);
+
+        var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
+        var isDevelopment = _configuration.IsDevOrLocal();
+
+        services.AddLogging();
+
+        services.AddApiAuthentication(_configuration, isDevelopment)
+                .AddApiAuthorization(isDevelopment);
+
+        services.AddSwaggerGen(c =>
+        {
+            c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            c.SwaggerDoc("v1", new OpenApiInfo {
+                Version = "v1",
+                Title = "Provider Relationships API"
+            });
+        });
+
+        services.AddApplicationServices();
+        services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));
+        services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(RevokePermissionsCommand)));
+        services.AddReadStoreServices();
+        services.AddTransient<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+        services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; })
+             .AddMvc(opt =>
+             {
+                 if (!_configuration.IsDevOrLocal())
+                 {
+                     opt.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                 }
+             });
+
+        services.AddApplicationInsightsTelemetry();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection()
+            .UseApiGlobalExceptionHandler(loggerFactory.CreateLogger(nameof(Startup)))
+            .UseAuthentication()
+            .UseRouting()
+            .UseAuthorization()
+            .UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            })
+            .UseSwagger()
+            .UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Provider Relationships API");
+                opt.RoutePrefix = string.Empty;
+            });
     }
 }

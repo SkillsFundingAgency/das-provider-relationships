@@ -12,25 +12,25 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public void ProviderNotFound_WhenProviderIdIsNotNull_ThenShouldReturnFalse()
         {
-            Run(f => new FindProviderToAddQueryResult(12345678, null), (f, r) => r.ProviderNotFound.Should().BeFalse());
+            Test(f => new FindProviderToAddQueryResult(12345678, null), (f, r) => r.ProviderNotFound.Should().BeFalse());
         }
         
         [Test]
         public void ProviderNotFound_WhenProviderIdIsNull_ThenShouldReturnTrue()
         {
-            Run(f => new FindProviderToAddQueryResult(null, null), (f, r) => r.ProviderNotFound.Should().BeTrue());
+            Test(f => new FindProviderToAddQueryResult(null, null), (f, r) => r.ProviderNotFound.Should().BeTrue());
         }
         
         [Test]
         public void ProviderAlreadyAdded_WhenAccountProviderIdIsNotNull_ThenShouldReturnTrue()
         {
-            Run(f => new FindProviderToAddQueryResult(null, 1), (f, r) => r.ProviderAlreadyAdded.Should().BeTrue());
+            Test(f => new FindProviderToAddQueryResult(null, 1), (f, r) => r.ProviderAlreadyAdded.Should().BeTrue());
         }
         
         [Test]
         public void ProviderAlreadyAdded_WhenAccountProviderIdIsNull_ThenShouldReturnTrue()
         {
-            Run(f => new FindProviderToAddQueryResult(null, null), (f, r) => r.ProviderAlreadyAdded.Should().BeFalse());
+            Test(f => new FindProviderToAddQueryResult(null, null), (f, r) => r.ProviderAlreadyAdded.Should().BeFalse());
         }
     }
 }

@@ -77,8 +77,18 @@
         "sharedSQLServerName": {
             "type": "string"
         },
-        "elasticPoolName": {
+        "sharedApimName": {
             "type": "string"
+        },
+        "sharedServiceBusName": {
+            "type": "string"
+        },
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
+        "elasticPoolName": {
+            "type": "string",
+            "defaultValue": ""
         },
         "databaseSkuName": {
             "type": "string",
@@ -124,6 +134,16 @@
         },
         "workerAccessRestrictions": {
             "type": "array"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
+        },
+        "stubAuth": {
+            "type": "string"
+        },
+        "cdnUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -136,7 +156,9 @@
         "workerAppServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]",
         "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
         "cosmosDbName": "[concat(variables('resourceNamePrefix'), '-cdb')]",
-        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]"
+        "workerStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'wkrstr'),'-', '')]",
+        "configNames": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.EmployerFeatures,SFA.DAS.Encoding,SFA.DAS.Employer.GovSignIn",
+        "configNamesApi": "SFA.DAS.ProviderRelationshipsV2,SFA.DAS.ProviderRelationships.ReadStore,SFA.DAS.Encoding"
     },
     "resources": [
         {
@@ -338,12 +360,28 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('uiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
                                 },
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
                                     "value": "[parameters('TokenCertificateThumbprint')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
+                                },
+                                {
+                                    "name": "StubAuth",
+                                    "value": "[parameters('stubAuth')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
                                 }
                             ]
                         }
@@ -358,6 +396,34 @@
                         "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat('provider-relationships-role-assignments-', copyIndex(), '-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'role-assignments/role-assignment-service-bus.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "principalId": {
+                        "value": "[createArray(reference(concat(variables('uiAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value, reference(concat(variables('uiAppServiceName'), '-', parameters('utcValue'))).outputs.stagingManagedServiceIdentityId.value, reference(concat(variables('apiAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value, reference(concat(variables('apiAppServiceName'), '-', parameters('utcValue'))).outputs.stagingManagedServiceIdentityId.value, reference(concat(variables('workerAppServiceName'), '-', parameters('utcValue'))).outputs.managedServiceIdentityId.value)[copyIndex()]]"
+                    },
+                    "assignmentType": {
+                        "value": "ServiceBusOwner"
+                    },
+                    "resourceName": {
+                        "value": "[parameters('sharedServiceBusName')]"
+                    }
+                }
+            },
+            "copy": {
+                "name": "role-assignments",
+                "count": 5
             }
         },
         {
@@ -431,8 +497,12 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('apiAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNamesApi')]"
                                 }
                             ]
                         }
@@ -499,8 +569,8 @@
                                     "value": "[parameters('loggingRedisKey')]"
                                 },
                                 {
-                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference(concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('workerAppServiceName'), '-app-insights-', parameters('utcNow'))).outputs.ConnectionString.value]"
                                 }
                             ]
                         }
@@ -586,6 +656,30 @@
                     },
                     "attachedService": {
                         "value": "[variables('workerAppServiceName')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat(variables('uiAppServiceName'), 'apim-product-subscription-', parameters('utcValue'))]",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('uiAppServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/ProviderRelationshipsOuterApi')]"
                     }
                 }
             }

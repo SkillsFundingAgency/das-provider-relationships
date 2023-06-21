@@ -1,16 +1,8 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using AutoMapper;
-using FluentAssertions;
-using MediatR;
-using Moq;
-using NUnit.Framework;
+﻿using AutoMapper;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
-
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetHealthCheck.Dtos;
+using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.HealthCheck;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.HealthCheck;
@@ -25,19 +17,23 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         [Test]
         public Task Index_WhenGettingTheIndexAction_ThenShouldReturnTheIndexView()
         {
-            return RunAsync(f => f.Index(), (f, r) =>
-            {
-                r.Should().NotBeNull().And.Match<ViewResult>(a => a.ViewName == "");
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryResult.HealthCheck);
-            });
+            return TestAsync(
+                f => f.Index(),
+                (f, r) =>
+                {
+                    r.As<ViewResult>().Model.Should().NotBeNull().And
+                        .Match<HealthCheckViewModel>(m => m.HealthCheck == f.GetHealthCheckQueryResult.HealthCheck);
+                });
         }
 
         [Test]
         public Task Index_WhenPostingTheIndexAction_ThenShouldRedirectToTheIndexAction()
         {
-            return RunAsync(f => f.PostIndex(), (f, r) => r.Should().NotBeNull().And.Match<RedirectToRouteResult>(a =>
-                a.RouteValues["Action"].Equals("Index") &&
-                a.RouteValues["Controller"] == null));
+            return TestAsync(
+                f => f.PostIndex(), 
+                (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
+                a.ActionName.Equals("Index") &&
+                a.ControllerName == null));
         }
     }
 
@@ -52,24 +48,29 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public HealthCheckControllerTestsFixture()
         {
             Mediator = new Mock<IMediator>();
-            Mapper = new MapperConfiguration(c => {}).CreateMapper();
+            Mapper = new MapperConfiguration(c => c.AddMaps(new [] {
+                typeof(HealthCheckViewModel),
+                typeof(HealthCheck)
+            })).CreateMapper();
             HealthCheckController = new HealthCheckController(Mediator.Object, Mapper);
         }
 
-        public Task<ActionResult> Index()
+        public Task<IActionResult> Index()
         {
             GetHealthCheckQueryResult = new GetHealthCheckQueryResult(new HealthCheckDto());
 
-            Mediator.Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None)).ReturnsAsync(GetHealthCheckQueryResult);
+            Mediator
+                .Setup(m => m.Send(It.IsAny<GetHealthCheckQuery>(), CancellationToken.None))
+                .ReturnsAsync(GetHealthCheckQueryResult);
 
             return HealthCheckController.Index();
         }
 
-        public Task<ActionResult> PostIndex()
+        public Task<IActionResult> PostIndex()
         {
             HealthCheckRouteValues = new HealthCheckRouteValues { UserRef = Guid.NewGuid() };
             
-            Mediator.Setup(m => m.Send(It.Is<RunHealthCheckCommand>(c => c.UserRef == HealthCheckRouteValues.UserRef), CancellationToken.None)).ReturnsAsync(Unit.Value);
+            Mediator.Setup(m => m.Send(It.Is<RunHealthCheckCommand>(c => c.UserRef == HealthCheckRouteValues.UserRef), CancellationToken.None));
 
             return HealthCheckController.Index(HealthCheckRouteValues);
         }

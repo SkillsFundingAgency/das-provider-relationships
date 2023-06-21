@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.ProviderRelationships.Web.Extensions
+﻿namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class TimeSpanExtensions
     {

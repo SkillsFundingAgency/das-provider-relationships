@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands;
 using SFA.DAS.ProviderRelationships.Data;
@@ -21,7 +20,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenHandlingAddedAccountProviderEventAuditCommand_ThenShouldCreateAuditRecord()
         {
-            return RunAsync(f => f.Handle(), f => f.Db.AddedAccountProviderEventAudits.SingleOrDefault(a => a.AccountProviderId == f.Command.AccountProviderId).Should().NotBeNull()
+            return TestAsync(f => f.Handle(), f => f.Db.AddedAccountProviderEventAudits.SingleOrDefault(a => a.AccountProviderId == f.Command.AccountProviderId).Should().NotBeNull()
                 .And.Match<AddedAccountProviderEventAudit>(a =>
                     a.AccountProviderId == f.Command.AccountProviderId &&
                     a.AccountId == f.Command.AccountId &&
@@ -36,11 +35,11 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
     {
         public ProviderRelationshipsDbContext Db { get; set; }
         public AddedAccountProviderEventAuditCommand Command { get; set; }
-        public IRequestHandler<AddedAccountProviderEventAuditCommand, Unit> Handler { get; set; }
+        public IRequestHandler<AddedAccountProviderEventAuditCommand> Handler { get; set; }
 
         public AddedAccountProviderEventAuditCommandHandlerTestsFixture()
         {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             Command = new AddedAccountProviderEventAuditCommand(112, 114, 118277339, Guid.NewGuid(), DateTime.Parse("2018-11-11"));
             Handler = new AddedAccountProviderEventAuditCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
         }

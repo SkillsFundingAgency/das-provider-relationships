@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "SFA.DAS.ProviderRelationships.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:44308;http://localhost:44309"
+    }
+  }
+}

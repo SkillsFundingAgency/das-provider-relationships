@@ -1,4 +1,6 @@
 ﻿@using SFA.DAS.ProviderRelationships.Types.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ProviderRelationships.Web.Controllers
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviderLegalEntities.AccountProviderLegalEntityViewModel
 
 @{
@@ -10,17 +12,19 @@
 }
 
 @section breadcrumb
-{
+    {
     <a class="das-js-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+        <partial name="_ValidationSummary" model="ViewData.ModelState" />
 
-        @using (Html.BeginForm(new {action = $"{ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]}/providers/{ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]}/legalentities/{ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]}/confirm", controller = "accounts"}))
-        {
-            @Html.AntiForgeryToken()
+        <form asp-controller="@AccountProviderLegalEntities.ControllerName" method="post"
+              asp-action="@AccountProviderLegalEntities.ActionNames.Confirm"
+              asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]"
+              asp-route-AccountProviderId="@ViewContext.RouteData.Values[RouteValueKeys.AccountProviderId]"
+              asp-route-AccountLegalEntityId="@ViewContext.RouteData.Values[RouteValueKeys.AccountLegalEntityId]">
 
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -34,13 +38,11 @@
                     <div class="error-panel">
                         <div class="govuk-warning-text">
                             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                            <strong class="govuk-warning-text__text">
+                            <div class="govuk-warning-text__text">
                                 <span class="govuk-warning-text__assistive">Warning</span>
-                                All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.
-                                <br/>
-                                <br/>
-                                Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.
-                            </strong>
+                                <p class="govuk-!-font-weight-bold">All adverts will be transferred from @Model.AccountProvider.ProviderName after you turn off their permissions.</p>
+                                <p class="govuk-!-font-weight-bold">Adverts pending review will be sent back to draft. Any live adverts will be closed. You will be able to clone closed adverts if you want to republish them.</p>
+                            </div>
                         </div>
                     </div>
                 }
@@ -67,24 +69,24 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Add apprentice records</dt>
                         <dd class="govuk-summary-list__value">@Model.Permissions[0].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command"/></dd>
+                        <dd class="govuk-summary-list__actions"><input class="das-button--inline-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Recruit apprentices</dt>
                         <dd class="govuk-summary-list__value">@Model.Permissions[1].Status()</dd>
-                        <dd class="govuk-summary-list__actions"><input class="govuk-link govuk-button--looks-like-link" type="submit" value="Change" name="command"/></dd>
+                        <dd class="govuk-summary-list__actions"><input class="das-button--inline-link" type="submit" value="Change" name="command" /></dd>
                     </div>
                 </dl>
 
                 @if (Model.Permissions[1].State == State.No)
                 {
-                    <div class="govuk-form-group @(Html.IsValid(m => m.Confirmation) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                         <div class="govuk-radios" data-module="radios">
                             <h2 class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Are you sure you want to change the permissions for @Model.AccountProvider.ProviderName?
                             </h2>
 
-                            @if (!Html.IsValid(m => m.Confirmation))
+                            @if (!ViewData.ModelState.IsValid)
                             {
                                 <span id="confirmation-error" class="govuk-error-message">
                                     <span class="govuk-visually-hidden">Error:</span> @Html.ValidationMessageFor(m => m.Confirmation)
@@ -92,13 +94,13 @@
                             }
 
                             <div class="govuk-radios__item" id="confirmation">
-                                @Html.RadioButtonFor(m => m.Confirmation, true, new {id = "confirmation-yes", @class = "govuk-radios__input"})
+                                @Html.RadioButtonFor(m => m.Confirmation, true, new { id = "confirmation-yes", @class = "govuk-radios__input" })
                                 <label class="govuk-label govuk-radios__label" for="confirmation-yes">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                @Html.RadioButtonFor(m => m.Confirmation, false, new {id = "confirmation-no", @class = "govuk-radios__input"})
+                                @Html.RadioButtonFor(m => m.Confirmation, false, new { id = "confirmation-no", @class = "govuk-radios__input" })
                                 <label class="govuk-label govuk-radios__label" for="confirmation-no">
                                     No
                                 </label>
@@ -119,6 +121,6 @@
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 
             <button class="govuk-button" type="submit">Confirm</button>
-        }
+        </form>
     </div>
 </div>

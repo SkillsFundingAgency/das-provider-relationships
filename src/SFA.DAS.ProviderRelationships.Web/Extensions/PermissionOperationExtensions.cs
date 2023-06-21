@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using MoreLinq;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.Permissions;
 
@@ -11,14 +7,6 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
 {
     public static class PermissionOperationExtensions
     {
-        public static string GetDescription(this Permission permission)
-        {
-            return permission.GetType()
-                .GetMember(permission.ToString()).First()
-                .GetCustomAttributes<DisplayAttribute>().First()
-                .Name;
-        }
-
         public static List<PermissionViewModel> ToPermissions(this IList<Operation> operations)
         {
             return Enum.GetValues(typeof(Permission))
@@ -89,7 +77,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Extensions
                 {
                     switch (permissionViewModel.Value)
                     {
-                        case Permission.Recruitment: return "Allow, but I want to review adverts before they’re advertised";
+                        case Permission.Recruitment: return "Allow, but I want to review adverts before they're advertised";
                         default: return string.Empty;
                     }
                 }

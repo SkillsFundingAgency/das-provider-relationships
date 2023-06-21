@@ -1,23 +1,25 @@
-﻿using System.Threading.Tasks;
-using MediatR;
-using NServiceBus;
-using SFA.DAS.EmployerAccounts.Messages.Events;
+﻿using SFA.DAS.EmployerAccounts.Messages.Events;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdateAccountLegalEntityName;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts
+namespace SFA.DAS.ProviderRelationships.MessageHandlers.EventHandlers.EmployerAccounts;
+
+public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntityEvent>
 {
-    public class UpdatedLegalEntityEventHandler : IHandleMessages<UpdatedLegalEntityEvent>
+    private readonly IMediator _mediator;
+    private readonly ILogger<UpdatedLegalEntityEventHandler> _logger;
+
+    public UpdatedLegalEntityEventHandler(IMediator mediator, ILogger<UpdatedLegalEntityEventHandler> logger)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+        _logger = logger;
+    }
 
-        public UpdatedLegalEntityEventHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
-        {
-            return _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
-        }
+    public async Task Handle(UpdatedLegalEntityEvent message, IMessageHandlerContext context)
+    {
+        _logger.LogInformation("Starting {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
+        
+        await _mediator.Send(new UpdateAccountLegalEntityNameCommand(message.AccountLegalEntityId, message.Name, message.Created));
+        
+        _logger.LogInformation("Completed {TypeName} handler.", nameof(UpdatedLegalEntityEventHandler));
     }
 }

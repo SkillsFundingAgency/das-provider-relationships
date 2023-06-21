@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
+﻿using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders
 {
-    public class AddAccountProviderViewModel : IAuthorizationContextModel, IValidatableObject
+    public class AddAccountProviderViewModel : IValidatableObject
     {
         public ProviderDto Provider { get; set; }
 
-        [Required]
         public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
-        [Required]
         public Guid? UserRef { get; set; }
         
         [Required]

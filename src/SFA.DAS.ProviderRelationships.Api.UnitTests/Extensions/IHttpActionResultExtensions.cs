@@ -1,28 +1,22 @@
-﻿using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using System.Web.Http.Results;
+﻿using System.Linq;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 
-namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions
+namespace SFA.DAS.ProviderRelationships.Api.UnitTests.Extensions;
+
+public static class HttpActionResultExtensions
 {
-    public static class IHttpActionResultExtensions
+    public static void AssertModelError(this IActionResult result, string propertyName, string expectedErrorMessage)
     {
-        public static void AssertModelError(this IHttpActionResult result, string propertyName, string expectedErrorMessage)
-        {
-            result.Should().NotBeNull();
-            var modelStateDictionary = result.GetModelStateDictionary();
-            modelStateDictionary.Should().NotBeNull();
-            modelStateDictionary.HasModelError(propertyName, expectedErrorMessage).Should().BeTrue();
-        }
+        result.Should().NotBeNull();
 
-        public static ModelStateDictionary GetModelStateDictionary(this IHttpActionResult result)
-        {
-            InvalidModelStateResult modelStateResult = result as InvalidModelStateResult;
-            if (modelStateResult == null)
-                return null;
+        var objectResult = result as BadRequestObjectResult;
+        objectResult.Value.GetType().Should().Be<SerializableError>();
 
-            ModelStateDictionary modelStateDictionary = modelStateResult.ModelState;
-            return modelStateDictionary;
-        }
+        var errors = objectResult.Value as SerializableError;
+        errors.ContainsKey(propertyName).Should().BeTrue();
+
+        var errorItem = errors[propertyName] as string[];
+        errorItem.Single().Should().Be(expectedErrorMessage);
     }
 }

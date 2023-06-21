@@ -25,7 +25,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         [Test]
         public Task Handle_WhenHandlingAGetHealthCheckQuery_ThenShouldReturnAGetHealthCheckQueryResult()
         {
-            return RunAsync(f => f.Handle(), (f, r) =>
+            return TestAsync(f => f.Handle(), (f, r) =>
             {
                 r.Should().NotBeNull();
                 r.HealthCheck.Should().NotBeNull().And.Match<HealthCheckDto>(d => d.Id == f.HealthChecks[1].Id);
@@ -44,8 +44,8 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Queries
         public GetHealthCheckQueryHandlerTestsFixture()
         {
             GetHealthCheckQuery = new GetHealthCheckQuery();
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
-            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(typeof(HealthCheckMappings)));
+            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+            ConfigurationProvider = new MapperConfiguration(c => c.AddProfiles(new List<Profile>{new HealthCheckMappings()}));
 
             HealthChecks = new List<HealthCheck>
             {

@@ -1,5 +1,6 @@
 @using SFA.DAS.ProviderRelationships.Extensions
-@using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities
+@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.GetAccountProviderViewModel
 
 @{
@@ -11,7 +12,7 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
+    <a class="govuk-back-link" asp-action="@AccountProviders.ActionNames.Find" asp-controller="@AccountProviders.ControllerName" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 
@@ -64,7 +65,9 @@
                         @if (Model.IsUpdatePermissionsOperationAuthorized)
                         {
                             <td class="govuk-table__cell">
-                                <a href="@Url.Action("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = Model.AccountProvider.Id, AccountLegalEntityId = accountLegalEntity.Id })">Set permissions</a>
+                                <a asp-controller="@AccountProviderLegalEntities.ControllerName" asp-action="@AccountProviderLegalEntities.ActionNames.Permissions" asp-route-AccountProviderId="@Model.AccountProvider.Id" asp-route-AccountLegalEntityId="@accountLegalEntity.Id">
+                                    Set permissions<span class="govuk-visually-hidden"> @accountLegalEntity.Name</span>
+                                </a>
                             </td>
                         }
                     </tr>

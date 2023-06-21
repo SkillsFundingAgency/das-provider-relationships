@@ -1,52 +1,31 @@
-﻿using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using SFA.DAS.AutoConfiguration;
-using SFA.DAS.ProviderRelationships.MessageHandlers.DependencyResolution;
-using SFA.DAS.ProviderRelationships.Startup;
+﻿using SFA.DAS.NServiceBus.Configuration.MicrosoftDependencyInjection;
+using SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
-namespace SFA.DAS.ProviderRelationships.MessageHandlers
+namespace SFA.DAS.ProviderRelationships.MessageHandlers;
+
+public class Program
 {
-    public static class Program
+    public static async Task Main(string[] args)
     {
-        public static async Task Main()
-        {
-            using (var container = IoC.Initialize())
-            {
-                ServicePointManager.DefaultConnectionLimit = 50;
-                
-                var config = new JobHostConfiguration { JobActivator = new StructureMapJobActivator(container) };
-                var environmentService = container.GetInstance<IEnvironmentService>();
-                var loggerFactory = container.GetInstance<ILoggerFactory>();
-                var startup = container.GetInstance<IStartup>();
-                
-                if (environmentService.IsCurrent(DasEnv.LOCAL))
-                {
-                    config.UseDevelopmentSettings();
-                }
-
-                config.LoggerFactory = loggerFactory;
-
-                var jobHost = new JobHost(config);
-                
-                await startup.StartAsync();
-                await jobHost.CallAsync(typeof(Program).GetMethod(nameof(Block)));
-                
-                jobHost.RunAndBlock();
-                
-                await startup.StopAsync();
-            }
-        }
+        using var host = CreateHost(args);
         
-        [NoAutomaticTrigger]
-        public static async Task Block(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(3000, cancellationToken);
-            }
-        }
+        var logger = host.Services.GetService<ILogger<Program>>();
+        
+        logger.LogInformation("SFA.DAS.ProviderRelationships.MessageHandlers starting up ...");
+        
+        await host.RunAsync();
+    }
+
+    private static IHost CreateHost(string[] args)
+    {
+        var builder = new HostBuilder()
+            .ConfigureDasAppConfiguration()
+            .UseDasEnvironment()
+            .UseConsoleLifetime()
+            .ConfigureDasLogging()
+            .ConfigureDasServices()
+            .UseNServiceBusContainer();
+
+        return builder.Build();
     }
 }

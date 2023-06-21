@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.RemoveAccountLegalEntity;
 using SFA.DAS.ProviderRelationships.Data;
@@ -25,32 +24,50 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         [Test]
         public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeleted_ThenShouldDeleteAccountLegalEntity()
         {
-            return RunAsync(f => f.Handle(), f => f.AccountLegalEntity.Deleted.Should().Be(f.Command.Removed));
+            return TestAsync(
+                f => f.Handle(), 
+                f => f.AccountLegalEntity.Deleted.Should().Be(f.Command.Removed));
         }
         
         [Test]
         public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldDeleteAccountProviderLegalEntities()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), f => f.AccountLegalEntity.AccountProviderLegalEntities.Should().BeEmpty());
+            return TestAsync(
+                f => f.SetAccountProviderLegalEntities(), 
+                f => f.Handle(), 
+                f => f.AccountLegalEntity.AccountProviderLegalEntities.Should().BeEmpty());
         }
         
         [Test]
         public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesExist_ThenShouldPublishDeletedPermissionsEvents()
         {
-            return RunAsync(f => f.SetAccountProviderLegalEntities(), f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().Should().AllBeOfType<DeletedPermissionsEventV2>()
-                .And.BeEquivalentTo(f.AccountProviderLegalEntities.Select(aple => new DeletedPermissionsEventV2(aple.Id, f.AccountProvider.ProviderUkprn, f.AccountLegalEntity.Id, f.Command.Removed))));
+            return TestAsync(
+                f => f.SetAccountProviderLegalEntities(), 
+                f => f.Handle(), 
+                f => f.UnitOfWorkContext.GetEvents().Should().AllBeOfType<DeletedPermissionsEventV2>()
+                .And.BeEquivalentTo(f.AccountProviderLegalEntities.Select(
+                    aple => new DeletedPermissionsEventV2(
+                        aple.Id, 
+                        f.AccountProvider.ProviderUkprn, 
+                        f.AccountLegalEntity.Id, 
+                        f.Command.Removed))));
         }
         
         [Test]
         public Task Handle_WhenAccountLegalEntityHasNotAlreadyBeenDeletedAndAccountProviderLegalEntitiesDoNotExist_ThenShouldNotPublishDeletedPermissionsEvent()
         {
-            return RunAsync(f => f.Handle(), f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().BeNull());
+            return TestAsync(
+                f => f.Handle(),
+                f => f.UnitOfWorkContext.GetEvents().SingleOrDefault().Should().BeNull());
         }
         
         [Test]
         public Task Handle_WhenAccountLegalEntityHasAlreadyBeenDeleted_ThenShouldThrowException()
         {
-            return RunAsync(f => f.SetAccountLegalEntityDeletedBeforeCommand(), f => f.Handle(), (f, r) => r.Should().Throw<InvalidOperationException>());
+            return TestExceptionAsync(
+                f => f.SetAccountLegalEntityDeletedBeforeCommand(), 
+                f => f.Handle(), 
+                (f, r) => r.Should().ThrowAsync<InvalidOperationException>());
         }
     }
 
@@ -61,7 +78,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public AccountProvider AccountProvider { get; set; }
         public List<AccountProviderLegalEntity> AccountProviderLegalEntities { get; set; }
         public RemoveAccountLegalEntityCommand Command { get; set; }
-        public IRequestHandler<RemoveAccountLegalEntityCommand, Unit> Handler { get; set; }
+        public IRequestHandler<RemoveAccountLegalEntityCommand> Handler { get; set; }
         public ProviderRelationshipsDbContext Db { get; set; }
         public IUnitOfWorkContext UnitOfWorkContext { get; set; }
         public DateTime Now { get; set; }
@@ -69,11 +86,24 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         public RemoveAccountLegalEntityCommandHandlerTestsFixture()
         {
             Now = DateTime.UtcNow;
-            Account = EntityActivator.CreateInstance<Account>().Set(a => a.Id, 1);
-            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>().Set(ale => ale.Id, 2).Set(ale => ale.AccountId, Account.Id);
-            AccountProvider = EntityActivator.CreateInstance<AccountProvider>().Set(ap => ap.Id, 3).Set(ap => ap.AccountId, Account.Id).Set(ap => ap.ProviderUkprn, 12345678);
+            Account = EntityActivator.CreateInstance<Account>()
+                .Set(a => a.Id, 1)
+                .Set(a => a.Name, Guid.NewGuid().ToString())
+                .Set(a => a.HashedId, Guid.NewGuid().ToString())
+                .Set(a => a.PublicHashedId, Guid.NewGuid().ToString());
+            AccountLegalEntity = EntityActivator.CreateInstance<AccountLegalEntity>()
+                .Set(ale => ale.Id, 2)
+                .Set(ale => ale.Name, Guid.NewGuid().ToString())
+                .Set(ale => ale.AccountId, Account.Id)
+                .Set(ale => ale.PublicHashedId, Guid.NewGuid().ToString());
+            AccountProvider = EntityActivator.CreateInstance<AccountProvider>()
+                .Set(ap => ap.Id, 3)
+                .Set(ap => ap.AccountId, Account.Id)
+                .Set(ap => ap.ProviderUkprn, 12345678);
             Command = new RemoveAccountLegalEntityCommand(Account.Id, AccountLegalEntity.Id, Now.AddHours(-1));
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).Options);
+            Db = new ProviderRelationshipsDbContext(
+                new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
             Db.Accounts.Add(Account);
             Db.AccountLegalEntities.Add(AccountLegalEntity);
@@ -102,11 +132,21 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             AccountProviderLegalEntities = new List<AccountProviderLegalEntity>
             {
-                EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 4).Set(aple => aple.AccountProvider, AccountProvider),
-                EntityActivator.CreateInstance<AccountProviderLegalEntity>().Set(aple => aple.Id, 5).Set(aple => aple.AccountProvider, AccountProvider),
+                EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                    .Set(aple => aple.Id, 4)
+                    .Set(aple => aple.AccountProvider, AccountProvider)
+                    .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                    .Set(aple => aple.AccountLegalEntity, AccountLegalEntity)
+                    .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id),
+                EntityActivator.CreateInstance<AccountProviderLegalEntity>()
+                    .Set(aple => aple.Id, 5)
+                    .Set(aple => aple.AccountProvider, AccountProvider)
+                    .Set(aple => aple.AccountProviderId, AccountProvider.Id)
+                    .Set(aple => aple.AccountLegalEntity, AccountLegalEntity)
+                    .Set(aple => aple.AccountLegalEntityId, AccountLegalEntity.Id),
             };
-            
-            AccountLegalEntity.AddRange(ale => ale.AccountProviderLegalEntities, AccountProviderLegalEntities);
+
+            Db.AccountProviderLegalEntities.AddRange(AccountProviderLegalEntities);
             Db.SaveChanges();
             
             return this;

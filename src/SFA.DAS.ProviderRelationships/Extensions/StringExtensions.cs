@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Net;
 
 namespace SFA.DAS.ProviderRelationships.Extensions
@@ -11,17 +11,15 @@ namespace SFA.DAS.ProviderRelationships.Extensions
 
             return output;
         }
-
-        public static string HtmlEncode(this string input)
-        {
-            var output = WebUtility.HtmlEncode(input);
-
-            return output;
-        }
         
-        public static T ToEnum<T>(this string value) where T : Enum
+        //https://stackoverflow.com/a/4878276/1123275
+        public static T? ToNullable<T>(this string s) where T : struct
         {
-            return (T)Enum.Parse(typeof(T), value);
+            if (string.IsNullOrWhiteSpace(s))
+                return default;
+
+            TypeConverter conv = TypeDescriptor.GetConverter(typeof(T));
+            return (T)conv.ConvertFrom(s)!;
         }
     }
 }

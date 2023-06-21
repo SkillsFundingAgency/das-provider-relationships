@@ -1,14 +1,12 @@
-using System.Web.Http;
+namespace SFA.DAS.ProviderRelationships.Api.Controllers;
 
-namespace SFA.DAS.ProviderRelationships.Api.Controllers
+[AllowAnonymous]
+[Route("ping")]
+public class PingController : ControllerBase
 {
-    [RoutePrefix("ping")]
-    public class PingController : ApiController
+    [HttpGet]
+    public IActionResult Get()
     {
-        [Route]
-        public IHttpActionResult Get()
-        {
-            return Ok();
-        }
+        return Ok();
     }
 }

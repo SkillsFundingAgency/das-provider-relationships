@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
+﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.FindProviderViewModel
 
 @{
     var pageTitleNonJs = "Select the training provider you want to add";
@@ -10,18 +12,19 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Index")">Back</a>
+    <a class="govuk-back-link" asp-controller="@AccountProviders.ControllerName" asp-action="@AccountProviders.ActionNames.Index" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+        <partial name="_ValidationSummary" model="ViewData.ModelState" />
     </div>
 </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<form method="post"
+      asp-controller="@AccountProviders.ControllerName"
+      asp-action="@AccountProviders.ActionNames.Find"
+      asp-route-AccountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">
 
     <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--xl" for="Ukprn">
@@ -35,11 +38,11 @@
             <p class="das-js-show govuk-body">
                 A UKPRN is the unique, 8-digit number we use to identify a training provider. Ask your training provider if you do not know it.
             </p>
-            <div class="govuk-form-group@(Html.IsValid(m => m.Ukprn) ? "" : " govuk-form-group--error")">
+            <div class="govuk-form-group@(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
                 <span class="govuk-error-message">
                     @Html.ValidationMessageFor(m => m.Ukprn)
                 </span>
-                <select id="Ukprn" name="Ukprn" class="govuk-select">
+                <select id="Ukprn" name="Ukprn" class="govuk-select" data-module="autoComplete">
                     <option class="das-js-hide" value="">Select training provider</option>
                     @foreach (var provider in Model.Providers)
                     {
@@ -51,38 +54,4 @@
         </div>
     </div>
 
-}
-
-<script>
-    document.title = document.getElementById('jsChgTitle').textContent;
-    window.onload = function () {
-        var ukprn = jQuery('#Ukprn');
-
-        var gfg = ukprn.closest('.govuk-form-group');
-        if (gfg.hasClass('govuk-form-group--error')) {
-            ukprn.css('border', '4px solid #df3034');
-        }
-
-        var ukprnForm = ukprn.closest('form');
-
-        jQuery('#Ukprn-button').on('click', function (e) {
-            e.preventDefault();
-
-            var ukprnVal = ukprn.val();
-
-            if (ukprnVal) {//has a value
-                ukprnForm.append('<input type="hidden" id="Ukprn-hidden" name="Ukprn-hidden" value="' + ukprnVal + '">').submit();
-            } else {
-                ukprnForm.submit();
-            }
-        });
-        ukprn.attr('type', 'search');
-        document.getElementById('Ukprn').addEventListener('search', function () {
-            ukprn.keyup(function () {
-                if (this.value.length === 3) {
-                    document.getElementById('Ukprn__listbox').scrollTop = 0;
-                }
-            });
-        });//chrome supported to resolve chrome behaviour (resets list if cleared)
-    };
-</script>
+</form>

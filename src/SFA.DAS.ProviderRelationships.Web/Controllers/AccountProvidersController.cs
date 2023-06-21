@@ -1,10 +1,4 @@
-using System;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using AutoMapper;
-using MediatR;
-using SFA.DAS.Authorization.EmployerUserRoles;
-using SFA.DAS.Authorization.Mvc;
+using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
@@ -13,216 +7,241 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
+using SFA.DAS.ProviderRelationships.Authorization;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
+using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
+using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviderLegalEntities;
 using SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders;
 using SFA.DAS.ProviderRelationships.Web.Urls;
 using SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders;
-using SFA.DAS.Validation.Mvc;
+using SFA.DAS.Validation.Mvc.Attributes;
 
-namespace SFA.DAS.ProviderRelationships.Web.Controllers
+namespace SFA.DAS.ProviderRelationships.Web.Controllers;
+
+[Route("accounts/{accountHashedId}/providers")]
+public class AccountProvidersController : Controller
 {
-    [RoutePrefix("accounts/{accountHashedId}/providers")]
-    public class AccountProvidersController : Controller
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
+    private readonly IEmployerUrls _employerUrls;
+    private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
+    private readonly IEncodingService _encodingService;
+    private readonly ILogger<AccountProvidersController> _logger;
+
+    public AccountProvidersController(
+        IMediator mediator,
+        IMapper mapper,
+        IEmployerUrls employerUrls,
+        IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler,
+        IEncodingService encodingService,
+        ILogger<AccountProvidersController> logger)
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-        private readonly IEmployerUrls _employerUrls;
+        _mediator = mediator;
+        _mapper = mapper;
+        _employerUrls = employerUrls;
+        _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
+        _encodingService = encodingService;
+        _logger = logger;
+    }
 
-        public AccountProvidersController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls)
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
+    [Route("")]
+    public async Task<IActionResult> Index(string accountHashedId)
+    {
+        var accountId = _encodingService.Decode(accountHashedId, EncodingType.AccountId);
+        var query = new GetAccountProvidersQuery(accountId);
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<AccountProvidersViewModel>(result);
+
+        return View(model);
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route(RouteNames.Find)]
+    public async Task<IActionResult> Find()
+    {
+        var query = new GetAllProvidersQuery();
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<FindProviderViewModel>(result);
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route(RouteNames.Find)]
+    public async Task<IActionResult> Find(FindProviderEditModel model)
+    {
+        var accountId = _encodingService.Decode(model.AccountHashedId, EncodingType.AccountId);
+        var ukprn = long.Parse(model.Ukprn);
+        var query = new FindProviderToAddQuery(accountId, ukprn);
+
+        var result = await _mediator.Send(query);
+
+        if (result.ProviderNotFound)
         {
-            _mediator = mediator;
-            _mapper = mapper;
-            _employerUrls = employerUrls;
+            ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.RequiredUkprn);
+
+            return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
         }
 
-        [DasAuthorize(EmployerUserRole.Any)]
-        [Route]
-        public async Task<ActionResult> Index(AccountProvidersRouteValues routeValues)
+        if (result.ProviderAlreadyAdded)
         {
-            var query = new GetAccountProvidersQuery(routeValues.AccountId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<AccountProvidersViewModel>(result);
-
-            return View(model);
+            return RedirectToAction(AccountProviders.ActionNames.AlreadyAdded, new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
         }
 
-        [ChildActionOnly]
-        public ActionResult AccountProvidersWithSingleOrganisation(AccountProvidersViewModel model)
+        return RedirectToAction(AccountProviders.ActionNames.Add, new { result.Ukprn, model.AccountHashedId });
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [HttpNotFoundForNullModel]
+    [Route(RouteNames.Add)]
+    public async Task<IActionResult> Add(AddAccountProviderRouteValues routeValues)
+    {
+        var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<AddAccountProviderViewModel>(result);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route(RouteNames.Add)]
+    public async Task<IActionResult> Add(AddAccountProviderViewModel model)
+    {
+        _logger.LogInformation("Starting controller action 'Add' in {TypeName}.", nameof(AccountProvidersController));
+        
+        model.UserRef = User.GetUserRef();
+        model.AccountId = _encodingService.Decode(model.AccountHashedId, EncodingType.AccountId);
+        
+        _logger.LogInformation("UserRef: '{UserRef}', AccountHashedId: '{AccountHashedId}' AccountId: '{AccountId}', UkPrn: '{UkPrn}'.", model.UserRef, model.AccountHashedId, model.AccountId, model.Ukprn);
+        
+        switch (model.Choice)
         {
-            return PartialView(model);
+            case "Confirm":
+                var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
+                var accountProviderId = await _mediator.Send(command);
+
+                return RedirectToAction(AccountProviders.ActionNames.Added, new { AccountProviderId = accountProviderId, model.AccountHashedId });
+            case "ReEnterUkprn":
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
+            default:
+                throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [HttpNotFoundForNullModel]
+    [Route("{accountProviderId}/added")]
+    public async Task<IActionResult> Added(AddedAccountProviderRouteValues routeValues)
+    {
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var query = new GetAddedAccountProviderQuery(accountId, routeValues.AccountProviderId.Value);
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<AddedAccountProviderViewModel>(result);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route("{accountProviderId}/added")]
+    public IActionResult Added(AddedAccountProviderViewModel model)
+    {
+        switch (model.Choice)
+        {
+            case "SetPermissions":
+                return RedirectToAction(AccountProviders.ActionNames.Get, new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value, AccountHashedId = model.AccountHashedId });
+            case "AddTrainingProvider":
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
+            case "GoToHomepage":
+                return Redirect(_employerUrls.Account());
+            default:
+                throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [HttpNotFoundForNullModel]
+    [Route("{accountProviderId}/alreadyadded")]
+    public async Task<IActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
+    {
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var query = new GetAddedAccountProviderQuery(accountId, routeValues.AccountProviderId.Value);
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<AlreadyAddedAccountProviderViewModel>(result);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route("{accountProviderId}/alreadyadded")]
+    public IActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
+    {
+        switch (model.Choice)
+        {
+            case "SetPermissions":
+                return RedirectToAction(AccountProviders.ActionNames.Get, new { model.AccountHashedId });
+            case "AddTrainingProvider":
+                return RedirectToAction(AccountProviders.ActionNames.Find, new { model.AccountHashedId });
+            default:
+                throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
+    [HttpNotFoundForNullModel]
+    [Route("{accountProviderId}")]
+    public async Task<IActionResult> Get(GetAccountProviderRouteValues routeValues)
+    {
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var query = new GetAccountProviderQuery(accountId, routeValues.AccountProviderId.Value);
+        var result = await _mediator.Send(query);
+        var model = _mapper.Map<GetAccountProviderViewModel>(result);
+
+        model.IsUpdatePermissionsOperationAuthorized = await _employerAccountAuthorizationHandler.CheckUserAccountAccess(User, EmployerUserRole.Owner);
+
+        if (model?.AccountProvider.AccountLegalEntities.Count == 1)
+        {
+            return RedirectToAction(AccountProviderLegalEntities.ActionNames.Permissions, AccountProviderLegalEntities.ControllerName, new AccountProviderLegalEntityRouteValues {
+                AccountHashedId = routeValues.AccountHashedId,
+                AccountProviderId = model.AccountProvider.Id,
+                AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id
+            });
         }
 
-        [ChildActionOnly]
-        public ActionResult AccountProvidersWithMultipleOrganisation(AccountProvidersViewModel model)
+        return View(model);
+    }
+
+    [HttpGet]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
+    [Route("invitation/{correlationId}")]
+    public async Task<IActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
+    {
+        HttpContext.Session.SetString("Invitation", "true");
+
+        var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
+
+        var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
+        var verify = await _mediator.Send(new FindProviderToAddQuery(accountId, invitation.Invitation.Ukprn));
+
+        if (verify.ProviderNotFound || verify.ProviderAlreadyAdded)
         {
-            return PartialView(model);
+            return RedirectToAction(AccountProviders.ActionNames.Index, new { routeValues.AccountHashedId });
         }
 
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [Route("find")]
-        public async Task<ActionResult> Find()
-        {
-            var query = new GetAllProvidersQuery();
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<FindProviderViewModel>(result);
-            return View(model);
-        }
+        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("find")]
-        public async Task<ActionResult> Find(FindProviderEditModel model)
-        {
-
-            var ukprn = long.Parse(model.Ukprn);
-            var query = new FindProviderToAddQuery(model.AccountId.Value, ukprn);
-
-            var result = await _mediator.Send(query);
-
-            if (result.ProviderNotFound)
-            {
-                ModelState.AddModelError(nameof(model.Ukprn), ErrorMessages.RequiredUkprn);
-
-                return RedirectToAction("Find");
-            }
-
-            if (result.ProviderAlreadyAdded)
-            {
-                return RedirectToAction("AlreadyAdded", new AlreadyAddedAccountProviderRouteValues { AccountProviderId = result.AccountProviderId.Value });
-            }
-
-            return RedirectToAction("Add", new AddAccountProviderRouteValues { Ukprn = result.Ukprn });
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpNotFoundForNullModel]
-        [Route("add")]
-        public async Task<ActionResult> Add(AddAccountProviderRouteValues routeValues)
-        {
-            var query = new GetProviderToAddQuery(routeValues.Ukprn.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<AddAccountProviderViewModel>(result);
-          
-            return View(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("add")]
-        public async Task<ActionResult> Add(AddAccountProviderViewModel model)
-        {
-            switch (model.Choice)
-            {
-                case "Confirm":
-                    var command = new AddAccountProviderCommand(model.AccountId.Value, model.Ukprn.Value, model.UserRef.Value);
-                    var accountProviderId = await _mediator.Send(command);
-
-                    return RedirectToAction("Added", new AddedAccountProviderRouteValues { AccountProviderId = accountProviderId });
-                case "ReEnterUkprn":
-                    return RedirectToAction("Find");
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
-            }
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpNotFoundForNullModel]
-        [Route("{accountProviderId}/added")]
-        public async Task<ActionResult> Added(AddedAccountProviderRouteValues routeValues)
-        {
-            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<AddedAccountProviderViewModel>(result);
-
-            return View(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("{accountProviderId}/added")]
-        public ActionResult Added(AddedAccountProviderViewModel model)
-        {
-            switch (model.Choice)
-            {
-                case "SetPermissions":
-                    return RedirectToAction("Get", new GetAccountProviderRouteValues { AccountProviderId = model.AccountProviderId.Value });
-                case "AddTrainingProvider":
-                    return RedirectToAction("Find");
-                case "GoToHomepage":
-                    return Redirect(_employerUrls.Account());
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
-            }
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpNotFoundForNullModel]
-        [Route("{accountProviderId}/alreadyadded")]
-        public async Task<ActionResult> AlreadyAdded(AlreadyAddedAccountProviderRouteValues routeValues)
-        {
-            var query = new GetAddedAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<AlreadyAddedAccountProviderViewModel>(result);
-
-            return View(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("{accountProviderId}/alreadyadded")]
-        public ActionResult AlreadyAdded(AlreadyAddedAccountProviderViewModel model)
-        {
-            switch (model.Choice)
-            {
-                case "SetPermissions":
-                    return RedirectToAction("Get");
-                case "AddTrainingProvider":
-                    return RedirectToAction("Find");
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(model.Choice), model.Choice);
-            }
-        }
-
-        [DasAuthorize(EmployerUserRole.Any)]
-        [HttpNotFoundForNullModel]
-        [Route("{accountProviderId}")]
-        public async Task<ActionResult> Get(GetAccountProviderRouteValues routeValues)
-        {
-            var query = new GetAccountProviderQuery(routeValues.AccountId.Value, routeValues.AccountProviderId.Value);
-            var result = await _mediator.Send(query);
-            var model = _mapper.Map<GetAccountProviderViewModel>(result);
-
-            if (model?.AccountProvider.AccountLegalEntities.Count == 1)
-            {
-                return RedirectToAction("Permissions", "AccountProviderLegalEntities", new AccountProviderLegalEntityRouteValues { AccountProviderId = model.AccountProvider.Id, AccountLegalEntityId = model.AccountProvider.AccountLegalEntities[0].Id });
-            }
-
-            return View(model);
-        }
-
-        [DasAuthorize(EmployerUserRole.Owner)]
-        [Route("invitation/{correlationId}")]
-        public async Task<ActionResult> Invitation(InvitationAccountProviderRouteValues routeValues)
-        {
-            Session["Invitation"] = true;
-
-            var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
-
-            var verify = await _mediator.Send(new FindProviderToAddQuery(routeValues.AccountId.Value, invitation.Invitation.Ukprn));
-
-            if (verify.ProviderNotFound || verify.ProviderAlreadyAdded)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(routeValues.AccountId.Value, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
-
-            return RedirectToAction("Get", new { AccountProviderId = accountProviderId });
-        }
+        return RedirectToAction(AccountProviders.ActionNames.Get, new { AccountProviderId = accountProviderId, routeValues.AccountHashedId });
     }
 }

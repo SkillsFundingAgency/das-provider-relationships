@@ -1,106 +1,175 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Owin;
-using Microsoft.Owin.Host.SystemWeb;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using NLog;
-using Owin;
-using SFA.DAS.EmployerUsers.WebClientComponents;
-using SFA.DAS.OidcMiddleware;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
+using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.Employer.Shared.UI;
+using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.NServiceBus.Features.ClientOutbox.Data;
+using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Configuration;
-using SFA.DAS.ProviderRelationships.Web;
-using SFA.DAS.ProviderRelationships.Web.App_Start;
+using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Mappings;
+using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
-
-[assembly: OwinStartup(typeof(Startup))]
+using SFA.DAS.ProviderRelationships.Web.Extensions;
+using SFA.DAS.ProviderRelationships.Web.Filters;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
+using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
+using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
+using SFA.DAS.UnitOfWork.Mvc.Extensions;
+using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
+using SFA.DAS.Validation.Mvc.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Web
 {
     public class Startup
     {
-        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfigurationRoot _configuration;
 
-        public void Configuration(IAppBuilder app)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            var container = StructuremapMvc.StructureMapDependencyScope.Container;
-            var config = container.GetInstance<IOidcConfiguration>();
-            var authenticationUrls = container.GetInstance<IAuthenticationUrls>();
-            var postAuthenticationHandler = container.GetInstance<IPostAuthenticationHandler>();
-            
-            Logger.Info("Starting Provider Relationships web application");
-            Logger.Info("Initializing Authentication");
-
-            // Use SystemWebCookieManager to prevent conflict between
-            // Owin Cookies modifying collection via Set-Cookie
-            // And System.Web modifying Response.Cookies Collection
-            // https://web.archive.org/web/20170912171644/https:/katanaproject.codeplex.com/workitem/197
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions {
-                CookieName = "provider-relationships",
-                AuthenticationType = "Cookies",
-                ExpireTimeSpan = new TimeSpan(0, 10, 0),
-                SlidingExpiration = true,
-                CookieManager = new SystemWebCookieManager()
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions {
-                CookieName = "provider-relationships-temp",
-                AuthenticationType = "TempState",
-                AuthenticationMode = AuthenticationMode.Passive,
-                CookieManager = new SystemWebCookieManager()
-            });
-
-            app.UseCodeFlowAuthentication(new OidcMiddlewareOptions {
-                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
-                BaseUrl = config.BaseAddress,
-                ClientId = config.ClientId,
-                ClientSecret = config.ClientSecret,
-                Scopes = config.Scopes,
-                AuthorizeEndpoint = authenticationUrls.AuthorizeEndpoint,
-                TokenEndpoint = authenticationUrls.TokenEndpoint,
-                UserInfoEndpoint = authenticationUrls.UserInfoEndpoint,
-                TokenSigningCertificateLoader = GetSigningCertificate(config.UseCertificate, false, config.TokenCertificateThumbprint),
-                TokenValidationMethod = config.UseCertificate ? TokenValidationMethod.SigningKey : TokenValidationMethod.BinarySecret,
-                AuthenticatedCallback = i => postAuthenticationHandler.Handle(i)
-            });
-
-            ConfigurationFactory.Current = new IdentityServerConfigurationFactory(config);
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
+            _environment = environment;
+            _configuration = configuration.BuildDasConfiguration();
         }
 
-        private Func<X509Certificate2> GetSigningCertificate(bool useCertificate, bool isDevEnvironement, string certThumbprint)
+        public void ConfigureServices(IServiceCollection services)
         {
-            if (!useCertificate)
+            services.AddSingleton(_configuration);
+            services.AddLogging();
+            services.AddHttpContextAccessor();
+
+            services.AddAutoConfiguration();
+            services.AddConfigurationOptions(_configuration);
+
+            services.AddApplicationServices()
+                    .AddApiClients();
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(FindProviderToAddQuery)))
+                    .AddAutoMapper(typeof(AccountProviderLegalEntityMappings),
+                        typeof(Mappings.HealthCheckMappings));
+
+            var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
+
+            services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
+
+            services
+                .AddEntityFramework(providerRelationshipsConfiguration)
+                .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
+                .AddNServiceBusClientUnitOfWork();
+
+            services.AddAuthenticationServices();
+
+            var identityServerConfiguration = _configuration
+                .GetSection("Oidc")
+                .Get<IdentityServerConfiguration>();
+
+            if (_configuration.UseGovUkSignIn())
             {
-                return null;
+                services.AddAndConfigureGovUkAuthentication(
+                    _configuration,
+                    typeof(EmployerAccountPostAuthenticationClaimsHandler),
+                    "",
+                    "/service/SignIn-Stub");
+                services.AddMaMenuConfiguration(RouteNames.SignOut, _configuration["ResourceEnvironmentName"]);
+            }
+            else
+            {
+                services.AddAndConfigureEmployerAuthentication(identityServerConfiguration);
+                services.AddMaMenuConfiguration(RouteNames.SignOut, identityServerConfiguration.ClientId, _configuration["ResourceEnvironmentName"]);
             }
 
-            return () =>
-            {
-                var storeLocation = isDevEnvironement ? StoreLocation.LocalMachine : StoreLocation.CurrentUser;
-                var store = new X509Store(StoreName.My, storeLocation);
-                store.Open(OpenFlags.ReadOnly);
-                try
-                {
-                    var thumbprint = certThumbprint;
-                    var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+            services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
-                    if (certificates.Count < 1)
+            services.Configure<RouteOptions>(options =>
+                {
+
+                }).AddMvc(options =>
+                {
+                    options.AddValidation();
+
+                    if (!_configuration.IsDev())
                     {
-                        throw new Exception($"Could not find certificate with thumbprint {thumbprint} in CurrentUser store");
+                        options.Filters.Add(new GoogleAnalyticsFilterAttribute());
+                        options.Filters.Add(new UrlsViewBagFilterAttribute());
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
+                })
+                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
 
-                    return certificates[0];
-                }
-                finally
+            services.AddApplicationInsightsTelemetry();
+
+            services.AddSession(options => options.Cookie.IsEssential = true);
+
+            if (!_environment.IsDevelopment())
+            {
+                services.AddHealthChecks();
+                services.AddDataProtection(_configuration);
+            }
+#if DEBUG
+            services.AddControllersWithViews()
+                    .AddRazorRuntimeCompilation();
+#endif
+        }
+
+        public void ConfigureContainer(UpdateableServiceProvider serviceProvider)
+        {
+            serviceProvider.StartNServiceBus(_configuration, _configuration.IsDevOrLocal());
+            var outboxStorageService = serviceProvider.FirstOrDefault(serv => serv.ServiceType == typeof(IClientOutboxStorageV2));
+            serviceProvider.Remove(outboxStorageService);
+            serviceProvider.AddScoped<IClientOutboxStorageV2, ClientOutboxPersisterV2>();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error/500");
+                app.UseHealthChecks("/ping");
+            }
+            
+            app.UseAuthentication();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseUnitOfWork();
+            app.UseHttpsRedirection();
+            app.UseCookiePolicy();
+            app.UseSession();
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Response.Headers.ContainsKey("X-Frame-Options"))
                 {
-                    store.Close();
+                    context.Response.Headers.Remove("X-Frame-Options");
                 }
-            };
+
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+
+                await next();
+
+                if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    var originalPath = context.Request.Path.Value;
+                    context.Items["originalPath"] = originalPath;
+                    context.Request.Path = "/error/404";
+                    await next();
+                }
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 }

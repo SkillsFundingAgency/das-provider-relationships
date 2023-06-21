@@ -1,33 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <TargetFramework>net462</TargetFramework>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
-    
     <ItemGroup>
-        <PackageReference Include="AutoFixture" Version="4.6.0" />
-        <PackageReference Include="AutoFixture.NUnit3" Version="4.6.0" />
-        <PackageReference Include="AutoMapper " Version="7.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="AutoFixture.NUnit3" Version="4.18.0" />
+        <PackageReference Include="AutoMapper " Version="12.0.1" />
         <PackageReference Include="CloneExtensions" Version="1.4.2" />
-        <PackageReference Include="MediatR" Version="6.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-        <PackageReference Include="Moq" Version="4.10.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
         <PackageReference Include="NServiceBus.Testing" Version="7.0.0" />
-        <PackageReference Include="NUnit" Version="3.11.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
-        <PackageReference Include="SFA.DAS.CosmosDb" Version="1.0.47" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NLog" Version="5.1.1" />
         <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.47" />
-        <PackageReference Include="SFA.DAS.Testing" Version="2.0.5" />
+        <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
+        <PackageReference Include="coverlet.msbuild" Version="3.2.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.ProviderRelationships.MessageHandlers\SFA.DAS.ProviderRelationships.MessageHandlers.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="System" />
-    </ItemGroup>
-
 </Project>

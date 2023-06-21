@@ -1,13 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using SFA.DAS.Authorization;
-
-namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
+﻿namespace SFA.DAS.ProviderRelationships.Web.RouteValues.AccountProviders
 {
-    public class InvitationAccountProviderRouteValues : IAuthorizationContextModel
+    public class InvitationAccountProviderRouteValues
     {
         [Required]
-        public long? AccountId { get; set; }
+        public string AccountHashedId { get; set; }
 
         [Required]
         public Guid? CorrelationId { get; set; }

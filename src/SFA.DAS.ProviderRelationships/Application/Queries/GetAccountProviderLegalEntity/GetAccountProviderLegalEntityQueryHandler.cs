@@ -6,7 +6,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SFA.DAS.HashingService;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalEntity.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Services;
@@ -18,14 +17,12 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLe
         private readonly Lazy<ProviderRelationshipsDbContext> _db;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly IDasRecruitService _dasRecruitService;
-        private readonly IHashingService _hashingService;
 
-        public GetAccountProviderLegalEntityQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IDasRecruitService dasRecruitService, IConfigurationProvider configurationProvider, IHashingService hashingService)
+        public GetAccountProviderLegalEntityQueryHandler(Lazy<ProviderRelationshipsDbContext> db, IDasRecruitService dasRecruitService, IConfigurationProvider configurationProvider)
         {
             _db = db;
             _configurationProvider = configurationProvider;
             _dasRecruitService = dasRecruitService;
-            _hashingService = hashingService;
         }
 
         public async Task<GetAccountProviderLegalEntityQueryResult> Handle(GetAccountProviderLegalEntityQuery request, CancellationToken cancellationToken)

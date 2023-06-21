@@ -1,19 +1,9 @@
-﻿using SFA.DAS.ProviderRelationships.Api.Client.Configuration;
-using SFA.DAS.ProviderRelationships.Extensions;
+﻿using SFA.DAS.ProviderRelationships.Extensions;
 
 namespace SFA.DAS.ProviderRelationships.Configuration
 {
-    public class ProviderRelationshipsConfiguration
+    public class ProviderRelationshipsConfiguration : IProviderRelationshipsConfiguration
     {
-        public AzureActiveDirectoryConfiguration AzureActiveDirectory { get; set; }
-        public OidcConfiguration Oidc { get; set; }
-        public ProviderRelationshipsApiConfiguration ProviderRelationshipsApi { get; set; }
-        public ReadStoreConfiguration ReadStore { get; set; }
-        public EmployerUrlsConfiguration EmployerUrls { get; set; }
-        public PasAccountApiConfiguration PasAccountApi { get; set; }
-        public RecruitApiConfiguration RecruitApiClientConfiguration { get; set; }
-        public RegistrationApiConfiguration RegistrationApiClientConfiguration { get; set; }
-        public RoatpApiConfiguration RoatpApiClientSettings { get; set; }
         public string CdnBaseUrl { get; set; }
 
         public string AllowedHashstringCharacters { get; set; }
@@ -22,15 +12,20 @@ namespace SFA.DAS.ProviderRelationships.Configuration
         public string ServiceBusConnectionString { get; set; }
 
         public string NServiceBusLicense {
-            get => _decodedNServiceBusLicense ?? (_decodedNServiceBusLicense = _nServiceBusLicense.HtmlDecode());
+            get => _decodedNServiceBusLicense ??= _nServiceBusLicense.HtmlDecode();
             set => _nServiceBusLicense = value;
         }
-        
+
         private string _nServiceBusLicense;
         private string _decodedNServiceBusLicense;
         public string ZenDeskSnippetKey { get; set; }
         public string ZenDeskSectionId { get; set; }
         public string ApprenticeshipProgrammesApiBaseUrl { get; set; }
         public string ProviderPortalBaseUrl { get; set; }
+        public string EnvironmentName { get; set; }
+        public string ApplicationBaseUrl { get; set; }
+        public bool UseGovUkSignIn { get; set; }
+        public string DataProtectionKeysDatabase { get; set; }
+        public string RedisConnectionString { get; set; }
     }
-}   
+}

@@ -10,7 +10,6 @@
         <p class="govuk-body">Running a health check will test the availability of each application. Please note that this can take a few minutes to complete.</p>
         @using (Html.BeginForm())
         {
-            @Html.AntiForgeryToken()
             <div class="govuk-form-group">
                 @if (Model.HealthCheck != null)
                 {
@@ -18,8 +17,8 @@
                         <thead>
                             <tr>
                                 <td class="govuk-table__cell"></td>
-                                <th class="govuk-table__header govuk-table__header--center" colspan="2">Request/Response</th>
-                                <th class="govuk-table__header govuk-table__header--center" colspan="2">Publish/Subscribe</th>
+                                <th class="govuk-table__header govuk-table__header--center" colspan="2" scope="col">Request/Response</th>
+                                <th class="govuk-table__header govuk-table__header--center" colspan="2" scope="col">Publish/Subscribe</th>
                             </tr>
                             <tr>
                                 <td class="govuk-table__cell govuk-table__cell--center"></td>

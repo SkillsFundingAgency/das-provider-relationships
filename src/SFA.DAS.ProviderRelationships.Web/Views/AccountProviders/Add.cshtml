@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AddAccountProviderViewModel
+﻿@using SFA.DAS.ProviderRelationships.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.ProviderRelationships.Web.ViewModels.AccountProviders.AddAccountProviderViewModel
 
 @{
     ViewBag.Title = "Confirm training provider";
@@ -9,20 +11,19 @@
 
 @section breadcrumb
 {
-    <a class="govuk-back-link" href="@Url.Action("Find")">Back</a>
+    <a class="govuk-back-link" asp-action="@AccountProviders.ActionNames.Find" asp-controller="@AccountProviders.ControllerName" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]">Back</a>
 }
 
 <div class="govuk-grid-row">    
     
     <div class="govuk-grid-column-two-thirds">
-        @Html.Partial("_ValidationSummary", ViewData.ModelState)
+        <partial name="_ValidationSummary" model="ViewData.ModelState"/>
 
         <h1 class="govuk-panel__title">Confirm training provider</h1>
         <p class="govuk-body">The details you entered are for @Model.Provider.Name, (@Model.Provider.Ukprn).</p>
 
         @using (Html.BeginForm())
         {
-            @Html.AntiForgeryToken()
             <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : " govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

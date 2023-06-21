@@ -1,4 +1,5 @@
-﻿@using SFA.DAS.ProviderRelationships.Web.Extensions
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<ProviderRelationshipsConfiguration> ConfigOptions
 
 <script type="text/javascript">
     window.zESettings = {
@@ -13,11 +14,13 @@
             },
             helpCenter: {
                 filter: {
-                    section: "@Html.GetZenDeskSnippetSectionId()"
+                    section: "@ConfigOptions.Value.ZenDeskSectionId"
                 }
             }
         }
     };
 </script>
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@Html.GetZenDeskSnippetKey()"></script>
-@Html.SetZenDeskLabels(new string[] { ViewBag.ZenDeskLabel })
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@ConfigOptions.Value.ZenDeskSnippetKey"></script>
+<script type="text/javascript">
+  zE('webWidget', 'helpCenter:setSuggestions', { labels: ['@ViewBag.ZenDeskLabel'] });
+</script>

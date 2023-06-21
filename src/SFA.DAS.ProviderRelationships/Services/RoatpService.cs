@@ -1,39 +1,37 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SFA.DAS.Http;
 using SFA.DAS.ProviderRelationships.Models;
 
-namespace SFA.DAS.ProviderRelationships.Services
+namespace SFA.DAS.ProviderRelationships.Services;
+
+public class RoatpService : IRoatpService
 {
-    public class RoatpService : IRoatpService
+    private readonly IRestHttpClient _client;
+
+    public RoatpService(IRoatpApiHttpClientFactory roatpApiHttpClientFactory)
     {
-        private IRestHttpClient _client;
+        _client = roatpApiHttpClientFactory.CreateRestHttpClient();
+    }
 
-        public RoatpService(IRoatpApiHttpClientFactory roatpApiHttpClientFactory)
+    public async Task<bool> Ping()
+    {
+        try
         {
-            _client = roatpApiHttpClientFactory.CreateRestHttpClient();
+            await _client.Get("ping");
         }
-
-        public async Task<bool> Ping()
+        catch (RestHttpClientException )
         {
-            try
-            {
-                await _client.Get("ping");
-            }
-            catch (RestHttpClientException )
-            {
-                return false;
-            }
+            return false;
+        }
             
-            return true;
-        }
+        return true;
+    }
 
-        public async Task<IEnumerable<ProviderRegistration>> GetProviders()
-        {
-            var providers = await _client.Get<List<ProviderRegistration>>("api/v1/fat-data-export");
+    public async Task<IEnumerable<ProviderRegistration>> GetProviders()
+    {
+        var providers = await _client.Get<List<ProviderRegistration>>("api/v1/fat-data-export");
 
-            return providers;
-        }
+        return providers;
     }
 }
