@@ -1,5 +1,6 @@
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
@@ -8,7 +9,9 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAllProviders;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
+using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Validation;
+using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
@@ -30,6 +33,7 @@ public class AccountProvidersController : Controller
     private readonly IEmployerAccountAuthorisationHandler _employerAccountAuthorizationHandler;
     private readonly IEncodingService _encodingService;
     private readonly ILogger<AccountProvidersController> _logger;
+    private readonly IUserAccountService _userAccountService;
 
     public AccountProvidersController(
         IMediator mediator,
@@ -37,7 +41,8 @@ public class AccountProvidersController : Controller
         IEmployerUrls employerUrls,
         IEmployerAccountAuthorisationHandler employerAccountAuthorizationHandler,
         IEncodingService encodingService,
-        ILogger<AccountProvidersController> logger)
+        ILogger<AccountProvidersController> logger,
+        IUserAccountService userAccountService)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -45,6 +50,7 @@ public class AccountProvidersController : Controller
         _employerAccountAuthorizationHandler = employerAccountAuthorizationHandler;
         _encodingService = encodingService;
         _logger = logger;
+        _userAccountService = userAccountService;
     }
 
     [HttpGet]
@@ -52,10 +58,23 @@ public class AccountProvidersController : Controller
     [Route("")]
     public async Task<IActionResult> Index(string accountHashedId)
     {
-        var accountId = _encodingService.Decode(accountHashedId, EncodingType.AccountId);
-        var query = new GetAccountProvidersQuery(accountId);
+        var query = new GetAccountProvidersQuery(_encodingService.Decode(accountHashedId, EncodingType.AccountId));
         var result = await _mediator.Send(query);
         var model = _mapper.Map<AccountProvidersViewModel>(result);
+
+        var userId = HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserIdClaimTypeIdentifier)?.Value.ToString();
+        var email = HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserEmailClaimTypeIdentifier)?.Value.ToString();
+        var userResult = await _userAccountService.GetUserAccounts(userId, email);
+
+        if (!string.IsNullOrEmpty(userResult?.FirstName))
+        {
+            await _mediator.Send(new CreateOrUpdateUserCommand(
+                Guid.Parse(userResult.EmployerUserId),
+                userResult.Email,
+                userResult.FirstName,
+                userResult.LastName
+            ));    
+        }
 
         return View(model);
     }
