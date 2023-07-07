@@ -50,6 +50,21 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 ), CancellationToken.None), Times.Once);
         });
     }
+    
+    [Test]
+    public Task Index_WhenGettingIndexAction_ThenDoesNotUpsertIfNoMatchingUser()
+    {
+        return TestAsync(f => f.IndexNoMatching(), (f, r) =>
+        {
+            
+            var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
+
+            model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
+            model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
+            
+            f.Mediator.Verify(x=>x.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None), Times.Never);
+        });
+    }
 
     [Test]
     public void Find_WhenGettingFindAction_ThenShouldReturnFindView()
@@ -407,6 +422,30 @@ public class AccountProvidersControllerTestsFixture
             Email = Email,
             EmployerUserId = UserId
         });
+
+        return AccountProvidersController.Index(AccountHashedId);
+    }
+    public Task<IActionResult> IndexNoMatching()
+    {
+        const long accountId = 1;
+
+        EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
+
+        GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(
+            new List<AccountProviderDto> {
+                new() {
+                    Id = 2,
+                    ProviderName = "Foo"
+                }
+            },
+            2);
+
+        Mediator.Setup(m =>
+                m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == accountId),
+                    CancellationToken.None))
+            .ReturnsAsync(GetAccountProvidersQueryResult);
+        
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts());
 
         return AccountProvidersController.Index(AccountHashedId);
     }
