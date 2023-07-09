@@ -70,7 +70,7 @@ public class AccountProvidersController : Controller
         {
             await _mediator.Send(new CreateOrUpdateUserCommand(
                 Guid.Parse(userResult.EmployerUserId),
-                userResult.Email,
+                email,
                 userResult.FirstName,
                 userResult.LastName
             ));    

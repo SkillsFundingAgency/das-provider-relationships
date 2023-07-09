@@ -13,8 +13,6 @@ public class GetUserAccountsResponse
     public string LastName { get; set; }
     [JsonProperty(PropertyName = "userAccounts")]
     public List<EmployerIdentifier> UserAccounts { get; set; }
-    [JsonProperty(PropertyName = "email")]
-    public string Email { get; set; }
     [JsonProperty(PropertyName = "isSuspended")]
     public bool IsSuspended { get; set; }
 }

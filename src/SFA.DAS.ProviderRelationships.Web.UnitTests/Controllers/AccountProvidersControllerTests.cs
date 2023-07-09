@@ -419,7 +419,6 @@ public class AccountProvidersControllerTestsFixture
         UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts {
             FirstName = FirstName,
             LastName = LastName,
-            Email = Email,
             EmployerUserId = UserId
         });
 
