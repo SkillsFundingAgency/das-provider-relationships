@@ -56,11 +56,6 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
 
         var result = await _userAccountService.GetUserAccounts(userId, email);
 
-        // TODO: This needs removing and was only added back into this area to facilitate the completion of the NET6 upgrade work.
-        // If provider-relationships is going to keep a local cache of users then it needs a better way to keep it in sync
-        var unitOfWorkScope = tokenValidatedContext.HttpContext.RequestServices?.GetService<IUnitOfWorkScope>();
-        await SaveUser(unitOfWorkScope, result, email);
-
         if (result.IsSuspended)
         {
             claims.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
@@ -84,25 +79,4 @@ public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
         return claims;
     }
 
-    private static async Task SaveUser(IUnitOfWorkScope unitOfWorkScope, EmployerUserAccounts account, string email)
-    {
-        // Just for unit testing purposes ...
-        if (unitOfWorkScope == null)
-        {
-            return;
-        }
-
-        var command = new CreateOrUpdateUserCommand(
-            Guid.Parse(account.EmployerUserId),
-            email,
-            account.FirstName,
-            account.LastName
-        );
-
-        await unitOfWorkScope.RunAsync(c =>
-        {
-            var mediator = c.GetService<IMediator>();
-            return mediator.Send(command);
-        });
-    }
 }

@@ -6,7 +6,6 @@ namespace SFA.DAS.ProviderRelationships.Models;
 
 public class EmployerUserAccounts
 {
-    public string Email { get; set; }
     public string EmployerUserId { get; set; }
     public string LastName { get; set; }
     public string FirstName { get; set; }
@@ -24,7 +23,6 @@ public class EmployerUserAccounts
             FirstName = source?.FirstName,
             LastName = source?.LastName,
             EmployerUserId = source?.EmployerUserId,
-            Email = source?.Email,
             IsSuspended = source?.IsSuspended ?? false,
             EmployerAccounts = accounts
         };

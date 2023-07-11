@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
@@ -9,6 +10,8 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetProviderToAdd;
 using SFA.DAS.ProviderRelationships.Authorization;
+using SFA.DAS.ProviderRelationships.Models;
+using SFA.DAS.ProviderRelationships.Services;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
@@ -33,10 +36,33 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     {
         return TestAsync(f => f.Index(), (f, r) =>
         {
+            
             var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
 
             model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
             model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
+            
+            f.Mediator.Verify(x=>x.Send(It.Is<CreateOrUpdateUserCommand>(c=>
+                c.Email == f.Email 
+                && c.FirstName == f.FirstName
+                && c.LastName == f.LastName
+                && c.Ref == Guid.Parse(f.UserId)
+                ), CancellationToken.None), Times.Once);
+        });
+    }
+    
+    [Test]
+    public Task Index_WhenGettingIndexAction_ThenDoesNotUpsertIfNoMatchingUser()
+    {
+        return TestAsync(f => f.IndexNoMatching(), (f, r) =>
+        {
+            
+            var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
+
+            model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
+            model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
+            
+            f.Mediator.Verify(x=>x.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None), Times.Never);
         });
     }
 
@@ -321,6 +347,7 @@ public class AccountProvidersControllerTestsFixture
     public Mock<IMediator> Mediator { get; set; }
     public Mock<IEncodingService> EncodingService { get; set; }
     public Mock<IEmployerAccountAuthorisationHandler> EmployerAccountAuthorisationHandler { get; set; }
+    public Mock<IUserAccountService> UserAccountService { get; set; }
     public IMapper Mapper { get; set; }
     public Mock<IEmployerUrls> EmployerUrls { get; set; }
     public GetAccountProvidersQueryResult GetAccountProvidersQueryResult { get; set; }
@@ -330,6 +357,10 @@ public class AccountProvidersControllerTestsFixture
     public GetInvitationByIdQueryResult GetInvitationByIdQueryResult { get; set; }
     public AddAccountProviderViewModel AddAccountProviderViewModel { get; set; }
     public string AccountHashedId { get; set; } = "ABC123";
+    public string UserId  { get; set; }
+    public string Email => "email@test.com";
+    public string FirstName => "FirstName";
+    public string LastName => "LastName";
     public long AccountProviderId { get; set; }
     public GetAddedAccountProviderQueryResult GetAddedAccountProviderQueryResult { get; set; }
     public AddedAccountProviderRouteValues AddedAccountProviderRouteValues { get; set; }
@@ -342,20 +373,23 @@ public class AccountProvidersControllerTestsFixture
 
     public AccountProvidersControllerTestsFixture()
     {
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString()) }));
+        UserId =  Guid.NewGuid().ToString();
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, UserId),new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, Email) }));
         Mediator = new Mock<IMediator>();
         EncodingService = new Mock<IEncodingService>();
         Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
         EmployerUrls = new Mock<IEmployerUrls>();
         EmployerAccountAuthorisationHandler = new Mock<IEmployerAccountAuthorisationHandler>();
-
+        UserAccountService = new Mock<IUserAccountService>();
+        
         AccountProvidersController = new AccountProvidersController(
             Mediator.Object,
             Mapper,
             EmployerUrls.Object,
             EmployerAccountAuthorisationHandler.Object,
             EncodingService.Object,
-            Mock.Of<ILogger<AccountProvidersController>>());
+            Mock.Of<ILogger<AccountProvidersController>>(),
+            UserAccountService.Object);
 
         AccountProvidersController.ControllerContext = new ControllerContext() {
             HttpContext = new DefaultHttpContext { User = user }
@@ -381,6 +415,36 @@ public class AccountProvidersControllerTestsFixture
                 m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == accountId),
                     CancellationToken.None))
             .ReturnsAsync(GetAccountProvidersQueryResult);
+        
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts {
+            FirstName = FirstName,
+            LastName = LastName,
+            EmployerUserId = UserId
+        });
+
+        return AccountProvidersController.Index(AccountHashedId);
+    }
+    public Task<IActionResult> IndexNoMatching()
+    {
+        const long accountId = 1;
+
+        EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
+
+        GetAccountProvidersQueryResult = new GetAccountProvidersQueryResult(
+            new List<AccountProviderDto> {
+                new() {
+                    Id = 2,
+                    ProviderName = "Foo"
+                }
+            },
+            2);
+
+        Mediator.Setup(m =>
+                m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == accountId),
+                    CancellationToken.None))
+            .ReturnsAsync(GetAccountProvidersQueryResult);
+        
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts());
 
         return AccountProvidersController.Index(AccountHashedId);
     }
