@@ -189,7 +189,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     [Test]
     public Task Add_WhenInvitationIsValid_ThenShouldSendAddAccountProviderCommand()
     {
-        return TestAsync(f => f.CreateSession(), f => f.Invitation(), f => f.Mediator.Verify(m => m.Send(
+        return TestAsync(f => f.CreateSession(), f => f.Invitation(), 
+            f => f.Mediator.Verify(m => m.Send(
             It.Is<AddAccountProviderCommand>(c =>
                 c.AccountId == f.AddAccountProviderViewModel.AccountId &&
                 c.UserRef == f.AddAccountProviderViewModel.UserRef &&
@@ -208,6 +209,20 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 a.ControllerName == null &&
                 a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId) &&
                 a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.AccountProviderId)));
+    }
+
+    [Test]
+    public Task Add_WhenInvitationIsValid_ThenShouldUpsertUser()
+    {
+        return TestAsync(f => f.Invitation(), (f, r) =>
+        {
+            f.Mediator.Verify(x=>x.Send(It.Is<CreateOrUpdateUserCommand>(c=>
+                c.Email == f.Email 
+                && c.FirstName == f.FirstName
+                && c.LastName == f.LastName
+                && c.Ref == Guid.Parse(f.UserId)
+            ), CancellationToken.None), Times.Once);
+        });
     }
 
     [Test]
@@ -392,7 +407,7 @@ public class AccountProvidersControllerTestsFixture
             UserAccountService.Object);
 
         AccountProvidersController.ControllerContext = new ControllerContext() {
-            HttpContext = new DefaultHttpContext { User = user }
+            HttpContext = new DefaultHttpContext { User = user,Session = Mock.Of<ISession>() }
         };
     }
 
@@ -643,6 +658,12 @@ public class AccountProvidersControllerTestsFixture
         FindProviderViewModel = new FindProviderViewModel {
             Ukprn = ukprn.ToString()
         };
+        
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts {
+            FirstName = FirstName,
+            LastName = LastName,
+            EmployerUserId = UserId
+        });
 
         AccountProviderId = 2;
 

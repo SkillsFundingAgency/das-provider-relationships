@@ -62,22 +62,11 @@ public class AccountProvidersController : Controller
         var result = await _mediator.Send(query);
         var model = _mapper.Map<AccountProvidersViewModel>(result);
 
-        var userId = HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserIdClaimTypeIdentifier)?.Value.ToString();
-        var email = HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserEmailClaimTypeIdentifier)?.Value.ToString();
-        var userResult = await _userAccountService.GetUserAccounts(userId, email);
-
-        if (!string.IsNullOrEmpty(userResult?.FirstName))
-        {
-            await _mediator.Send(new CreateOrUpdateUserCommand(
-                Guid.Parse(userResult.EmployerUserId),
-                email,
-                userResult.FirstName,
-                userResult.LastName
-            ));    
-        }
+        await CheckExistsAndUpsertNewUser();
 
         return View(model);
     }
+
 
     [HttpGet]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerAccount))]
@@ -249,6 +238,8 @@ public class AccountProvidersController : Controller
     {
         HttpContext.Session.SetString("Invitation", "true");
 
+        await CheckExistsAndUpsertNewUser();
+        
         var invitation = await _mediator.Send(new GetInvitationByIdQuery(routeValues.CorrelationId.Value));
 
         var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
@@ -262,5 +253,25 @@ public class AccountProvidersController : Controller
         var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, invitation.Invitation.Ukprn, routeValues.UserRef.Value, routeValues.CorrelationId));
 
         return RedirectToAction(AccountProviders.ActionNames.Get, new { AccountProviderId = accountProviderId, routeValues.AccountHashedId });
+    }
+    
+    
+    private async Task CheckExistsAndUpsertNewUser()
+    {
+        var userId = HttpContext.User.Identities.FirstOrDefault().Claims
+            .FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserIdClaimTypeIdentifier)?.Value.ToString();
+        var email = HttpContext.User.Identities.FirstOrDefault().Claims
+            .FirstOrDefault(c => c.Type == EmployerClaims.IdamsUserEmailClaimTypeIdentifier)?.Value.ToString();
+        var userResult = await _userAccountService.GetUserAccounts(userId, email);
+
+        if (!string.IsNullOrEmpty(userResult?.FirstName))
+        {
+            await _mediator.Send(new CreateOrUpdateUserCommand(
+                Guid.Parse(userResult.EmployerUserId),
+                email,
+                userResult.FirstName,
+                userResult.LastName
+            ));
+        }
     }
 }
