@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Data;
@@ -79,7 +81,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
             Command = new AddAccountProviderCommand(Account.Id, Provider.Ukprn, User.Ref);
             Now = DateTime.UtcNow;
             UnitOfWorkContext = new UnitOfWorkContext();
-            Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            Handler = new AddAccountProviderCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), Mock.Of<ILogger<AddAccountProviderCommandHandler>>());
         }
 
         public Task<long> Handle()
