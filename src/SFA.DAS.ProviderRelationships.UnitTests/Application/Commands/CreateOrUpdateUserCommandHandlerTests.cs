@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Data;
@@ -71,7 +72,7 @@ namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
         {
             Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
-            Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db));
+            Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), Mock.Of<ILogger<CreateOrUpdateUserCommandHandler>>());
             Now = DateTime.UtcNow;
         }
 
