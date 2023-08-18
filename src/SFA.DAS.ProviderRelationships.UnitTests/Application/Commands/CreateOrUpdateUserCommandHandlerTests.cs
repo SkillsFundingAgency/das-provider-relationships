@@ -12,96 +12,111 @@ using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Data;
 using SFA.DAS.ProviderRelationships.Models;
 using SFA.DAS.ProviderRelationships.UnitTests.Builders;
-using SFA.DAS.Testing;
 
-namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands
+namespace SFA.DAS.ProviderRelationships.UnitTests.Application.Commands;
+
+[TestFixture]
+[Parallelizable]
+public class CreateOrUpdateUserCommandHandlerTests 
 {
-    [TestFixture]
-    [Parallelizable]
-    public class CreateOrUpdateUserCommandHandlerTests : FluentTest<CreateOrUpdateUserCommandHandlerTestsFixture>
+    [Test]
+    public async Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesNotExist_ThenShouldCreateUser()
     {
-        [Test]
-        public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesNotExist_ThenShouldCreateUser()
-        {
-            return TestAsync(f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
-                .And.Match<User>(u => 
-                    u.Ref == f.CreateOrUpdateUserCommand.Ref &&
-                    u.Email == f.CreateOrUpdateUserCommand.Email &&
-                    u.FirstName == f.CreateOrUpdateUserCommand.FirstName &&
-                    u.LastName == f.CreateOrUpdateUserCommand.LastName &&
-                    u.Created >= f.Now &&
-                    u.Updated == null));
-        }
-        
-        [Test]
-        public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveChanged_ThenShouldUpdateUser()
-        {
-            return TestAsync(f => f.SetUser().SetCommandWithChangedProperties(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
-                .And.Match<User>(u => 
-                    u.Ref == f.CreateOrUpdateUserCommand.Ref &&
-                    u.Email == f.CreateOrUpdateUserCommand.Email &&
-                    u.FirstName == f.CreateOrUpdateUserCommand.FirstName &&
-                    u.LastName == f.CreateOrUpdateUserCommand.LastName &&
-                    u.Created == f.Now &&
-                    u.Updated >= f.Now));
-        }
-        
-        [Test]
-        public Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveNotChanged_ThenShouldNotUpdateUser()
-        {
-            return TestAsync(f => f.SetUser(), f => f.Handle(), f => f.Db.Users.SingleOrDefault(u => u.Ref == f.CreateOrUpdateUserCommand.Ref).Should().NotBeNull()
-                .And.Match<User>(u => 
-                    u.Ref == f.CreateOrUpdateUserCommand.Ref &&
-                    u.Email == f.CreateOrUpdateUserCommand.Email &&
-                    u.FirstName == f.CreateOrUpdateUserCommand.FirstName &&
-                    u.LastName == f.CreateOrUpdateUserCommand.LastName &&
-                    u.Created == f.Now &&
-                    u.Updated == null));
-        }
+        var fixture = new CreateOrUpdateUserCommandHandlerTestsFixture();
+
+        await fixture.Handle();
+
+        fixture.Db.Users.SingleOrDefault(u => u.Ref == fixture.CreateOrUpdateUserCommand.Ref)
+            .Should().NotBeNull()
+            .And.Match<User>(user =>
+                user.Ref == fixture.CreateOrUpdateUserCommand.Ref &&
+                user.Email == fixture.CreateOrUpdateUserCommand.Email &&
+                user.FirstName == fixture.CreateOrUpdateUserCommand.FirstName &&
+                user.LastName == fixture.CreateOrUpdateUserCommand.LastName &&
+                user.Created >= fixture.Now &&
+                user.Updated == null
+                );
     }
 
-    public class CreateOrUpdateUserCommandHandlerTestsFixture
+    [Test]
+    public async Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveChanged_ThenShouldUpdateUser()
     {
-        public ProviderRelationshipsDbContext Db { get; set; }
-        public CreateOrUpdateUserCommand CreateOrUpdateUserCommand { get; set; }
-        public IRequestHandler<CreateOrUpdateUserCommand> Handler { get; set; }
-        public DateTime Now { get; set; }
-        public User User { get; set; }
-
-        public CreateOrUpdateUserCommandHandlerTestsFixture()
-        {
-            Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
-            Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db), Mock.Of<ILogger<CreateOrUpdateUserCommandHandler>>());
-            Now = DateTime.UtcNow;
-        }
-
-        public async Task Handle()
-        {
-            await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
-            await Db.SaveChangesAsync();
-        }
-
-        public CreateOrUpdateUserCommandHandlerTestsFixture SetUser()
-        {
-            User = EntityActivator.CreateInstance<User>()
-                .Set(u => u.Ref, CreateOrUpdateUserCommand.Ref)
-                .Set(u => u.Email, CreateOrUpdateUserCommand.Email)
-                .Set(u => u.FirstName, CreateOrUpdateUserCommand.FirstName)
-                .Set(u => u.LastName, CreateOrUpdateUserCommand.LastName)
-                .Set(u => u.Created, Now);
-            
-            Db.Users.Add(User);
-            Db.SaveChanges();
-            
-            return this;
-        }
-
-        public CreateOrUpdateUserCommandHandlerTestsFixture SetCommandWithChangedProperties()
-        {
-            CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(User.Ref, "_" + User.Email, "_" + User.FirstName, "_" + User.LastName);
-            
-            return this;
-        }
+        var fixture = new CreateOrUpdateUserCommandHandlerTestsFixture();
+        
+        fixture.SetUser().SetCommandWithChangedProperties();
+        
+        await fixture.Handle();
+        
+        fixture.Db.Users.SingleOrDefault(u => u.Ref == fixture.CreateOrUpdateUserCommand.Ref)
+            .Should().NotBeNull()
+            .And.Match<User>(user =>
+                user.Ref == fixture.CreateOrUpdateUserCommand.Ref &&
+                user.Email == fixture.CreateOrUpdateUserCommand.Email &&
+                user.FirstName == fixture.CreateOrUpdateUserCommand.FirstName &&
+                user.LastName == fixture.CreateOrUpdateUserCommand.LastName &&
+                user.Created == fixture.Now &&
+                user.Updated >= fixture.Now
+                );
     }
+
+    [Test]
+    public async  Task Handle_WhenHandlingCreateOrUpdateUserCommandAndUserDoesExistAndPropertiesHaveNotChanged_ThenShouldNotUpdateUser()
+    {
+        var fixture = new CreateOrUpdateUserCommandHandlerTestsFixture();
+        
+        fixture.SetUser();
+        
+        await fixture.Handle();
+        
+        fixture.Db.Users.SingleOrDefault(u => u.Ref == fixture.CreateOrUpdateUserCommand.Ref)
+            .Should().NotBeNull()
+            .And.Match<User>(user =>
+                user.Ref == fixture.CreateOrUpdateUserCommand.Ref &&
+                user.Email == fixture.CreateOrUpdateUserCommand.Email &&
+                user.FirstName == fixture.CreateOrUpdateUserCommand.FirstName &&
+                user.LastName == fixture.CreateOrUpdateUserCommand.LastName &&
+                user.Created == fixture.Now &&
+                user.Updated == null
+                );
+    }
+}
+
+public class CreateOrUpdateUserCommandHandlerTestsFixture
+{
+    public ProviderRelationshipsDbContext Db { get; }
+    public CreateOrUpdateUserCommand CreateOrUpdateUserCommand { get; set; }
+    public IRequestHandler<CreateOrUpdateUserCommand> Handler { get; }
+    public DateTime Now { get; }
+    public User User { get; set; }
+
+    public CreateOrUpdateUserCommandHandlerTestsFixture()
+    {
+        Db = new ProviderRelationshipsDbContext(new DbContextOptionsBuilder<ProviderRelationshipsDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
+        CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(Guid.NewGuid(), "foo@bar.com", "Foo", "Bar");
+        Handler = new CreateOrUpdateUserCommandHandler(new Lazy<ProviderRelationshipsDbContext>(() => Db),
+            Mock.Of<ILogger<CreateOrUpdateUserCommandHandler>>());
+        Now = DateTime.UtcNow;
+    }
+
+    public async Task Handle() => await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
+
+    public CreateOrUpdateUserCommandHandlerTestsFixture SetUser()
+    {
+        User = EntityActivator.CreateInstance<User>()
+            .Set(u => u.Ref, CreateOrUpdateUserCommand.Ref)
+            .Set(u => u.Email, CreateOrUpdateUserCommand.Email)
+            .Set(u => u.FirstName, CreateOrUpdateUserCommand.FirstName)
+            .Set(u => u.LastName, CreateOrUpdateUserCommand.LastName)
+            .Set(u => u.Created, Now);
+
+        Db.Users.Add(User);
+        Db.SaveChanges();
+
+        return this;
+    }
+
+    public void SetCommandWithChangedProperties() => 
+        CreateOrUpdateUserCommand = new CreateOrUpdateUserCommand(User.Ref, "_" + User.Email, "_" + User.FirstName, "_" + User.LastName);
+
 }
