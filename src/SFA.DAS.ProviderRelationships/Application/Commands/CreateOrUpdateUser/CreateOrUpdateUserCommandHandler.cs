@@ -23,7 +23,7 @@ public class CreateOrUpdateUserCommandHandler : IRequestHandler<CreateOrUpdateUs
 
     public async Task Handle(CreateOrUpdateUserCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("{TypeName} started processing request: {Request}.", nameof(CreateOrUpdateUserCommandHandler), JsonSerializer.Serialize(request));
+        _logger.LogInformation("{TypeName} started processing request.", nameof(CreateOrUpdateUserCommandHandler));
         
         var user = _db.Value.Users.SingleOrDefault(u => u.Ref == request.Ref);
 
