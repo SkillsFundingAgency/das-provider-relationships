@@ -40,6 +40,8 @@ public class CreateOrUpdateUserCommandHandler : IRequestHandler<CreateOrUpdateUs
             user.Update(request.Email, request.FirstName, request.LastName);
         }
 
+        // Unit of Work is not persisting the changes to the DB via the AccountProvidersController.Invitation() method so this call ensures it does.
+        // This may be due to the Invitation() method returning RedirectToAction() instead of returning a View() ?! ....
         await _db.Value.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation("{TypeName} completed processing.", nameof(CreateOrUpdateUserCommandHandler));
