@@ -99,7 +99,11 @@ public class CreateOrUpdateUserCommandHandlerTestsFixture
         Now = DateTime.UtcNow;
     }
 
-    public async Task Handle() => await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
+    public async Task Handle()
+    {
+        await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
+        await Db.SaveChangesAsync();
+    }
 
     public CreateOrUpdateUserCommandHandlerTestsFixture SetUser()
     {
