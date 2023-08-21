@@ -20,6 +20,7 @@ using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
@@ -64,6 +65,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
 
             services
+                .AddUnitOfWork()
                 .AddEntityFramework(providerRelationshipsConfiguration)
                 .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
                 .AddNServiceBusClientUnitOfWork();
