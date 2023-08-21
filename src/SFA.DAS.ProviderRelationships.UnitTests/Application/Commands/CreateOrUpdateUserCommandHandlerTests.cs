@@ -99,12 +99,8 @@ public class CreateOrUpdateUserCommandHandlerTestsFixture
         Now = DateTime.UtcNow;
     }
 
-    public async Task Handle()
-    {
-        await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
-        await Db.SaveChangesAsync();
-    }
-
+    public async Task Handle() => await Handler.Handle(CreateOrUpdateUserCommand, CancellationToken.None);
+    
     public CreateOrUpdateUserCommandHandlerTestsFixture SetUser()
     {
         User = EntityActivator.CreateInstance<User>()
