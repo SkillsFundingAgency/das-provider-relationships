@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Configuration;
+﻿using Microsoft.Azure.WebJobs.Logging.ApplicationInsights;
+using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountLegalEntity;
 using SFA.DAS.ProviderRelationships.Configuration;
@@ -7,7 +8,6 @@ using SFA.DAS.ProviderRelationships.MessageHandlers.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
-using SFA.DAS.UnitOfWork.NServiceBus.DependencyResolution.Microsoft;
 
 namespace SFA.DAS.ProviderRelationships.MessageHandlers.Extensions;
 
@@ -32,6 +32,8 @@ public static class HostExtensions
                     ? "nlog.development.config"
                     : "nlog.config");
                 loggingBuilder.AddApplicationInsightsWebJobs(o => o.ConnectionString = connectionString);
+                loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+                loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
             }
 
             loggingBuilder.AddConsole();

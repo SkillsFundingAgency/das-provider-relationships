@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.OpenApi.Models;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.Api.Common.Infrastructure;
@@ -38,7 +39,11 @@ public class Startup
         var providerRelationshipsConfiguration = _configuration.Get<ProviderRelationshipsConfiguration>();
         var isDevelopment = _configuration.IsDevOrLocal();
 
-        services.AddLogging();
+        services.AddLogging(builder =>
+        {
+            builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+            builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+        });
 
         services.AddApiAuthentication(_configuration, isDevelopment)
                 .AddApiAuthorization(isDevelopment);

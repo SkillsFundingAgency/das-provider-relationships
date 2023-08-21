@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using SFA.DAS.AutoConfiguration.DependencyResolution;
 using SFA.DAS.Employer.Shared.UI;
@@ -19,6 +20,7 @@ using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
+using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.EntityFrameworkCore.DependencyResolution.Microsoft;
 using SFA.DAS.UnitOfWork.Mvc.Extensions;
 using SFA.DAS.UnitOfWork.NServiceBus.Features.ClientOutbox.DependencyResolution.Microsoft;
@@ -40,7 +42,12 @@ namespace SFA.DAS.ProviderRelationships.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(_configuration);
-            services.AddLogging();
+            services.AddLogging(builder =>
+            {
+                builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+                builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+            });
+            
             services.AddHttpContextAccessor();
 
             services.AddAutoConfiguration();
@@ -58,6 +65,7 @@ namespace SFA.DAS.ProviderRelationships.Web
             services.AddDatabaseRegistration(providerRelationshipsConfiguration.DatabaseConnectionString);
 
             services
+                .AddUnitOfWork()
                 .AddEntityFramework(providerRelationshipsConfiguration)
                 .AddEntityFrameworkUnitOfWork<ProviderRelationshipsDbContext>()
                 .AddNServiceBusClientUnitOfWork();
