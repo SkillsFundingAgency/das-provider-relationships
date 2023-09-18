@@ -12,7 +12,7 @@
         <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.16.1" />
         <PackageReference Include="MediatR" Version="12.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.22" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.22" />
         <PackageReference Include="NLog" Version="5.1.1" />
         <PackageReference Include="NLog.Extensions.Logging" Version="5.2.1" />
         <PackageReference Include="SFA.DAS.Authentication.Extensions.Legacy" Version="1.0.29" />
