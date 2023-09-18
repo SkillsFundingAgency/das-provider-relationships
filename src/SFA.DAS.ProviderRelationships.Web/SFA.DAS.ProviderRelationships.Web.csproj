@@ -23,7 +23,7 @@
         <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
 
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
-        <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.44" />
+        <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.62" />
         <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.49" />
 
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />
@@ -31,8 +31,8 @@
         <PackageReference Include="SFA.DAS.UnitOfWork.NServiceBus" Version="9.0.28" />
         <PackageReference Include="SFA.DAS.Validation.Mvc" Version="6.0.30" />
 
-        <PackageReference Include="StackExchange.Redis" Version="2.6.111" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.0" />
         <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
 
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.22" />

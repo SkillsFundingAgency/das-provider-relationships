@@ -16,7 +16,7 @@
         <PackageReference Include="SFA.DAS.Api.Common" Version="1.0.28" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.22" />
     </ItemGroup>
     <ItemGroup>
