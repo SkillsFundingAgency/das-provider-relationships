@@ -15,7 +15,6 @@
         <PackageReference Include="SFA.DAS.CosmosDb.Testing" Version="1.0.47" />
         <PackageReference Include="SFA.DAS.Testing" Version="3.0.169" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.0" />
         <PackageReference Include="coverlet.msbuild" Version="6.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
