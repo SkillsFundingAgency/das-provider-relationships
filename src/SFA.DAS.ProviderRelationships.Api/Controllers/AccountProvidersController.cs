@@ -5,7 +5,7 @@ using SFA.DAS.ProviderRelationships.Types.Dtos;
 namespace SFA.DAS.ProviderRelationships.Api.Controllers;
 
 [Authorize(Policy = ApiRoles.Read)]
-[Route("accounts/{accountId}/permissions")]
+[Route("accounts/{accountId}/providers")]
 public class AccountProvidersController : ControllerBase
 {
     /// <summary>
