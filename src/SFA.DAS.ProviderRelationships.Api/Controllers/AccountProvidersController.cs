@@ -8,6 +8,13 @@ namespace SFA.DAS.ProviderRelationships.Api.Controllers;
 [Route("accounts/{accountId}/providers")]
 public class AccountProvidersController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public AccountProvidersController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+    
     /// <summary>
     /// Get account/provider relationships
     /// </summary>
@@ -16,7 +23,6 @@ public class AccountProvidersController : ControllerBase
     /// <param name="cancellationToken"></param>
     [HttpGet]
     public async Task<IActionResult> Get(
-    IMediator mediator,
     [FromRoute] long accountId, 
     CancellationToken cancellationToken)
     {
@@ -29,9 +35,8 @@ public class AccountProvidersController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-            
-   
-        var result = await mediator.Send(new GetAccountProvidersQuery(accountId), cancellationToken);
+        
+        var result = await _mediator.Send(new GetAccountProvidersQuery(accountId), cancellationToken);
 
         var response = new GetAccountProvidersResponse 
         {

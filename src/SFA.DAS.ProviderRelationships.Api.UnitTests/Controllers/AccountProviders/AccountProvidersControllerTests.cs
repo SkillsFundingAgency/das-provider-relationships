@@ -30,7 +30,7 @@ public class AccountProvidersControllerTests
         //     .ReturnsAsync(accountProvidersResponse);
         
         // Act
-        var result = await controller.Get(mediatorMock.Object, accountId, new CancellationToken());
+        var result = await controller.Get(accountId, new CancellationToken());
         
         // Assert
         result.AssertModelError(nameof(accountId), "Account ID needs to be set");
@@ -58,7 +58,7 @@ public class AccountProvidersControllerTests
             .ReturnsAsync(accountProvidersResponse);
         
         // Act
-        var result = await controller.Get(mediatorMock.Object, accountId, new CancellationToken());
+        var result = await controller.Get(accountId, new CancellationToken());
         
         // Assert
         result.Should().NotBeNull();
