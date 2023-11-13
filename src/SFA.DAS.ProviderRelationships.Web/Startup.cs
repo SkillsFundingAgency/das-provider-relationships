@@ -100,16 +100,14 @@ namespace SFA.DAS.ProviderRelationships.Web
                 {
                     options.AddValidation();
 
-                    if (_configuration.IsDev())
+                    if (!_configuration.IsDev())
                     {
-                        return;
+                        options.Filters.Add(new GoogleAnalyticsFilterAttribute());
+                        options.Filters.Add(new UrlsViewBagFilterAttribute());
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
-                    
-                    options.Filters.Add(new GoogleAnalyticsFilterAttribute());
-                    options.Filters.Add(new UrlsViewBagFilterAttribute());
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
-                .SetDefaultNavigationSection(NavigationSection.AccountsHome);
+                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
 
             services.AddApplicationInsightsTelemetry();
 
