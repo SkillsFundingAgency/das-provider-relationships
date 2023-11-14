@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
+[Route("service")]
 public class ServiceController : Controller
 {
     private readonly IConfiguration _config;
