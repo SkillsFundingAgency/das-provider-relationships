@@ -55,8 +55,9 @@ public class ServiceController : Controller
     [AllowAnonymous]
     [HttpGet]
     [Route("SignIn-Stub")]
-    public IActionResult SigninStub()
+    public IActionResult SigninStub([FromQuery] string returnUrl)
     {
+        TempData["ReturnUrl"] = returnUrl;
         return View("SigninStub", new List<string>{_config["StubId"],_config["StubEmail"]});
     }
     [AllowAnonymous]
@@ -71,8 +72,15 @@ public class ServiceController : Controller
             Id = _config["StubId"]
         });
 
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-            new AuthenticationProperties());
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims, new AuthenticationProperties());
+        
+        if (TempData.ContainsKey("ReturnUrl") && TempData["ReturnUrl"] != null)
+        {
+            var returnUrl = TempData["ReturnUrl"].ToString()!;
+            TempData.Remove("ReturnUrl"); // Clear TempData after using it
+
+            return Redirect(returnUrl);
+        }
             
         return RedirectToRoute("Signed-in-stub");
     }
