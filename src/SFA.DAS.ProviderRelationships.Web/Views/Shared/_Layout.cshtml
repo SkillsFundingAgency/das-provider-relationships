@@ -4,10 +4,14 @@
 @{
     var tagManagerCode = "GTM-KWQBWGJ";
     var accountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId] ?? "";
+    
+    var queryString = ViewContext.HttpContext.Request.Query;
+    bool showNav = !(queryString.ContainsKey("accountTasks") && queryString["accountTasks"] == "true");
+
+    ViewBag.ShowNav = showNav;
     ViewBag.HideHeaderBorder = true;
     var cookieBannerModel = new CookieBannerModel { AccountId = accountId };
     var footerModel = new FooterModel { AccountId = accountId, UsePrivacyV2 = true };
-
 }
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
