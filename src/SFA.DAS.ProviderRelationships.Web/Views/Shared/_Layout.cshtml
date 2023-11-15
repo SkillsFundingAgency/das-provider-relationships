@@ -5,10 +5,9 @@
     var tagManagerCode = "GTM-KWQBWGJ";
     var accountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId] ?? "";
     
-    var queryString = ViewContext.HttpContext.Request.Query;
-    bool showNav = !(queryString.ContainsKey("accountTasks") && queryString["accountTasks"] == "true");
+    bool isAccountTasks = Context.Items.ContainsKey("AccountTasks") && (bool)Context.Items["AccountTasks"];
 
-    ViewBag.ShowNav = showNav;
+    ViewBag.ShowNav = !isAccountTasks;
     ViewBag.HideHeaderBorder = true;
     var cookieBannerModel = new CookieBannerModel { AccountId = accountId };
     var footerModel = new FooterModel { AccountId = accountId, UsePrivacyV2 = true };
@@ -53,6 +52,7 @@
         </script>
 <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
+@* ReSharper disable once Mvc.PartialViewNotResolved *@
 <partial name="_CookieBanner" model="@cookieBannerModel"></partial>
 
 @* ReSharper disable once Mvc.PartialViewNotResolved *@
