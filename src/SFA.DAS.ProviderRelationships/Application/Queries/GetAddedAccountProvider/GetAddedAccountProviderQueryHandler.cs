@@ -6,8 +6,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider.Dtos;
 using SFA.DAS.ProviderRelationships.Data;
+using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvider
 {
@@ -26,7 +26,7 @@ namespace SFA.DAS.ProviderRelationships.Application.Queries.GetAddedAccountProvi
         {
             var accountProvider = await _db.Value.AccountProviders
                 .Where(ap => ap.Id == request.AccountProviderId && ap.Account.Id == request.AccountId)
-                .ProjectTo<AccountProviderDto>(_configurationProvider)
+                .ProjectTo<AccountProviderDto>(_configurationProvider, new { request.AccountProviderId })
                 .SingleOrDefaultAsync(cancellationToken);
             
             if (accountProvider == null)
