@@ -44,7 +44,7 @@
                 <a asp-route="@RouteNames.SetPermissions" asp-all-route-data="@routeData" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
                     Continue to set permissions
                 </a>
-                <a href="@UrlBuilder.AccountsLink("CreateAccountProgressSavedInAccount")" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                <a href="@UrlBuilder.AccountsLink("CreateAccountProgressSavedInAccount", hashedAccountId)" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                     Save and come back later
                 </a>
             </div>

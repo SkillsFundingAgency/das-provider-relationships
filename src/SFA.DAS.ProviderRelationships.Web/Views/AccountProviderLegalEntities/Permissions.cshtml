@@ -10,6 +10,7 @@
     ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
     ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
     bool isAccountTasksJourney = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
+    var hashedAccountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId];
 }
 
 @section breadcrumb
@@ -124,7 +125,7 @@
                 <button class="govuk-button" type="submit">Continue</button>
                 @if (isAccountTasksJourney)
                 {
-                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount")" class="govuk-link">
+                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" class="govuk-link">
                         Cancel
                     </a>
                 }

@@ -10,6 +10,7 @@
     ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
     ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
     bool isAccountTasksJourney = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
+    var hashedAccountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId];
 }
 
 @section breadcrumb
@@ -125,14 +126,19 @@
             @Html.HiddenFor(m => m.Permissions[1].State)
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 
-            <button class="govuk-button" type="submit">Confirm</button>
-
-            @if (isAccountTasksJourney)
-            {
-                <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount")" class="govuk-link">
-                    Cancel
-                </a>
-            }
+            <div class="govuk-button-group">
+                @if (isAccountTasksJourney)
+                {
+                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                        Continue to set permissions
+                    </a>
+                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" class="govuk-link">
+                        Cancel
+                    </a>
+                }
+                
+                <button role="button" draggable="false" class="govuk-button" data-module="govuk-button" type="submit">Confirm</button>
+            </div>
         </form>
     </div>
 </div>
