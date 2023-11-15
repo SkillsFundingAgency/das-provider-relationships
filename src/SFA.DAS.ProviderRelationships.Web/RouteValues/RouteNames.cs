@@ -12,4 +12,5 @@ public static class RouteNames
     public const string Find = "find";
     public const string SignOut = "signout";
     public const string SignOutCleanup = "signoutcleanup";
+    public const string SetPermissions = "permissions";
 }

@@ -34,7 +34,7 @@ public class AccountProviderLegalEntitiesController : Controller
 
     [HttpGet]
     [HttpNotFoundForNullModel]
-    [Route("")]
+    [Route("", Name = RouteNames.SetPermissions)]
     public async Task<IActionResult> Permissions(AccountProviderLegalEntityRouteValues routeValues)
     {
         var accountId = _encodingService.Decode(routeValues.AccountHashedId, EncodingType.AccountId);
@@ -46,7 +46,7 @@ public class AccountProviderLegalEntitiesController : Controller
     }
 
     [HttpPost]
-    [Route("")]
+    [Route("", Name = RouteNames.SetPermissions)]
     public IActionResult Permissions(AccountProviderLegalEntityViewModel model)
     {
         model.UserRef = User.GetUserRef();
