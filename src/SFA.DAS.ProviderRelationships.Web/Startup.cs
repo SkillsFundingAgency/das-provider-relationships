@@ -18,6 +18,7 @@ using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Filters;
+using SFA.DAS.ProviderRelationships.Web.Middleware;
 using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 using SFA.DAS.UnitOfWork.DependencyResolution.Microsoft;
@@ -154,6 +155,8 @@ namespace SFA.DAS.ProviderRelationships.Web
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseSession();
+            
+            app.UseMiddleware<AccountTasksMiddleware>();
 
             app.Use(async (context, next) =>
             {

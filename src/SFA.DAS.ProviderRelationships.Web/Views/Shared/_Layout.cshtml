@@ -5,7 +5,7 @@
     var tagManagerCode = "GTM-KWQBWGJ";
     var accountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId] ?? "";
     
-    bool isAccountTasks = Context.Items.ContainsKey("AccountTasks") && (bool)Context.Items["AccountTasks"];
+    bool isAccountTasks = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
 
     ViewBag.ShowNav = !isAccountTasks;
     ViewBag.HideHeaderBorder = true;

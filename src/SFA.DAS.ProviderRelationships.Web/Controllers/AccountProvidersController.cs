@@ -27,6 +27,7 @@ namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 [Route("accounts/{accountHashedId}/providers")]
 public class AccountProvidersController : Controller
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private readonly IEmployerUrls _employerUrls;
@@ -36,6 +37,7 @@ public class AccountProvidersController : Controller
     private readonly IUserAccountService _userAccountService;
 
     public AccountProvidersController(
+        IHttpContextAccessor httpContextAccessor,
         IMediator mediator,
         IMapper mapper,
         IEmployerUrls employerUrls,
@@ -44,6 +46,7 @@ public class AccountProvidersController : Controller
         ILogger<AccountProvidersController> logger,
         IUserAccountService userAccountService)
     {
+        _httpContextAccessor = httpContextAccessor;
         _mediator = mediator;
         _mapper = mapper;
         _employerUrls = employerUrls;
@@ -56,8 +59,10 @@ public class AccountProvidersController : Controller
     [HttpGet]
     [Authorize(Policy = nameof(PolicyNames.HasEmployerOwnerOrViewerAccount))]
     [Route("")]
-    public async Task<IActionResult> Index(string accountHashedId)
+    public async Task<IActionResult> Index([FromRoute]string accountHashedId, [FromQuery]string accountTasks = "")
     {
+        EnsureSessionClearedWhenNotNavigatingFromAccountTasks(accountTasks);
+            
         var query = new GetAccountProvidersQuery(_encodingService.Decode(accountHashedId, EncodingType.AccountId));
         var result = await _mediator.Send(query);
         var model = _mapper.Map<AccountProvidersViewModel>(result);
@@ -273,5 +278,11 @@ public class AccountProvidersController : Controller
                 userResult.LastName
             ));
         }
+    }
+    
+    private void EnsureSessionClearedWhenNotNavigatingFromAccountTasks(string accountTasks)
+    {
+        if (string.IsNullOrEmpty(accountTasks))
+            _httpContextAccessor?.HttpContext?.Session.Clear();
     }
 }
