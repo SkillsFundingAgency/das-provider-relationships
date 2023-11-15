@@ -49,7 +49,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             ), CancellationToken.None), Times.Once);
         });
     }
-    
+
     [Test]
     public Task Index_WhenGettingIndexAction_ThenDoesNotUpsertIfNoMatchingUser()
     {
@@ -560,7 +560,7 @@ public class AccountProvidersControllerTestsFixture
         };
 
         GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(
-            new Application.Queries.GetAddedAccountProvider.Dtos.AccountProviderDto {
+            new AccountProviderDto {
                 Id = 2,
                 ProviderUkprn = 12345678,
                 ProviderName = "Foo"
@@ -603,7 +603,7 @@ public class AccountProvidersControllerTestsFixture
         };
 
         GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(
-            new Application.Queries.GetAddedAccountProvider.Dtos.AccountProviderDto {
+            new AccountProviderDto {
                 Id = 2,
                 ProviderUkprn = 12345678,
                 ProviderName = "Foo"
