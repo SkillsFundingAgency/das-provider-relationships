@@ -7,21 +7,51 @@
     ViewBag.ZenDeskLabel = "permissions-training-provider-added";
     ViewBag.GaData.Vpv = "/permissions/accountproviders/added";
     ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
+    bool isAccountTasksJourney = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
+    var hashedAccountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId];
+    var routeData = new Dictionary<string, string>
+    {
+        { RouteValueKeys.AccountHashedId, hashedAccountId },
+        { RouteValueKeys.AccountProviderId, Model.AccountProviderId?.ToString() },
+        { RouteValueKeys.AccountLegalEntityId, Model.AccountProvider.AccountLegalEntities.First().Id.ToString() }
+    };
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-panel govuk-panel--confirmation">
-            <h1 class="govuk-panel__title">
-                You've successfully added @Model.AccountProvider.ProviderName
-            </h1>
+        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Success
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p class="govuk-notification-banner__heading">
+                    Training provider added
+                </p>
+            </div>
         </div>
         <h2 class="govuk-heading-m govuk-!-margin-top-7">What happens next</h2>
         <div class="govuk-body">
             <p>You need to set permissions for @Model.AccountProvider.ProviderName so that they can act on your behalf.</p>
             <p>You can set permissions in the 'your training providers' section of your account.</p>
         </div>
-        <a class="govuk-button" asp-action="@AccountProviders.ActionNames.Index" asp-controller="@AccountProviders.ControllerName" asp-route-accountHashedId="@ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId]" role="button">Return to your training providers</a>
+
+
+        @if (isAccountTasksJourney)
+        {
+            <div class="govuk-button-group">
+                <a asp-route="@RouteNames.SetPermissions" asp-all-route-data="@routeData" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                    Continue to set permissions
+                </a>
+                @* <a href="@UrlBuilder.AccountsLink("CreateAccountProgressSavedInAccount")" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button"> *@
+                @*     Save and come back later *@
+                @* </a> *@
+            </div>
+        }
+        else
+        {
+            <a class="govuk-button" asp-action="@AccountProviders.ActionNames.Index" asp-controller="@AccountProviders.ControllerName" asp-route-accountHashedId="@hashedAccountId" role="button">Return to your training providers</a>
+        }
     </div>
 </div>
-
