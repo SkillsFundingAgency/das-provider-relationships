@@ -25,7 +25,7 @@ public class AccountTasksMiddleware
                 if (context.Request.Query.ContainsKey("AccountTasks"))
                 {
                     context.Session.SetString(AccountTasksKey, "true");
-                    context.Items[AccountTasksKey] = true;
+                    context.Items.TryAdd(AccountTasksKey, true);
                 }
             }
         }

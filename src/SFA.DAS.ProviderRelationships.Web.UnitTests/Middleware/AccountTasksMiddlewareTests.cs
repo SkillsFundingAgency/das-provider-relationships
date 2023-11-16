@@ -12,12 +12,13 @@ public class AccountTasksMiddlewareTests
             // Arrange
             var contextMock = new Mock<HttpContext>();
             var sessionMock = new Mock<ISession>();
+            contextMock.SetupGet(c => c.Items).Returns(new Dictionary<object, object>());
             contextMock.SetupGet(c => c.Session).Returns(sessionMock.Object);
             contextMock.SetupGet(c => c.User.Identity.IsAuthenticated).Returns(true);
             contextMock.SetupGet(c => c.Request.Query).Returns(
                 new QueryCollection(new Dictionary<string, StringValues>
                 {
-                    { "accountTasks", "true" }
+                    { "AccountTasks", "true" }
                 }));
 
             var requestDelegateMock = new Mock<RequestDelegate>();
@@ -27,12 +28,12 @@ public class AccountTasksMiddlewareTests
             await middleware.InvokeAsync(contextMock.Object);
 
             // Assert
-            contextMock.VerifyGet(c => c.Session, Times.Once);
+            sessionMock.Verify(x => x.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny), Times.Once);
             contextMock.VerifyGet(c => c.User.Identity.IsAuthenticated, Times.Once);
             contextMock.VerifyGet(c => c.Request.Query, Times.Once);
 
-            sessionMock.Verify(s => s.SetString("AccountTasks", "true"), Times.Once);
-            contextMock.Object.Items["AccountTasks"].Should().Be(true);
+            sessionMock.Verify(s => s.Set("AccountTasksKey", It.IsAny<byte[]>()), Times.Once);
+            contextMock.Object.Items.Should().ContainKey("AccountTasksKey");
         }
 
         [Test]
@@ -41,6 +42,7 @@ public class AccountTasksMiddlewareTests
             // Arrange
             var contextMock = new Mock<HttpContext>();
             var sessionMock = new Mock<ISession>();
+            contextMock.SetupGet(c => c.Items).Returns(new Dictionary<object, object>());
             contextMock.SetupGet(c => c.Session).Returns(sessionMock.Object);
             contextMock.SetupGet(c => c.User.Identity.IsAuthenticated).Returns(true);
             contextMock.SetupGet(c => c.Request.Query).Returns(new QueryCollection());
@@ -52,11 +54,11 @@ public class AccountTasksMiddlewareTests
             await middleware.InvokeAsync(contextMock.Object);
 
             // Assert
-            contextMock.VerifyGet(c => c.Session, Times.Never);
+            sessionMock.Verify(x => x.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny), Times.Once);
             contextMock.VerifyGet(c => c.User.Identity.IsAuthenticated, Times.Once);
             contextMock.VerifyGet(c => c.Request.Query, Times.Once);
 
-            sessionMock.Verify(s => s.SetString("AccountTasks", "true"), Times.Never);
-            contextMock.Object.Items.ContainsKey("AccountTasks").Should().BeFalse();
+            sessionMock.Verify(s => s.Set("AccountTasks", It.IsAny<byte[]>()), Times.Never);
+            contextMock.Object.Items.Should().NotContainKey("AccountTasksKey");
         }
     }
