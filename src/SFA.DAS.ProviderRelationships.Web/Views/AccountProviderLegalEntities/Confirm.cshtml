@@ -127,18 +127,12 @@
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 
             <div class="govuk-button-group">
+                <button role="button" draggable="false" class="govuk-button" data-module="govuk-button" type="submit">Confirm</button>
                 @if (isAccountTasksJourney)
                 {
-                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-                        Continue to set permissions
-                    </a>
                     <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" class="govuk-link">
                         Cancel
                     </a>
-                }
-                else
-                {
-                    <button role="button" draggable="false" class="govuk-button" data-module="govuk-button" type="submit">Confirm</button>
                 }
             </div>
         </form>

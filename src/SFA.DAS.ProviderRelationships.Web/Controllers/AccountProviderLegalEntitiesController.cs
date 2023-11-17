@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
@@ -22,14 +22,16 @@ public class AccountProviderLegalEntitiesController : Controller
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private readonly IEmployerUrls _employerUrls;
+    private readonly UrlBuilder _urlBuilder;
     private readonly IEncodingService _encodingService;
 
-    public AccountProviderLegalEntitiesController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEncodingService encodingService)
+    public AccountProviderLegalEntitiesController(IMediator mediator, IMapper mapper, IEmployerUrls employerUrls, IEncodingService encodingService, UrlBuilder urlBuilder)
     {
         _mediator = mediator;
         _mapper = mapper;
         _employerUrls = employerUrls;
         _encodingService = encodingService;
+        _urlBuilder = urlBuilder;
     }
 
     [HttpGet]
@@ -103,6 +105,11 @@ public class AccountProviderLegalEntitiesController : Controller
             TempData["LegalEntityName"] = model.AccountLegalEntity.Name;
         }
 
+        if(HttpContext.Items.ContainsKey(ContextItemKeys.AccountTasksKey))
+        {
+            return Redirect(_urlBuilder.AccountsLink("CreateAccountAddProviderPermissionSuccess", model.AccountHashedId));
+        }
+        
         return RedirectToAction(AccountProviders.ActionNames.Index, AccountProviders.ControllerName, new { model.AccountHashedId });
     }
 }
