@@ -107,7 +107,7 @@ namespace SFA.DAS.ProviderRelationships.Web
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }
                 })
-                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
+                .SetDefaultNavigationSection(NavigationSection.AccountsHome);
 
             services.AddApplicationInsightsTelemetry();
 
