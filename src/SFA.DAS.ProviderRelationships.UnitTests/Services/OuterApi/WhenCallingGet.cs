@@ -31,7 +31,7 @@ public class WhenCallingGet
         var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
             response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
         var client = CreateClient(httpMessageHandler.Object, config);
-        var apiClient = new OuterApiClient(client);
+        var apiClient = new OuterApiClient(client, config);
 
         //Act
         var actual = await apiClient.Get<List<string>>(request);
@@ -57,7 +57,7 @@ public class WhenCallingGet
         var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
             response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
         var client = CreateClient(httpMessageHandler.Object, config);
-        var apiClient = new OuterApiClient(client);
+        var apiClient = new OuterApiClient(client, config);
 
         //Act Assert
         Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(request));
@@ -80,7 +80,7 @@ public class WhenCallingGet
         var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(
             response, new Uri($"{config.BaseUrl}{request.GetUrl}"), config.Key, HttpMethod.Get);
         var client = CreateClient(httpMessageHandler.Object, config);
-        var apiClient = new OuterApiClient(client);
+        var apiClient = new OuterApiClient(client, config);
 
         //Act
         var result = await apiClient.Get<List<string>>(request);
