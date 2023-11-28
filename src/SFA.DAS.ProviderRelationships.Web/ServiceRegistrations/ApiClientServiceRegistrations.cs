@@ -32,8 +32,6 @@ public static class ApiClientServiceRegistrations
         {
             var outerApiConfiguration = p.GetService<OuterApiConfiguration>();
             x.BaseAddress = new Uri(outerApiConfiguration.BaseUrl);
-            x.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", outerApiConfiguration.Key);
-            x.DefaultRequestHeaders.Add("X-Version", "1");
         });
 
         return services;
