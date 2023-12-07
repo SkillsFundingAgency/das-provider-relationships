@@ -24,7 +24,7 @@
         <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
 
         <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
-        <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.64" />
+        <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.75" />
         <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.49" />
 
         <PackageReference Include="SFA.DAS.UnitOfWork.EntityFrameworkCore" Version="9.0.28" />

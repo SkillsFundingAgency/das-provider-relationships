@@ -1,4 +1,5 @@
 using SFA.DAS.AutoConfiguration.DependencyResolution;
+using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Commands.RunHealthCheck;
@@ -15,6 +16,7 @@ using SFA.DAS.ProviderRelationships.Mappings;
 using SFA.DAS.ProviderRelationships.ServiceRegistrations;
 using SFA.DAS.ProviderRelationships.Web.Authorisation.Handlers;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
+using SFA.DAS.ProviderRelationships.Web.RouteValues;
 using SFA.DAS.ProviderRelationships.Web.ServiceRegistrations;
 
 namespace SFA.DAS.ProviderRelationships.Web.UnitTests.AppStart;
@@ -107,6 +109,7 @@ public class WhenAddingServicesToTheContainer
         services.AddReadStoreServices();
         services.AddAutoMapper(typeof(Startup), typeof(AccountLegalEntityMappings));
         services.AddAutoConfiguration();
+        services.AddMaMenuConfiguration(RouteNames.SignOut, "LOCAL");
 
         AddControllers(services);
 

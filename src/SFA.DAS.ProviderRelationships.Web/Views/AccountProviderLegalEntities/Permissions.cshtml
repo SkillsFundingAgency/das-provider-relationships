@@ -9,6 +9,8 @@
     ViewBag.GaData.Vpv = "/permissions/accountproviderlegalentities/permissions";
     ViewBag.GaData.Ukprn = Model.AccountProvider.ProviderUkprn.ToString();
     ViewBag.GaData.Org = Model.AccountLegalEntity.Name;
+    bool isAccountTasksJourney = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
+    var hashedAccountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId];
 }
 
 @section breadcrumb
@@ -18,7 +20,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name="_ValidationSummary" model="ViewData.ModelState" />
+        <partial name="_ValidationSummary" model="ViewData.ModelState"/>
 
         <form asp-controller="@AccountProviderLegalEntities.ControllerName" method="post"
               asp-action="@AccountProviderLegalEntities.ActionNames.Permissions"
@@ -118,7 +120,16 @@
             @Html.HiddenFor(m => m.Permissions[1].Value)
             @Html.HiddenFor(m => m.IsProviderBlockedFromRecruit)
 
-            <button class="govuk-button" type="submit">Continue</button>
+            
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit">Continue</button>
+                @if (isAccountTasksJourney)
+                {
+                    <a href="@UrlBuilder.AccountsLink("CreateAccountTaskListInAccount", hashedAccountId)" class="govuk-link">
+                        Cancel
+                    </a>
+                }
+            </div>
         </form>
     </div>
 </div>

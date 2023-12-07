@@ -36,33 +36,31 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     {
         return TestAsync(f => f.Index(), (f, r) =>
         {
-            
             var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
 
             model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
             model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
-            
-            f.Mediator.Verify(x=>x.Send(It.Is<CreateOrUpdateUserCommand>(c=>
-                c.Email == f.Email 
+
+            f.Mediator.Verify(x => x.Send(It.Is<CreateOrUpdateUserCommand>(c =>
+                c.Email == f.Email
                 && c.FirstName == f.FirstName
                 && c.LastName == f.LastName
                 && c.Ref == Guid.Parse(f.UserId)
-                ), CancellationToken.None), Times.Once);
+            ), CancellationToken.None), Times.Once);
         });
     }
-    
+
     [Test]
     public Task Index_WhenGettingIndexAction_ThenDoesNotUpsertIfNoMatchingUser()
     {
         return TestAsync(f => f.IndexNoMatching(), (f, r) =>
         {
-            
             var model = r.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<AccountProvidersViewModel>().Which;
 
             model.AccountProviders.Should().BeEquivalentTo(f.GetAccountProvidersQueryResult.AccountProviders);
             model.AccountLegalEntitiesCount.Should().Be(f.GetAccountProvidersQueryResult.AccountLegalEntitiesCount);
-            
-            f.Mediator.Verify(x=>x.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None), Times.Never);
+
+            f.Mediator.Verify(x => x.Send(It.IsAny<CreateOrUpdateUserCommand>(), CancellationToken.None), Times.Never);
         });
     }
 
@@ -86,8 +84,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 actionResult.ControllerName == null &&
                 actionResult.RouteValues[RouteValueKeys.UkPrn].Equals(fixture.FindProvidersQueryResult.Ukprn) &&
                 actionResult.RouteValues[RouteValueKeys.AccountHashedId].Equals(fixture.AccountHashedId)
-                )
-            );
+            )
+        );
     }
 
     [Test]
@@ -95,8 +93,9 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     {
         return TestAsync(
             fixture => fixture.PostFind(),
-            fixture => fixture.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.Ukprn)).Should().BeTrue()
-            );
+            fixture => fixture.AccountProvidersController.ModelState.ContainsKey(nameof(FindProviderEditModel.Ukprn))
+                .Should().BeTrue()
+        );
     }
 
     [Test]
@@ -108,7 +107,7 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 actionResult.ActionName.Equals(AccountProviders.ActionNames.Find) &&
                 actionResult.RouteValues[RouteValueKeys.AccountHashedId].Equals(fixture.AccountHashedId) &&
                 actionResult.ControllerName == null)
-            );
+        );
     }
 
     [Test]
@@ -121,8 +120,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 a.ControllerName == null &&
                 a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.FindProvidersQueryResult.AccountProviderId) &&
                 a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId)
-                )
-            );
+            )
+        );
     }
 
     [Test]
@@ -132,7 +131,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             f => f.Add(),
             (f, r) =>
             {
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddAccountProviderViewModel>(m => m.Provider == f.GetProviderToAddQueryResult.Provider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And
+                    .Match<AddAccountProviderViewModel>(m => m.Provider == f.GetProviderToAddQueryResult.Provider);
             });
     }
 
@@ -153,18 +153,20 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
         return TestAsync(
             f => f.PostAdd("Confirm"),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
-                        a.ActionName.Equals(AccountProviders.ActionNames.Added) &&
-                        a.ControllerName == null &&
-                        a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.AccountProviderId) &&
-                        a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId)
-                        )
-                );
+                a.ActionName.Equals(AccountProviders.ActionNames.Added) &&
+                a.ControllerName == null &&
+                a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.AccountProviderId) &&
+                a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId)
+            )
+        );
     }
 
     [Test]
     public Task Add_WhenPostingAddActionAndReEnterUkprnOptionIsSelected_ThenShouldNotAddAccountProvider()
     {
-        return TestAsync(f => f.PostAdd("ReEnterUkprn"), f => f.Mediator.Verify(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None), Times.Never));
+        return TestAsync(f => f.PostAdd("ReEnterUkprn"),
+            f => f.Mediator.Verify(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None),
+                Times.Never));
     }
 
     [Test]
@@ -189,13 +191,13 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     [Test]
     public Task Add_WhenInvitationIsValid_ThenShouldSendAddAccountProviderCommand()
     {
-        return TestAsync(f => f.CreateSession(), f => f.Invitation(), 
+        return TestAsync(f => f.CreateSession(), f => f.Invitation(),
             f => f.Mediator.Verify(m => m.Send(
-            It.Is<AddAccountProviderCommand>(c =>
-                c.AccountId == f.AddAccountProviderViewModel.AccountId &&
-                c.UserRef == f.AddAccountProviderViewModel.UserRef &&
-                c.Ukprn == f.AddAccountProviderViewModel.Ukprn),
-            CancellationToken.None), Times.Once));
+                It.Is<AddAccountProviderCommand>(c =>
+                    c.AccountId == f.AddAccountProviderViewModel.AccountId &&
+                    c.UserRef == f.AddAccountProviderViewModel.UserRef &&
+                    c.Ukprn == f.AddAccountProviderViewModel.Ukprn),
+                CancellationToken.None), Times.Once));
     }
 
     [Test]
@@ -216,8 +218,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     {
         return TestAsync(f => f.Invitation(), (f, r) =>
         {
-            f.Mediator.Verify(x=>x.Send(It.Is<CreateOrUpdateUserCommand>(c=>
-                c.Email == f.Email 
+            f.Mediator.Verify(x => x.Send(It.Is<CreateOrUpdateUserCommand>(c =>
+                c.Email == f.Email
                 && c.FirstName == f.FirstName
                 && c.LastName == f.LastName
                 && c.Ref == Guid.Parse(f.UserId)
@@ -230,12 +232,14 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     {
         return TestAsync(f => f.Added(), (f, r) =>
         {
-            r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedAccountProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
+            r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AddedAccountProviderViewModel>(m =>
+                m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
         });
     }
 
     [Test]
-    public void Added_WhenPostingAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
+    public void
+        Added_WhenPostingAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
     {
         Test(
             f => f.PostAdded("SetPermissions"),
@@ -243,7 +247,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
                 a.ActionName.Equals(AccountProviders.ActionNames.Get) &&
                 a.ControllerName == null &&
                 a.RouteValues[RouteValueKeys.AccountHashedId].Equals(f.AccountHashedId) &&
-                a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.AddedAccountProviderViewModel.AccountProviderId)));
+                a.RouteValues[RouteValueKeys.AccountProviderId]
+                    .Equals(f.AddedAccountProviderViewModel.AccountProviderId)));
     }
 
     [Test]
@@ -277,12 +282,14 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             f => f.AlreadyAdded(),
             (f, r) =>
             {
-                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedAccountProviderViewModel>(m => m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
+                r.As<ViewResult>().Model.Should().NotBeNull().And.Match<AlreadyAddedAccountProviderViewModel>(m =>
+                    m.AccountProvider == f.GetAddedAccountProviderQueryResult.AccountProvider);
             });
     }
 
     [Test]
-    public void AlreadyAdded_WhenPostingAlreadyAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
+    public void
+        AlreadyAdded_WhenPostingAlreadyAddedActionAndSetPermissionsOptionIsSelected_ThenShouldRedirectToPermissionsIndexAction()
     {
         Test(
             f => f.PostAlreadyAdded("SetPermissions"),
@@ -293,7 +300,8 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
     }
 
     [Test]
-    public void AlreadyAdded_WhenPostingAlreadyAddedActionAndAddTrainingProviderOptionIsSelected_ThenShouldRedirectToFindAction()
+    public void
+        AlreadyAdded_WhenPostingAlreadyAddedActionAndAddTrainingProviderOptionIsSelected_ThenShouldRedirectToFindAction()
     {
         Test(
             f => f.PostAlreadyAdded("AddTrainingProvider"),
@@ -334,24 +342,29 @@ public class AccountProvidersControllerTests : FluentTest<AccountProvidersContro
             return fixture.Get();
         }, (fixture, result) =>
         {
-            var model = result.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>().Which;
+            var model = result.As<ViewResult>().Model.Should().NotBeNull().And.BeOfType<GetAccountProviderViewModel>()
+                .Which;
 
-            fixture.EmployerAccountAuthorisationHandler.Verify(x => x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(), EmployerUserRole.Owner));
+            fixture.EmployerAccountAuthorisationHandler.Verify(x =>
+                x.CheckUserAccountAccess(It.IsAny<ClaimsPrincipal>(), EmployerUserRole.Owner));
             model.AccountProvider.Should().BeSameAs(fixture.GetAccountProviderQueryResult.AccountProvider);
             model.IsUpdatePermissionsOperationAuthorized.Should().Be(expected);
         });
     }
 
     [Test]
-    public Task Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesPermissionsAction()
+    public Task
+        Get_WhenAccountHasSingleAccountLegalEntity_ThenShouldRedirectToAccountProviderLegalEntitiesPermissionsAction()
     {
         return TestAsync(
             f => f.Get(1),
             (f, r) => r.Should().NotBeNull().And.Match<RedirectToActionResult>(a =>
                 a.ActionName.Equals(AccountProviderLegalEntities.ActionNames.Permissions) &&
                 a.ControllerName.Equals(AccountProviderLegalEntities.ControllerName) &&
-                a.RouteValues[RouteValueKeys.AccountProviderId].Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&
-                a.RouteValues[RouteValueKeys.AccountLegalEntityId].Equals(f.GetAccountProviderQueryResult.AccountProvider.AccountLegalEntities[0].Id)));
+                a.RouteValues[RouteValueKeys.AccountProviderId]
+                    .Equals(f.GetAccountProviderQueryResult.AccountProvider.Id) &&
+                a.RouteValues[RouteValueKeys.AccountLegalEntityId]
+                    .Equals(f.GetAccountProviderQueryResult.AccountProvider.AccountLegalEntities[0].Id)));
     }
 }
 
@@ -372,7 +385,7 @@ public class AccountProvidersControllerTestsFixture
     public GetInvitationByIdQueryResult GetInvitationByIdQueryResult { get; set; }
     public AddAccountProviderViewModel AddAccountProviderViewModel { get; set; }
     public string AccountHashedId { get; set; } = "ABC123";
-    public string UserId  { get; set; }
+    public string UserId { get; set; }
     public string Email => "email@test.com";
     public string FirstName => "FirstName";
     public string LastName => "LastName";
@@ -388,16 +401,20 @@ public class AccountProvidersControllerTestsFixture
 
     public AccountProvidersControllerTestsFixture()
     {
-        UserId =  Guid.NewGuid().ToString();
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, UserId),new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, Email) }));
+        UserId = Guid.NewGuid().ToString();
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] {
+            new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, UserId),
+            new Claim(EmployerClaims.IdamsUserEmailClaimTypeIdentifier, Email)
+        }));
         Mediator = new Mock<IMediator>();
         EncodingService = new Mock<IEncodingService>();
         Mapper = new MapperConfiguration(c => c.AddProfile(typeof(AccountProviderMappings))).CreateMapper();
         EmployerUrls = new Mock<IEmployerUrls>();
         EmployerAccountAuthorisationHandler = new Mock<IEmployerAccountAuthorisationHandler>();
         UserAccountService = new Mock<IUserAccountService>();
-        
+
         AccountProvidersController = new AccountProvidersController(
+            Mock.Of<IHttpContextAccessor>(),
             Mediator.Object,
             Mapper,
             EmployerUrls.Object,
@@ -407,7 +424,7 @@ public class AccountProvidersControllerTestsFixture
             UserAccountService.Object);
 
         AccountProvidersController.ControllerContext = new ControllerContext() {
-            HttpContext = new DefaultHttpContext { User = user,Session = Mock.Of<ISession>() }
+            HttpContext = new DefaultHttpContext { User = user, Session = Mock.Of<ISession>() }
         };
     }
 
@@ -430,8 +447,8 @@ public class AccountProvidersControllerTestsFixture
                 m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == accountId),
                     CancellationToken.None))
             .ReturnsAsync(GetAccountProvidersQueryResult);
-        
-        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts {
+
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email)).ReturnsAsync(new EmployerUserAccounts {
             FirstName = FirstName,
             LastName = LastName,
             EmployerUserId = UserId
@@ -439,6 +456,7 @@ public class AccountProvidersControllerTestsFixture
 
         return AccountProvidersController.Index(AccountHashedId);
     }
+
     public Task<IActionResult> IndexNoMatching()
     {
         const long accountId = 1;
@@ -458,8 +476,8 @@ public class AccountProvidersControllerTestsFixture
                 m.Send(It.Is<GetAccountProvidersQuery>(q => q.AccountId == accountId),
                     CancellationToken.None))
             .ReturnsAsync(GetAccountProvidersQueryResult);
-        
-        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts());
+
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email)).ReturnsAsync(new EmployerUserAccounts());
 
         return AccountProvidersController.Index(AccountHashedId);
     }
@@ -482,9 +500,11 @@ public class AccountProvidersControllerTestsFixture
 
         EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
 
-        FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null, providerAlreadyAdded ? accountProviderId : (int?)null);
+        FindProvidersQueryResult = new FindProviderToAddQueryResult(providerExists ? ukprn : (long?)null,
+            providerAlreadyAdded ? accountProviderId : (int?)null);
 
-        Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == ukprn), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
+        Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == ukprn),
+            CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
 
         return AccountProvidersController.Find(findProviderEditModel);
     }
@@ -501,7 +521,8 @@ public class AccountProvidersControllerTestsFixture
                 Name = "Foo"
             });
 
-        Mediator.Setup(m => m.Send(It.Is<GetProviderToAddQuery>(q => q.Ukprn == AddAccountProviderRouteValues.Ukprn), CancellationToken.None)).ReturnsAsync(GetProviderToAddQueryResult);
+        Mediator.Setup(m => m.Send(It.Is<GetProviderToAddQuery>(q => q.Ukprn == AddAccountProviderRouteValues.Ukprn),
+            CancellationToken.None)).ReturnsAsync(GetProviderToAddQueryResult);
 
         return AccountProvidersController.Add(AddAccountProviderRouteValues);
     }
@@ -509,7 +530,8 @@ public class AccountProvidersControllerTestsFixture
     public Task<IActionResult> PostAdd(string choice = null)
     {
         AddAccountProviderViewModel = new AddAccountProviderViewModel {
-            Provider = new Application.Queries.GetProviderToAdd.Dtos.ProviderDto { Name = "ProviderName", Ukprn = 10083920 },
+            Provider = new Application.Queries.GetProviderToAdd.Dtos.ProviderDto
+                { Name = "ProviderName", Ukprn = 10083920 },
             AccountId = 1,
             UserRef = Guid.NewGuid(),
             Ukprn = 12345678,
@@ -519,7 +541,8 @@ public class AccountProvidersControllerTestsFixture
 
         AccountProviderId = 2;
 
-        Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
+        Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None))
+            .ReturnsAsync(AccountProviderId);
 
         var context = new ValidationContext(AddAccountProviderViewModel);
         Validator.ValidateObject(AddAccountProviderViewModel, context);
@@ -536,15 +559,22 @@ public class AccountProvidersControllerTestsFixture
             AccountProviderId = 2
         };
 
-        GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new Application.Queries.GetAddedAccountProvider.Dtos.AccountProviderDto {
-            Id = 2,
-            ProviderUkprn = 12345678,
-            ProviderName = "Foo"
-        });
+        GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(
+            new AccountProviderDto {
+                Id = 2,
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
+            });
 
         EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
 
-        Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == accountId && q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
+        Mediator.Setup(m =>
+                m.Send(
+                    It.Is<GetAddedAccountProviderQuery>(q =>
+                        q.AccountId == accountId &&
+                        q.AccountProviderId == AddedAccountProviderRouteValues.AccountProviderId),
+                    CancellationToken.None))
+            .ReturnsAsync(GetAddedAccountProviderQueryResult);
 
         return AccountProvidersController.Added(AddedAccountProviderRouteValues);
     }
@@ -572,15 +602,21 @@ public class AccountProvidersControllerTestsFixture
             AccountProviderId = 2
         };
 
-        GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(new Application.Queries.GetAddedAccountProvider.Dtos.AccountProviderDto {
-            Id = 2,
-            ProviderUkprn = 12345678,
-            ProviderName = "Foo"
-        });
+        GetAddedAccountProviderQueryResult = new GetAddedAccountProviderQueryResult(
+            new AccountProviderDto {
+                Id = 2,
+                ProviderUkprn = 12345678,
+                ProviderName = "Foo"
+            });
 
         EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
 
-        Mediator.Setup(m => m.Send(It.Is<GetAddedAccountProviderQuery>(q => q.AccountId == accountId && q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
+        Mediator.Setup(m =>
+            m.Send(
+                It.Is<GetAddedAccountProviderQuery>(q =>
+                    q.AccountId == accountId &&
+                    q.AccountProviderId == AlreadyAddedAccountProviderRouteValues.AccountProviderId),
+                CancellationToken.None)).ReturnsAsync(GetAddedAccountProviderQueryResult);
 
         return AccountProvidersController.AlreadyAdded(AlreadyAddedAccountProviderRouteValues);
     }
@@ -613,8 +649,7 @@ public class AccountProvidersControllerTestsFixture
                     .Select(i => new AccountLegalEntityDto {
                         Id = i,
                         Name = i.ToString(),
-                        Operations = new List<Operation>
-                        {
+                        Operations = new List<Operation> {
                             Operation.CreateCohort
                         }
                     })
@@ -622,7 +657,11 @@ public class AccountProvidersControllerTestsFixture
             });
 
         EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
-        Mediator.Setup(m => m.Send(It.Is<GetAccountProviderQuery>(q => q.AccountId == accountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId), CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
+        Mediator.Setup(m =>
+            m.Send(
+                It.Is<GetAccountProviderQuery>(q =>
+                    q.AccountId == accountId && q.AccountProviderId == GetAccountProviderRouteValues.AccountProviderId),
+                CancellationToken.None)).ReturnsAsync(GetAccountProviderQueryResult);
 
         return AccountProvidersController.Get(GetAccountProviderRouteValues);
     }
@@ -658,8 +697,8 @@ public class AccountProvidersControllerTestsFixture
         FindProviderViewModel = new FindProviderViewModel {
             Ukprn = ukprn.ToString()
         };
-        
-        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email )).ReturnsAsync(new EmployerUserAccounts {
+
+        UserAccountService.Setup(x => x.GetUserAccounts(UserId, Email)).ReturnsAsync(new EmployerUserAccounts {
             FirstName = FirstName,
             LastName = LastName,
             EmployerUserId = UserId
@@ -671,17 +710,22 @@ public class AccountProvidersControllerTestsFixture
 
         EncodingService.Setup(x => x.Decode(AccountHashedId, EncodingType.AccountId)).Returns(accountId);
 
-        Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == 12345678), CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
-        Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None)).ReturnsAsync(AccountProviderId);
-        Mediator.Setup(m => m.Send(It.IsAny<GetInvitationByIdQuery>(), CancellationToken.None)).ReturnsAsync(GetInvitationByIdQueryResult);
+        Mediator.Setup(m => m.Send(It.Is<FindProviderToAddQuery>(q => q.AccountId == accountId && q.Ukprn == 12345678),
+            CancellationToken.None)).ReturnsAsync(FindProvidersQueryResult);
+        Mediator.Setup(m => m.Send(It.IsAny<AddAccountProviderCommand>(), CancellationToken.None))
+            .ReturnsAsync(AccountProviderId);
+        Mediator.Setup(m => m.Send(It.IsAny<GetInvitationByIdQuery>(), CancellationToken.None))
+            .ReturnsAsync(GetInvitationByIdQueryResult);
 
         return AccountProvidersController.Invitation(InvitationAccountProviderRouteValues);
     }
 
     public AccountProvidersControllerTestsFixture CreateSession()
     {
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString()) }));
-        AccountProvidersController.ControllerContext = new ControllerContext() { HttpContext = new DefaultHttpContext() { Session = Mock.Of<ISession>(), User = user } };
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            { new Claim(EmployerClaims.IdamsUserIdClaimTypeIdentifier, Guid.NewGuid().ToString()) }));
+        AccountProvidersController.ControllerContext = new ControllerContext()
+            { HttpContext = new DefaultHttpContext() { Session = Mock.Of<ISession>(), User = user } };
 
         return this;
     }

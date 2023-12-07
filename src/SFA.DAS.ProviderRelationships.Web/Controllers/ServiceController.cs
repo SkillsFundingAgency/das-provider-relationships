@@ -7,6 +7,7 @@ using SFA.DAS.ProviderRelationships.Web.RouteValues;
 
 namespace SFA.DAS.ProviderRelationships.Web.Controllers;
 
+[Route("service")]
 public class ServiceController : Controller
 {
     private readonly IConfiguration _config;
@@ -61,17 +62,20 @@ public class ServiceController : Controller
     [AllowAnonymous]
     [HttpPost]
     [Route("SignIn-Stub")]
-    public async Task<IActionResult> SigninStubPost()
+    public async Task<IActionResult> SigninStubPost([FromQuery]string returnUrl)
     {
-            
         var claims = await _stubAuthenticationService.GetStubSignInClaims(new StubAuthUserDetails
         {
             Email = _config["StubEmail"],
             Id = _config["StubId"]
         });
 
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-            new AuthenticationProperties());
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims, new AuthenticationProperties());
+        
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
             
         return RedirectToRoute("Signed-in-stub");
     }

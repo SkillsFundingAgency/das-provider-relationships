@@ -1,4 +1,5 @@
 using AutoMapper;
+using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.Encoding;
 using SFA.DAS.ProviderRelationships.Application.Commands.UpdatePermissions;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProvider;
@@ -7,6 +8,7 @@ using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviderLegalE
 using SFA.DAS.ProviderRelationships.Application.Queries.GetUpdatedAccountProviderLegalEntity;
 using SFA.DAS.ProviderRelationships.Types.Models;
 using SFA.DAS.ProviderRelationships.Web.Authentication;
+using SFA.DAS.ProviderRelationships.Web.Authorisation;
 using SFA.DAS.ProviderRelationships.Web.Controllers;
 using SFA.DAS.ProviderRelationships.Web.Extensions;
 using SFA.DAS.ProviderRelationships.Web.Mappings;
@@ -90,6 +92,16 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                     f.AccountProviderLegalEntitiesController.TempData["ProviderName"].Equals("PROVIDER COLLEGE") &&
                     f.AccountProviderLegalEntitiesController.TempData["LegalEntityName"].Equals("ALE LTD")));
         }
+        
+        [Test]
+        public Task Update_WhenPostingPermissionsActionFromAccountTasks_ThenShouldRedirectToAccountTaskListProviderAddedSuccess()
+        {
+            return TestAsync(
+                f => f.CreateSession().SetAccountTasksContextItem(),
+                f => f.PostUpdate(true, null, State.No),
+                (f, r) => r.Should().NotBeNull().And.Match<RedirectResult>(a =>
+                    a.Url.Contains("training-provider-success")));
+        }
 
         [Test]
         public Task Update_WhenPostingPermissionsActionFromInvitation_ThenShouldRedirectToEmployerAccountUrl()
@@ -107,6 +119,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProviderLegalEntitiesController AccountProviderLegalEntitiesController { get; set; }
         public Mock<IMediator> Mediator { get; set; }
         public Mock<IEncodingService> EncodingService { get; set; }
+        public UrlBuilder UrlBuilder { get; set; }
         public IMapper Mapper { get; set; }
         public Mock<IEmployerUrls> EmployerUrls { get; set; }
         public AccountProviderLegalEntityRouteValues AccountProviderLegalEntityRouteValues { get; set; }
@@ -123,12 +136,13 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
         public AccountProviderLegalEntitiesControllerTestsFixture()
         {
 
-            Mediator = new Mock<IMediator>();
-            EncodingService = new Mock<IEncodingService>();
+            Mediator = new();
+            EncodingService = new ();
             Mapper = new MapperConfiguration(c => c.AddProfiles(new[] { new AccountProviderLegalEntityMappings() })).CreateMapper();
-            EmployerUrls = new Mock<IEmployerUrls>();
+            EmployerUrls = new();
+            UrlBuilder = new UrlBuilder("LOCAL");
 
-            AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object, Mapper, EmployerUrls.Object, EncodingService.Object);
+            AccountProviderLegalEntitiesController = new AccountProviderLegalEntitiesController(Mediator.Object, Mapper, EmployerUrls.Object, EncodingService.Object, UrlBuilder);
         }
 
         public Task<IActionResult> Permissions()
@@ -238,7 +252,7 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
 
         public AccountProviderLegalEntitiesControllerTestsFixture CreateSession()
         {
-            var context = new DefaultHttpContext() { Session = Mock.Of<ISession>(), User = _user };
+            var context = new DefaultHttpContext() { Session = Mock.Of<ISession>(), User = _user, Items = new Dictionary<object, object>()};
             AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
                 HttpContext = context,
             };
@@ -257,9 +271,15 @@ namespace SFA.DAS.ProviderRelationships.Web.UnitTests.Controllers
                 .Setup(e => e.Account(It.IsAny<string>()))
                 .Returns($"https://localhost/accounts/{AccountHashedId}/teams");
             AccountProviderLegalEntitiesController.ControllerContext = new ControllerContext() {
-                HttpContext = new DefaultHttpContext() { Session = session.Object, User = _user }
+                HttpContext = new DefaultHttpContext() { Session = session.Object, User = _user, Items = new Dictionary<object, object>()}
             };
 
+            return this;
+        }
+
+        public AccountProviderLegalEntitiesControllerTestsFixture SetAccountTasksContextItem()
+        {
+            AccountProviderLegalEntitiesController.ControllerContext.HttpContext.Items.Add(ContextItemKeys.AccountTasksKey, true);
             return this;
         }
     }
