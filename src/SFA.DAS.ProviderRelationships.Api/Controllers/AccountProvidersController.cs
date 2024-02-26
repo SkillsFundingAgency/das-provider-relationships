@@ -4,7 +4,6 @@ using SFA.DAS.ProviderRelationships.Api.Models.Responses;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
-using SFA.DAS.ProviderRelationships.Application.Queries.GetInvitationByIdQuery;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
 
 namespace SFA.DAS.ProviderRelationships.Api.Controllers;
@@ -68,8 +67,7 @@ public class AccountProvidersController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var invitation = await _mediator.Send(new GetInvitationByIdQuery(request.CorrelationId), cancellationToken);
-        var verify = await _mediator.Send(new FindProviderToAddQuery(accountId, invitation.Invitation.Ukprn), cancellationToken);
+        var verify = await _mediator.Send(new FindProviderToAddQuery(accountId, request.Ukprn), cancellationToken);
 
         if (verify.ProviderNotFound)
         {
@@ -80,7 +78,7 @@ public class AccountProvidersController : ControllerBase
             return Ok();
         }
 
-        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, invitation.Invitation.Ukprn, request.UserRef, request.CorrelationId), cancellationToken);
+        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, request.Ukprn, request.UserRef, request.CorrelationId), cancellationToken);
 
         return Ok(new AddAccountProviderFromInvitationResponse {
             AccountProviderId = accountProviderId

@@ -4,5 +4,6 @@
     {
         public Guid CorrelationId { get; set; }
         public Guid UserRef { get; set; }
+        public long Ukprn { get; set; }
     }
 }
