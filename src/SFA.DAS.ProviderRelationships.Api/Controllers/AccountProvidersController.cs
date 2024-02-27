@@ -81,7 +81,8 @@ public class AccountProvidersController : ControllerBase
             return Ok();
         }
 
-        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(accountId, request.Ukprn, request.UserRef, request.CorrelationId), cancellationToken);
+        var accountProviderId = await _mediator.Send(new AddAccountProviderCommand(
+            accountId, request.Ukprn, request.UserRef, request.CorrelationId), cancellationToken);
 
         return Ok(new AddAccountProviderFromInvitationResponse {
             AccountProviderId = accountProviderId
