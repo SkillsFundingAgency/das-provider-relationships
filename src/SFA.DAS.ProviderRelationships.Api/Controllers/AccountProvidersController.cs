@@ -2,6 +2,7 @@
 using SFA.DAS.ProviderRelationships.Api.Models.Requests;
 using SFA.DAS.ProviderRelationships.Api.Models.Responses;
 using SFA.DAS.ProviderRelationships.Application.Commands.AddAccountProvider;
+using SFA.DAS.ProviderRelationships.Application.Commands.CreateOrUpdateUser;
 using SFA.DAS.ProviderRelationships.Application.Queries.FindProviderToAdd;
 using SFA.DAS.ProviderRelationships.Application.Queries.GetAccountProviders;
 using SFA.DAS.ProviderRelationships.Types.Dtos;
@@ -67,6 +68,8 @@ public class AccountProvidersController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        await CheckExistsAndUpsertNewUser(request.UserRef, request.Email, request.FirstName, request.LastName);
+
         var verify = await _mediator.Send(new FindProviderToAddQuery(accountId, request.Ukprn), cancellationToken);
 
         if (verify.ProviderNotFound)
@@ -83,5 +86,15 @@ public class AccountProvidersController : ControllerBase
         return Ok(new AddAccountProviderFromInvitationResponse {
             AccountProviderId = accountProviderId
         });
+    }
+
+    private async Task CheckExistsAndUpsertNewUser(Guid userId, string email, string firstName, string lastName)
+    {
+        await _mediator.Send(new CreateOrUpdateUserCommand(
+                        userId,
+                        email,
+                        firstName,
+                        lastName
+           ));
     }
 }
