@@ -158,4 +158,18 @@ public class AccountProvidersControllerTests
         // Assert
         result.Should().BeOfType<NotFoundResult>();
     }
+
+
+    [Test, MoqAutoData]
+    public async Task Invitation_ProviderNotFound_ShouldReturn_BadResult(
+       AddAccountProviderFromInvitationPostRequest request,
+       [Greedy] AccountProvidersController controller
+       )
+    {       
+        // Act
+        var result = await controller.Invitation(0, request, CancellationToken.None);
+
+        // Assert
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
 }
