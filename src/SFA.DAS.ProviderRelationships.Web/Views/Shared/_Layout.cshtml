@@ -1,10 +1,12 @@
-﻿@using SFA.DAS.Employer.Shared.UI.Models
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@using SFA.DAS.Employer.Shared.UI.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     var tagManagerCode = "GTM-KWQBWGJ";
     var accountId = (string)ViewContext.RouteData.Values[RouteValueKeys.AccountHashedId] ?? "";
-    
+
     bool isAccountTasksJourney = Context.Items.ContainsKey("AccountTasksKey") && (bool)Context.Items["AccountTasksKey"];
 
     ViewBag.ShowNav = !isAccountTasksJourney;
@@ -14,78 +16,81 @@
 }
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>@(ViewData["Title"] ?? "GOV.UK - The best place to find government services and information")</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0b0c0c"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0c0c" />
+    <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
+    <link rel="icon" sizes="any" href="/assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" />
+    <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
 
-    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
-    <link rel="mask-icon" href="assets/images/govuk-mask-icon.svg" color="#0b0c0c"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/govuk-apple-touch-icon-180x180.png"/>
-    <link rel="apple-touch-icon" sizes="167x167" href="assets/images/govuk-apple-touch-icon-167x167.png"/>
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png"/>
-    <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png"/>
-
-    <!--[if !IE 8]><!-->
-    <link href="css/main.css" rel="stylesheet"/>
-    <link href="/css/app.css" rel="stylesheet" no-cdn/>
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="/css/app.css" rel="stylesheet" no-cdn />
 
     @await RenderSectionAsync("styles", required: false)
 
-    <!--<![endif]-->
-
-    <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
     <!-- Google Tag Manager -->
     <script>
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','@tagManagerCode');
-        </script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', '@tagManagerCode');
+    </script>
     <!-- End Google Tag Manager -->
 </head>
+
 <body class="govuk-template__body ">
-<script nws-csp-add-nonce="true">
-            document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
-        </script>
-<a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+    <script nws-csp-add-nonce="true">
+        document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+    </script>
+    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
-@* ReSharper disable once Mvc.PartialViewNotResolved *@
-<partial name="_CookieBanner" model="@cookieBannerModel"></partial>
-
-@* ReSharper disable once Mvc.PartialViewNotResolved *@
-<partial name="_Header">
     @* ReSharper disable once Mvc.PartialViewNotResolved *@
-    <partial name="_Menu" model="@accountId">
+    <partial name="_CookieBanner" model="@cookieBannerModel"></partial>
+
+    @* ReSharper disable once Mvc.PartialViewNotResolved *@
+    <partial name="_Header">
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        <partial name="_Menu" model="@accountId">
+        </partial>
     </partial>
-</partial>
 
-<div class="govuk-width-container">
-    @await RenderSectionAsync("breadcrumb", required: false)
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        @RenderBody()
-    </main>
-</div>
+    <div class="govuk-width-container">
+        @await RenderSectionAsync("breadcrumb", required: false)
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            @RenderBody()
+        </main>
+    </div>
 
-@* ReSharper disable once Mvc.PartialViewNotResolved *@
-<partial name="_Footer" model="@footerModel"/>
+    @* ReSharper disable once Mvc.PartialViewNotResolved *@
+    <partial name="_Footer" model="@footerModel" />
+    <script type="module" src="/libs/govuk-frontend/govuk-frontend.min.js"></script>
+    <script type="module" cdnify>
+        import {
+            initAll
+        } from '@Configuration["cdn:url"]/libs/govuk-frontend/govuk-frontend.min.js'
+        initAll()
+    </script>
+    <script src="/libs/jquery/jquery.min.js"></script>
+    <script src="/js/das-all.min.js"></script>
+    <script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
+    <script src="/js/app.min.js"></script>
 
-<script src="/libs/jquery/jquery.min.js"></script>
-<script src="/libs/govuk-frontend/all.js"></script>
-<script src="/js/das-all.min.js"></script>
-<script src="libs/accessible-autocomplete/accessible-autocomplete.min.js"></script>
-<script src="/js/app.min.js"></script>
+    @await RenderSectionAsync("javascript", required: false)
 
-@await RenderSectionAsync("javascript", required: false)
+    <script src="/js/app.js" no-cdn></script>
 
-<script src="/js/app.js" no-cdn></script>
-
-<script>
-            window.GOVUKFrontend.initAll();
-            window.DASFrontend.initAll();
-        </script>
+    <script>
+        window.DASFrontend.initAll();
+    </script>
 
 </body>
+
 </html>
