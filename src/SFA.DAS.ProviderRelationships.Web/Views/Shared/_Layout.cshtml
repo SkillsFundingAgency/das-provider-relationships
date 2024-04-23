@@ -50,10 +50,12 @@
     <script nws-csp-add-nonce="true">
         document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
-    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
     @* ReSharper disable once Mvc.PartialViewNotResolved *@
     <partial name="_CookieBanner" model="@cookieBannerModel"></partial>
+
+    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
 
     @* ReSharper disable once Mvc.PartialViewNotResolved *@
     <partial name="_Header">
